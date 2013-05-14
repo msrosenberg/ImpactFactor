@@ -1,0 +1,23 @@
+Year	# Authors	Order	Article	12/31/1997	12/31/1998	12/31/1999	12/31/2000	12/31/2001	12/31/2002	12/31/2003	12/31/2004		
+1997	1	1	"Rosenberg (1997) Evolution of shape differences between the major and minor chelipeds of Uca pugnax (Decapoda: Ocypodidae), J Crust Biol 17(1):52–59"	0	0	0	0	1	2	2	2		
+1997	3	3	"Adams et al (1997) Resampling tests for meta-analysis of ecological data, Ecology 78(4):1277–1283"	0	0	0	0	0	0	1	2		
+1997	4	3	"Sokal et al (1997) The patterns of historical population movements in Europe and some of their genetic consequences, Amer J Hum Biol 9(3):391–404"	1	1	1	2	2	2	2	2		
+1997	4	3	"Sokal et al (1997) Ethnohistory, genetics, and cancer mortality in Europeans, PNAS 94(23):12728–12731"	0	0	1	2	2	2	2	3		
+1998	2	2	"Adams and Rosenberg (1998) Partial warps, phylogeny, and ontogeny: A comment on Fink and Zelditch (1995), Syst Biol 47(1):168–173"	n/a	0	0	0	0	0	0	0		
+1999	4	1	"Rosenberg et al (1999) Spatial autocorrelation of cancer in Western Europe, Eur J Epidem 15(1):15–22"	n/a	n/a	0	2	2	2	2	3		
+2000	4	3	"Sokal et al (2000) Cancer incidences in Europe related to mortalities, and ethnohistoric, genetic, and geographic distances, PNAS 97(11):6067–6072"	n/a	n/a	n/a	0	0	0	0	1		
+2000	1	1	"Rosenberg (2000) The bearing correlogram: A new method of analyzing directional spatial autocorrelation, Geog Anal 32(3):267–278"	n/a	n/a	n/a	0	0	1	1	2		
+2001	1	1	"Rosenberg (2001) The systematics and taxonomy of fiddler crabs: A phylogeny of the genus Uca, J Crust Biol 21(3):839–869"	n/a	n/a	n/a	n/a	0	1	1	1		
+2001	2	1	"Rosenberg and Kumar (2001) Traditional phylogenetic reconstruction methods reconstruct shallow and deep evolutionary relationships equally well, MBE 18(9):1823–1827"	n/a	n/a	n/a	n/a	1	1	2	2		
+2001	2	1	"Rosenberg and Kumar (2001) Incomplete taxon sampling is not a problem for phylogenetic inference, PNAS 98(19):10751–10756"	n/a	n/a	n/a	n/a	0	0	3	3		
+2002	1	1	"Rosenberg (2002) Fiddler crab claw shape variation: A geometric morphometric analysis across the genus Uca, Biol J Linn Soc 75(2):147–162"	n/a	n/a	n/a	n/a	n/a	0	0	0		
+2002	6	6	"Dale et al (2002) Conceptual and mathematical relationships among methods for spatial analysis, Ecography 25(5):558–577"	n/a	n/a	n/a	n/a	n/a	2	2	3		
+2002	7	3	"Perry et al (2002) Illustration and guidelines for selecting statistical methods for quantifying spatial patterns in ecological data, Ecography 25(5):578–600"	n/a	n/a	n/a	n/a	n/a	2	2	3		
+2002	9	9	"Dungan et al (2002) A balanced view of scaling in spatial statistical analysis, Ecography 25(5):626–640"	n/a	n/a	n/a	n/a	n/a	1	1	2		
+2003	2	1	"Rosenberg and Kumar (2003) Taxon sampling, bioinformatics, and phylogenomics, Syst Biol 52(1):119–124"	n/a	n/a	n/a	n/a	n/a	n/a	1	1		
+2003	2	1	"Rosenberg and Kumar (2003) Heterogeneity of nucleotide frequencies among evolutionary lineages and phylogenetic inference, MBE 20(4):610–621"	n/a	n/a	n/a	n/a	n/a	n/a	0	0		
+2003	3	1	"Rosenberg et al (2003) Patterns of transitional mutation biases within and among mammalian genomes, MBE 20(6):988–993"	n/a	n/a	n/a	n/a	n/a	n/a	0	0		
+2003	11	2	"Hyatt et al (2003) The distance dependence prediction of the Janzen-Connell hypothesis: A meta-analysis, Oikos 103(3):590–602"	n/a	n/a	n/a	n/a	n/a	n/a	0	0		
+2004	4	3	"Sokal et al (2004) A new protocol for evaluating putative causes for multiple variables in a spatial setting, illustrated by its application to European cancer rates, Amer J Hum Biol 16(1):1–16"	n/a	n/a	n/a	n/a	n/a	n/a	n/a	0		
+2004	1	1	"Rosenberg (2004) Wavelet analysis for detecting anisotropy in point patterns, J Veg Sci 15(2):277–284"	n/a	n/a	n/a	n/a	n/a	n/a	n/a	0		
+2004	4	1	"Rosenberg et al (2004) Meta-analysis in plant pathology: Synthesizing research results, Phytopathology 94(9):1013–1017"	n/a	n/a	n/a	n/a	n/a	n/a	n/a	0		
