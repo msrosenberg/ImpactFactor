@@ -67,6 +67,7 @@ class MetricSet:
         self.pi_index = 0
         self.p_index = 0
         self.fractional_p_index = 0
+        self.harmonic_p_index = 0
         self.ph_ratio = 0
         self.maxprod_index = 0
         self.specificImpact_s_index = 0
@@ -76,7 +77,11 @@ class MetricSet:
         self.hpd_index = 0
         self.hi_index = 0
         self.pure_h_index = 0
+        self.pure_h_proportional = 0
+        self.pure_h_geometric = 0
         self.adapted_pure_h_index = 0
+        self.adapted_pure_h_proportional = 0
+        self.adapted_pure_h_geometric = 0
         self.weighted_h_index = 0
         self.j_index = 0
         self.real_h_index = 0
@@ -467,7 +472,7 @@ def calculate_pi_index(n,totalPubs,rankorder,Cites):
     return pi_index / 100
 
 
-# p-index (originally called mock hm-index), ph-ratio, and pf-index (Prathap 2010b)
+# p-index (originally called mock hm-index), ph-ratio, and pf-index (Prathap 2010b, 2011)
 def calculate_Prathap_p_index(totalCites,totalPubs,h,curList,y):
     p_index = (totalCites**2 / totalPubs)**(1/3)
     ph_ratio = p_index / h
@@ -480,6 +485,21 @@ def calculate_Prathap_p_index(totalCites,totalPubs,h,curList,y):
     return p_index,ph_ratio,fractional_p_index
 
 
+# harmonic p-index (Prathap 2011)
+def calculate_Prathap_harmonic_p(curList,y):
+    ph = 0
+    nh = 0
+    for article in curList:
+        num = 1 / article.authorrank
+        denom = 0
+        for i in range(article.authors):
+            denom += 1 / (i + 1)
+        r = num / denom        
+        ph += r
+        nh += article.citations[y] * r
+    return (nh**2 / ph)**(1/3)
+
+
 # hi-index (Batista et al 2006) and pure h-index (Wan et al 2007)
 def calculate_hi_pure(n,IsCore,curList,h):
     suma = 0
@@ -487,6 +507,19 @@ def calculate_hi_pure(n,IsCore,curList,h):
         if IsCore[i]:
             suma += curList[i].authors
     return h**2 / suma , h / math.sqrt(suma / h)
+
+
+# pure h-index with author order (Wan et al 2007)
+def calculate_pure_order(n,IsCore,curList,h):
+    sump = 0 # proportional counting
+    sumg = 0 # geometric counting
+    for i in range(n):
+        if IsCore[i]:
+            sump += curList[i].authors * (curList[i].authors + 1) / (2 * curList[i].authors + 1 - curList[i].authorrank)
+            sumg += (2**curList[i].authors - 1) / (2**(curList[i].authors - curList[i].authorrank))
+    pure_prop = h / math.sqrt(sump / h)
+    pure_geom = h / math.sqrt(sumg / h)
+    return pure_prop, pure_geom
 
 
 # Tol's f-index and t-index
@@ -698,6 +731,48 @@ def calculate_adapated_pure_h(n,Cites,curList):
     Sc = []
     for i in range(n):
         Sc.append(Cites[i] / math.sqrt(curList[i].authors))
+    tmpindex, tmporder = sortandrank(Sc,n)
+    j = 0
+    for i in range(n):
+        if tmporder[i] <= Sc[i]:
+            j += 1
+    citeE = 0
+    citeE1 = 0
+    for i in range(n):
+        if tmporder[i] == j:
+            citeE = Sc[i]
+        elif tmporder[i] == j + 1:
+            citeE1 = Sc[i]
+    return (((j + 1) * citeE) - (j * citeE1)) / (citeE - citeE1 + 1)
+
+
+# adapted pure h-index w/proportional author credit (Chai et al 2008)
+def calculate_adapated_pure_h_prop(n,Cites,curList):
+    Sc = []
+    for i in range(n):
+        EA = curList[i].authors * (curList[i].authors + 1) / (2 * (curList[i].authors + 1 - curList[i].authorrank))
+        Sc.append(Cites[i] / math.sqrt(EA))
+    tmpindex, tmporder = sortandrank(Sc,n)
+    j = 0
+    for i in range(n):
+        if tmporder[i] <= Sc[i]:
+            j += 1
+    citeE = 0
+    citeE1 = 0
+    for i in range(n):
+        if tmporder[i] == j:
+            citeE = Sc[i]
+        elif tmporder[i] == j + 1:
+            citeE1 = Sc[i]
+    return (((j + 1) * citeE) - (j * citeE1)) / (citeE - citeE1 + 1)
+
+
+# adapted pure h-index w/geometric author credit (Chai et al 2008)
+def calculate_adapated_pure_h_geom(n,Cites,curList):
+    Sc = []
+    for i in range(n):
+        EA  = (2**curList[i].authors - 1) / (2**(curList[i].authors - curList[i].authorrank))
+        Sc.append(Cites[i] / math.sqrt(EA))
     tmpindex, tmporder = sortandrank(Sc,n)
     j = 0
     for i in range(n):
@@ -930,7 +1005,9 @@ def CalculateMetrics(y,dateList,articleList):
     Metrics.tapered_h_index = calculate_tapered_h_index(n,Cites,rankorder)
     Metrics.pi_index = calculate_pi_index(n,Metrics.totalPubs,rankorder,Cites)
     Metrics.p_index,Metrics.ph_ratio,Metrics.fractional_p_index = calculate_Prathap_p_index(Metrics.totalCites,Metrics.totalPubs,Metrics.h_index,curList,y)
+    Metrics.harmonic_p_index = calculate_Prathap_harmonic_p(curList,y)
     Metrics.hi_index,Metrics.pure_h_index = calculate_hi_pure(n,IsCore,curList,Metrics.h_index)
+    Metrics.pure_h_proportional, Metrics.pure_h_geometric = calculate_pure_order(n,IsCore,curList,Metrics.h_index)
     Metrics.Tol_f_index, Metrics.Tol_t_index = calculate_Tol_indices(n,rankorder,fcum,tcum)
     Metrics.mu_index = calculate_mu_index(n,rankorder,medarray)
     Metrics.Wu_w_index, Metrics.Wu_wq_index = calculate_Wu_w(n,Cites,rankorder)
@@ -945,6 +1022,8 @@ def CalculateMetrics(y,dateList,articleList):
     Metrics.maxprod_index = calculate_maxprod(n,Cites,rankorder)
     Metrics.j_index = calculate_j_index(n,Cites,Metrics.h_index)
     Metrics.adapted_pure_h_index = calculate_adapated_pure_h(n,Cites,curList)
+    Metrics.adapted_pure_h_proportional = calculate_adapated_pure_h_prop(n,Cites,curList)
+    Metrics.adapted_pure_h_geometric = calculate_adapated_pure_h_geom(n,Cites,curList)
     Metrics.profit_index, Metrics.profit_adj_h_index, Metrics.profit_h_index = calculate_profit_indices(n,curList,Cites,Metrics.h_index)
     Metrics.hj_index = calculate_hj_indices(Metrics.totalPubs,Metrics.h_index,RCites)
     Metrics.trend_h_index = calculate_trend_h(n,curList,y,dateList)
@@ -1233,14 +1312,34 @@ def WriteOutput(fname,dateList,metricList):
         outFile.write(tb+format(metric.hi_index,fstr))
     outFile.write('\n')
 
-    outFile.write('pure h-index')
+    outFile.write('pure h-index (fractional credit)')
     for metric in metricList:
         outFile.write(tb+format(metric.pure_h_index,fstr))
     outFile.write('\n')
 
-    outFile.write('adapted pure h-index')
+    outFile.write('pure h-index (proportional credit)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.pure_h_proportional,fstr))
+    outFile.write('\n')
+
+    outFile.write('pure h-index (geometric credit)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.pure_h_geometric,fstr))
+    outFile.write('\n')
+
+    outFile.write('adapted pure h-index (fractional credit)')
     for metric in metricList:
         outFile.write(tb+format(metric.adapted_pure_h_index,fstr))
+    outFile.write('\n')
+
+    outFile.write('adapted pure h-index (proportional credit)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.adapted_pure_h_proportional,fstr))
+    outFile.write('\n')
+
+    outFile.write('adapted pure h-index (geometric credit)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.adapted_pure_h_geometric,fstr))
     outFile.write('\n')
 
     outFile.write('hf-index/normalized hi-index')
@@ -1266,6 +1365,11 @@ def WriteOutput(fname,dateList,metricList):
     outFile.write('fractional p-index')
     for metric in metricList:
         outFile.write(tb+format(metric.fractional_p_index,fstr))
+    outFile.write('\n')
+
+    outFile.write('harmonic p-index')
+    for metric in metricList:
+        outFile.write(tb+format(metric.harmonic_p_index,fstr))
     outFile.write('\n')
 
     outFile.write('profit p-index')
