@@ -103,6 +103,11 @@ class MetricSet:
         self.profit_index = 0
         self.profit_adj_h_index = 0
         self.profit_h_index = 0
+        self.weighted_h_index = 0
+        self.citation_aggreg_frac = 0
+        self.citation_aggreg_prop = 0
+        self.citation_hcut_frac = 0
+        self.citation_hcut_prop = 0
         
 
 def StringToDate(s):
@@ -685,6 +690,40 @@ def calculate_hinorm(n,Cites,curList):
     return hf_norm_hi_index, gf_cite
 
 
+# position-weighted h-index, weighted aggregate, weighted h-cut (Abbas 2011)
+def calculate_weightedaggregate_prop(n,Cites,curList):
+    Sc = []
+    totalsum = 0
+    for i in range(n):
+        w = (2 * (curList[i].authors + 1 - curList[i].authorrank)) / (curList[i].authors * (curList[i].authors + 1))
+        Sc.append(Cites[i] * w)
+        totalsum += Cites[i] * w
+    tmpindex, tmporder = sortandrank(Sc,n)
+    wh = 0
+    hcut = 0
+    for i in range(n):
+        if tmporder[i] <= Sc[i]:
+            wh += 1
+            hcut += Sc[i]
+    return wh, totalsum, hcut
+
+
+# equal-weighted aggregate, weighted h-cut (Abbas 2011)
+def calculate_weightedaggregate_fract(n,Cites,curList):
+    Sc = []
+    totalsum = 0
+    for i in range(n):
+        w =  1 / curList[i].authors
+        Sc.append(Cites[i] * w)
+        totalsum += Cites[i] * w
+    tmpindex, tmporder = sortandrank(Sc,n)
+    hcut = 0
+    for i in range(n):
+        if tmporder[i] <= Sc[i]:
+            hcut += Sc[i]
+    return totalsum, hcut
+
+
 # Woeginger w-index (Woeginger 2008)
 def calculate_Woeginger_w(n,rankorder,Cites):
     Woeginger_w_index = 0
@@ -1018,6 +1057,8 @@ def CalculateMetrics(y,dateList,articleList):
     Metrics.hF_hm_index, Metrics.gF_paper = calculate_fractional_paper_indices(n,rankorder,Cites,CumRank,Metrics.cumulativeCites)
     Metrics.multiDim_h_index = calculate_multidimensional_h(Metrics.h_index,n,IsCore,rankorder,Cites)
     Metrics.hf_norm_hi_index, Metrics.gf_cite =  calculate_hinorm(n,Cites,curList)
+    Metrics.weighted_h_index, Metrics.citation_aggreg_prop, Metrics.citation_hcut_prop = calculate_weightedaggregate_prop(n,Cites,curList)
+    Metrics.citation_aggreg_frac, Metrics.citation_hcut_frac = calculate_weightedaggregate_fract(n,Cites,curList)
     Metrics.Woeginger_w_index = calculate_Woeginger_w(n,rankorder,Cites)
     Metrics.maxprod_index = calculate_maxprod(n,Cites,rankorder)
     Metrics.j_index = calculate_j_index(n,Cites,Metrics.h_index)
@@ -1350,6 +1391,31 @@ def WriteOutput(fname,dateList,metricList):
     outFile.write('hF-index/hm-index')
     for metric in metricList:
         outFile.write(tb+format(metric.hF_hm_index,fstr))
+    outFile.write('\n')
+
+    outFile.write('position-weighted h-index hp')
+    for metric in metricList:
+        outFile.write(tb+str(metric.weighted_h_index))
+    outFile.write('\n')
+
+    outFile.write('weighted citation aggregate (fractional)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.citation_aggreg_frac,fstr))
+    outFile.write('\n')
+
+    outFile.write('weighted citation aggregate (proportional)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.citation_aggreg_prop,fstr))
+    outFile.write('\n')
+
+    outFile.write('weighted citation H-cut (fractional)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.citation_hcut_frac,fstr))
+    outFile.write('\n')
+
+    outFile.write('weighted citation H-cut (proportional)')
+    for metric in metricList:
+        outFile.write(tb+format(metric.citation_hcut_prop,fstr))
     outFile.write('\n')
 
     outFile.write('gf-index')
