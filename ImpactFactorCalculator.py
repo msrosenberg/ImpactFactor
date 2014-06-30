@@ -103,7 +103,7 @@ class MetricSet:
         self.profit_index = 0
         self.profit_adj_h_index = 0
         self.profit_h_index = 0
-        self.weighted_h_index = 0
+        self.posweighted_h_index = 0
         self.citation_aggreg_frac = 0
         self.citation_aggreg_prop = 0
         self.citation_hcut_frac = 0
@@ -1057,7 +1057,7 @@ def CalculateMetrics(y,dateList,articleList):
     Metrics.hF_hm_index, Metrics.gF_paper = calculate_fractional_paper_indices(n,rankorder,Cites,CumRank,Metrics.cumulativeCites)
     Metrics.multiDim_h_index = calculate_multidimensional_h(Metrics.h_index,n,IsCore,rankorder,Cites)
     Metrics.hf_norm_hi_index, Metrics.gf_cite =  calculate_hinorm(n,Cites,curList)
-    Metrics.weighted_h_index, Metrics.citation_aggreg_prop, Metrics.citation_hcut_prop = calculate_weightedaggregate_prop(n,Cites,curList)
+    Metrics.posweighted_h_index, Metrics.citation_aggreg_prop, Metrics.citation_hcut_prop = calculate_weightedaggregate_prop(n,Cites,curList)
     Metrics.citation_aggreg_frac, Metrics.citation_hcut_frac = calculate_weightedaggregate_fract(n,Cites,curList)
     Metrics.Woeginger_w_index = calculate_Woeginger_w(n,rankorder,Cites)
     Metrics.maxprod_index = calculate_maxprod(n,Cites,rankorder)
@@ -1395,7 +1395,7 @@ def WriteOutput(fname,dateList,metricList):
 
     outFile.write('position-weighted h-index hp')
     for metric in metricList:
-        outFile.write(tb+str(metric.weighted_h_index))
+        outFile.write(tb+str(metric.posweighted_h_index))
     outFile.write('\n')
 
     outFile.write('weighted citation aggregate (fractional)')
