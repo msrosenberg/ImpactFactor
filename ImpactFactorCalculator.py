@@ -1143,7 +1143,7 @@ def WriteOutput(fname,dateList,metricList):
 
     # write metrics
     # Raw data metrics
-    outFile.write('Total Articles')
+    outFile.write('Total Publications')
     for metric in metricList:
         outFile.write(tb+str(metric.totalPubs))
     outFile.write('\n')
@@ -1322,7 +1322,7 @@ def WriteOutput(fname,dateList,metricList):
         outFile.write(tb+format(metric.h2_center,fstr))
     outFile.write('\n')
 
-    outFile.write('h2_tail index')
+    outFile.write('h2-tail index')
     for metric in metricList:
         outFile.write(tb+format(metric.h2_lower,fstr))
     outFile.write('\n')
