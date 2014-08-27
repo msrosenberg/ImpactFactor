@@ -673,7 +673,24 @@ def calculate_multidimensional_h(h,n,IsCore,rankorder,Cites):
 
 # two-sided h-index (Garcia-Perez 2012)
 def calculate_two_sided_h(h,multiDim_h,n,IsCore,rankorder,Cites):
-    pass
+    # only need to calculate the upper part of the index
+    # the center and tail are indentical to multidimensional h
+    # auto-calculate for as many steps in core as equal to length of steps in tail
+    twosidedh = []
+    for i in multiDim_h:
+        twosidedh.append(i)
+    j = 0
+    tmph = h
+    k = 1
+    while k < len(multiDim_h):
+        j = j + tmph
+        tmph = 0
+        for i in range(n):
+            if rankorder[i] <= Cites[i] - j:
+                tmph += 1
+        twosidedh.insert(0,tmph)
+        k += 1
+    return twosidedh
 
 
 # normalized hi-index/hf-index and gf-index (Wohlin 2009; Egghe 2008)
