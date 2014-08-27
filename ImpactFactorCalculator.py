@@ -108,7 +108,8 @@ class MetricSet:
         self.citation_aggreg_prop = 0
         self.citation_hcut_frac = 0
         self.citation_hcut_prop = 0
-        
+        self.two_sided_h_index = []
+
 
 def StringToDate(s):
     m,d,y = s.split('/')
@@ -670,6 +671,11 @@ def calculate_multidimensional_h(h,n,IsCore,rankorder,Cites):
     return multiDim_h_index
 
 
+# two-sided h-index (Garcia-Perez 2012)
+def calculate_two_sided_h(h,multiDim_h,n,IsCore,rankorder,Cites):
+    pass
+
+
 # normalized hi-index/hf-index and gf-index (Wohlin 2009; Egghe 2008)
 def calculate_hinorm(n,Cites,curList):
     Sc = []
@@ -1056,6 +1062,7 @@ def CalculateMetrics(y,dateList,articleList):
     Metrics.specificImpact_s_index = calculate_impact_s_index(n,CurAge,Metrics.totalCites)
     Metrics.hF_hm_index, Metrics.gF_paper = calculate_fractional_paper_indices(n,rankorder,Cites,CumRank,Metrics.cumulativeCites)
     Metrics.multiDim_h_index = calculate_multidimensional_h(Metrics.h_index,n,IsCore,rankorder,Cites)
+    Metrics.two_sided_h_index = calculate_two_sided_h(Metrics.h_index,Metrics.multiDim_h_index,n,IsCore,rankorder,Cites)
     Metrics.hf_norm_hi_index, Metrics.gf_cite =  calculate_hinorm(n,Cites,curList)
     Metrics.posweighted_h_index, Metrics.citation_aggreg_prop, Metrics.citation_hcut_prop = calculate_weightedaggregate_prop(n,Cites,curList)
     Metrics.citation_aggreg_frac, Metrics.citation_hcut_frac = calculate_weightedaggregate_fract(n,Cites,curList)
@@ -1345,6 +1352,11 @@ def WriteOutput(fname,dateList,metricList):
     outFile.write('multidimensional h-index')
     for metric in metricList:
         outFile.write(tb+str(metric.multiDim_h_index))
+    outFile.write('\n')
+
+    outFile.write('two-sided h-index')
+    for metric in metricList:
+        outFile.write(tb+str(metric.two_sided_h_index))
     outFile.write('\n')
 
     # Multiple-author indices
