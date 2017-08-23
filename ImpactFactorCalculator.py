@@ -131,6 +131,8 @@ class MetricSet:
         self.citation_hcut_prop = 0
         self.two_sided_h_index = []
         self.iteratively_weighted_h_index = 0
+        self.em_index = 0
+        self.emp_index = 0
 
 
 def string_to_date(s):
@@ -287,7 +289,7 @@ def rank(n, indx):
 
 
 def sortandrank(sortlist, n):
-    tmpindex = sorted(range(n), key = lambda k: sortlist[k])        
+    tmpindex = sorted(range(n), key=lambda k: sortlist[k])
     tmprank = rank(n, tmpindex)
     # reverse so #1 is largest
     # NOTE: the ranks in rankorder go from 1 to n, rather than 0 to n-1
@@ -449,7 +451,7 @@ def calculate_v_index(h, totalPubs):
 
 
 # e-index (Zhang 2009)
-def caculate_e_index(coreCites, h):
+def calculate_e_index(coreCites, h):
     return math.sqrt(coreCites - h**2)
 
 
@@ -618,7 +620,7 @@ def calculate_Wohlin_w(n, maxCites, Cites):
 
 
 # contemporary h-index (Sidiropoulos et al 2007)
-def calcualate_contemporary_h(n, Cites, CurAge):
+def calculate_contemporary_h(n, Cites, CurAge):
     Sc = []
     for i in range(n):
         Sc.append(4 * Cites[i] / (1 + CurAge[i]))
@@ -944,11 +946,65 @@ def calculate_trend_h(n, curList, y, dateList):
 
 
 # iteratively weighted h-index (Todeschini and Baccini 2016)
-def calculate_iteratively_weighted_h_index(multidim_h_index):
+def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
     iteratively_weighted_h_index = 0
     for p, h in enumerate(multidim_h_index):
-        iteratively_weighted_h_index += h / p
+        iteratively_weighted_h_index += h / (p + 1)
     return iteratively_weighted_h_index
+
+
+# EM-index (Bihari and Tripathi 2017)
+def calculate_em_index(n: int, rankorder: list, cites: list):
+    def count_cited_articles(tmpc: list) -> int:
+        cnt = 0
+        for c in tmpc:
+            if c > 0:
+                cnt += 1
+        return cnt
+
+    # EM-index
+    em_component = []
+    tmpcites = [c for c in cites]  # make a temporary copy of the citation counts
+    ncited = count_cited_articles(tmpcites)
+    while ncited > 1:
+        if max(tmpcites) == 1:
+            em_component.append(1)
+            ncited = 0
+        else:
+            h_index = 0
+            for i in range(n):
+                if rankorder[i] <= tmpcites[i]:
+                    h_index += 1
+            em_component.append(h_index)
+            tmpcites = [max(0, c-h_index) for c in tmpcites]  # subtract previous h-index from citations
+            ncited = count_cited_articles(tmpcites)
+    em_index = math.sqrt(sum(em_component))
+
+    # EM'-index
+    em_component = []
+    tmpcites = [c for c in cites]  # make a temporary copy of the citation counts
+    tmpranks = [r for r in rankorder]  # make a temporary copy of the ranks
+    ncited = count_cited_articles(tmpcites)
+    while ncited > 1:
+        if max(tmpcites) == 1:
+            em_component.append(1)
+            ncited = 0
+        else:
+            h_index = 0
+            for i in range(n):
+                if tmpranks[i] <= tmpcites[i]:
+                    h_index += 1
+            em_component.append(h_index)
+            # subtract h_index only from top h pubs
+            for i in range(n):
+                if tmpranks[i] <= tmpcites[i]:
+                    tmpcites[i] = max(0, tmpcites[i]-h_index)
+            ncited = count_cited_articles(tmpcites)
+            # rerank counts
+            tmpranks = sortandrank(tmpcites, n)[1]
+    emp_index = math.sqrt(sum(em_component))
+
+    return em_index, emp_index
 
 
 # -----------------------------------------------------
@@ -1101,7 +1157,7 @@ def CalculateMetrics(y, datelist, articlelist, incself):
     metrics.weighted_h_index = calculate_weighted_h_index(n, cites, metrics.cumulativeCites, rankorder, metrics.h_index)
     metrics.normalized_h_index = calculate_normalized_h(metrics.h_index, metrics.totalPubs)
     metrics.v_index = calculate_v_index(metrics.h_index, metrics.totalPubs)
-    metrics.e_index = caculate_e_index(metrics.coreCites, metrics.h_index)
+    metrics.e_index = calculate_e_index(metrics.coreCites, metrics.h_index)
     metrics.rational_h_index = calculate_rational_h(n,is_core, cites, metrics.h_index, rankorder)
     (metrics.h2_upper,
      metrics.h2_center,
@@ -1118,7 +1174,7 @@ def CalculateMetrics(y, datelist, articlelist, incself):
     metrics.mu_index = calculate_mu_index(n, rankorder, medarray)
     metrics.Wu_w_index, metrics.Wu_wq_index = calculate_Wu_w(n, cites, rankorder)
     metrics.Wohlin_w_index = calculate_Wohlin_w(n, metrics.maxCites, cites)
-    metrics.contemp_h_index = calcualate_contemporary_h(n, cites, cur_age)
+    metrics.contemp_h_index = calculate_contemporary_h(n, cites, cur_age)
     metrics.hpd_index = calculate_hpd_seniority(n, cites_per_year)
     metrics.specificImpact_s_index = calculate_impact_s_index(n, cur_age, metrics.totalCites)
     metrics.hF_hm_index, metrics.gF_paper = calculate_fractional_paper_indices(n, rankorder, cites, cum_rank,
@@ -1143,7 +1199,8 @@ def CalculateMetrics(y, datelist, articlelist, incself):
      metrics.profit_h_index) = calculate_profit_indices(n, curList, cites, metrics.h_index)
     metrics.hj_index = calculate_hj_indices(metrics.totalPubs, metrics.h_index, rcites)
     metrics.trend_h_index = calculate_trend_h(n, curList, y, datelist)
-   
+    metrics.em_index, metrics.emp_index = calculate_em_index(n, rankorder, cites)
+
     return metrics
 
 
@@ -1434,6 +1491,16 @@ def write_output(fname, datelist, metriclist, incself):
         outFile.write('iteratively weighted h-index')
         for metric in metriclist:
             outFile.write(tb + format(metric.iteratively_weighted_h_index, fstr))
+        outFile.write("\n")
+
+        outFile.write('EM-index')
+        for metric in metriclist:
+            outFile.write(tb + format(metric.em_index, fstr))
+        outFile.write("\n")
+
+        outFile.write('EM\'-index')
+        for metric in metriclist:
+            outFile.write(tb + format(metric.emp_index, fstr))
         outFile.write("\n")
 
         # Multiple-author indices
