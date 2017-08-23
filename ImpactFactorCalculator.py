@@ -1267,7 +1267,7 @@ def calculate_impact_vitality(metric_list: list) -> None:
 
 
 # least-squares h-rate (Burrell 2007)
-def least_squares_h_rate(metric_list: list) -> None:
+def calcluate_least_squares_h_rate(metric_list: list) -> None:
     first_year = metric_list[0].date.year
     for m in range(len(metric_list)):
         avgh = 0
@@ -1992,6 +1992,7 @@ def main():
     # calculate metrics which use cross-year data
     calculate_dynamic_h(metric_list)
     calculate_impact_vitality(metric_list)
+    calculate_least_squares_h_rate(metric_list)
 
     # output
     write_output(out_name, date_list, metric_list, inc_self)
