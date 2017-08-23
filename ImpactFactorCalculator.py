@@ -58,7 +58,7 @@ class MetricSet:
         self.cumulativeCites = []
         self.h_index = 0
         self.Hirsch_minConst = 0
-        self.Hirsch_mQuotient = 0
+        self.Hirsch_mQuotient = 0  # a.k.a. h-rate, age-normalized h-index (hN), and Carbon h-factor
         self.coreCites = 0
         self.g_index = 0
         self.a_index = 0
@@ -135,6 +135,7 @@ class MetricSet:
         self.iteratively_weighted_h_index = 0
         self.em_index = 0
         self.emp_index = 0
+        self.ls_hrate = 0
 
 
 def string_to_date(s: str) -> datetime.date:
@@ -1124,10 +1125,12 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
             metrics.h_index += 1
             metrics.coreCites = metrics.coreCites + cites[i]
     metrics.Hirsch_minConst = metrics.totalCites / metrics.h_index**2
-    if datelist[y].year - firstyear != 0:
-        metrics.Hirsch_mQuotient = metrics.h_index / (datelist[y].year - firstyear)
-    else:
-        metrics.Hirsch_mQuotient = -1
+    # if datelist[y].year - firstyear != 0:
+    #     metrics.Hirsch_mQuotient = metrics.h_index / (datelist[y].year - firstyear)
+    # else:
+    #     metrics.Hirsch_mQuotient = -1
+    # changed this to reflect logic in Todeschini and Baccini (2016)
+    metrics.Hirsch_mQuotient = metrics.h_index / (datelist[y].year - firstyear + 1)
 
     # other indices
     metrics.g_index = calculate_g_index(n, rankorder, metrics.cumulativeCites)
@@ -1215,16 +1218,16 @@ def calculate_dynamic_h(metric_list: list) -> None:
         avgd = 0
         for i in range(m+1):
             metric = metric_list[i]
-            avgh = avgh + metric.rational_h_index
-            avgd = avgd + date_to_int(metric.date)
-        avgh = avgh / (m + 1)
-        avgd = avgd / (m + 1)
+            avgh += metric.rational_h_index
+            avgd += date_to_int(metric.date)
+        avgh /= m + 1
+        avgd /= m + 1
         sumxy = 0
         sumx2 = 0
         for i in range(m+1):
             metric = metric_list[i]
-            sumxy = sumxy + (metric.rational_h_index - avgh) * (date_to_int(metric.date) - avgd)
-            sumx2 = sumx2 + (date_to_int(metric.date) - avgd) ** 2
+            sumxy += (metric.rational_h_index - avgh) * (date_to_int(metric.date) - avgd)
+            sumx2 += (date_to_int(metric.date) - avgd)**2
         metric = metric_list[m]
         metric.dynamic_h_index = 365 * metric.r_index * (sumxy / sumx2)
 
@@ -1243,8 +1246,8 @@ def calculate_impact_vitality(metric_list: list) -> None:
             # calculate denominator of equation
             d = 0
             for i in range(w):
-                d = d + 1/(i+1)
-            d = d - 1
+                d += 1/(i+1)
+            d -= 1
 
             # calculate numerator and denominator of numerator of equation
             nn = 0
@@ -1254,13 +1257,35 @@ def calculate_impact_vitality(metric_list: list) -> None:
                 tc = metric.totalCites
                 if m - i != 0:
                     metric = metric_list[m - i - 1]
-                    tc = tc - metric.totalCites
-                nd = nd + tc
-                nn = nn + tc / (i + 1)
+                    tc -= metric.totalCites
+                nd += tc
+                nn += tc / (i + 1)
                 
             # calculate value
             metric = metric_list[m]
             metric.impactVitality = (w * (nn / nd) - 1) / d
+
+
+# least-squares h-rate (Burrell 2007)
+def least_squares_h_rate(metric_list: list) -> None:
+    first_year = metric_list[0].date.year
+    for m in range(len(metric_list)):
+        avgh = 0
+        avgd = 0
+        for i in range(m+1):
+            metric = metric_list[i]
+            avgh += metric.h_index
+            avgd += metric.date.year - first_year + 1
+        avgh /= m + 1
+        avgd /= m + 1
+        sumxy = 0
+        sumx2 = 0
+        for i in range(m+1):
+            metric = metric_list[i]
+            sumxy += (metric.h_index - avgh) * (metric.date.year - avgd)
+            sumx2 += (metric.date.year - avgd)**2
+        metric = metric_list[m]
+        metric.ls_hrate = sumxy/sumx2
 
 
 # -----------------------------------------------------
@@ -1665,12 +1690,18 @@ def write_output(fname: str, datelist: list, metriclist: list, incself: bool) ->
             outfile.write("\n")
 
         # Time-based indices
-        outfile.write('Hirsch m-quotient (slope)')
+        outfile.write('Hirsch m-quotient (slope)/h-rate')
         for metric in metriclist:
-            if metric.Hirsch_mQuotient == -1:
-                outfile.write(tb + 'n/a')
-            else:
-                outfile.write(tb + format(metric.Hirsch_mQuotient, fstr))
+            outfile.write(tb + format(metric.Hirsch_mQuotient, fstr))
+            # if metric.Hirsch_mQuotient == -1:
+            #     outfile.write(tb + 'n/a')
+            # else:
+            #     outfile.write(tb + format(metric.Hirsch_mQuotient, fstr))
+        outfile.write("\n")
+
+        outfile.write('Least squares h-rate (slope)')
+        for metric in metriclist:
+            outfile.write(tb + format(metric.ls_hrate, fstr))
         outfile.write("\n")
 
         outfile.write('ar-index')
