@@ -1219,6 +1219,16 @@ def calculate_alpha_index(h: int, y0: int, y: int) -> float:
     return h / ndecades
 
 
+# h-rate / m-quotient
+def calculate_h_rate(h: int, age: int) -> float:
+    return h / age
+
+
+# time-scaled h-index
+def calculate_time_scaled_h_index(h: int, age: int) -> float:
+    return h / math.sqrt(age)
+
+
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
@@ -1237,8 +1247,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     metrics.values["max cites"] = 0
     firstyear = articlelist[0].year
     for article in articlelist:
-        if article.year < firstyear:
-            firstyear = article.year
+        firstyear = min(article.year, firstyear)
         if article.citations[y] != -1:
             cur_list.append(article)
             metrics.values["total pubs"] += 1
@@ -1248,41 +1257,43 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
 
     # construct sublists for active articles only
     n = len(cur_list)
-    cites = []
-    rcites = []
-    metrics.cumulativeCites = []
-    fcum = []
-    tcum = []
-    cum_rank = []
-    medarray = []
-    cur_age = []
-    cites_per_year = []
-    is_core = []
-    for i in range(n):
-        cites.append(0)
-        cur_age.append(0)
-        cites_per_year.append(0)
-        metrics.cumulativeCites.append(0)
-        cum_rank.append(0)
-        fcum.append(0)
-        tcum.append(0)
-        medarray.append(0)
-        is_core.append(False)
-        rcites.append(0)
+    cites = [0 for i in range(n)]
+    rcites = [0 for i in range(n)]
+    metrics.cumulativeCites = [0 for i in range(n)]
+    fcum = [0 for i in range(n)]
+    tcum = [0 for i in range(n)]
+    cum_rank = [0 for i in range(n)]
+    medarray = [0 for i in range(n)]
+    cur_age = [0 for i in range(n)]
+    cites_per_year = [0 for i in range(n)]
+    is_core = [False for i in range(n)]
+    # for i in range(n):
+    #     cites.append(0)
+    #     cur_age.append(0)
+    #     cites_per_year.append(0)
+    #     metrics.cumulativeCites.append(0)
+    #     cum_rank.append(0)
+    #     fcum.append(0)
+    #     tcum.append(0)
+    #     medarray.append(0)
+    #     is_core.append(False)
+    #     rcites.append(0)
     minfyear = 0
     maxfyear = 0
     i = -1
     for article in cur_list:
-        i = i + 1
+        i += 1
         if article.citations[y] > 0: 
             if minfyear == 0:
                 minfyear = article.year
                 maxfyear = minfyear
             else:
-                if article.year > maxfyear:
-                    maxfyear = article.year
-                if article.year < minfyear:
-                    minfyear = article.year
+                maxfyear = max(maxfyear, article.year)
+                # if article.year > maxfyear:
+                #     maxfyear = article.year
+                minfyear = min(minfyear, article.year)
+                # if article.year < minfyear:
+                #     minfyear = article.year
         cites[i] = article.citations[y]
         cur_age[i] = datelist[y].year - article.year
         if cur_age[i] < 0:
@@ -1298,8 +1309,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     for i in range(n):
         article = cur_list[tmpindex[n-i-1]]
         if i > 0:
-            metrics.cumulativeCites[i] = (metrics.cumulativeCites[i-1] +
-                                          cites[tmpindex[n-i-1]])
+            metrics.cumulativeCites[i] = metrics.cumulativeCites[i-1] + cites[tmpindex[n-i-1]]
         else: 
             metrics.cumulativeCites[i] = cites[tmpindex[n-i-1]]
         rcites[i] = cites[tmpindex[n-i-1]]
@@ -1325,7 +1335,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
             if article.citations[y] == -1:
                 article.rank = -1
             else:
-                j = j + 1
+                j += 1
                 article.rank = rankorder[j]
 
     # basic indices
@@ -1343,10 +1353,10 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     #     metrics.Hirsch_mQuotient = -1
     # changed this to reflect logic in Todeschini and Baccini (2016)
     academic_age = datelist[y].year - firstyear + 1
-    metrics.values["h-rate"] = metrics.values["h-index"] / academic_age
-    metrics.values["time-scaled h-index"] = metrics.values["h-index"] / math.sqrt(academic_age)
 
     # other indices
+    metrics.values["h-rate"] = calculate_h_rate(metrics.values["h-index"], academic_age)
+    metrics.values["time-scaled h-index"] = calculate_time_scaled_h_index(metrics.values["h-index"], academic_age)
     metrics.values["g-index"] = calculate_g_index(n, rankorder, metrics.cumulativeCites)
     metrics.values["h(2)-index"] = calculate_h2_index(n, rankorder, cites)
     metrics.values["hg-index"] = calculate_hg_index(metrics.values["h-index"], metrics.values["g-index"])
@@ -1536,31 +1546,34 @@ def calculate_least_squares_h_rate(metric_list: list) -> None:
 
 
 # -----------------------------------------------------
-# output all results
+# output a table of all results
 # -----------------------------------------------------
 def write_output(fname: str, datelist: list, metriclist: list, incself: bool) -> None:
-    fstr = '1.4f'  # constant formatting string
+    fstr = "1.4f"  # constant formatting string
     with open(fname, "w", encoding="utf-8") as outfile:
-        # write header
-        outfile.write('Date')
+        # write header of dates
+        outfile.write("Date")
         for date in datelist:
             outfile.write(tb + date_to_string(date))
         outfile.write("\n")
 
         for m in METRIC_NAMES:
             m_info = METRIC_INFO[m]
-            if m_info[0] and not incself:
+            is_self = m_info[0]
+            metric_type = m_info[1]
+            metric_name = m_info[2]
+            if is_self and not incself:
                 pass  # skip self-citation metrics
             else:
-                outfile.write(m_info[2])  # name of metric
+                outfile.write(metric_name)  # name of metric
                 for metric in metriclist:
-                    if m_info[1] == INT:
+                    if metric_type == INT:
                         outfile.write(tb + str(metric.values[m]))
-                    elif m_info[1] == FLOAT:
+                    elif metric_type == FLOAT:
                         outfile.write(tb + format(metric.values[m], fstr))
-                    elif m_info[1] == INTLIST:
+                    elif metric_type == INTLIST:
                         outfile.write(tb + str(metric.values[m]))
-                    elif m_info[1] == FLOAT_NEG:
+                    elif metric_type == FLOAT_NEG:
                         if metric.values[m] < 0:
                             outfile.write(tb + "n/a")
                         else:
