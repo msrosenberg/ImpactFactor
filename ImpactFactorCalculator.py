@@ -114,7 +114,8 @@ METRIC_NAMES = [
     "specific impact s-index",
     "Franceschini f-index",
     "time-scaled num papers",
-    "time-scaled num citations"
+    "time-scaled num citations",
+    "annual h-index"
 ]
 
 # [self-citing metric, output type, text title, html title (optional)]
@@ -226,7 +227,8 @@ METRIC_INFO = {
     "time-scaled num papers": [False, FLOAT, "time-scaled number of publications (PTS)",
                                "time-scaled number of publications (<em>P<sup>TS</sup></em>)"],
     "time-scaled num citations": [False, FLOAT, "time-scaled citation index (CTS)",
-                                  "time-scaled citation index (<em>C<sup>TS</sup></em>)"]
+                                  "time-scaled citation index (<em>C<sup>TS</sup></em>)"],
+    "annual h-index": [False, FLOAT, "annual h-index (hIa)", "annual <em>h</em>-index (hIa)"]
 }
 
 # these aren't really proper classes, but rather just simple
@@ -1231,14 +1233,19 @@ def calculate_h_rate(h: int, age: int) -> float:
     return h / age
 
 
-# time-scaled h-index
+# time-scaled h-index (Todeschini and Baccini 2016)
 def calculate_time_scaled_h_index(h: int, age: int) -> float:
     return h / math.sqrt(age)
 
 
-# time-scaled papers and citations
+# time-scaled papers and citations (Todeschini and Baccini 2016)
 def calculate_time_scaled_rates(np: int, nc: int, age: int) -> Tuple[float, float]:
     return np / age, nc / age
+
+
+# annual h-index (hIa) (Harzing et al 2014)
+def calculate_annual_h_index(norm_h: int, age: int) -> float:
+    return norm_h / age
 
 
 # -----------------------------------------------------
@@ -1459,6 +1466,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     metrics.values["trend h-index"] = calculate_trend_h(n, cur_list, y, datelist)
     metrics.values["em-index"], metrics.values["emp-index"] = calculate_em_index(n, rankorder, cites)
     metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], academic_age)
+    metrics.values["annual h-index"] =  calculate_annual_h_index(metrics.values["hf/hi-index"], academic_age)
 
     return metrics
 
