@@ -112,7 +112,9 @@ METRIC_NAMES = [
     "trend h-index",
     "impact vitality",
     "specific impact s-index",
-    "Franceschini f-index"
+    "Franceschini f-index",
+    "time-scaled num papers",
+    "time-scaled num citations"
 ]
 
 # [self-citing metric, output type, text title, html title (optional)]
@@ -209,7 +211,8 @@ METRIC_INFO = {
     "10% b-index": [True, FLOAT, "b-index (10% self-citation rate)", "<em>b-</em>index (10% self-citation rate)"],
     "h-rate": [False, FLOAT, "h-rate/Hirsch m-quotient (slope)", "<em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)"],
     "ls h-rate": [False, FLOAT, "Least squares h-rate (slope)", "Least squares <em>h-</em>rate (slope)"],
-    "time-scaled h-index": [False, FLOAT, "Time-scaled h-index", "Time-scaled <em>h-</em>index"],
+    "time-scaled h-index": [False, FLOAT, "Time-scaled h-index (hTS)",
+                            "Time-scaled <em>h-</em>index (<em>h<sup>TS</sup></em>)"],
     "alpha-index": [False, FLOAT, "α-index", "<em>α-</em>index"],
     "ar-index": [False, FLOAT, "ar-index", "<em>ar-</em>index"],
     "dynamic h-type-index": [False, FLOAT_NEG, "dynamic h-type-index", "dynamic <em>h-</em>type-index"],
@@ -219,7 +222,11 @@ METRIC_INFO = {
     "impact vitality": [False, FLOAT_NEG, "impact vitality"],
     "specific impact s-index": [False, FLOAT, "specific impact s-index", "specific impact <em>s-</em>index"],
     "Franceschini f-index": [False, INT, "f-index (Franceschini & Maisano)",
-                             "<em>f-</em>index (Franceschini &amp; Maisano)"]
+                             "<em>f-</em>index (Franceschini &amp; Maisano)"],
+    "time-scaled num papers": [False, FLOAT, "time-scaled number of publications (PTS)",
+                               "time-scaled number of publications (<em>P<sup>TS</sup></em>)"],
+    "time-scaled num citations": [False, FLOAT, "time-scaled citation index (CTS)",
+                                  "time-scaled citation index (<em>C<sup>TS</sup></em>)"]
 }
 
 # these aren't really proper classes, but rather just simple
@@ -1214,8 +1221,8 @@ def calculate_em_index(n: int, rankorder: list, cites: list) -> Tuple[float, flo
 
 
 # alpha-index
-def calculate_alpha_index(h: int, y0: int, y: int) -> float:
-    ndecades = math.ceil((y - y0 + 1)/10)
+def calculate_alpha_index(h: int, age: int) -> float:
+    ndecades = math.ceil(age/10)
     return h / ndecades
 
 
@@ -1227,6 +1234,11 @@ def calculate_h_rate(h: int, age: int) -> float:
 # time-scaled h-index
 def calculate_time_scaled_h_index(h: int, age: int) -> float:
     return h / math.sqrt(age)
+
+
+# time-scaled papers and citations
+def calculate_time_scaled_rates(np: int, nc: int, age: int) -> Tuple[float, float]:
+    return np / age, nc / age
 
 
 # -----------------------------------------------------
@@ -1357,6 +1369,10 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     # other indices
     metrics.values["h-rate"] = calculate_h_rate(metrics.values["h-index"], academic_age)
     metrics.values["time-scaled h-index"] = calculate_time_scaled_h_index(metrics.values["h-index"], academic_age)
+    (metrics.values["time-scaled num papers"],
+     metrics.values["time-scaled num citations"]) = calculate_time_scaled_rates(metrics.values["total pubs"],
+                                                                                metrics.values["total cites"],
+                                                                                academic_age)
     metrics.values["g-index"] = calculate_g_index(n, rankorder, metrics.cumulativeCites)
     metrics.values["h(2)-index"] = calculate_h2_index(n, rankorder, cites)
     metrics.values["hg-index"] = calculate_hg_index(metrics.values["h-index"], metrics.values["g-index"])
@@ -1442,7 +1458,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     metrics.values["hj-indices"] = calculate_hj_indices(metrics.values["total pubs"], metrics.values["h-index"], rcites)
     metrics.values["trend h-index"] = calculate_trend_h(n, cur_list, y, datelist)
     metrics.values["em-index"], metrics.values["emp-index"] = calculate_em_index(n, rankorder, cites)
-    metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], y, firstyear)
+    metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], academic_age)
 
     return metrics
 
