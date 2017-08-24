@@ -1466,7 +1466,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     metrics.values["trend h-index"] = calculate_trend_h(n, cur_list, y, datelist)
     metrics.values["em-index"], metrics.values["emp-index"] = calculate_em_index(n, rankorder, cites)
     metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], academic_age)
-    metrics.values["annual h-index"] =  calculate_annual_h_index(metrics.values["hf/hi-index"], academic_age)
+    metrics.values["annual h-index"] = calculate_annual_h_index(metrics.values["hf/hi-index"], academic_age)
 
     return metrics
 
