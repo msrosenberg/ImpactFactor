@@ -1257,16 +1257,16 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
 
     # construct sublists for active articles only
     n = len(cur_list)
-    cites = [0 for i in range(n)]
-    rcites = [0 for i in range(n)]
-    metrics.cumulativeCites = [0 for i in range(n)]
-    fcum = [0 for i in range(n)]
-    tcum = [0 for i in range(n)]
-    cum_rank = [0 for i in range(n)]
-    medarray = [0 for i in range(n)]
-    cur_age = [0 for i in range(n)]
-    cites_per_year = [0 for i in range(n)]
-    is_core = [False for i in range(n)]
+    cites = [0 for _ in range(n)]
+    rcites = [0 for _ in range(n)]
+    metrics.cumulativeCites = [0 for _ in range(n)]
+    fcum = [0 for _ in range(n)]
+    tcum = [0 for _ in range(n)]
+    cum_rank = [0 for _ in range(n)]
+    medarray = [0 for _ in range(n)]
+    cur_age = [0 for _ in range(n)]
+    cites_per_year = [0 for _ in range(n)]
+    is_core = [False for _ in range(n)]
     # for i in range(n):
     #     cites.append(0)
     #     cur_age.append(0)
