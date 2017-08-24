@@ -19,6 +19,208 @@ from typing import Tuple, Union
 
 tb = '\t'
 Number = Union[int, float]
+INT = 0
+FLOAT = 1
+INTLIST = 2
+FLOAT_NEG = 3
+
+METRIC_NAMES = [
+    "total pubs",
+    "total cites",
+    "cites per pub",
+    "max cites",
+    "h-index",
+    "core cites",
+    "Hirsch min const",
+    "g-index",
+    "Tol f-index",
+    "Tol t-index",
+    "mu-index",
+    "Woeginger w-index",
+    "h(2)-index",
+    "Wu w-index",
+    "hg-index",
+    "rational h-index",
+    "real h-index",
+    "Wu w(q)",
+    "tapered h-index",
+    "j-index",
+    "Wohlin w-index",
+    "hj-indices",
+    "v-index",
+    "normalized h-index",
+    "a-index",
+    "m-index",
+    "r-index",
+    "rm-index",
+    "weighted h-index",
+    "pi-index",
+    "q2-index",
+    "e-index",
+    "maxprod-index",
+    "h2-upper",
+    "h2-center",
+    "h2-tail",
+    "k-index",
+    "p-index",
+    "ph-ratio",
+    "multidim h-index",
+    "twosided h-index",
+    "iter weighted h-index",
+    "em-index",
+    "emp-index",
+    "hi-index",
+    "frac pure h-index",
+    "prop pure h-index",
+    "geom pure h-index",
+    "frac adapt pure h-index",
+    "prop adapt pure h-index",
+    "geom adapt pure h-index",
+    "hf/hi-index",
+    "hF/hm-index",
+    "position-weighted h-index",
+    "frac weight citation aggregate",
+    "prop weight citation aggregate",
+    "frac weight citation H-cut",
+    "prop weight citation H-cut",
+    "gf-cite",
+    "gf-paper",
+    "fractional p-index",
+    "harmonic p-index",
+    "profit p-index",
+    "profit adj h-index",
+    "profit h-index",
+    "total self citations",
+    "total self citation rate",
+    "avg self citation rate",
+    "self sharpened h-index",
+    "avg self b-index",
+    "total self/coauthor citations",
+    "total self/coauthor citation rate",
+    "avg self/coauthor citation rate",
+    "all sharpened h-index",
+    "avg all b-index",
+    "10% b-index",
+    "h-rate",
+    "ls h-rate",
+    "time-scaled h-index",
+    "alpha-index",
+    "ar-index",
+    "dynamic h-type-index",
+    "hpd-index",
+    "contemporary h-index",
+    "trend h-index",
+    "impact vitality",
+    "specific impact s-index",
+    "Franceschini f-index"
+]
+
+# [self-citing metric, output type, text title, html title (optional)]
+METRIC_INFO = {
+    "total pubs": [False, INT, "Total Publications"],
+    "total cites": [False, INT, "Total Citations"],
+    "cites per pub": [False, FLOAT, "Citations per Pub"],
+    "max cites": [False, INT, "Max Citations"],
+    "h-index": [False, INT, "h-index", "<em>h-</em>index"],
+    "core cites": [False, INT, "Hirsch-core Citations"],
+    "Hirsch min const": [False, FLOAT, "Hirsch Min Constant (a)", "Hirsch Min Constant (<em>a</em>)"],
+    "g-index": [False, INT, "g-index", "<em>g-</em>index"],
+    "Tol f-index": [False, INT, "f-index (Tol)", "<em>f-</em>index (Tol)"],
+    "Tol t-index": [False, INT, "t-index (Tol)", "<em>t-</em>index (Tol)"],
+    "mu-index": [False, INT, "μ-index", "<em>μ-</em>index"],
+    "Woeginger w-index": [False, INT, "w-index (Woeginger)", "<em>w-</em>index (Woeginger)"],
+    "h(2)-index": [False, INT, "h(2)-index", "<em>h</em>(2)-index"],
+    "Wu w-index": [False, INT, "w-index (Wu)", "<em>w-</em>index (Wu)"],
+    "hg-index": [False, FLOAT, "hg-index", "<em>hg-</em>index"],
+    "rational h-index": [False, FLOAT, "rational h-index", "rational <em>h-</em>index"],
+    "real h-index": [False, FLOAT, "real h-index", "real <em>h-</em>index"],
+    "Wu w(q)": [False, INT, "w(q) (Wu)", "<em>w</em>(<em>q</em>) (Wu)"],
+    "tapered h-index": [False, FLOAT, "tapered h-index", "tapered <em>h-</em>index"],
+    "j-index": [False, FLOAT, "j-index", "<em>j-</em>index"],
+    "Wohlin w-index": [False, FLOAT, "w-index (Wohlin)", "<em>w-</em>index (Wohlin)"],
+    "hj-indices": [False, INTLIST, "hj-indices", "<em>hj-</em>indices"],
+    "v-index": [False, FLOAT, "v-index", "<em>v-</em>index"],
+    "normalized h-index": [False, FLOAT, "normalized h-index", "normalized <em>h-</em>index"],
+    "a-index": [False, FLOAT, "a-index", "<em>a-</em>index"],
+    "m-index": [False, FLOAT, "m-index", "<em>m-</em>index"],
+    "r-index": [False, FLOAT, "r-index", "<em>r-</em>index"],
+    "rm-index": [False, FLOAT, "rm-index", "<em>rm-</em>index"],
+    "weighted h-index": [False, FLOAT, "weighted h-index", "weighted <em>h-</em>index"],
+    "pi-index": [False, FLOAT, "π-index", "<em>π-</em>index"],
+    "q2-index": [False, FLOAT, "q2-index", "<em>q</em><sup>2</sup>-index"],
+    "e-index": [False, FLOAT, "e-index", "<em>e-</em>index"],
+    "maxprod-index": [False, INT, "maxprod-index"],
+    "h2-upper": [False, FLOAT, "h2-upper index", "<em>h</em><sup>2</sup>-upper index"],
+    "h2-center": [False, FLOAT, "h2-center index", "<em>h</em><sup>2</sup>-center index"],
+    "h2-tail": [False, FLOAT, "h2-tail index", "<em>h</em><sup>2</sup>-tail index"],
+    "k-index": [False, FLOAT, "k-index", "<em>k-</em>index"],
+    "p-index": [False, FLOAT, "p-index", "<em>p-</em>index"],
+    "ph-ratio": [False, FLOAT, "ph-ratio", "<em>ph-</em>ratio"],
+    "multidim h-index": [False, INTLIST, "multidimensional h-index", "multidimensional <em>h-</em>index"],
+    "twosided h-index": [False, INTLIST, "two-sided h-index", "two-sided <em>h-</em>index"],
+    "iter weighted h-index": [False, FLOAT, "iteratively weighted h-index", "iteratively weighted <em>h-</em>index"],
+    "em-index": [False, FLOAT, "EM-index", "<em>EM-</em>index"],
+    "emp-index": [False, FLOAT, "EMʹ-index", "<em>EM</em>ʹ-index"],
+    "hi-index": [False, FLOAT, "hi-index", "<em>h<sub>i</sub>-</em>index"],
+    "frac pure h-index": [False, FLOAT, "pure h-index (fractional credit)",
+                          "pure <em>h-</em>index (fractional credit)"],
+    "prop pure h-index": [False, FLOAT, "pure h-index (proportional credit)",
+                          "pure <em>h-</em>index (proportional credit)"],
+    "geom pure h-index": [False, FLOAT, "pure h-index (geometric credit)",
+                          "pure <em>h-</em>index (geometric credit)"],
+    "frac adapt pure h-index": [False, FLOAT, "adapted pure h-index",
+                                "adapted pure <em>h-</em>index (fractional credit)"],
+    "prop adapt pure h-index": [False, FLOAT, "adapted pure h-index (proportional credit)",
+                                "adapted pure <em>h-</em>index (proportional credit)"],
+    "geom adapt pure h-index": [False, FLOAT, "adapted pure h-index (geometric credit)",
+                                "adapted pure <em>h-</em>index (geometric credit)"],
+    "hf/hi-index": [False, INT, "hf-index/normalized hi-index",
+                    "<em>h<sub>f</sub>-</em>index/normalized <em>h<sub>i</sub>-</em>index"],
+    "hF/hm-index": [False, FLOAT, "hF-index/hm-index", "<em>h<sub>F</sub>-</em>index/<em>h<sub>m</sub>-</em>index"],
+    "position-weighted h-index": [False, INT, "position-weighted h-index (hp)",
+                                  "position-weighted <em>h-</em>index (<em>h<sub>p</sub></em>)"],
+    "frac weight citation aggregate": [False, FLOAT, "weighted citation aggregate (fractional)"],
+    "prop weight citation aggregate": [False, FLOAT, "weighted citation aggregate (proportional)"],
+    "frac weight citation H-cut": [False, FLOAT, "weighted citation H-cut (fractional)"],
+    "prop weight citation H-cut": [False, FLOAT, "weighted citation H-cut (proportional)"],
+    "gf-cite": [False, INT, "gf-index", "<em>g<sub>f</sub>-</em>index"],
+    "gf-paper": [False, FLOAT, "gF-index", "<em>g<sub>F</sub>-</em>index"],
+    "fractional p-index": [False, FLOAT, "fractional p-index", "fractional <em>p-</em>index"],
+    "harmonic p-index": [False, FLOAT, "harmonic p-index", "harmonic <em>p-</em>index"],
+    "profit p-index": [False, FLOAT, "profit p-index", "profit <em>p-</em>index"],
+    "profit adj h-index": [False, INT, "profit adjusted h-index", "profit adjusted <em>h-</em>index"],
+    "profit h-index": [False, FLOAT, "profit h-index", "profit <em>h-</em>index"],
+    "total self citations": [True, INT, "total self citations"],
+    "total self citation rate": [True, FLOAT, "total self citation rate"],
+    "avg self citation rate": [True, FLOAT, "average self citation rate"],
+    "self sharpened h-index": [True, INT, "sharpened h-index (self citations only)",
+                               "sharpened <em>h-</em>index (self citations only)"],
+    "avg self b-index": [True, FLOAT, "b-index (avg self citation rate)", "<em>b-</em>index (avg self citation rate)"],
+    "total self/coauthor citations": [True, INT, "total self & coauthor citations",
+                                      "total self &amp; coauthor citations"],
+    "total self/coauthor citation rate": [True, FLOAT, "total self & coauthor citation rate",
+                                          "total self &amp; coauthor citation rate"],
+    "avg self/coauthor citation rate": [True, FLOAT, "average self & coauthor citation rate",
+                                        "average self &amp; coauthor citation rate"],
+    "all sharpened h-index": [True, INT, "sharpened h-index (self & coauthor citations)",
+                              "sharpened <em>h-</em>index (self &amp; coauthor citations)"],
+    "avg all b-index": [True, FLOAT, "b-index (avg self & coauthor citation rate)",
+                        "<em>b-</em>index (avg self &amp; coauthor citation rate)"],
+    "10% b-index": [True, FLOAT, "b-index (10% self-citation rate)", "<em>b-</em>index (10% self-citation rate)"],
+    "h-rate": [False, FLOAT, "h-rate/Hirsch m-quotient (slope)", "<em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)"],
+    "ls h-rate": [False, FLOAT, "Least squares h-rate (slope)", "Least squares <em>h-</em>rate (slope)"],
+    "time-scaled h-index": [False, FLOAT, "Time-scaled h-index", "Time-scaled <em>h-</em>index"],
+    "alpha-index": [False, FLOAT, "α-index", "<em>α-</em>index"],
+    "ar-index": [False, FLOAT, "ar-index", "<em>ar-</em>index"],
+    "dynamic h-type-index": [False, FLOAT_NEG, "dynamic h-type-index", "dynamic <em>h-</em>type-index"],
+    "hpd-index": [False, INT, "hpd-index", "<em>hpd-</em>index"],
+    "contemporary h-index": [False, INT, "contemporary h-index", "contemporary <em>h-</em>index"],
+    "trend h-index": [False, INT, "trend h-index", "trend <em>h-</em>index"],
+    "impact vitality": [False, FLOAT_NEG, "impact vitality"],
+    "specific impact s-index": [False, FLOAT, "specific impact s-index", "specific impact <em>s-</em>index"],
+    "Franceschini f-index": [False, INT, "f-index (Franceschini & Maisano)",
+                             "<em>f-</em>index (Franceschini &amp; Maisano)"]
+}
 
 # these aren't really proper classes, but rather just simple
 # multivariate data objects
@@ -51,91 +253,96 @@ class CitingArticle:
 class MetricSet:
     def __init__(self):
         self.date = datetime.date(1970, 1, 1)
-        self.totalPubs = 0
-        self.totalCites = 0
-        self.citesPerPub = 0
-        self.maxCites = 0
         self.cumulativeCites = []
-        self.h_index = 0
-        self.Hirsch_minConst = 0
-        self.Hirsch_mQuotient = 0  # a.k.a. h-rate, age-normalized h-index (hN), and Carbon h-factor
-        self.coreCites = 0
-        self.g_index = 0
-        self.a_index = 0
-        self.h2_index = 0
-        self.hg_index = 0
-        self.q2_index = 0
-        self.r_index = 0
-        self.rm_index = 0
-        self.m_index = 0
-        self.ar_index = 0
-        self.h2_lower = 0
-        self.h2_center = 0
-        self.h2_upper = 0
-        self.Tol_t_index = 0
-        self.Tol_f_index = 0
-        self.gf_cite = 0
-        self.gF_paper = 0
-        self.Franceschini_f_index = 0
-        self.k_index = 0
-        self.contemp_h_index = 0
-        self.tapered_h_index = 0
-        self.rational_h_index = 0
-        self.Wu_w_index = 0
-        self.Wu_wq_index = 0
-        self.mu_index = 0
-        self.v_index = 0
-        self.normalized_h_index = 0
-        self.e_index = 0
-        self.pi_index = 0
-        self.p_index = 0
-        self.fractional_p_index = 0
-        self.harmonic_p_index = 0
-        self.ph_ratio = 0
-        self.maxprod_index = 0
-        self.specificImpact_s_index = 0
-        self.multiDim_h_index = []
-        self.Woeginger_w_index = 0
-        self.Wohlin_w_index = 0
-        self.hpd_index = 0
-        self.hi_index = 0
-        self.pure_h_index = 0
-        self.pure_h_proportional = 0
-        self.pure_h_geometric = 0
-        self.adapted_pure_h_index = 0
-        self.adapted_pure_h_proportional = 0
-        self.adapted_pure_h_geometric = 0
-        self.weighted_h_index = 0
-        self.j_index = 0
-        self.real_h_index = 0
-        self.hj_index = []
-        self.dynamic_h_index = 0
-        self.hF_hm_index = 0
-        self.hf_norm_hi_index = 0
-        self.b10_index = 0
-        self.bavg_self_index = 0
-        self.bavg_all_index = 0
-        self.sharpself_h_index = 0
-        self.sharpall_h_index = 0
-        self.total_self_only_cites = 0
-        self.total_self_all_cites = 0
-        self.avg_self_only_cites = 0
-        self.avg_self_all_cites = 0
-        self.trend_h_index = 0
-        self.impactVitality = 0
-        self.profit_index = 0
-        self.profit_adj_h_index = 0
-        self.profit_h_index = 0
-        self.posweighted_h_index = 0
-        self.citation_aggreg_frac = 0
-        self.citation_aggreg_prop = 0
-        self.citation_hcut_frac = 0
-        self.citation_hcut_prop = 0
-        self.two_sided_h_index = []
-        self.iteratively_weighted_h_index = 0
-        self.em_index = 0
-        self.emp_index = 0
-        self.ls_hrate = 0
+        self.values = {}
+        # self.totalPubs = 0
+        # self.totalCites = 0
+        # self.citesPerPub = 0
+        # self.maxCites = 0
+        # self.h_index = 0
+        # self.Hirsch_minConst = 0
+        # self.Hirsch_mQuotient = 0  # a.k.a. h-rate, age-normalized h-index (hN), and Carbon h-factor
+        # self.coreCites = 0
+        # self.g_index = 0
+        # self.a_index = 0
+        # self.h2_index = 0
+        # self.hg_index = 0
+        # self.q2_index = 0
+        # self.r_index = 0
+        # self.rm_index = 0
+        # self.m_index = 0
+        # self.ar_index = 0
+        # self.h2_lower = 0
+        # self.h2_center = 0
+        # self.h2_upper = 0
+        # self.Tol_t_index = 0
+        # self.Tol_f_index = 0
+        # self.gf_cite = 0
+        # self.gF_paper = 0
+        # self.Franceschini_f_index = 0
+        # self.k_index = 0
+        # self.contemp_h_index = 0
+        # self.tapered_h_index = 0
+        # self.rational_h_index = 0
+        # self.Wu_w_index = 0
+        # self.Wu_wq_index = 0
+        # self.mu_index = 0
+        # self.v_index = 0
+        # self.normalized_h_index = 0
+        # self.e_index = 0
+        # self.pi_index = 0
+        # self.p_index = 0
+        # self.fractional_p_index = 0
+        # self.harmonic_p_index = 0
+        # self.ph_ratio = 0
+        # self.maxprod_index = 0
+        # self.specificImpact_s_index = 0
+        # self.multiDim_h_index = []
+        # self.Woeginger_w_index = 0
+        # self.Wohlin_w_index = 0
+        # self.hpd_index = 0
+        # self.hi_index = 0
+        # self.pure_h_index = 0
+        # self.pure_h_proportional = 0
+        # self.pure_h_geometric = 0
+        # self.adapted_pure_h_index = 0
+        # self.adapted_pure_h_proportional = 0
+        # self.adapted_pure_h_geometric = 0
+        # self.weighted_h_index = 0
+        # self.j_index = 0
+        # self.real_h_index = 0
+        # self.hj_index = []
+        # self.dynamic_h_index = 0
+        # self.hF_hm_index = 0
+        # self.hf_norm_hi_index = 0
+        # self.b10_index = 0
+        # self.bavg_self_index = 0
+        # self.bavg_all_index = 0
+        # self.sharpself_h_index = 0
+        # self.sharpall_h_index = 0
+        # self.total_self_only_cites = 0
+        # self.total_self_all_cites = 0
+        # self.avg_self_only_cites = 0
+        # self.avg_self_all_cites = 0
+        # self.trend_h_index = 0
+        # self.impactVitality = 0
+        # self.profit_index = 0
+        # self.profit_adj_h_index = 0
+        # self.profit_h_index = 0
+        # self.posweighted_h_index = 0
+        # self.citation_aggreg_frac = 0
+        # self.citation_aggreg_prop = 0
+        # self.citation_hcut_frac = 0
+        # self.citation_hcut_prop = 0
+        # self.two_sided_h_index = []
+        # self.iteratively_weighted_h_index = 0
+        # self.em_index = 0
+        # self.emp_index = 0
+        # self.ls_hrate = 0
+        # self.time_scaled_h = 0
+        # self.alpha_index = 0
+        # self.time_scaled_papers = 0
+        # self.time_scaled_citations = 0
 
 
 def string_to_date(s: str) -> datetime.date:
@@ -1006,6 +1213,12 @@ def calculate_em_index(n: int, rankorder: list, cites: list) -> Tuple[float, flo
     return em_index, emp_index
 
 
+# alpha-index
+def calculate_alpha_index(h: int, y0: int, y: int) -> float:
+    ndecades = math.ceil((y - y0 + 1)/10)
+    return h / ndecades
+
+
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
@@ -1019,20 +1232,19 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     cur_list = []
     metrics = MetricSet()
     metrics.date = datelist[y]
-    metrics.totalPubs = 0
-    metrics.totalCites = 0
-    metrics.maxCites = 0
+    metrics.values["total pubs"] = 0
+    metrics.values["total cites"] = 0
+    metrics.values["max cites"] = 0
     firstyear = articlelist[0].year
     for article in articlelist:
         if article.year < firstyear:
             firstyear = article.year
         if article.citations[y] != -1:
             cur_list.append(article)
-            metrics.totalPubs = metrics.totalPubs + 1
-            metrics.totalCites = metrics.totalCites + article.citations[y]
-            if metrics.maxCites < article.citations[y]:
-                metrics.maxCites = article.citations[y]
-    metrics.citesPerPub = metrics.totalCites / metrics.totalPubs
+            metrics.values["total pubs"] += 1
+            metrics.values["total cites"] += article.citations[y]
+            metrics.values["max cites"] = max(metrics.values["max cites"], article.citations[y])
+    metrics.values["cites per pub"] = metrics.values["total cites"] / metrics.values["total pubs"]
 
     # construct sublists for active articles only
     n = len(cur_list)
@@ -1117,90 +1329,110 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
                 article.rank = rankorder[j]
 
     # basic indices
-    metrics.h_index = 0
-    metrics.coreCites = 0
+    metrics.values["h-index"] = 0
+    metrics.values["core cites"] = 0
     for i in range(n):
         if rankorder[i] <= cites[i]:
             is_core[i] = True
-            metrics.h_index += 1
-            metrics.coreCites = metrics.coreCites + cites[i]
-    metrics.Hirsch_minConst = metrics.totalCites / metrics.h_index**2
+            metrics.values["h-index"] += 1
+            metrics.values["core cites"] += cites[i]
+    metrics.values["Hirsch min const"] = metrics.values["total cites"] / metrics.values["h-index"]**2
     # if datelist[y].year - firstyear != 0:
-    #     metrics.Hirsch_mQuotient = metrics.h_index / (datelist[y].year - firstyear)
+    #     metrics.Hirsch_mQuotient = metrics.values["h-index"] / (datelist[y].year - firstyear)
     # else:
     #     metrics.Hirsch_mQuotient = -1
     # changed this to reflect logic in Todeschini and Baccini (2016)
-    metrics.Hirsch_mQuotient = metrics.h_index / (datelist[y].year - firstyear + 1)
+    academic_age = datelist[y].year - firstyear + 1
+    metrics.values["h-rate"] = metrics.values["h-index"] / academic_age
+    metrics.values["time-scaled h-index"] = metrics.values["h-index"] / math.sqrt(academic_age)
 
     # other indices
-    metrics.g_index = calculate_g_index(n, rankorder, metrics.cumulativeCites)
-    metrics.h2_index = calculate_h2_index(n, rankorder, cites)
-    metrics.hg_index = calculate_hg_index(metrics.h_index, metrics.g_index)
+    metrics.values["g-index"] = calculate_g_index(n, rankorder, metrics.cumulativeCites)
+    metrics.values["h(2)-index"] = calculate_h2_index(n, rankorder, cites)
+    metrics.values["hg-index"] = calculate_hg_index(metrics.values["h-index"], metrics.values["g-index"])
     if incself:
-        (metrics.avg_self_only_cites,
-         metrics.total_self_only_cites,
-         metrics.sharpself_h_index) = calculate_sharpened_h_index(n, y, cur_list, cites, False)
-        metrics.bavg_self_index = calculate_b_index(metrics.h_index, 1-metrics.avg_self_only_cites)
-        (metrics.avg_self_all_cites,
-         metrics.total_self_all_cites,
-         metrics.sharpall_h_index) = calculate_sharpened_h_index(n, y, cur_list, cites, True)
-        metrics.bavg_all_index = calculate_b_index(metrics.h_index, 1-metrics.avg_self_all_cites)
-        metrics.b10_index = calculate_b_index(metrics.h_index, 0.9)
-    metrics.a_index = calculate_a_index(metrics.coreCites, metrics.totalPubs)
-    metrics.real_h_index = calculate_real_h_index(n, rankorder, metrics.h_index, cites)
-    metrics.r_index = calculate_r_index(metrics.coreCites)
-    metrics.rm_index = calculate_rm_index(n, is_core, cites)
-    metrics.ar_index = calculate_ar_index(n, is_core, cites_per_year)
-    metrics.m_index = calculate_m_index(n, is_core, metrics.h_index, cites)
-    metrics.q2_index = calculate_q2_index(metrics.h_index, metrics.m_index)
-    metrics.k_index = calculate_k_index(metrics.totalCites, metrics.coreCites, metrics.totalPubs)
-    metrics.Franceschini_f_index = calculate_franceschini_f_index(maxfyear, minfyear)
-    metrics.weighted_h_index = calculate_weighted_h_index(n, cites, metrics.cumulativeCites, rankorder, metrics.h_index)
-    metrics.normalized_h_index = calculate_normalized_h(metrics.h_index, metrics.totalPubs)
-    metrics.v_index = calculate_v_index(metrics.h_index, metrics.totalPubs)
-    metrics.e_index = calculate_e_index(metrics.coreCites, metrics.h_index)
-    metrics.rational_h_index = calculate_rational_h(n, is_core, cites, metrics.h_index, rankorder)
-    (metrics.h2_upper,
-     metrics.h2_center,
-     metrics.h2_lower) = calculate_h2percs(metrics.coreCites, metrics.h_index, metrics.totalCites)
-    metrics.tapered_h_index = calculate_tapered_h_index(n, cites, rankorder)
-    metrics.pi_index = calculate_pi_index(n, metrics.totalPubs, rankorder, cites)
-    (metrics.p_index,
-     metrics.ph_ratio,
-     metrics.fractional_p_index) = calculate_prathap_p_index(metrics.totalCites, metrics.totalPubs, metrics.h_index,
-                                                             cur_list, y)
-    metrics.harmonic_p_index = calculate_prathap_harmonic_p(cur_list, y)
-    metrics.hi_index, metrics.pure_h_index = calculate_hi_pure(n, is_core, cur_list, metrics.h_index)
-    metrics.pure_h_proportional, metrics.pure_h_geometric = calculate_pure_order(n, is_core, cur_list, metrics.h_index)
-    metrics.Tol_f_index, metrics.Tol_t_index = calculate_tol_indices(n, rankorder, fcum, tcum)
-    metrics.mu_index = calculate_mu_index(n, rankorder, medarray)
-    metrics.Wu_w_index, metrics.Wu_wq_index = calculate_wu_w(n, cites, rankorder)
-    metrics.Wohlin_w_index = calculate_wohlin_w(n, metrics.maxCites, cites)
-    metrics.contemp_h_index = calculate_contemporary_h(n, cites, cur_age)
-    metrics.hpd_index = calculate_hpd_seniority(n, cites_per_year)
-    metrics.specificImpact_s_index = calculate_impact_s_index(n, cur_age, metrics.totalCites)
-    metrics.hF_hm_index, metrics.gF_paper = calculate_fractional_paper_indices(n, rankorder, cites, cum_rank,
-                                                                               metrics.cumulativeCites)
-    metrics.multiDim_h_index = calculate_multidimensional_h(metrics.h_index, n, is_core, rankorder, cites)
-    metrics.two_sided_h_index = calculate_two_sided_h(metrics.h_index, metrics.multiDim_h_index, n, rankorder, cites)
-    metrics.iteratively_weighted_h_index = calculate_iteratively_weighted_h_index(metrics.multiDim_h_index)
-    metrics.hf_norm_hi_index, metrics.gf_cite = calculate_hinorm(n, cites, cur_list)
-    (metrics.posweighted_h_index,
-     metrics.citation_aggreg_prop,
-     metrics.citation_hcut_prop) = calculate_weightedaggregate_prop(n, cites, cur_list)
-    metrics.citation_aggreg_frac, metrics.citation_hcut_frac = calculate_weightedaggregate_fract(n, cites, cur_list)
-    metrics.Woeginger_w_index = calculate_woeginger_w(n, rankorder, cites)
-    metrics.maxprod_index = calculate_maxprod(n, cites, rankorder)
-    metrics.j_index = calculate_j_index(n, cites, metrics.h_index)
-    metrics.adapted_pure_h_index = calculate_adapated_pure_h(n, cites, cur_list)
-    metrics.adapted_pure_h_proportional = calculate_adapated_pure_h_prop(n, cites, cur_list)
-    metrics.adapted_pure_h_geometric = calculate_adapated_pure_h_geom(n, cites, cur_list)
-    (metrics.profit_index,
-     metrics.profit_adj_h_index,
-     metrics.profit_h_index) = calculate_profit_indices(n, cur_list, cites, metrics.h_index)
-    metrics.hj_index = calculate_hj_indices(metrics.totalPubs, metrics.h_index, rcites)
-    metrics.trend_h_index = calculate_trend_h(n, cur_list, y, datelist)
-    metrics.em_index, metrics.emp_index = calculate_em_index(n, rankorder, cites)
+        (metrics.values["avg self citation rate"],
+         metrics.values["total self citations"],
+         metrics.values["self sharpened h-index"]) = calculate_sharpened_h_index(n, y, cur_list, cites, False)
+        metrics.values["total self citation rate"] = (metrics.values["total self citations"] /
+                                                      metrics.values["total cites"])
+        metrics.values["avg self b-index"] = calculate_b_index(metrics.values["h-index"],
+                                                               1-metrics.values["avg self citation rate"])
+        (metrics.values["avg self/coauthor citation rate"],
+         metrics.values["total self/coauthor citations"],
+         metrics.values["all sharpened h-index"]) = calculate_sharpened_h_index(n, y, cur_list, cites, True)
+        metrics.values["total self/coauthor citation rate"] = (metrics.values["total self/coauthor citations"] /
+                                                               metrics.values["total cites"])
+        metrics.values["avg all b-index"] = calculate_b_index(metrics.values["h-index"],
+                                                              1-metrics.values["avg self/coauthor citation rate"])
+        metrics.values["10% b-index"] = calculate_b_index(metrics.values["h-index"], 0.9)
+    metrics.values["a-index"] = calculate_a_index(metrics.values["core cites"], metrics.values["total pubs"])
+    metrics.values["real h-index"] = calculate_real_h_index(n, rankorder, metrics.values["h-index"], cites)
+    metrics.values["r-index"] = calculate_r_index(metrics.values["core cites"])
+    metrics.values["rm-index"] = calculate_rm_index(n, is_core, cites)
+    metrics.values["ar-index"] = calculate_ar_index(n, is_core, cites_per_year)
+    metrics.values["m-index"] = calculate_m_index(n, is_core, metrics.values["h-index"], cites)
+    metrics.values["q2-index"] = calculate_q2_index(metrics.values["h-index"], metrics.values["m-index"])
+    metrics.values["k-index"] = calculate_k_index(metrics.values["total cites"], metrics.values["core cites"],
+                                                  metrics.values["total pubs"])
+    metrics.values["Franceschini f-index"] = calculate_franceschini_f_index(maxfyear, minfyear)
+    metrics.values["weighted h-index"] = calculate_weighted_h_index(n, cites, metrics.cumulativeCites, rankorder,
+                                                                    metrics.values["h-index"])
+    metrics.values["normalized h-index"] = calculate_normalized_h(metrics.values["h-index"],
+                                                                  metrics.values["total pubs"])
+    metrics.values["v-index"] = calculate_v_index(metrics.values["h-index"], metrics.values["total pubs"])
+    metrics.values["e-index"] = calculate_e_index(metrics.values["core cites"], metrics.values["h-index"])
+    metrics.values["rational h-index"] = calculate_rational_h(n, is_core, cites, metrics.values["h-index"], rankorder)
+    (metrics.values["h2-upper"],
+     metrics.values["h2-center"],
+     metrics.values["h2-tail"]) = calculate_h2percs(metrics.values["core cites"], metrics.values["h-index"],
+                                                    metrics.values["total cites"])
+    metrics.values["tapered h-index"] = calculate_tapered_h_index(n, cites, rankorder)
+    metrics.values["pi-index"] = calculate_pi_index(n, metrics.values["total pubs"], rankorder, cites)
+    (metrics.values["p-index"],
+     metrics.values["ph-ratio"],
+     metrics.values["fractional p-index"]) = calculate_prathap_p_index(metrics.values["total cites"],
+                                                                       metrics.values["total pubs"],
+                                                                       metrics.values["h-index"], cur_list, y)
+    metrics.values["harmonic p-index"] = calculate_prathap_harmonic_p(cur_list, y)
+    metrics.values["hi-index"], metrics.values["frac pure h-index"] = calculate_hi_pure(n, is_core, cur_list,
+                                                                                        metrics.values["h-index"])
+    (metrics.values["prop pure h-index"],
+     metrics.values["geom pure h-index"]) = calculate_pure_order(n, is_core, cur_list, metrics.values["h-index"])
+    metrics.values["Tol f-index"], metrics.values["Tol t-index"] = calculate_tol_indices(n, rankorder, fcum, tcum)
+    metrics.values["mu-index"] = calculate_mu_index(n, rankorder, medarray)
+    metrics.values["Wu w-index"], metrics.values["Wu w(q)"] = calculate_wu_w(n, cites, rankorder)
+    metrics.values["Wohlin w-index"] = calculate_wohlin_w(n, metrics.values["max cites"], cites)
+    metrics.values["contemporary h-index"] = calculate_contemporary_h(n, cites, cur_age)
+    metrics.values["hpd-index"] = calculate_hpd_seniority(n, cites_per_year)
+    metrics.values["specific impact s-index"] = calculate_impact_s_index(n, cur_age, metrics.values["total cites"])
+    (metrics.values["hF/hm-index"],
+     metrics.values["gf-paper"]) = calculate_fractional_paper_indices(n, rankorder, cites, cum_rank,
+                                                                      metrics.cumulativeCites)
+    metrics.values["multidim h-index"] = calculate_multidimensional_h(metrics.values["h-index"], n, is_core, rankorder,
+                                                                      cites)
+    metrics.values["twosided h-index"] = calculate_two_sided_h(metrics.values["h-index"],
+                                                               metrics.values["multidim h-index"], n, rankorder, cites)
+    metrics.values["iter weighted h-index"] = calculate_iteratively_weighted_h_index(metrics.values["multidim h-index"])
+    metrics.values["hf/hi-index"], metrics.values["gf-cite"] = calculate_hinorm(n, cites, cur_list)
+    (metrics.values["position-weighted h-index"],
+     metrics.values["prop weight citation aggregate"],
+     metrics.values["prop weight citation H-cut"]) = calculate_weightedaggregate_prop(n, cites, cur_list)
+    (metrics.values["frac weight citation aggregate"],
+     metrics.values["frac weight citation H-cut"]) = calculate_weightedaggregate_fract(n, cites, cur_list)
+    metrics.values["Woeginger w-index"] = calculate_woeginger_w(n, rankorder, cites)
+    metrics.values["maxprod-index"] = calculate_maxprod(n, cites, rankorder)
+    metrics.values["j-index"] = calculate_j_index(n, cites, metrics.values["h-index"])
+    metrics.values["frac adapt pure h-index"] = calculate_adapated_pure_h(n, cites, cur_list)
+    metrics.values["prop adapt pure h-index"] = calculate_adapated_pure_h_prop(n, cites, cur_list)
+    metrics.values["geom adapt pure h-index"] = calculate_adapated_pure_h_geom(n, cites, cur_list)
+    (metrics.values["profit p-index"],
+     metrics.values["profit adj h-index"],
+     metrics.values["profit h-index"]) = calculate_profit_indices(n, cur_list, cites, metrics.values["h-index"])
+    metrics.values["hj-indices"] = calculate_hj_indices(metrics.values["total pubs"], metrics.values["h-index"], rcites)
+    metrics.values["trend h-index"] = calculate_trend_h(n, cur_list, y, datelist)
+    metrics.values["em-index"], metrics.values["emp-index"] = calculate_em_index(n, rankorder, cites)
+    metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], y, firstyear)
 
     return metrics
 
@@ -1212,13 +1444,13 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
 # dynamic h-type-index (Rousseau and Ye 2008)
 def calculate_dynamic_h(metric_list: list) -> None:
     metric = metric_list[0]
-    metric.dynamic_h_index = -1
+    metric.values["dynamic h-type-index"] = -1
     for m in range(1, len(metric_list)):
         avgh = 0
         avgd = 0
         for i in range(m+1):
             metric = metric_list[i]
-            avgh += metric.rational_h_index
+            avgh += metric.values["rational h-index"]
             avgd += date_to_int(metric.date)
         avgh /= m + 1
         avgd /= m + 1
@@ -1226,22 +1458,22 @@ def calculate_dynamic_h(metric_list: list) -> None:
         sumx2 = 0
         for i in range(m+1):
             metric = metric_list[i]
-            sumxy += (metric.rational_h_index - avgh) * (date_to_int(metric.date) - avgd)
+            sumxy += (metric.values["rational h-index"] - avgh) * (date_to_int(metric.date) - avgd)
             sumx2 += (date_to_int(metric.date) - avgd)**2
         metric = metric_list[m]
-        metric.dynamic_h_index = 365 * metric.r_index * (sumxy / sumx2)
+        metric.values["dynamic h-type-index"] = 365 * metric.values["r-index"] * (sumxy / sumx2)
 
 
 # impact vitality (Rons and Amez 2008, 2009)
 def calculate_impact_vitality(metric_list: list) -> None:
     if len(metric_list) < 6:
         for metric in metric_list:
-            metric.impactVitality = -1        
+            metric.values["impact vitality"] = -1
     else:
         w = 5  # fix at a 5 year window
         for i in range(w-1):
             metric = metric_list[i]
-            metric.impactVitality = -1
+            metric.values["impact vitality"] = -1
         for m in range(w-1, len(metric_list)):
             # calculate denominator of equation
             d = 0
@@ -1254,38 +1486,53 @@ def calculate_impact_vitality(metric_list: list) -> None:
             nd = 0
             for i in range(w):
                 metric = metric_list[m - i]
-                tc = metric.totalCites
+                tc = metric.values["total cites"]
                 if m - i != 0:
                     metric = metric_list[m - i - 1]
-                    tc -= metric.totalCites
+                    tc -= metric.values["total cites"]
                 nd += tc
                 nn += tc / (i + 1)
                 
             # calculate value
             metric = metric_list[m]
-            metric.impactVitality = (w * (nn / nd) - 1) / d
+            metric.values["impact vitality"] = (w * (nn / nd) - 1) / d
 
 
 # least-squares h-rate (Burrell 2007)
 def calculate_least_squares_h_rate(metric_list: list) -> None:
     first_year = metric_list[0].date.year
     for m in range(len(metric_list)):
-        avgh = 0
-        avgd = 0
-        for i in range(m+1):
-            metric = metric_list[i]
-            avgh += metric.h_index
-            avgd += metric.date.year - first_year + 1
-        avgh /= m + 1
-        avgd /= m + 1
         sumxy = 0
         sumx2 = 0
         for i in range(m+1):
             metric = metric_list[i]
-            sumxy += (metric.h_index - avgh) * (metric.date.year - avgd)
-            sumx2 += (metric.date.year - avgd)**2
+            nyears = metric.date.year - first_year + 1
+            sumxy += metric.values["h-index"] * nyears
+            sumx2 += nyears**2
         metric = metric_list[m]
-        metric.ls_hrate = sumxy/sumx2
+        metric.values["ls h-rate"] = sumxy/sumx2
+        # for m in range(len(metric_list)):
+        #     if m == 0:
+        #         metric = metric_list[m]
+        #         metric.ls_hrate = metric.h_index
+        #     else:
+        #         avgh = 0
+        #         avgd = 0
+        #         for i in range(m + 1):
+        #             metric = metric_list[i]
+        #             avgh += metric.h_index
+        #             avgd += metric.date.year - first_year + 1
+        #         avgh /= m + 1
+        #         avgd /= m + 1
+        #         sumxy = 0
+        #         sumx2 = 0
+        #         for i in range(m + 1):
+        #             metric = metric_list[i]
+        #             nyears = metric.date.year - first_year + 1
+        #             sumxy += (metric.h_index - avgh) * (nyears - avgd)
+        #             sumx2 += (nyears - avgd) ** 2
+        #         metric = metric_list[m]
+        #         metric.ls_hrate = sumxy / sumx2
 
 
 # -----------------------------------------------------
@@ -1293,462 +1540,131 @@ def calculate_least_squares_h_rate(metric_list: list) -> None:
 # -----------------------------------------------------
 def write_output(fname: str, datelist: list, metriclist: list, incself: bool) -> None:
     fstr = '1.4f'  # constant formatting string
-    with open(fname, "w") as outfile:
+    with open(fname, "w", encoding="utf-8") as outfile:
         # write header
         outfile.write('Date')
         for date in datelist:
             outfile.write(tb + date_to_string(date))
         outfile.write("\n")
 
-        # write metrics
-        # Raw data metrics
-        outfile.write('Total Publications')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.totalPubs))
-        outfile.write("\n")
-
-        outfile.write('Total Citations')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.totalCites))
-        outfile.write("\n")
-
-        outfile.write('Citations per Pub')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.citesPerPub, fstr))
-        outfile.write("\n")
-
-        outfile.write('Max Citations')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.maxCites))
-        outfile.write("\n")
-
-        # Core definitions
-        outfile.write('h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.h_index))
-        outfile.write("\n")
-
-        outfile.write('Hirsch-core citations')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.coreCites))
-        outfile.write("\n")
-
-        outfile.write('Hirsch Min Constant (a)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.Hirsch_minConst, fstr))
-        outfile.write("\n")
-
-        outfile.write('g-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.g_index))
-        outfile.write("\n")
-
-        outfile.write('f-index (Tol)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Tol_f_index))
-        outfile.write("\n")
-
-        outfile.write('t-index (Tol)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Tol_t_index))
-        outfile.write("\n")
-
-        outfile.write('mu-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.mu_index))
-        outfile.write("\n")
-
-        outfile.write('w-index (Woeginger)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Woeginger_w_index))
-        outfile.write("\n")
-
-        outfile.write('h(2)-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.h2_index))
-        outfile.write("\n")
-
-        outfile.write('w-index (Wu)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Wu_w_index))
-        outfile.write("\n")
-
-        outfile.write('hg-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.hg_index, fstr))
-        outfile.write("\n")
-
-        # Full citation indices
-        outfile.write('rational h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.rational_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('real h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.real_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('w(q) (Wu)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Wu_wq_index))
-        outfile.write("\n")
-
-        outfile.write('tapered h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.tapered_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('j-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.j_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('w-index (Wohlin)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.Wohlin_w_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('hj-indices')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.hj_index))
-        outfile.write("\n")
-
-        # Core description indices
-        outfile.write('v-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.v_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('normalized h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.normalized_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('a-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.a_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('m-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.m_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('r-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.r_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('rm-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.rm_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('weighted h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.weighted_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('pi-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.pi_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('q2-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.q2_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('e-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.e_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('maxprod-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.maxprod_index))
-        outfile.write("\n")
-
-        # Core vs. tail indices
-        outfile.write('h2-upper index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.h2_upper, fstr))
-        outfile.write("\n")
-
-        outfile.write('h2-center index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.h2_center, fstr))
-        outfile.write("\n")
-
-        outfile.write('h2-tail index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.h2_lower, fstr))
-        outfile.write("\n")
-
-        outfile.write('k-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.k_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('p-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.p_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('ph-ratio')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.ph_ratio, fstr))
-        outfile.write("\n")
-
-        outfile.write('multidimensional h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.multiDim_h_index))
-        outfile.write("\n")
-
-        outfile.write('two-sided h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.two_sided_h_index))
-        outfile.write("\n")
-
-        outfile.write('iteratively weighted h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.iteratively_weighted_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('EM-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.em_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('EM\'-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.emp_index, fstr))
-        outfile.write("\n")
-
-        # Multiple-author indices
-        outfile.write('hi-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.hi_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('pure h-index (fractional credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.pure_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('pure h-index (proportional credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.pure_h_proportional, fstr))
-        outfile.write("\n")
-
-        outfile.write('pure h-index (geometric credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.pure_h_geometric, fstr))
-        outfile.write("\n")
-
-        outfile.write('adapted pure h-index (fractional credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.adapted_pure_h_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('adapted pure h-index (proportional credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.adapted_pure_h_proportional, fstr))
-        outfile.write("\n")
-
-        outfile.write('adapted pure h-index (geometric credit)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.adapted_pure_h_geometric, fstr))
-        outfile.write("\n")
-
-        outfile.write('hf-index/normalized hi-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.hf_norm_hi_index))
-        outfile.write("\n")
-
-        outfile.write('hF-index/hm-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.hF_hm_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('position-weighted h-index hp')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.posweighted_h_index))
-        outfile.write("\n")
-
-        outfile.write('weighted citation aggregate (fractional)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.citation_aggreg_frac, fstr))
-        outfile.write("\n")
-
-        outfile.write('weighted citation aggregate (proportional)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.citation_aggreg_prop, fstr))
-        outfile.write("\n")
-
-        outfile.write('weighted citation H-cut (fractional)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.citation_hcut_frac, fstr))
-        outfile.write("\n")
-
-        outfile.write('weighted citation H-cut (proportional)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.citation_hcut_prop, fstr))
-        outfile.write("\n")
-
-        outfile.write('gf-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.gf_cite))
-        outfile.write("\n")
-
-        outfile.write('gF-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.gF_paper, fstr))
-        outfile.write("\n")
-
-        outfile.write('fractional p-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.fractional_p_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('harmonic p-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.harmonic_p_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('profit p-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.profit_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('profit adjusted h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.profit_adj_h_index))
-        outfile.write("\n")
-
-        outfile.write('profit h-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.profit_h_index, fstr))
-        outfile.write("\n")
-
-        # Self-citation indices
-        if incself:
-            outfile.write('total self citations')
-            for metric in metriclist:
-                outfile.write(tb + str(metric.total_self_only_cites))
-            outfile.write("\n")
-
-            outfile.write('total self citation rate')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.total_self_only_cites / metric.totalCites, fstr))
-            outfile.write("\n")
-
-            outfile.write('average self citation rate')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.avg_self_only_cites, fstr))
-            outfile.write("\n")
-
-            outfile.write('sharpened h-index (self citations only)')
-            for metric in metriclist:
-                outfile.write(tb + str(metric.sharpself_h_index))
-            outfile.write("\n")
-
-            outfile.write('b-index (avg self citation rate)')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.bavg_self_index, fstr))
-            outfile.write("\n")
-
-            outfile.write('total self & coauthor citations')
-            for metric in metriclist:
-                outfile.write(tb + str(metric.total_self_all_cites))
-            outfile.write("\n")
-
-            outfile.write('total self & coauthor citation rate')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.total_self_all_cites / metric.totalCites, fstr))
-            outfile.write("\n")
-
-            outfile.write('average self & coauthor citation rate')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.avg_self_all_cites, fstr))
-            outfile.write("\n")
-
-            outfile.write('sharpened h-index (self & coauthor citations)')
-            for metric in metriclist:
-                outfile.write(tb + str(metric.sharpall_h_index))
-            outfile.write("\n")
-
-            outfile.write('b-index (avg self & coauthor citation rate)')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.bavg_all_index, fstr))
-            outfile.write("\n")
-
-            outfile.write('b-index (10% self-citation rate)')
-            for metric in metriclist:
-                outfile.write(tb + format(metric.b10_index, fstr))
-            outfile.write("\n")
-
-        # Time-based indices
-        outfile.write('Hirsch m-quotient (slope)/h-rate')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.Hirsch_mQuotient, fstr))
-            # if metric.Hirsch_mQuotient == -1:
-            #     outfile.write(tb + 'n/a')
-            # else:
-            #     outfile.write(tb + format(metric.Hirsch_mQuotient, fstr))
-        outfile.write("\n")
-
-        outfile.write('Least squares h-rate (slope)')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.ls_hrate, fstr))
-        outfile.write("\n")
-
-        outfile.write('ar-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.ar_index, fstr))
-        outfile.write("\n")
-
-        outfile.write('dynamic h-type-index')
-        for metric in metriclist:
-            if metric.dynamic_h_index < 0:
-                outfile.write(tb + 'n/a')
+        for m in METRIC_NAMES:
+            m_info = METRIC_INFO[m]
+            if m_info[0] and not incself:
+                pass  # skip self-citation metrics
             else:
-                outfile.write(tb + format(metric.dynamic_h_index, fstr))
-        outfile.write("\n")
+                outfile.write(m_info[2])  # name of metric
+                for metric in metriclist:
+                    if m_info[1] == INT:
+                        outfile.write(tb + str(metric.values[m]))
+                    elif m_info[1] == FLOAT:
+                        outfile.write(tb + format(metric.values[m], fstr))
+                    elif m_info[1] == INTLIST:
+                        outfile.write(tb + str(metric.values[m]))
+                    elif m_info[1] == FLOAT_NEG:
+                        if metric.values[m] < 0:
+                            outfile.write(tb + "n/a")
+                        else:
+                            outfile.write(tb + format(metric.values[m], fstr))
+                outfile.write("\n")
 
-        outfile.write('hpd-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.hpd_index))
-        outfile.write("\n")
 
-        outfile.write('contemporary h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.contemp_h_index))
-        outfile.write("\n")
+# -----------------------------------------------------
+# Output results as set of webpages
+# -----------------------------------------------------
+def webheader(outfile, page_title: str, header: list, data: list, chart_title: str) -> None:
+    outfile.write("<!DOCTYPE HTML>\n")
+    outfile.write("<html lang=\"en\">\n")
+    outfile.write("  <head>\n")
+    outfile.write("    <meta charset=\"utf-8\" />\n")
+    outfile.write("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n")
+    outfile.write("    <title>" + page_title + "</title>\n")
+    outfile.write("    <meta name=\"description\" content=\"xxx\" />\n")
+    outfile.write("    <link rel=\"author\" href=\"mailto:msr@asu.edu\" />\n")
+    outfile.write("    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?"
+                  "config=TeX-MML-AM_CHTML\"></script>\n")
+    # graph data
+    outfile.write("    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>\n")
+    outfile.write("    <script type=\"text/javascript\">\n")
+    outfile.write("      google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});\n")
+    outfile.write("      google.setOnLoadCallback(drawChart);\n")
+    outfile.write("      function drawChart() {\n")
+    outfile.write("        var data1 = google.visualization.arrayToDataTable([\n")
+    outfile.write("           [" + ",".join(header) + "],\n")
+    for d in data:
+        outfile.write("           [" + ",".join(d) + "],\n")
+    outfile.write("		]);\n")
+    outfile.write("\n")
+    outfile.write("        var options1 = {\n")
+    outfile.write("          title: \"" + chart_title + "\",\n")
+    outfile.write("		  legend: {position: 'right'},\n")
+    outfile.write("		  hAxis: {slantedText: true}\n")
+    outfile.write("        };\n")
+    outfile.write("\n")
+    outfile.write("        var chart1 = new google.visualization." +
+                  "LineChart(document.getElementById('impact_chart1_div'));\n")
+    outfile.write("        chart1.draw(data1, options1);\n")
+    outfile.write("\n")
+    outfile.write("		}\n")
+    outfile.write("    </script>\n")
+    outfile.write("  </head>\n")
 
-        outfile.write('trend h-index')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.trend_h_index))
-        outfile.write("\n")
 
-        outfile.write('impact vitality')
-        for metric in metriclist:
-            if metric.impactVitality < 0:
-                outfile.write(tb + 'n/a')
-            else:
-                outfile.write(tb + format(metric.impactVitality, fstr))
-        outfile.write("\n")
+def write_paragraph(outfile, p: str) -> None:
+    outfile.write("    <p>" + p + "</p>\n")
 
-        outfile.write('specific impact s-index')
-        for metric in metriclist:
-            outfile.write(tb + format(metric.specificImpact_s_index, fstr))
-        outfile.write("\n")
 
-        outfile.write('f-index (Franceschini & Maisano)')
-        for metric in metriclist:
-            outfile.write(tb + str(metric.Franceschini_f_index))
-        outfile.write("\n")
+def webout_m_quotient(date_list: list, metric_list: list) -> None:
+    """
+    Output a webpage with the m_quotient and least squares h-rates
+    """
+    data1 = []
+    data2 = []
+    for i, d in enumerate(date_list):
+        year = d.year
+        m = metric_list[i]
+        data1.append(["\'" + str(year) + "\'", str(m.Hirsch_mQuotient), str(m.ls_hrate)])
+        data2.append(["\'" + str(year) + "\'", str(m.h_index)])
+
+    with open("webout/m_quotient.html", "w", encoding="utf-8") as outfile:
+        header = ["\'Year\'", "\'h-rate\'", "\'ls h-rate\'"]
+        webheader(outfile, "h-rate", header, data1, "h-rate through time")
+
+        # define equations and symbols
+        m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
+        hstr = r"\(h\)"
+        ystr = r"\(Y\)"
+        y0str = r"\(Y_{0}\)"
+        hts_equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_{0}+1}}$$"
+        p1 = "Originaly defined by Hirsch (2005), this metric is also known as the " \
+             "<strong><em>m-</em>quotient,</strong> " \
+             "<strong><em>m-</em>ratio index,</strong> <strong>age-normalized <em>h-</em>index,</strong> and " \
+             "<strong>Carbon <em>h-</em>factor.</strong> It measures the rate at which the <em>h-</em>index has " \
+             "increased over the career of a researcher. It is calculated simply as:"
+        p2 = "where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
+             " is the year of the researcher's first publication (the denominator of this equation is the academic " \
+             "age of the researcher)."
+        p3 = "The above estimation is essentially just the slope of the line from the start of a researcher's " + \
+             "career through the most recent estimate of the <em>h-</em>index. If one has access to yearly " \
+             "estimates of " + hstr + ", an alternative would be to perform a linear regression of " + hstr + \
+             " versus year of academic career (through the origin) and use the slope of that line for a more accurate" \
+             " measure. This is known as the <strong>least squares <em>h-</em>rate</strong> (Burrell, 2007)."
+        p4 = "Another similar measure, the <strong>time-scaled <em>h-</em>index</strong> (Mannella and Rossi 2013) " \
+             "scales " + hstr + " by the square-root of the academic age."
+        outfile.write("  <body>\n")
+        outfile.write("    <h1><em>h-</em>rate</h1>\n")
+        write_paragraph(outfile, p1)
+        write_paragraph(outfile, m_equation)
+        write_paragraph(outfile, p2)
+        write_paragraph(outfile, p3)
+        write_paragraph(outfile, p4)
+        write_paragraph(outfile, hts_equation)
+        outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
+        outfile.write("  </body>\n")
+        outfile.write("</html>\n")
+
+
+# def write_webpages(date_list: list, metric_list: list, inc_self: bool) -> None:
+#     webout_m_quotient(date_list, metric_list)
 
 
 # -----------------------------------------------------
@@ -1984,6 +1900,12 @@ def main():
         out_name = "impactfactors.txt"
     print()
 
+    # webstr = input("Create webpages? (y/n) (deafult = y) ")
+    # if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
+    #     do_web = True
+    # else:
+    #     do_web = False
+
     # calculate metrics for every year
     metric_list = []
     for y in range(len(date_list)):
@@ -1996,6 +1918,9 @@ def main():
 
     # output
     write_output(out_name, date_list, metric_list, inc_self)
+
+    # if do_web:
+    #     write_webpages(date_list, metric_list, inc_self)
 
     print("Finished")
 
