@@ -23,12 +23,16 @@ INT = 0
 FLOAT = 1
 INTLIST = 2
 FLOAT_NEG = 3
+LINE_CHART = 1
 
 METRIC_NAMES = [
     "total pubs",
     "total cites",
-    "cites per pub",
     "max cites",
+    "avg cites per pub",
+    "median cites per pub",
+    "time-scaled num papers",
+    "time-scaled num citations",
     "h-index",
     "core cites",
     "Hirsch min const",
@@ -113,17 +117,21 @@ METRIC_NAMES = [
     "impact vitality",
     "specific impact s-index",
     "Franceschini f-index",
-    "time-scaled num papers",
-    "time-scaled num citations",
-    "annual h-index"
+    "annual h-index",
+    "CDS-index",
+    "CDR-index",
+    "circ cite area radius",
+    "citation acceleration",
+    "Redner index",
+    "Levene j-index"
 ]
 
 # [self-citing metric, output type, text title, html title (optional)]
 METRIC_INFO = {
-    "total pubs": [False, INT, "Total Publications"],
-    "total cites": [False, INT, "Total Citations"],
-    "cites per pub": [False, FLOAT, "Citations per Pub"],
-    "max cites": [False, INT, "Max Citations"],
+    "total pubs": [False, INT, "total publications"],
+    "total cites": [False, INT, "total citations"],
+    "avg cites per pub": [False, FLOAT, "mean citations per pub"],
+    "max cites": [False, INT, "max citations"],
     "h-index": [False, INT, "h-index", "<em>h-</em>index"],
     "core cites": [False, INT, "Hirsch-core Citations"],
     "Hirsch min const": [False, FLOAT, "Hirsch Min Constant (a)", "Hirsch Min Constant (<em>a</em>)"],
@@ -211,9 +219,9 @@ METRIC_INFO = {
                         "<em>b-</em>index (avg self &amp; coauthor citation rate)"],
     "10% b-index": [True, FLOAT, "b-index (10% self-citation rate)", "<em>b-</em>index (10% self-citation rate)"],
     "h-rate": [False, FLOAT, "h-rate/Hirsch m-quotient (slope)", "<em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)"],
-    "ls h-rate": [False, FLOAT, "Least squares h-rate (slope)", "Least squares <em>h-</em>rate (slope)"],
-    "time-scaled h-index": [False, FLOAT, "Time-scaled h-index (hTS)",
-                            "Time-scaled <em>h-</em>index (<em>h<sup>TS</sup></em>)"],
+    "ls h-rate": [False, FLOAT, "least squares h-rate (slope)", "least squares <em>h-</em>rate (slope)"],
+    "time-scaled h-index": [False, FLOAT, "time-scaled h-index (hTS)",
+                            "time-scaled <em>h-</em>index (<em>h<sup>TS</sup></em>)"],
     "alpha-index": [False, FLOAT, "α-index", "<em>α-</em>index"],
     "ar-index": [False, FLOAT, "ar-index", "<em>ar-</em>index"],
     "dynamic h-type-index": [False, FLOAT_NEG, "dynamic h-type-index", "dynamic <em>h-</em>type-index"],
@@ -228,7 +236,14 @@ METRIC_INFO = {
                                "time-scaled number of publications (<em>P<sup>TS</sup></em>)"],
     "time-scaled num citations": [False, FLOAT, "time-scaled citation index (CTS)",
                                   "time-scaled citation index (<em>C<sup>TS</sup></em>)"],
-    "annual h-index": [False, FLOAT, "annual h-index (hIa)", "annual <em>h</em>-index (hIa)"]
+    "annual h-index": [False, FLOAT, "annual h-index (hIa)", "annual <em>h</em>-index (hIa)"],
+    "CDS-index": [False, INT, "citation distribution score index (CDS-index)"],
+    "CDR-index": [False, FLOAT, "citation distribution rate index (CDR-index)"],
+    "circ cite area radius": [False, FLOAT, "circular citation area radius"],
+    "citation acceleration": [False, FLOAT, "citation acceleration"],
+    "median cites per pub": [False, FLOAT, "median citations per pub"],
+    "Redner index": [False, FLOAT, "Redner index"],
+    "Levene j-index": [False, FLOAT, "Levene j-index", "Levene <em>j-</em>index"]
 }
 
 # these aren't really proper classes, but rather just simple
@@ -1248,6 +1263,48 @@ def calculate_annual_h_index(norm_h: int, age: int) -> float:
     return norm_h / age
 
 
+# CDS/CDR indices (Vinkler 2011, 2013)
+def calculate_cds_index(cites: list) -> Tuple[int, float]:
+    maxg = 14  # largest category = more than 8192 citations
+    cds = 0
+    for c in cites:
+        if c < 2:
+            cds += 1
+        else:
+            g = 2
+            while c > 2**g:
+                g += 1
+            if g > maxg:
+                g = maxg
+            cds += g
+    maxcds = maxg * len(cites)
+    cdr = 100 * cds / maxcds
+    return cds, cdr
+
+
+# Sangwal 2012
+def calculate_circular_citation_area_radius(total_cites: int) -> float:
+    return math.sqrt(total_cites / math.pi)
+
+
+# Sangwal 2012
+def calculate_citation_acceleration(total_cites: int, age: int) -> float:
+    return total_cites / age**2
+
+
+# Render index - Redner (2010)
+def calculate_redner_index(total_cites: int) -> float:
+    return math.sqrt(total_cites)
+
+
+# Levene j-index - Levene et al (2012)
+def calculate_levene_j_index(cites: list) -> float:
+    j = 0
+    for c in cites:
+        j += math.sqrt(c)
+    return j
+
+
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
@@ -1272,7 +1329,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
             metrics.values["total pubs"] += 1
             metrics.values["total cites"] += article.citations[y]
             metrics.values["max cites"] = max(metrics.values["max cites"], article.citations[y])
-    metrics.values["cites per pub"] = metrics.values["total cites"] / metrics.values["total pubs"]
+    metrics.values["avg cites per pub"] = metrics.values["total cites"] / metrics.values["total pubs"]
 
     # construct sublists for active articles only
     n = len(cur_list)
@@ -1374,6 +1431,7 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     academic_age = datelist[y].year - firstyear + 1
 
     # other indices
+    metrics.values["median cites per pub"] = medarray[n-1]  # the median citation count of all papers
     metrics.values["h-rate"] = calculate_h_rate(metrics.values["h-index"], academic_age)
     metrics.values["time-scaled h-index"] = calculate_time_scaled_h_index(metrics.values["h-index"], academic_age)
     (metrics.values["time-scaled num papers"],
@@ -1467,6 +1525,12 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
     metrics.values["em-index"], metrics.values["emp-index"] = calculate_em_index(n, rankorder, cites)
     metrics.values["alpha-index"] = calculate_alpha_index(metrics.values["h-index"], academic_age)
     metrics.values["annual h-index"] = calculate_annual_h_index(metrics.values["hf/hi-index"], academic_age)
+    metrics.values["CDS-index"], metrics.values["CDR-index"] = calculate_cds_index(cites)
+    metrics.values["circ cite area radius"] = calculate_circular_citation_area_radius(metrics.values["total cites"])
+    metrics.values["citation acceleration"] = calculate_citation_acceleration(metrics.values["total cites"],
+                                                                              academic_age)
+    metrics.values["Redner index"] = calculate_redner_index(metrics.values["total cites"])
+    metrics.values["Levene j-index"] = calculate_levene_j_index(cites)
 
     return metrics
 
@@ -1608,7 +1672,7 @@ def write_output(fname: str, datelist: list, metriclist: list, incself: bool) ->
 # -----------------------------------------------------
 # Output results as set of webpages
 # -----------------------------------------------------
-def webheader(outfile, page_title: str, header: list, data: list, chart_title: str) -> None:
+def webheader(outfile, page_title: str, data: list) -> None:
     outfile.write("<!DOCTYPE HTML>\n")
     outfile.write("<html lang=\"en\">\n")
     outfile.write("  <head>\n")
@@ -1623,24 +1687,44 @@ def webheader(outfile, page_title: str, header: list, data: list, chart_title: s
     outfile.write("    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>\n")
     outfile.write("    <script type=\"text/javascript\">\n")
     outfile.write("      google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});\n")
+    # outfile.write("      google.charts.load('current', {'packages':['line']});")
     outfile.write("      google.setOnLoadCallback(drawChart);\n")
     outfile.write("      function drawChart() {\n")
-    outfile.write("        var data1 = google.visualization.arrayToDataTable([\n")
-    outfile.write("           [" + ",".join(header) + "],\n")
-    for d in data:
-        outfile.write("           [" + ",".join(d) + "],\n")
-    outfile.write("		]);\n")
-    outfile.write("\n")
-    outfile.write("        var options1 = {\n")
-    outfile.write("          title: \"" + chart_title + "\",\n")
-    outfile.write("		  legend: {position: 'right'},\n")
-    outfile.write("		  hAxis: {slantedText: true}\n")
-    outfile.write("        };\n")
-    outfile.write("\n")
-    outfile.write("        var chart1 = new google.visualization." +
-                  "LineChart(document.getElementById('impact_chart1_div'));\n")
-    outfile.write("        chart1.draw(data1, options1);\n")
-    outfile.write("\n")
+    for i, dataset in enumerate(data):
+        header = dataset[0]
+        data_values = dataset[1]
+        chart_type = dataset[2]
+        vaxis_title = dataset[3]
+        chart_options = dataset[4]
+        outfile.write("        var data{} = google.visualization.arrayToDataTable([\n".format(i))
+        outfile.write("           [" + ",".join(header) + "],\n")
+        for d in data_values:
+            outfile.write("           [" + ",".join(d) + "],\n")
+        outfile.write("		]);\n")
+        outfile.write("\n")
+        outfile.write("        var options" + str(i) + " = {\n")
+        # outfile.write("          title: \"" + chart_title + "\",\n")
+        outfile.write("		  legend: {position: 'right'},\n")
+        outfile.write("		  vAxis: {title: '" + vaxis_title + "'},\n")
+        outfile.write("		  hAxis: {slantedText: true},\n")
+        if chart_options is not None:
+            for opt in chart_options:
+                outfile.write(opt)
+        outfile.write("        };\n")
+        outfile.write("\n")
+        # outfile.write("        var chart{} = new google.charts."
+        #               "Line(document.getElementById('impact_chart{}_div'));\n".format(i, i))
+        outfile.write("        var chart{} = new google.visualization."
+                      "LineChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
+        # if chart_type == LINE_CHART:
+        #     outfile.write("        var chart{} = new google.visualization."
+        #                   "LineChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
+        # elif chart_type == POINT_CHART:
+        #     outfile.write("        var chart{} = new google.visualization."
+        #                   "ScatterChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
+        outfile.write("        chart{}.draw(data{}, options{});\n".format(i, i, i))
+        # outfile.write("        chart{}.draw(data{}, google.chart.Line.convertOptions(options{}));\n".format(i, i, i))
+        outfile.write("\n")
     outfile.write("		}\n")
     outfile.write("    </script>\n")
     outfile.write("  </head>\n")
@@ -1650,21 +1734,43 @@ def write_paragraph(outfile, p: str) -> None:
     outfile.write("    <p>" + p + "</p>\n")
 
 
-def webout_m_quotient(date_list: list, metric_list: list) -> None:
+def webout_h_rate(date_list: list, metric_list: list) -> None:
     """
-    Output a webpage with the m_quotient and least squares h-rates
+    Output a webpage with the h-rate and least squares h-rates
     """
+    graphs = []
     data1 = []
     data2 = []
+    data3 = []
     for i, d in enumerate(date_list):
         year = d.year
         m = metric_list[i]
-        data1.append(["\'" + str(year) + "\'", str(m.Hirsch_mQuotient), str(m.ls_hrate)])
-        data2.append(["\'" + str(year) + "\'", str(m.h_index)])
+        data1.append(["\'" + str(year) + "\'", str(m.values["h-rate"]), str(m.values["ls h-rate"])])
+        if i == 0:
+            v = "0,0"
+        elif i == len(date_list) - 1:
+            v = str(m.values["h-index"]) + "," + str(m.values["ls h-rate"]*(len(date_list)-1))
+        else:
+            v = "null,null"
+        data2.append(["\'" + str(year) + "\'", str(m.values["h-index"]), v])
+        data3.append(["\'" + str(year) + "\'", str(m.values["time-scaled h-index"])])
+    header1 = ["\'Year\'", "\'h-rate\'", "\'ls h-rate\'"]
+    header2 = ["\'Year\'", "\'h-index\'", "\'h-rate\'", "\'ls h-rate\'"]
+    header3 = ["\'Year\'", "\'time-scaled h-index\'"]
+    graphs.append([header1, data1, LINE_CHART, "h per year", None])
+    options = ["       interpolateNulls: true,\n",
+               "       series: {\n",
+               "       0: {\n",
+               "           pointsVisible: true,\n",
+               "           lineWidth: 0,\n",
+               "           pointSize: 10\n",
+               "          }\n",
+               "         }\n"]
+    graphs.append([header2, data2, LINE_CHART, "h-index", options])
+    graphs.append([header3, data3, LINE_CHART, "h per sqrt(year)", None])
 
-    with open("webout/m_quotient.html", "w", encoding="utf-8") as outfile:
-        header = ["\'Year\'", "\'h-rate\'", "\'ls h-rate\'"]
-        webheader(outfile, "h-rate", header, data1, "h-rate through time")
+    with open("webout/h_rate.html", "w", encoding="utf-8") as outfile:
+        webheader(outfile, "h-rate", graphs)
 
         # define equations and symbols
         m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
@@ -1689,19 +1795,112 @@ def webout_m_quotient(date_list: list, metric_list: list) -> None:
              "scales " + hstr + " by the square-root of the academic age."
         outfile.write("  <body>\n")
         outfile.write("    <h1><em>h-</em>rate</h1>\n")
+        outfile.write("    <h2>Description</h2>\n")
         write_paragraph(outfile, p1)
         write_paragraph(outfile, m_equation)
         write_paragraph(outfile, p2)
         write_paragraph(outfile, p3)
+        outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
+        outfile.write("   <p class=\"caption\" style=\"font-style: italic; font-size: 0.75em; text-align: center\">"
+                      "The points represent the <em>h-</em>index at the end of each year. "
+                      "The simple <em>h-</em>rate is the slope of the line passing from the origin through the final "
+                      "point. The least-squares estimate is based on the linear regression of all points, "
+                      "with the intercept forced through the origin.</p>\n")
+
         write_paragraph(outfile, p4)
         write_paragraph(outfile, hts_equation)
-        outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
+        outfile.write("    <h2>History</h2>\n")
+        outfile.write("   <div id=\"impact_chart0_div\"></div>\n")
+        outfile.write("   <div id=\"impact_chart2_div\"></div>\n")
         outfile.write("  </body>\n")
         outfile.write("</html>\n")
 
 
-# def write_webpages(date_list: list, metric_list: list, inc_self: bool) -> None:
-#     webout_m_quotient(date_list, metric_list)
+def webout_basic_data(date_list: list, metric_list: list) -> None:
+    """
+    Output a webpage with the base data and simple stats
+    """
+    graphs = []
+    data1 = []
+    data2 = []
+    data3 = []
+    data4 = []
+    data5 = []
+    for i, d in enumerate(date_list):
+        year = d.year
+        m = metric_list[i]
+        data1.append(["\'" + str(year) + "\'", str(m.values["total pubs"])])
+        data2.append(["\'" + str(year) + "\'", str(m.values["total cites"]), str(m.values["max cites"])])
+        data3.append(["\'" + str(year) + "\'", str(m.values["avg cites per pub"]),
+                      str(m.values["median cites per pub"])])
+        data4.append(["\'" + str(year) + "\'", str(m.values["time-scaled num papers"])])
+        data5.append(["\'" + str(year) + "\'", str(m.values["time-scaled num citations"])])
+    header1 = ["\'Year\'", "\'total\'"]
+    header2 = ["\'Year\'", "\'total\'", "\'maximum\'"]
+    header3 = ["\'Year\'", "\'mean\'", "\'median\'"]
+    header4 = ["\'Year\'", "\'time-scaled number of papers\'"]
+    header5 = ["\'Year\'", "\'time-scaled citation index\'"]
+    graphs.append([header1, data1, LINE_CHART, "Publications", None])
+    graphs.append([header2, data2, LINE_CHART, "Citations", None])
+    graphs.append([header3, data3, LINE_CHART, "Citations per Publication", None])
+    graphs.append([header4, data4, LINE_CHART, "Publications per Year", None])
+    graphs.append([header5, data5, LINE_CHART, "Citations per Year", None])
+
+    with open("webout/basic_data.html", "w", encoding="utf-8") as outfile:
+        webheader(outfile, "basic data", graphs)
+
+        # # define equations and symbols
+        # m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
+        # hstr = r"\(h\)"
+        # ystr = r"\(Y\)"
+        # y0str = r"\(Y_{0}\)"
+        # hts_equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_{0}+1}}$$"
+        p1 = "The raw data of impact are publications and citations to the publications. Beyond simply counting how " \
+             "many of these there are each year, some simple obvious summaries one can make include identifying the " \
+             "publication with the maximum number of citations, as well as considering the average number of " \
+             "citations per publication (as both mean and median)."
+        p2 = "If one wants to consider simple rates of impact, then other obvious measures would be the mean number " \
+             "of publications per year and the mean number of citations per year. These have been referred to as the " \
+             "<strong>time-scaled number of papers (<em>P<sup>TS</sup></em>)</strong> and <strong>time-scaled " \
+             "citation index (<em>C<sup>TS</sup></em>)</strong> in the literature."
+        # p2 = "where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
+        #      " is the year of the researcher's first publication (the denominator of this equation is the academic " \
+        #      "age of the researcher)."
+        # p3 = "The above estimation is essentially just the slope of the line from the start of a researcher's " + \
+        #      "career through the most recent estimate of the <em>h-</em>index. If one has access to yearly " \
+        #      "estimates of " + hstr + ", an alternative would be to perform a linear regression of " + hstr + \
+        #      " versus year of academic career (through the origin) and use the slope of that line for a more accurate" \
+        #      " measure. This is known as the <strong>least squares <em>h-</em>rate</strong> (Burrell, 2007)."
+        # p4 = "Another similar measure, the <strong>time-scaled <em>h-</em>index</strong> (Mannella and Rossi 2013) " \
+        #      "scales " + hstr + " by the square-root of the academic age."
+        outfile.write("  <body>\n")
+        outfile.write("    <h1>Basic Data</h1>\n")
+        outfile.write("    <h2>Description</h2>\n")
+        write_paragraph(outfile, p1)
+        # write_paragraph(outfile, m_equation)
+        write_paragraph(outfile, p2)
+        # write_paragraph(outfile, p3)
+        # outfile.write("   <p class=\"caption\" style=\"font-style: italic; font-size: 0.75em; text-align: center\">"
+        #               "The points represent the <em>h-</em>index at the end of each year. "
+        #               "The simple <em>h-</em>rate is the slope of the line passing from the origin through the final "
+        #               "point. The least-squares estimate is based on the linear regression of all points, "
+        #               "with the intercept forced through the origin.</p>\n")
+        #
+        # write_paragraph(outfile, p4)
+        # write_paragraph(outfile, hts_equation)
+        outfile.write("    <h2>History</h2>\n")
+        outfile.write("   <div id=\"impact_chart0_div\"></div>\n")
+        outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
+        outfile.write("   <div id=\"impact_chart2_div\"></div>\n")
+        outfile.write("   <div id=\"impact_chart3_div\"></div>\n")
+        outfile.write("   <div id=\"impact_chart4_div\"></div>\n")
+        outfile.write("  </body>\n")
+        outfile.write("</html>\n")
+
+
+def write_webpages(date_list: list, metric_list: list, inc_self: bool) -> None:
+    webout_basic_data(date_list, metric_list)
+    webout_h_rate(date_list, metric_list)
 
 
 # -----------------------------------------------------
@@ -1937,11 +2136,11 @@ def main():
         out_name = "impactfactors.txt"
     print()
 
-    # webstr = input("Create webpages? (y/n) (deafult = y) ")
-    # if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
-    #     do_web = True
-    # else:
-    #     do_web = False
+    webstr = input("Create webpages? (y/n) (deafult = y) ")
+    if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
+        do_web = True
+    else:
+        do_web = False
 
     # calculate metrics for every year
     metric_list = []
@@ -1956,8 +2155,8 @@ def main():
     # output
     write_output(out_name, date_list, metric_list, inc_self)
 
-    # if do_web:
-    #     write_webpages(date_list, metric_list, inc_self)
+    if do_web:
+        write_webpages(date_list, metric_list, inc_self)
 
     print("Finished")
 
