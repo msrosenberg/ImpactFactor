@@ -261,9 +261,9 @@ METRIC_INFO = {
     "indifference": [False, FLOAT, "indifference"]
 }
 
+
 # these aren't really proper classes, but rather just simple
 # multivariate data objects
-
 
 class Article:
     def __init__(self):
