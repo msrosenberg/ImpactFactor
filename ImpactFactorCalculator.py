@@ -126,7 +126,10 @@ METRIC_NAMES = [
     "Levene j-index",
     "S-index (h-mixed)",
     "T-index (h-mixed)",
-    "citation entropy"
+    "citation entropy",
+    "cq index",
+    "cq0.4 index",
+    "indifference"
 ]
 
 # [self-citing metric, output type, text title, html title (optional)]
@@ -252,7 +255,10 @@ METRIC_INFO = {
                           "<em>S-</em>index (<em>h-</em>mixed synthetic index)"],
     "T-index (h-mixed)": [False, FLOAT, "T-index (h-mixed synthetic index)",
                           "<em>T-</em>index (<em>h-</em>mixed synthetic index)"],
-    "citation entropy": [False, FLOAT, "citation entropy (s-index)", "citation entropy (<em>s-</em>index)"]
+    "citation entropy": [False, FLOAT, "citation entropy (s-index)", "citation entropy (<em>s-</em>index)"],
+    "cq index": [False, FLOAT, "corrected quality ratio (CQ index)", "corrected quality ratio (<em>CQ</em> index)"],
+    "cq0.4 index": [False, FLOAT, "CQ0.4 index", "CQ<sup>0.4</sup> index)"],
+    "indifference": [False, FLOAT, "indifference"]
 }
 
 # these aren't really proper classes, but rather just simple
@@ -1335,6 +1341,18 @@ def calculate_citation_entropy(total_cites: int, cites: list) -> float:
     return 0.25 * math.sqrt(total_cites) * math.exp(hstar)
 
 
+# Corrected Quality ratios - Lindsay (1978)
+def calculate_corrected_quality_ratios(total_cites: int, total_pubs: int) -> Tuple[float, float]:
+    cq = (total_cites / total_pubs) * math.sqrt(total_cites * total_pubs)
+    cq4 = math.pow(total_cites / total_pubs, 0.6) * math.pow(total_pubs, 0.4)
+    return cq, cq4
+
+
+# Indifference - Egghe and Rousseau (1996)
+def calculate_indifference(total_cites: int, total_pubs: int) -> float:
+    return total_pubs / total_cites
+
+
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
@@ -1566,6 +1584,10 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
                                                                                 metrics.values["avg cites per pub"],
                                                                                 metrics.values["r-index"])
     metrics.values["citation entropy"] = calculate_citation_entropy(metrics.values["total cites"], cites)
+    (metrics.values["cq index"],
+     metrics.values["cq0.4 index"]) = calculate_corrected_quality_ratios(metrics.values["total cites"],
+                                                                         metrics.values["total pubs"])
+    metrics.values["indifference"] = calculate_indifference(metrics.values["total cites"], metrics.values["total pubs"])
 
     return metrics
 
