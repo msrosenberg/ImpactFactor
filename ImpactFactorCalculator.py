@@ -123,14 +123,18 @@ METRIC_NAMES = [
     "circ cite area radius",
     "citation acceleration",
     "Redner index",
-    "Levene j-index"
+    "Levene j-index",
+    "S-index (h-mixed)",
+    "T-index (h-mixed)",
+    "citation entropy"
 ]
 
 # [self-citing metric, output type, text title, html title (optional)]
 METRIC_INFO = {
     "total pubs": [False, INT, "total publications"],
     "total cites": [False, INT, "total citations"],
-    "avg cites per pub": [False, FLOAT, "mean citations per pub"],
+    "avg cites per pub": [False, FLOAT, "mean citations per pub (C/P index)",
+                          "mean citations per pub (<em>C/P</em> index)"],
     "max cites": [False, INT, "max citations"],
     "h-index": [False, INT, "h-index", "<em>h-</em>index"],
     "core cites": [False, INT, "Hirsch-core Citations"],
@@ -154,7 +158,7 @@ METRIC_INFO = {
     "normalized h-index": [False, FLOAT, "normalized h-index", "normalized <em>h-</em>index"],
     "a-index": [False, FLOAT, "a-index", "<em>a-</em>index"],
     "m-index": [False, FLOAT, "m-index", "<em>m-</em>index"],
-    "r-index": [False, FLOAT, "r-index", "<em>r-</em>index"],
+    "r-index": [False, FLOAT, "r-index", "<em>R-</em>index"],
     "rm-index": [False, FLOAT, "rm-index", "<em>rm-</em>index"],
     "weighted h-index": [False, FLOAT, "weighted h-index", "weighted <em>h-</em>index"],
     "pi-index": [False, FLOAT, "π-index", "<em>π-</em>index"],
@@ -243,7 +247,12 @@ METRIC_INFO = {
     "citation acceleration": [False, FLOAT, "citation acceleration"],
     "median cites per pub": [False, FLOAT, "median citations per pub"],
     "Redner index": [False, FLOAT, "Redner index"],
-    "Levene j-index": [False, FLOAT, "Levene j-index", "Levene <em>j-</em>index"]
+    "Levene j-index": [False, FLOAT, "Levene j-index", "Levene <em>j-</em>index"],
+    "S-index (h-mixed)": [False, FLOAT, "S-index (h-mixed synthetic index)",
+                          "<em>S-</em>index (<em>h-</em>mixed synthetic index)"],
+    "T-index (h-mixed)": [False, FLOAT, "T-index (h-mixed synthetic index)",
+                          "<em>T-</em>index (<em>h-</em>mixed synthetic index)"],
+    "citation entropy": [False, FLOAT, "citation entropy (s-index)", "citation entropy (<em>s-</em>index)"]
 }
 
 # these aren't really proper classes, but rather just simple
@@ -1305,6 +1314,27 @@ def calculate_levene_j_index(cites: list) -> float:
     return j
 
 
+# h-mixed synthetic indices (S-index and T-index) - Ye (2010)
+def calculate_h_mixed_synthetic_indices(h: int, cpp: float, r: int) -> Tuple[float, float]:
+    s = 100 * math.log10(h * cpp)
+    t = 100 * math.log10(h * cpp * r)
+    return s, t
+
+
+# s-index / citation entropy p - Silagadze (2009)
+def calculate_citation_entropy(total_cites: int, cites: list) -> float:
+    # calculate Shannon entropy
+    h = 0
+    for c in cites:
+        if c != 0:
+            p = c / total_cites
+            h += p * math.log(p, 2)
+    h = -h
+    # standardize Shannon entropy
+    hstar = h / math.log(len(cites), 2)
+    return 0.25 * math.sqrt(total_cites) * math.exp(hstar)
+
+
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
@@ -1531,6 +1561,11 @@ def calculate_metrics(y: int, datelist: list, articlelist: list, incself: bool) 
                                                                               academic_age)
     metrics.values["Redner index"] = calculate_redner_index(metrics.values["total cites"])
     metrics.values["Levene j-index"] = calculate_levene_j_index(cites)
+    (metrics.values["S-index (h-mixed)"],
+     metrics.values["T-index (h-mixed)"]) = calculate_h_mixed_synthetic_indices(metrics.values["h-index"],
+                                                                                metrics.values["avg cites per pub"],
+                                                                                metrics.values["r-index"])
+    metrics.values["citation entropy"] = calculate_citation_entropy(metrics.values["total cites"], cites)
 
     return metrics
 
@@ -1631,6 +1666,39 @@ def calculate_least_squares_h_rate(metric_list: list) -> None:
         #             sumx2 += (nyears - avgd) ** 2
         #         metric = metric_list[m]
         #         metric.ls_hrate = sumxy / sumx2
+
+
+# DCI-index: discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
+# def calculate_discounted_cumulated_impact(metric_list: list) -> None:
+#     logbase = 2
+#     # create list of novel citation counts per year
+#     yearly_cites = []
+#     mold = None
+#     for m in metric_list:
+#         if mold is None:
+#             yearly_cites.append(m.values["total cites"])
+#         else:
+#             yearly_cites.append(m.values["total cites"] - mold.values["total cites"])
+#         mold = m
+#
+#     ddci = []
+#     for i, metric in enumerate(metric_list):
+#         print(i+1, "[", end="")
+#         if i == 0:
+#             dci = yearly_cites[0]
+#         else:
+#             dci = 0
+#             for j in range(i+1):
+#                 m = metric_list[j]
+#                 if j == 0:
+#                     dci = yearly_cites[j] / max(1.0, math.log(i, logbase))
+#                 elif j == i:
+#                     dci += yearly_cites[j]
+#                 else:
+#                     dci += yearly_cites[j] / max(1.0, math.log(i - j, logbase))
+#                 print("", dci, end="")
+#         ddci.append(dci)
+#         print("]", ddci)
 
 
 # -----------------------------------------------------
@@ -2151,6 +2219,7 @@ def main():
     calculate_dynamic_h(metric_list)
     calculate_impact_vitality(metric_list)
     calculate_least_squares_h_rate(metric_list)
+    # calculate_discounted_cumulated_impact(metric_list)
 
     # output
     write_output(out_name, date_list, metric_list, inc_self)
