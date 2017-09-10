@@ -466,6 +466,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         outfile.write("    <title>Impact Factors</title>\n")
         outfile.write("    <meta name=\"description\" content=\"Impact factor calculations and descriptions\" />\n")
         outfile.write("    <link rel=\"author\" href=\"mailto:msr@asu.edu\" />\n")
+        outfile.write("    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?"
+                      "config=TeX-MML-AM_CHTML\"></script>\n")
         outfile.write("  </head>\n")
         outfile.write("  <body>\n")
         metric_base_data = yearly_metrics_list[0]

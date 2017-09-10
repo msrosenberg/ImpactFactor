@@ -1630,7 +1630,21 @@ def metric_h_rate() -> Metric:
     m.full_name = "h-rate/Hirsch m-quotient (slope)"
     m.html_name = "<em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+
+    m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
+    hstr = r"\(h\)"
+    ystr = r"\(Y\)"
+    y0str = r"\(Y_{0}\)"
+    m.description = "<p>Originaly defined by Hirsch (2005), this metric is also known as the " \
+                    "<span class=\"metric_name\"><em>m-</em>quotient,</span> " \
+                    "<span class=\"metric_name\"><em>m-</em>ratio index,</span> " \
+                    "<span class=\"metric_name\">age-normalized <em>h-</em>index,</span> and " \
+                    "<span class=\"metric_name\">Carbon <em>h-</em>factor.</span> It measures the rate at which the " \
+                    "<em>h-</em>index has increased over the career of a researcher. It is calculated simply as:</p>\n"
+    m.description += m_equation + "\n"
+    m.description += "<p>where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
+                     " is the year of the researcher's first publication (the denominator of this equation is the " \
+                     "academic age of the researcher).</p>\n"
     m.calculate = calculate_h_rate
     return m
 
