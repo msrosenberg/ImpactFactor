@@ -611,7 +611,7 @@ def metric_todeschini_j_index() -> Metric:
     m = Metric()
     m.name = "Todeschini j-index"
     m.full_name = "j-index (Todeschini)"
-    m.html_name = "<em>j-</em>index (Todeschini))"
+    m.html_name = "<em>j-</em>index (Todeschini)"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_todeschini_j_index
