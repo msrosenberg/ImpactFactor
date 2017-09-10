@@ -1454,7 +1454,7 @@ def metric_profit_h_index() -> Metric:
     return m
 
 
-# normalized hi-index/hf-index and gf-index (Wohlin 2009; Egghe 2008)
+# normalized hi-index/hf-index (Wohlin 2009)
 def calculate_normal_hi_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
@@ -1491,7 +1491,7 @@ def metric_gf_cite_index() -> Metric:
 
 
 # hm-index/hF-index (Schreiber 2008)
-def calculate_hm_index(metric_set: MetricSet) -> int:
+def calculate_hm_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
     rank_order = metric_set.rank_order
@@ -1503,14 +1503,14 @@ def metric_hm_index() -> Metric:
     m.name = "hm-index"
     m.full_name = "hm-index"
     m.html_name = "<em>h<sub>m</sub>-</em>index"
-    m.metric_type = INT
+    m.metric_type = FLOAT
     m.description = "<p>...a.k.a. <em>h<sub>F</sub>-</em>index</p>"
     m.calculate = calculate_hm_index
     return m
 
 
 # gF-index (fractional paper) (Egghe 2008)
-def calculate_gf_paper_index(metric_set: MetricSet) -> int:
+def calculate_gf_paper_index(metric_set: MetricSet) -> float:
     cumulative_citations = metric_set.cumulative_citations
     n_authors = metric_set.author_counts()
     rank_order = metric_set.rank_order
@@ -1522,7 +1522,7 @@ def metric_gf_paper_index() -> Metric:
     m.name = "gf-paper"
     m.full_name = "gF-index"
     m.html_name = "<em>g<sub>F</sub>-</em>index"
-    m.metric_type = INT
+    m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_gf_paper_index
     return m

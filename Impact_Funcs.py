@@ -548,7 +548,7 @@ def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: i
 
 
 # hm-index/hF-index (Schreiber 2008)
-def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> int:
+def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> float:
     hm_index = 0
     cumulative_rank = 0
     for i in range(len(citations)):
@@ -559,7 +559,7 @@ def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> in
 
 
 # gF-index (fractional paper) (Egghe 2008)
-def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list, ) -> int:
+def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list, ) -> float:
     gf_paper = 0
     cumulative_rank = 0
     for i in range(len(cumulative_citations)):
