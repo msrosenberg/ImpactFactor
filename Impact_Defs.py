@@ -213,7 +213,7 @@ def metric_mean_cites() -> Metric:
     m.description = "<p>This metric is the mean number of citations per publication. It has been described under " \
                     "many names, including the <em>C/P</em> index, the mean citation rate (<em>MCR</em>), the mean " \
                     "observed citation rate (<em>MOCR</em>), citations per publication (<em>CPP</em>), the observed " \
-                    "citation rate (<em>OCR</em>), the generalized impact factor (<em>I<sub>f</sub><em>), and the " \
+                    "citation rate (<em>OCR</em>), the generalized impact factor (<em>I<sub>f</sub></em>), and the " \
                     "journal paper citedness (<em>JPC</em>).</p>"
     m.calculate = calculate_mean_cites
     return m
@@ -284,7 +284,7 @@ def metric_h_index() -> Metric:
     m = Metric()
     m.name = "h-index"
     m.full_name = "h-index"
-    m.html_name = "<em>h-</em>index)"
+    m.html_name = "<em>h-</em>index"
     m.metric_type = INT
     m.description = "<p>...</p>"
     m.calculate = calculate_h_index
@@ -337,7 +337,7 @@ def metric_g_index() -> Metric:
     m = Metric()
     m.name = "g-index"
     m.full_name = "g-index"
-    m.html_name = "<em>g-</em>index)"
+    m.html_name = "<em>g-</em>index"
     m.metric_type = INT
     m.description = "<p>...</p>"
     m.calculate = calculate_g_index
@@ -355,7 +355,7 @@ def metric_h2_index() -> Metric:
     m = Metric()
     m.name = "h(2)-index"
     m.full_name = "h(2)-index"
-    m.html_name = "<em>h</em>(2)-index)"
+    m.html_name = "<em>h</em>(2)-index"
     m.metric_type = INT
     m.description = "<p>...</p>"
     m.calculate = calculate_h2_index
@@ -480,7 +480,7 @@ def metric_hg_index() -> Metric:
     m = Metric()
     m.name = "hg-index"
     m.full_name = "hg-index"
-    m.html_name = "<em>hg-</em>index)"
+    m.html_name = "<em>hg-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_hg_index
@@ -498,7 +498,7 @@ def metric_a_index() -> Metric:
     m = Metric()
     m.name = "a-index"
     m.full_name = "a-index"
-    m.html_name = "<em>a-</em>index)"
+    m.html_name = "<em>a-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_a_index
@@ -515,7 +515,7 @@ def metric_r_index() -> Metric:
     m = Metric()
     m.name = "R-index"
     m.full_name = "R-index"
-    m.html_name = "<em>R-</em>index)"
+    m.html_name = "<em>R-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_r_index
@@ -556,7 +556,7 @@ def metric_rational_h_index() -> Metric:
     m = Metric()
     m.name = "rational h-index"
     m.full_name = "rational h-index"
-    m.html_name = "rational <em>h-</em>index)"
+    m.html_name = "rational <em>h-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_rational_h_index
@@ -575,7 +575,7 @@ def metric_real_h_index() -> Metric:
     m = Metric()
     m.name = "real h-index"
     m.full_name = "real h-index"
-    m.html_name = "real <em>h-</em>index)"
+    m.html_name = "real <em>h-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_real_h_index
@@ -593,7 +593,7 @@ def metric_tapered_h_index() -> Metric:
     m = Metric()
     m.name = "tapered h-index"
     m.full_name = "tapered h-index"
-    m.html_name = "tapered <em>h-</em>index)"
+    m.html_name = "tapered <em>h-</em>index"
     m.metric_type = FLOAT
     m.description = "<p>...</p>"
     m.calculate = calculate_tapered_h_index

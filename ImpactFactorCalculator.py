@@ -202,7 +202,6 @@ def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: boo
 # output a table of all results
 # -----------------------------------------------------
 def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_self: bool) -> None:
-    # fstr = "1.4f"  # constant formatting string
     with open(fname, "w", encoding="utf-8") as outfile:
         # write header of dates
         outfile.write("Date")
@@ -457,6 +456,38 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 #     webout_h_rate(date_list, metric_list)
 
 
+def create_html_output(date_list: list, yearly_metrics_list: list, inc_self: bool) -> None:
+    with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
+        outfile.write("<!DOCTYPE HTML>\n")
+        outfile.write("<html lang=\"en\">\n")
+        outfile.write("  <head>\n")
+        outfile.write("    <meta charset=\"utf-8\" />\n")
+        outfile.write("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n")
+        outfile.write("    <title>Impact Factors</title>\n")
+        outfile.write("    <meta name=\"description\" content=\"Impact factor calculations and descriptions\" />\n")
+        outfile.write("    <link rel=\"author\" href=\"mailto:msr@asu.edu\" />\n")
+        outfile.write("  </head>\n")
+        outfile.write("  <body>\n")
+        metric_base_data = yearly_metrics_list[0]
+        metric_names = metric_base_data.metric_names
+        # output a section for every metric
+        for name in metric_names:
+            metric = metric_base_data.metrics[name]
+            outfile.write("    <div>\n")
+            outfile.write("      <h1>" + metric.html_name + "</h1>\n")
+            outfile.write("      " + metric.description + "\n")
+            outfile.write("      <table>\n")
+            for metric_set in yearly_metrics_list:
+                outfile.write("        <tr>")
+                outfile.write("<td>{:4d}</td>".format(metric_set.year()))
+                outfile.write("<td>{}</td>".format(str(metric_set.metrics[name])))
+                outfile.write("</tr>\n")
+            outfile.write("      </table>\n")
+            outfile.write("    </div>\n")
+        outfile.write("  </body>\n")
+        outfile.write("</html>\n")
+
+
 # -----------------------------------------------------
 # Google Scholar import functions
 # -----------------------------------------------------
@@ -690,14 +721,6 @@ def main():
     # if out_name.strip() == "":
     #     out_name = "impactfactors.txt"
     # print()
-    #
-    # webstr = input("Create webpages? (y/n) (deafult = n) ")
-    # # webstr = input("Create webpages? (y/n) (deafult = y) ")
-    # # if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
-    # if webstr.strip().lower() == "y":
-    #     do_web = True
-    # else:
-    #     do_web = False
 
     print("Personal Impact Factor Calculator")
     print()
@@ -716,6 +739,14 @@ def main():
         out_name = "impactfactors.txt"
     print()
 
+    # webstr = input("Create webpages? (y/n) (deafult = n) ")
+    # if webstr.strip().lower() == "y":
+    webstr = input("Create html output? (y/n) (deafult = y) ")
+    if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
+        do_web = True
+    else:
+        do_web = False
+
     # calculate metrics for every year
     yearly_metrics_list = []
     for y in range(len(date_list)):
@@ -725,6 +756,9 @@ def main():
 
     # output
     write_output(out_name, date_list, yearly_metrics_list, inc_self)
+    if do_web:
+        create_html_output(date_list, yearly_metrics_list, inc_self)
+
     print("Finished")
 
 
