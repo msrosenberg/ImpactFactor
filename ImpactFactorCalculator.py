@@ -456,7 +456,7 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 #     webout_h_rate(date_list, metric_list)
 
 
-def create_html_output(date_list: list, yearly_metrics_list: list, inc_self: bool) -> None:
+def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
         outfile.write("<!DOCTYPE HTML>\n")
         outfile.write("<html lang=\"en\">\n")
@@ -473,17 +473,20 @@ def create_html_output(date_list: list, yearly_metrics_list: list, inc_self: boo
         # output a section for every metric
         for name in metric_names:
             metric = metric_base_data.metrics[name]
-            outfile.write("    <div>\n")
-            outfile.write("      <h1>" + metric.html_name + "</h1>\n")
-            outfile.write("      " + metric.description + "\n")
-            outfile.write("      <table>\n")
-            for metric_set in yearly_metrics_list:
-                outfile.write("        <tr>")
-                outfile.write("<td>{:4d}</td>".format(metric_set.year()))
-                outfile.write("<td>{}</td>".format(str(metric_set.metrics[name])))
-                outfile.write("</tr>\n")
-            outfile.write("      </table>\n")
-            outfile.write("    </div>\n")
+            if metric.is_self and not inc_self:
+                pass  # skip self-citation metrics
+            else:
+                outfile.write("    <div>\n")
+                outfile.write("      <h1>" + metric.html_name + "</h1>\n")
+                outfile.write("      " + metric.description + "\n")
+                outfile.write("      <table class=\"impact_table\">\n")
+                for metric_set in yearly_metrics_list:
+                    outfile.write("        <tr>")
+                    outfile.write("<td>{:4d}</td>".format(metric_set.year()))
+                    outfile.write("<td>{}</td>".format(str(metric_set.metrics[name])))
+                    outfile.write("</tr>\n")
+                outfile.write("      </table>\n")
+                outfile.write("    </div>\n")
         outfile.write("  </body>\n")
         outfile.write("</html>\n")
 
@@ -757,7 +760,7 @@ def main():
     # output
     write_output(out_name, date_list, yearly_metrics_list, inc_self)
     if do_web:
-        create_html_output(date_list, yearly_metrics_list, inc_self)
+        create_html_output(yearly_metrics_list, inc_self)
 
     print("Finished")
 
