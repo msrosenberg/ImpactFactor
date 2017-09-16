@@ -655,7 +655,7 @@ def metric_hg_index() -> Metric:
                     equation
     m.references = ["Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new "
                     "index to characterize the scientific outpuf of researchers based on the <em>h-</em> and "
-                    "<em>g-</em>indices. <em>Scientometrics</em> 82:391-400."]
+                    "<em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hg_index
     return m
@@ -744,7 +744,29 @@ def metric_rational_h_index() -> Metric:
     m.full_name = "rational h-index"
     m.html_name = "rational <em>h-</em>index"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$h^\Delta = h + 1 -\frac{n}{2h+1}$$"
+    nstr = r"\(n\)"
+    hstr = r"\(h\)"
+    hp1 = r"\(h+1\)"
+    maxh = r"\(2h+1\)"
+    remh = r"\(h+1-C_{h+1}\)"
+    m.description = "<p>The rational <em>h-</em>index (Ruane and Tol 2008) (<em>h</em><sup>Δ</sup> or " \
+                    "<em>h</em><sub>rat</sub>) is a " \
+                    "continuous version of <em>h</em> which not only measures the standard <em>h-</em>index but " \
+                    "includes the fractional progress toward the next higher value of <em>h.</em> It is calculated " \
+                    "as</p>" + equation + \
+                    "where " + nstr + " is the number of citations necessary to reach the next value of " + hstr + \
+                    ". The divisor, " + maxh + ", is the maximum number of possible citations needed to move from " + \
+                    hstr + " to " + hp1 + " (one additional citation for each of the " + hstr + " publications in " \
+                    "the core plus " + hp1 + " citations for a publication outside of the core with no " \
+                    "citations). Practically speaking, " + nstr + " is the number of papers in the core with " \
+                    "exactly " + hstr + " citations (thus needing one more to allow a move to " + hp1 + ") plus " + \
+                    remh + " (the number of citations the " + hp1 + \
+                    "<sup>th</sup> ranked publication needs to reach " + hp1 + " citations).</p>"
+    m.references = ["Ruane, F., and R.S.J. Tol (2008) Rational (successive) <em>h-</em>indices: An application to "
+                    "economics in the Republic of Ireland. <em>Scientometrics</em> 75(2):395&ndash;405."]
+    m.synonyms = ["h<sub>rat</sub>", "h<sup>Δ</sup>"]
+    m.symbol = "<em>h</em><sup>Δ</sup>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_rational_h_index
     return m
@@ -764,7 +786,17 @@ def metric_real_h_index() -> Metric:
     m.full_name = "real h-index"
     m.html_name = "real <em>h-</em>index"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$h_r=\frac{\left(h+1\right)C_h-hC_{h+1}}{1-C_{h+1}+C_h}.$$"
+    m.description = "<p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009) as the point at which " \
+                    "the linear interpolation between the citation counts associated with publications <em>h</em> " \
+                    "and <em>h</em> + 1 crosses a line with slope one,</p>" + equation + \
+                    "The real <em>h-</em>index has the same graphical definition as <em>h,</em> except it is not " \
+                    "restricted to integer values and thus represents the actual point where the citation and " \
+                    "threshold curves cross.</p>"
+    m.references = ["Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the "
+                    "<em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71."]
+    m.symbol = "<em>h<sub>r</sub></em>"
+    m.synonyms = "<em>h<sub>r</sub></em>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_real_h_index
     return m
