@@ -464,7 +464,15 @@ def metric_h2_index() -> Metric:
     m.html_name = "<em>h</em>(2)-index"
     m.symbol = "<em>h</em>(2)"
     m.metric_type = INT
-    m.description = "<p>...</p>"
+    equation = r"$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right)$$"
+    m.description = "<p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than " \
+                    "define the core based on <em>h</em> publications having <em>h</em> citations, this index " \
+                    "requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> ciations:</p>" + \
+                    equation + \
+                    "<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than " \
+                    "many other metrics.</p>"
+    m.references = ["Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original "
+                    "<em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h2_index
     return m
@@ -589,7 +597,13 @@ def metric_wu_w_index() -> Metric:
     m.html_name = "<em>w-</em>index (Wu)"
     m.symbol = "<em>w</em>"
     m.metric_type = INT
-    m.description = "<p>...</p>"
+    equation = r"$$w=\underset{i}{\max}\left(i \leq 10C_i\right)$$"
+    m.description = "<p>Wu\'s <em>w-</em>index (Wu 2010) is very similar to the <em>h-</em>index, but defines a " \
+                    "stricter core by requiring that each of the <em>w</em> publications have at least 10<em>w</em> " \
+                    "citations.</p>" + equation
+    m.references = ["Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely "
+                    "cited papers. <em>Journal of the American Society for Information Science and Technology<em> "
+                    "61(3):609&ndash;614."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wu_w_index
     return m
@@ -610,7 +624,11 @@ def metric_wu_wq() -> Metric:
     m.html_name = "<em>w</em>(<em>q</em>) (Wu)"
     m.symbol = "<em>q</em>"
     m.metric_type = INT
-    m.description = "<p>...</p>"
+    m.description = "<p>A corollary measure of Wu\'s <em>w-</em>index, <em>q</em> (Wu 2010) is the number of " \
+                    "additional citations needed by an author to raise their <em>w-</em>index by one.</p>"
+    m.references = ["Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely "
+                    "cited papers. <em>Journal of the American Society for Information Science and Technology<em> "
+                    "61(3):609&ndash;614."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wu_wq
     return m
@@ -630,7 +648,14 @@ def metric_hg_index() -> Metric:
     m.html_name = "<em>hg-</em>index"
     m.symbol = "<em>hg</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$hg=\sqrt{h \times g}$$"
+    m.description = "<p>The <em>hg-</em>index (Alonso <em>et al.</em> 2010) is an aggregate index which tries to " \
+                    "keep the advantages of both the <em>h-</em> and <em>g-</em>indices while minimizing their " \
+                    "disadvantages. The index is simply the geometric mean of <em>h</em> and <em>g,</em> or</p>" + \
+                    equation
+    m.references = ["Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new "
+                    "index to characterize the scientific outpuf of researchers based on the <em>h-</em> and "
+                    "<em>g-</em>indices. <em>Scientometrics</em> 82:391-400."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hg_index
     return m
