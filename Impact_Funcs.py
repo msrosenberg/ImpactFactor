@@ -31,10 +31,20 @@ def sort_and_rank(sort_list: list, n: int) -> Tuple[list, list]:
     return tmpindex, rank_order
 
 
-def calculate_ranks(citations: list) -> Tuple[list, list, list]:
+def calculate_median(values: list) -> Number:
+    sort_values = [v for v in values]  # make sorted copy of input list
+    sort_values.sort(reverse=True)
+    n = len(values)
+    j = n // 2
+    if n % 2 == 0:  # odd number of values in list
+        return (sort_values[j] + sort_values[j - 1]) / 2
+    else:  # even number of values in list
+        return sort_values[j]
+
+
+def calculate_ranks(citations: list) -> Tuple[list, list]:
     n = len(citations)
     cumulative_citations = [0 for _ in range(n)]
-    median_citations = [0 for _ in range(n)]
 
     # sort by number of citations
     tmp_index, rank_order = sort_and_rank(citations, n)
@@ -43,14 +53,7 @@ def calculate_ranks(citations: list) -> Tuple[list, list, list]:
             cumulative_citations[i] = cumulative_citations[i-1] + citations[tmp_index[n-i-1]]
         else:
             cumulative_citations[i] = citations[tmp_index[n-i-1]]
-        # for mu-index and median calculations
-        j = (i + 1) // 2
-        if (i + 1) % 2 == 0:
-            # type-casting to int is because Python was raising a phantom warning about lists
-            median_citations[i] = (int(citations[tmp_index[n-j-1]]) + int(citations[tmp_index[n-j]])) / 2
-        else:
-            median_citations[i] = citations[tmp_index[n-j-1]]
-    return rank_order, cumulative_citations, median_citations
+    return rank_order, cumulative_citations
 
 
 def publication_ages(year: int, pub_years: list) -> list:
@@ -90,8 +93,8 @@ def calculate_mean_cites(total_cites: int, total_pubs: int) -> float:
 
 
 # Median Citations
-def calculate_median_cites(median_list: list) -> float:
-    return median_list[len(median_list)-1]
+def calculate_median_cites(citations: list) -> Number:
+    return calculate_median(citations)
 
 
 # h-index (Hirsch )
@@ -338,12 +341,19 @@ def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
 
 # pi-index (Vinkler 2009)
 def calculate_pi_index(total_pubs: int, citations: list, rank_order: list) -> float:
-    j = math.floor(math.sqrt(total_pubs))
+    p_pi = math.floor(math.sqrt(total_pubs))
     pi_index = 0
     for i in range(len(citations)):
-        if rank_order[i] <= j:
+        if rank_order[i] <= p_pi:
             pi_index += citations[i]
     return pi_index / 100
+
+
+# pi-rate
+def calculate_pi_rate(total_pubs: int, pi_index: float) -> float:
+    p_pi = math.floor(math.sqrt(total_pubs))
+    c_pi = pi_index * 100
+    return c_pi / p_pi
 
 
 # p-index (originally called mock hm-index) (Prathap 2010b, 2011)
@@ -454,12 +464,16 @@ def calculate_tol_t_index(citations: list) -> int:
 
 
 # mu-index (Glanzel and Schubert 2010)
-def calculate_mu_index(rank_order: list, median_list: list) -> int:
+def calculate_mu_index(citations: list) -> int:
+    n = len(citations)
+    tmp_cites = [c for c in citations]
+    tmp_cites.sort(reverse=True)
+    # calculate medians
+    median_list = [calculate_median(tmp_cites[:i+1]) for i in range(0, n)]
     mu_index = 0
-    for i in range(len(rank_order)):
-        if median_list[rank_order[i]-1] >= rank_order[i]:
-            if rank_order[i] > mu_index:
-                mu_index = rank_order[i]
+    for i in range(n):
+        if median_list[i] >= i+1:
+            mu_index = i+1
     return mu_index
 
 
