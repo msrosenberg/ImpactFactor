@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i");
+
+body {
+	font-size: medium;
+    font-family: "Noto Serif", serif;
+}
+
+a,
+a:visited {
+  color: blue;
+  text-decoration: none;
+ }
+
+.metric_name {
+	font-weight: bold;
+}
+
+.index_list {
+	column-count: 4;
+	list-style-type: none;
+}
+
+#references,
+.metric_container {
+	border-top: 1px solid silver;
+	margin-top: 16px;
+}
+
+.metric_data_container {
+	margin-top: 16px;
+    display: grid;
+    grid-template-columns: 200px 600px;
+	grid-template-rows: auto;
+	grid-template-areas: 
+	  "value_table value_graph";
+}
+
+.metric_data_container_wide {
+	margin-top: 16px;
+    display: grid;
+    grid-template-columns: 100%
+	grid-template-rows: auto;
+	grid-template-areas: 
+	  "value_table";
+}
+
+.table_container {
+	grid-area: value_table;
+	align-self: left;		
+}
+
+.impact_table {
+	font-size: 0.75em;
+	border: 0;
+    border-collapse: collapse;
+}
+
+.impact_table tbody tr:nth-child(even)  td { background-color: #eee; }
+
+.impact_table th {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.cell_year {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.cell_value {
+	text-align: right;
+	padding-left: 16px;
+	padding-right: 8px;
+}
+
+.graph_container {
+	grid-area: value_graph;
+	align-self: center;	
+}
+
+.impact_chart {
+}
+
+.ferrers {border-collapse: collapse;
+          border: 0;
+		  margin: 0 auto;}
+
+.ferrers td {padding-left: 8px; padding-right: 8px; text-align: center}
+   
+.tc_bb {border-bottom: 1px solid black}
+.tc_rb {border-right: 1px solid black}
+.tc_bdb {border-bottom: 1px solid silver}
+.tc_rdb {border-right: 1px solid silver}
+
+.j_table {margin: 0 auto; border: 0; border-collapse: collapse}
+
+.j_table td {padding-left: 16px; padding-right: 16px; text-align: center}
+
+.top_row th,
+.top_row td {border-bottom: 1px solid silver}
+
+

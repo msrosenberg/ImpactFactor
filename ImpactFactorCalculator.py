@@ -464,6 +464,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         x = x.replace("/", "_")
         x = x.replace("(", "")
         x = x.replace(")", "")
+        x = x.replace(".", "_")
+        x = x.replace("%", "")
         return x
 
     def strip_html(x: str) -> str:
@@ -501,9 +503,14 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
             elif metric.graph_type is not None:
                 enc_name = encode_name(name)
                 outfile.write("        var data_{} = google.visualization.arrayToDataTable([\n".format(enc_name))
-                outfile.write("           [\'Year\', \'{}\'],\n".format(metric.full_name))
+                # outfile.write("           [\'Year\', \'{}\'],\n".format(metric.full_name))
+                outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
                 for metric_set in yearly_metrics_list:
-                    outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), metric_set.metrics[name].value))
+                    if metric_set.metrics[name].value == "n/a":
+                        v = "null"
+                    else:
+                        v = metric_set.metrics[name].value
+                    outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
                 outfile.write("		]);\n")
                 outfile.write("\n")
                 outfile.write("        var options_{} = {{\n".format(enc_name))
@@ -540,6 +547,32 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         index_list.sort()
         outfile.write("    <div>\n")
         outfile.write("      <h1>Metric Values and Descriptions</h1>\n")
+        outfile.write("      <h2>Inroduction</h2>\n")
+
+        outfile.write("      <h3>Common Symbols and Definitions</h3>\n")
+        outfile.write("        <ul>\n")
+        outfile.write("          <li><em>P</em> &mdash; The total number of publications of an author. Unless "
+                      "otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having "
+                      "the most citations and <em>P</em> the fewest.</li>\n")
+        outfile.write("          <li><em>C<sub>i</sub></em> &mdash; The number of citations for the "
+                      "<em>i</em><sup>th</sup> publication.</li>\n")
+        outfile.write("          <li><em>C<sup>x</sup></em> &mdash; The sum of citations for the top <em>x</em> "
+                      "publications, " + r"\(C^x=\sum\limits_{i=1}^{x}{C_i}\)" + ".</li>\n")
+        outfile.write("          <li><em>A<sub>i</sub></em> &mdash; The number of authors of the "
+                      "<em>i</em><sup>th</sup> publication.</li>\n")
+        outfile.write("          <li><em>a<sub>i</sub></em> &mdash; The ordered position of the focal author among "
+                      "the full author list of the <em>i</em><sup>th</sup> publication, it\'s value can range from "
+                      "1 to <em>A<sub>i</sub>.</em></li>\n")
+        outfile.write("          <li><em>Y<sub>i</sub></em> &mdash; The year of the "
+                      "<em>i</em><sup>th</sup> publication.</li>\n")
+        outfile.write("          <li><em>Y</em><sub>0</sub></em> &mdash; The year of the "
+                      "author\'s first publication, " + r"\(Y_0=\min\left(Y_i\right)\)" + ".</li>\n")
+        outfile.write("          <li>academic age &mdash; The number of years since an author\'s first publication. "
+                      "If <em>Y</em> is the current year (or year of interest), the academic age of the author is " +
+                      r"\(Y-Y_0+1\)" + ".</li>\n")
+        outfile.write("        </ul>\n")
+
+        outfile.write("      <h2>Index</h2>\n")
         outfile.write("      <ul class=\"index_list\">\n")
         for i in index_list:
             name = name_links[i]
@@ -556,8 +589,10 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
                 outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
                 outfile.write("      <h2>" + metric.html_name + "</h2>\n")
                 outfile.write("      " + metric.description + "\n")
-
-                outfile.write("      <div class=\"metric_data_container\">\n")
+                if metric.metric_type == Impact_Defs.INTLIST:
+                    outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_data_container_wide\">\n")
+                else:
+                    outfile.write("      <div class=\"metric_data_container\">\n")
                 outfile.write("        <div class=\"table_container\">\n")
                 outfile.write("          <table class=\"impact_table\">\n")
                 outfile.write("            <tr>")
