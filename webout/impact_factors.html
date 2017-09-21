@@ -2951,7 +2951,7 @@
         chart_Franceschini_f_index.draw(data_Franceschini_f_index, options_Franceschini_f_index);
 
         var data_annual_h_index = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', 'hIa'],
            ['1997', 0.0],
            ['1998', 0.5],
            ['1999', 0.6666666666666666],
@@ -2984,7 +2984,7 @@
         chart_annual_h_index.draw(data_annual_h_index, options_annual_h_index);
 
         var data_CDS_index = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', 'CDS'],
            ['1997', 5],
            ['1998', 10],
            ['1999', 16],
@@ -3017,7 +3017,7 @@
         chart_CDS_index.draw(data_CDS_index, options_CDS_index);
 
         var data_CDR_index = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', 'CDR'],
            ['1997', 7.142857142857143],
            ['1998', 11.904761904761905],
            ['1999', 16.3265306122449],
@@ -3050,7 +3050,7 @@
         chart_CDR_index.draw(data_CDR_index, options_CDR_index);
 
         var data_circ_cite_area_radius = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', 'r'],
            ['1997', 0.7978845608028654],
            ['1998', 2.0342144725641096],
            ['1999', 3.385137501286538],
@@ -3116,7 +3116,7 @@
         chart_citation_acceleration.draw(data_citation_acceleration, options_citation_acceleration);
 
         var data_Redner_index = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>R</em>'],
            ['1997', 1.4142135623730951],
            ['1998', 3.605551275463989],
            ['1999', 6.0],
@@ -3149,7 +3149,7 @@
         chart_Redner_index.draw(data_Redner_index, options_Redner_index);
 
         var data_Levene_j_index = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>j</em>'],
            ['1997', 2.0],
            ['1998', 7.59575411272515],
            ['1999', 13.015753193033053],
@@ -3182,7 +3182,7 @@
         chart_Levene_j_index.draw(data_Levene_j_index, options_Levene_j_index);
 
         var data_S_index_h_mixed = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>S</em>'],
            ['1997', -39.79400086720376],
            ['1998', 63.682209758717434],
            ['1999', 118.8325715472693],
@@ -3215,7 +3215,7 @@
         chart_S_index_h_mixed.draw(data_S_index_h_mixed, options_S_index_h_mixed);
 
         var data_T_index_h_mixed = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>T</em>'],
            ['1997', -39.79400086720376],
            ['1998', 111.39433523068367],
            ['1999', 193.40065623898292],
@@ -3399,7 +3399,8 @@
         </ul>
       <h2>Index</h2>
       <ul class="index_list">
-        <li><a href="#a_index"><em>a-</em>index</a></li>
+        <li><a href="#citation_acceleration"><em>a</em></a></li>
+        <li><a href="#alpha_index"><em>a-</em>index</a></li>
         <li><a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#adapt_pure_h_index_geom">adapted pure <em>h-</em>index (geometric credit)</a></li>
         <li><a href="#adapt_pure_h_index_prop">adapted pure <em>h-</em>index (proportional credit)</a></li>
@@ -3413,11 +3414,10 @@
         <li><a href="#h_rate">Carbon <em>h-</em>factor</a></li>
         <li><a href="#h_core_cites"><em>C<sup>H</sup></em></a></li>
         <li><a href="#circ_cite_area_radius">circular citation area radius</a></li>
-        <li><a href="#citation_acceleration">citation acceleration</a></li>
         <li><a href="#total_cites">citation count</a></li>
         <li><a href="#CDR_index">citation distribution rate index (CDR-index)</a></li>
         <li><a href="#CDS_index">citation distribution score index (CDS-index)</a></li>
-        <li><a href="#citation_entropy">citation entropy (<em>s-</em>index)</a></li>
+        <li><a href="#citation_entropy"><em>s</em></a></li>
         <li><a href="#c_p">citations per publication (<em>CPP</em>)</a></li>
         <li><a href="#citations_per_year">citations per year (<em>C<sup>TS</sup></em>)</a></li>
         <li><a href="#max_cites"><em>C</em><sub>Max</sub></a></li>
@@ -3458,6 +3458,7 @@
         <li><a href="#hm_index"><em>h<sub>F</sub>-</em>index</a></li>
         <li><a href="#hg_index"><em>hg-</em>index</a></li>
         <li><a href="#hi_index"><em>h<sub>i</sub>-</em>index</a></li>
+        <li><a href="#annual_h_index">hIa</a></li>
         <li><a href="#h_core_cites">Hirsch core citations</a></li>
         <li><a href="#Hirsch_min_const">Hirsch Proportionality Constant (<em>a</em>)</a></li>
         <li><a href="#hj_indices"><em>H<sub>j</sub>-</em>indices</a></li>
@@ -6462,7 +6463,7 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="alpha_index" class="metric_container">
       <h2><em>α-</em>index</h2>
-      <p>The <em>α-</em>index is a variant of the <em>h-</em>rate where <em>h</em> is divided by number of decades since an author's first publication, or</p>$$\alpha = \frac{h}{Y_D},$$<p>where</p>$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$
+      <p>The <em>α-</em>index (Abt 2012; Burrell 2012; Sangwal 2012) is a variant of the <em>h-</em>rate where <em>h</em> is divided by number of decades since an author's first publication, or</p>$$\alpha = \frac{h}{Y_D},$$<p>where</p>$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -6777,11 +6778,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="annual_h_index" class="metric_container">
       <h2>annual <em>h</em>-index (hIa)</h2>
-      <p>...</p>
+      <p>The annual <em>h</em>-index attempts to normalize by both the number of coauthors of eachpublication as well as the academic age of the researcher and is calculated as the normalized <em>h<sub>i</sub>-</em>index divided by academic age, or:</p>$$\text{hIa} = \frac{h_i}{Y-Y_0+1}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th>hIa</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">0.5000</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">0.6667</td></tr>
@@ -6812,11 +6813,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="CDS_index" class="metric_container">
       <h2>citation distribution score index (CDS-index)</h2>
-      <p>...</p>
+      <p>The citation distribution score index (Vinkler 2011, 2013) is a weighted sum of publication counts in a set of pre-defined citation-count-based categories. The 14 categories are defined predominantly by their upper limits, with the <em>k</em><sup>th</sup> category usually having an upper limits of 2<sup><em>k</em></sup> citations, except for the first category which has an upper limit of 2<sup>0</sup> = 1 citation, and the last category, which has no upper limit.</p><table class="cds_table"><tr><th>Category</th><th>Range of<br/>Citations</th><th>Minimum<br/>Citations</th><th>Maximum<br/>Citations</th></tr><tr><td>1</td><td>[0&ndash;2<sup>0</sup>]</td><td>0</td><td>1</td></tr><tr><td>2</td><td>[(2<sup>0</sup>+1)&ndash;2<sup>2</sup>]</td><td>2</td><td>4</td></tr><tr><td>3</td><td>[(2<sup>2</sup>+1)&ndash;2<sup>3</sup>]</td><td>5</td><td>8</td></tr><tr><td>4</td><td>[(2<sup>3</sup>+1)&ndash;2<sup>4</sup>]</td><td>9</td><td>16</td></tr><tr><td>5</td><td>[(2<sup>4</sup>+1)&ndash;2<sup>5</sup>]</td><td>17</td><td>32</td></tr><tr><td>6</td><td>[(2<sup>5</sup>+1)&ndash;2<sup>6</sup>]</td><td>33</td><td>64</td></tr><tr><td>7</td><td>[(2<sup>6</sup>+1)&ndash;2<sup>7</sup>]</td><td>65</td><td>128</td></tr><tr><td>8</td><td>[(2<sup>7</sup>+1)&ndash;2<sup>8</sup>]</td><td>129</td><td>256</td></tr><tr><td>9</td><td>[(2<sup>8</sup>+1)&ndash;2<sup>9</sup>]</td><td>257</td><td>512</td></tr><tr><td>10</td><td>[(2<sup>9</sup>+1)&ndash;2<sup>10</sup>]</td><td>513</td><td>1024</td></tr><tr><td>11</td><td>[(2<sup>10</sup>+1)&ndash;2<sup>11</sup>]</td><td>1025</td><td>2048</td></tr><tr><td>12</td><td>[(2<sup>11</sup>+1)&ndash;2<sup>12</sup>]</td><td>2049</td><td>4096</td></tr><tr><td>13</td><td>[(2<sup>12</sup>+1)&ndash;2<sup>13</sup>]</td><td>4097</td><td>8192</td></tr><tr><td>14</td><td>[(2<sup>12</sup>+1)&ndash;&#x221e;]</td><td>>8192</td><td>&#x221e;</td></tr></table><p>The rank of each category is also its weight. If <em>P<sup>k</sup></em> is the count of publications within the <em>k</em><sup>th</sup> category, then the index is calculated as</p>$$\text{CDS}=\sum\limits_{k=1}^{14}{k P^k}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th>CDS</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">5</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">10</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">16</td></tr>
@@ -6847,11 +6848,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="CDR_index" class="metric_container">
       <h2>citation distribution rate index (CDR-index)</h2>
-      <p>...</p>
+      <p>The citation distribution rate index (Vinkler 2011, 2013) is a complement to the citation distribution score index, calculated as the percent of the maximum possible CDS index actually observed, or</p>$$\text{CDR}=100\frac{\text{CDS}}{\text{CDS}_\max}=100\frac{\text{CDS}}{14P}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th>CDR</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">7.1429</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">11.9048</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">16.3265</td></tr>
@@ -6882,11 +6883,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="circ_cite_area_radius" class="metric_container">
       <h2>circular citation area radius</h2>
-      <p>...</p>
+      <p>The circular citation area radius (Sangwal 2012 )is an easy to calculate approximation of the <em>h-</em>index.</p>$$r=\sqrt{\frac{C^P}{\pi}}=\sqrt{\frac{\sum\limits_{i=1}^{P}{C_i}}{\pi}}$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th>r</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">0.7979</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">2.0342</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">3.3851</td></tr>
@@ -6916,8 +6917,8 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       </div>
     </div>
     <div id="citation_acceleration" class="metric_container">
-      <h2>citation acceleration</h2>
-      <p>...</p>
+      <h2><em>a</em></h2>
+      <p>Citation acceleration (Sangwal 2012) is defined as the total number of citations of an author divided by the square of their academic age,</p>$$a = \frac{C^P}{\left(Y-Y_0+1\right)^2}=\frac{\sum\limits_{i=1}^{P}{C_i}}{\left(Y-Y_0+1\right)^2}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -6952,11 +6953,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="Redner_index" class="metric_container">
       <h2>Redner index</h2>
-      <p>...</p>
+      <p>The Redner index (Redner 2010) is just the square-root of the total citation count for all publications, similar to the Levene <em>j-</em>index, which is the sum of the square-root of the counts.</p>$$R=\sqrt{C^P}=\sqrt{\sum\limits_{i=1}^{P}{C_i}}$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>R</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.4142</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">3.6056</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">6.0000</td></tr>
@@ -6987,11 +6988,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="Levene_j_index" class="metric_container">
       <h2>Levene <em>j-</em>index</h2>
-      <p>...</p>
+      <p>The Levene <em>j-</em>index (Levene <em>et al.</em> 2012) is the sum of the square-root of citation counts for all publications, similar to the Redner index which is the square-root of the sum.</p>$$j=\sum\limits_{i=1}^{P}{\sqrt{C_1}}$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>j</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">2.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">7.5958</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">13.0158</td></tr>
@@ -7022,11 +7023,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="S_index_h_mixed" class="metric_container">
       <h2><em>S-</em>index (<em>h-</em>mixed synthetic index)</h2>
-      <p>...</p>
+      <p>The <em>S-</em>index (Ye 2010) is an <em>h-</em>mixed synthetic index which combines multiple metrics together into a single value. It is calculated as </p>$$S=100\log_{10}\left(h \times C/P\right),$$<p>where C/P is the mean number of citations per publication.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>S</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">-39.7940</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">63.6822</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">118.8326</td></tr>
@@ -7057,11 +7058,11 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
     </div>
     <div id="T_index_h_mixed" class="metric_container">
       <h2><em>T-</em>index (<em>h-</em>mixed synthetic index)</h2>
-      <p>...</p>
+      <p>The <em>T-</em>index (Ye 2010) is an <em>h-</em>mixed synthetic index which combines multiple metrics together into a single value. It is calculated as </p>$$T=100\log_{10}\left(R\times h \times C/P\right),$$<p>where <em>R</em> is the <em>R-</em>index and C/P is the mean number of citations per publication.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>T</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">-39.7940</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">111.3943</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">193.4007</td></tr>
@@ -7091,8 +7092,8 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       </div>
     </div>
     <div id="citation_entropy" class="metric_container">
-      <h2>citation entropy (<em>s-</em>index)</h2>
-      <p>...</p>
+      <h2><em>s</em></h2>
+      <p>Citation entropy attempts to characterize the quality and impact of scientific researchusing an entropy model. It is calculated as</p>$$s=\frac{1}{4}\sqrt{C^P}e^{H^*},$$<p>where <em>H</em><sup>*</sup> is the standardized Shannon entropy or</p>$$H^*=-\sum\limits_{i=1}^{P}{\left(\frac{C_i}{C^P}\log_2\frac{C_i}{C^P}\right)}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -7234,6 +7235,7 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       <h2>References</h2>
       <ul>
         <li>Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple authorship. <em>Scientometrics</em> 88:107&ndash;131.</li>
+        <li>Abt, H.A. (2012) A publication index that is independent of age. <em>Scientometrics</em> 91:863&ndash;868.</li>
         <li>Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new index to characterize the scientific outpuf of researchers based on the <em>h-</em> and <em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400.</li>
         <li>Anderson, T.R., R.K.S. Hankin, and P.D. Killworth (2008) Beyond the Durfee square: Enhancing the <em>h-</em>index to score total publication output. <em>Scientometrics</em> 76(3):577&ndash;588.</li>
         <li>Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors profit from co-authors. <em>PLoS ONE</em> 8(4):e59814.</li>
@@ -7243,6 +7245,7 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
         <li>Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output measurement: Two approaches to enhance its accuracy. <em>Journal of Informetrics</em> 4:407&ndash;414.</li>
         <li>Brown, R.J.C. (2009) A simple method for excluding self-citation from the <em>h-</em>index: the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136.</li>
         <li>Burrell, Q.L. (2007) Hirsch index or Hirsch rate? Some thoughts arising from Liang's data. <em>Scientometrics</em> 73(1):19-28.</li>
+        <li>Burrell, Q.L. (2012) Comments on "A publication index that is independent of age" by Abt. <em>Scientometrics</em> 91:1059&ndash;1060.</li>
         <li>Cabrerizo, F.J., S. Alonso, E. Herrera-Viedma, and F. Herrera (2010) <em>q</em><sup>2</sup>-index: quantiative and qualitative evaluation based on the number and impact of papers in the Hirsch core. <em>Journal of Informetrics</em> 4:23&ndash;28.</li>
         <li>Chai, J.-c., P.-h. Hua, R. Rousseau, and J.-k. Wan (2008) The adapted pure <em>h-</em>index. <em>Fourth International Conference on Webometrics, Informetrics and Scientometrics & Ninth COLLNET Meeting,</em> H. Kretschmer and F. Havemann, eds. Humboldt-Universität zu Berlin: Institute for Library and Information Science.</li>
         <li>De Visscher, A. (2010) An index to measures a scientist's specific impact. <em>Journal of the American Society for Information Science and Technology</em> 61(2):319&ndash;328.</li>
@@ -7259,6 +7262,7 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
         <li>Glänzel, W. (2008) On some new bibliometric applications of statistics related to the <em>h-</em>index. <em>Scientometrics</em> 77:187&ndash;196.</li>
         <li>Glänzel, W., and A. Schubert (2010) Hirsch-type characteristics of the tail of distributions. The generalized <em>h-</em>index. <em>Journal of Informetrics</em> 4:118&ndash;123.</li>
         <li>Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the <em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71.</li>
+        <li>Harzing, A.-W., S. Alakangas, and D. Adams (2014) hIa: an individual annual <em>h-</em>index to accommodate disciplinary and career length differences. <em>Scientometrics</em> 99:811&ndash;821.</li>
         <li>Hirsch, J.E. (2005) An index to quantify an individual's scientific research output. <em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572.</li>
         <li>Jin, B. (2006) <em>h-</em>index: An evaluation indicator proposed by scientist. <em>Science Focus</em> 1(1):8&ndash;9.</li>
         <li>Jin, B. (2007) The <em>ar-</em>index: Complementing the <em>h-</em>index. <em>ISSI</em> Newsletter 3(1):6.</li>
@@ -7266,27 +7270,35 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
         <li>Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original <em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6.</li>
         <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
+        <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>
         <li>Prathap, G. (2010) The 100 most prolific economists using the <em>p-</em>index. <em>Scientometrics</em> 84:167&ndash;172.</li>
         <li>Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. <em>Scientometrics</em> 86:239&ndash;244.</li>
+        <li>Redner, S. (2010) On the meaning of the <em>h-</em>index. <em>Journal of Statistical Mechanics: Theory and Experiment</em> 2010(3):L03005.</li>
         <li>Riikonen, P., and M. Vihinen (2008) National research contributions: A case study on Finnish biomedical research. <em>Scientometrics</em> 77(2):207&ndash;222.</li>
         <li>Rousseau, R. (2006) New developments related to the Hirsch index. <em>Science Focus</em> 1(4):23&ndash;25.</li>
         <li>Rousseau, R., and F.Y. Ye (2008) A proposal for a dynamic <em>h-</em>type index. <em>Journal of the American Society for Information Science and Technology</em> 59(11):1853&ndash;1855.</li>
         <li>Ruane, F., and R.S.J. Tol (2008) Rational (successive) <em>h-</em>indices: An application to economics in the Republic of Ireland. <em>Scientometrics</em> 75(2):395&ndash;405.</li>
+        <li>Sangwal, K. (2012) On the age-independent publication index. <em>Scientometrics</em> 91:1053&ndash;1058.</li>
+        <li>Sangwal, K. (2012) On the relationship between citations of publication output and Hirsch index <em>h</em> of authors: Conceptualization of tapered Hirsch index <em>h<sub>T</sub></em>, circular citation area radius <em>R</em> and ciation acceleration <em>a.</em> <em>Scientometrics</em> 93:987&ndash;1004.</li>
         <li>Schreiber, M. (2007) Self-citation corrections for the Hirsch index. <em>Europhysics Letters</em> 78:30002-1&ndash;6.</li>
         <li>Schreiber, M. (2008) To share the fame in a fair way, <em>h<sub>m</sub></em> modifies <em>h</em> for multi-authored manuscripts. <em>New Journal of Physics</em> 10:040201.</li>
         <li>Sidiropoulos, A., D. Katsaros, and Y. Manolopoulos (2007) Generalized Hirsch <em>h-</em>index for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280.</li>
+        <li>Silagadze, Z.K. (2009) Citation entropy and research impact estimation. <em>ArXiv:physics</em> 0905.1039v2:1-7.</li>
         <li>Todeschini, R. (2011) The <em>j-</em>index: A new bibliometric index and multivariate comparisons between other common indices. <em>Scientometrics</em> 87:621&ndash;639.</li>
         <li>Todeschini, R., and A. Baccini (2016) <em>Handbook of Bibliometric Indicators: Quantitative Tools for Studying and Evaluating Research.</em> Weinheim, Germany: Wiley.</li>
         <li>Tol, R.S.J. (2007) Of the <em>h-</em>index and its alternatives: An application to the 100 most prolific economists (FNU-146). Sustainability and Global Change, Hamburg University.</li>
         <li>Vinkler, P. (2009) The <em>p-</em>index: A new indicator for assessing scientific impact. <em>Journal of Information Science</em> 35(5):602&ndash;612.</li>
+        <li>Vinkler, P. (2011) Application of the distribution of citations among publications in scientometric evaluations. <em>Journal of the American Society for Information Science and Technology</em> 62(10):1963&ndash;1978.</li>
+        <li>Vinkler, P. (2013) Would it be possible to increase the Hirsch-index, <em>π-</em>index or CDS-index by increasing the number of publications or citations only by unity? <em>Journal of Informetrics</em> 7(1):72&ndash;83.</li>
         <li>Wan, J.-k., P.-h. Hua, and R. Rousseau (2007) The pure <em>h-</em>index: Calculating an author's <em>h-</em>index by taking co-authors into account. <em>Collnet Journal of Scientometrics and Information Management</em> 1(2):1&ndash;5.</li>
         <li>Woeginger, G.J. (2008) An axiomatic characterization of the Hirsch-index. <em>Mathematical Social Sciences</em> 56(2):224&ndash;242.</li>
         <li>Wohlin, C. (2009) A new index for the citation curve of researchers. <em>Scientometrics</em> 81(2):521&ndash;533.</li>
         <li>Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely cited papers. <em>Journal of the American Society for Information Science and Technology</em> 61(3):609&ndash;614.</li>
+        <li>Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. <em>Journal of Library and Information Studies</em> 8:1&ndash;9.</li>
         <li>Ye, F.Y., and R. Rousseau (2010) Probing the <em>h-</em>core: An investigation of the tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439.</li>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
       </ul>

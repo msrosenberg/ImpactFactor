@@ -1484,7 +1484,7 @@ def metric_p_index_frac() -> Metric:
     eq3 = r"$$p_f=\sqrt[3]{\frac{\left.C^{\prime}\right.^2}{P^{\prime}}}$$"
     m.description = "<p>The fractional <em>p-</em>index (Prathap 2011) is a variant of the <em>p-</em>index " \
                     "which attempts to account for multiple-authored publications by adjusting both citation " \
-                    "and publication counts by author counts. It is calculated as:</p>" + eq1 + eq2+ eq3
+                    "and publication counts by author counts. It is calculated as:</p>" + eq1 + eq2 + eq3
     m.references = ["Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. "
                     "<em>Scientometrics</em> 86:239&ndash;244."]
     m.graph_type = LINE_CHART
@@ -2232,7 +2232,7 @@ def metric_p_index_harm() -> Metric:
     m.full_name = "harmonic p-index"
     m.html_name = "harmonic <em>p-</em>index"
     m.symbol = "<em>p<sub>h</sub></em>"
-    m.synonyms= ["<em>p<sub>h</sub></em>"]
+    m.synonyms = ["<em>p<sub>h</sub></em>"]
     m.metric_type = FLOAT
     req = r"$$r_i=\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}{\frac{1}{j}}}$$"
     eq1 = r"$$C^{\prime}=\sum\limits_{i=1}^{P}{C_i r_i}$$"
@@ -2244,7 +2244,7 @@ def metric_p_index_harm() -> Metric:
                     "based on the author\'s position within the authorship list for each publication " \
                     "(<em>a<sub>i</sub></em>). For each publication, the author receives weighted credit equal to:" \
                     + req + \
-                    "The harmonic <em>p-</em>index is then calculated as:</p>" + eq1 + eq2+ eq3
+                    "The harmonic <em>p-</em>index is then calculated as:</p>" + eq1 + eq2 + eq3
     m.references = ["Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. "
                     "<em>Scientometrics</em> 86:239&ndash;244."]
     m.graph_type = LINE_CHART
@@ -2749,12 +2749,19 @@ def metric_alpha_index() -> Metric:
     m.full_name = "α-index"
     m.html_name = "<em>α-</em>index"
     m.symbol = "<em>α</em>"
+    m.synonyms = ["<em>a-</em>index"]
     m.metric_type = FLOAT
     equation = r"$$\alpha = \frac{h}{Y_D},$$"
     yd = r"$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$"
-    m.description = "<p>The <em>α-</em>index is a variant of the <em>h-</em>rate where <em>h</em> is divided " \
-                    "by number of decades since an author\'s first publication, or</p>" + equation + \
-                    "<p>where</p>" + yd
+    m.description = "<p>The <em>α-</em>index (Abt 2012; Burrell 2012; Sangwal 2012) is a variant of the " \
+                    "<em>h-</em>rate where <em>h</em> is divided by number of decades since an author\'s first " \
+                    "publication, or</p>" + equation + "<p>where</p>" + yd
+    m.references = ["Abt, H.A. (2012) A publication index that is independent of age. <em>Scientometrics</em> "
+                    "91:863&ndash;868.",
+                    "Burrell, Q.L. (2012) Comments on \"A publication index that is independent of age\" by Abt. "
+                    "<em>Scientometrics</em> 91:1059&ndash;1060.",
+                    "Sangwal, K. (2012) On the age-independent publication index. <em>Scientometrics</em> "
+                    "91:1053&ndash;1058."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_alpha_index
     return m
@@ -2918,7 +2925,7 @@ def metric_trend_h_index() -> Metric:
                     "<em>Y<sub>j.i</sub></em> is the year of the <em>j</em><sup>th</sup> citation for publication " \
                     "<em>i.</em> The trend <em>h-</em>index is the largest value " \
                     "for which an author has <em>h<sup>t</sup></em> publications with at least " \
-                    "<em>S<sup>t</sup></em> ≥ <em>h<sup>t</sup></em>.</p>"  + hteq
+                    "<em>S<sup>t</sup></em> ≥ <em>h<sup>t</sup></em>.</p>" + hteq
     m.references = ["Sidiropoulos, A., D. Katsaros, and Y. Manolopoulos (2007) Generalized Hirsch <em>h-</em>index "
                     "for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280."]
     m.graph_type = LINE_CHART
@@ -3041,8 +3048,16 @@ def metric_annual_h_index() -> Metric:
     m.name = "annual h-index"
     m.full_name = "annual h-index (hIa)"
     m.html_name = "annual <em>h</em>-index (hIa)"
+    m.symbol = "hIa"
+    m.synonyms = ["hIa"]
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$\text{hIa} = \frac{h_i}{Y-Y_0+1}.$$"
+    m.description = "<p>The annual <em>h</em>-index attempts to normalize by both the number of coauthors of each" \
+                    "publication as well as the academic age of the researcher and is calculated as the " \
+                    "normalized <em>h<sub>i</sub>-</em>index divided by academic age, or:</p>" + equation
+    m.references = ["Harzing, A.-W., S. Alakangas, and D. Adams (2014) hIa: an individual annual <em>h-</em>index "
+                    "to accommodate disciplinary and career length differences. <em>Scientometrics</em> "
+                    "99:811&ndash;821."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_annual_h_index
     return m
@@ -3058,8 +3073,41 @@ def metric_cds_index() -> Metric:
     m = Metric()
     m.name = "CDS-index"
     m.full_name = "citation distribution score index (CDS-index)"
+    m.symbol = "CDS"
     m.metric_type = INT
-    m.description = "<p>...</p>"
+    table = "<table class=\"cds_table\">" \
+            "<tr><th>Category</th><th>Range of<br/>Citations</th>" \
+            "<th>Minimum<br/>Citations</th><th>Maximum<br/>Citations</th></tr>" \
+            "<tr><td>1</td><td>[0&ndash;2<sup>0</sup>]</td><td>0</td><td>1</td></tr>" \
+            "<tr><td>2</td><td>[(2<sup>0</sup>+1)&ndash;2<sup>2</sup>]</td><td>2</td><td>4</td></tr>" \
+            "<tr><td>3</td><td>[(2<sup>2</sup>+1)&ndash;2<sup>3</sup>]</td><td>5</td><td>8</td></tr>" \
+            "<tr><td>4</td><td>[(2<sup>3</sup>+1)&ndash;2<sup>4</sup>]</td><td>9</td><td>16</td></tr>" \
+            "<tr><td>5</td><td>[(2<sup>4</sup>+1)&ndash;2<sup>5</sup>]</td><td>17</td><td>32</td></tr>" \
+            "<tr><td>6</td><td>[(2<sup>5</sup>+1)&ndash;2<sup>6</sup>]</td><td>33</td><td>64</td></tr>" \
+            "<tr><td>7</td><td>[(2<sup>6</sup>+1)&ndash;2<sup>7</sup>]</td><td>65</td><td>128</td></tr>" \
+            "<tr><td>8</td><td>[(2<sup>7</sup>+1)&ndash;2<sup>8</sup>]</td><td>129</td><td>256</td></tr>" \
+            "<tr><td>9</td><td>[(2<sup>8</sup>+1)&ndash;2<sup>9</sup>]</td><td>257</td><td>512</td></tr>" \
+            "<tr><td>10</td><td>[(2<sup>9</sup>+1)&ndash;2<sup>10</sup>]</td><td>513</td><td>1024</td></tr>" \
+            "<tr><td>11</td><td>[(2<sup>10</sup>+1)&ndash;2<sup>11</sup>]</td><td>1025</td><td>2048</td></tr>" \
+            "<tr><td>12</td><td>[(2<sup>11</sup>+1)&ndash;2<sup>12</sup>]</td><td>2049</td><td>4096</td></tr>" \
+            "<tr><td>13</td><td>[(2<sup>12</sup>+1)&ndash;2<sup>13</sup>]</td><td>4097</td><td>8192</td></tr>" \
+            "<tr><td>14</td><td>[(2<sup>12</sup>+1)&ndash;&#x221e;]</td><td>>8192</td><td>&#x221e;</td></tr>" \
+            "</table>"
+    equation = r"$$\text{CDS}=\sum\limits_{k=1}^{14}{k P^k}.$$"
+    m.description = "<p>The citation distribution score index (Vinkler 2011, 2013) is a weighted sum of publication " \
+                    "counts in a set of pre-defined citation-count-based categories. The 14 categories are " \
+                    "defined predominantly by their upper limits, with the <em>k</em><sup>th</sup> category usually " \
+                    "having an upper limits of 2<sup><em>k</em></sup> citations, except for the first category " \
+                    "which has an upper limit of 2<sup>0</sup> = 1 citation, and the last category, which has no " \
+                    "upper limit.</p>" + table + "<p>The rank of each category is also its weight. If " \
+                    "<em>P<sup>k</sup></em> is the count of publications " \
+                    "within the <em>k</em><sup>th</sup> category, then the index is calculated as</p>" + equation
+    m.references = ["Vinkler, P. (2011) Application of the distribution of citations among publications in "
+                    "scientometric evaluations. <em>Journal of the American Society for Information Science "
+                    "and Technology</em> 62(10):1963&ndash;1978.",
+                    "Vinkler, P. (2013) Would it be possible to increase the Hirsch-index, <em>π-</em>index or "
+                    "CDS-index by increasing the number of publications or citations only by unity? <em>Journal of "
+                    "Informetrics</em> 7(1):72&ndash;83."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cds_index
     return m
@@ -3076,8 +3124,18 @@ def metric_cdr_index() -> Metric:
     m = Metric()
     m.name = "CDR-index"
     m.full_name = "citation distribution rate index (CDR-index)"
+    m.symbol = "CDR"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$\text{CDR}=100\frac{\text{CDS}}{\text{CDS}_\max}=100\frac{\text{CDS}}{14P}.$$"
+    m.description = "<p>The citation distribution rate index (Vinkler 2011, 2013) is a complement to " \
+                    "the citation distribution score index, calculated as the percent of the maximum possible CDS " \
+                    "index actually observed, or</p>" + equation
+    m.references = ["Vinkler, P. (2011) Application of the distribution of citations among publications in "
+                    "scientometric evaluations. <em>Journal of the American Society for Information Science "
+                    "and Technology</em> 62(10):1963&ndash;1978.",
+                    "Vinkler, P. (2013) Would it be possible to increase the Hirsch-index, <em>π-</em>index or "
+                    "CDS-index by increasing the number of publications or citations only by unity? <em>Journal of "
+                    "Informetrics</em> 7(1):72&ndash;83."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cdr_index
     return m
@@ -3093,8 +3151,15 @@ def metric_circ_cite_area_radius() -> Metric:
     m = Metric()
     m.name = "circ cite area radius"
     m.full_name = "circular citation area radius"
+    m.symbol = "r"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$r=\sqrt{\frac{C^P}{\pi}}=\sqrt{\frac{\sum\limits_{i=1}^{P}{C_i}}{\pi}}$$"
+    m.description = "<p>The circular citation area radius (Sangwal 2012 )is an easy to calculate approximation of " \
+                    "the <em>h-</em>index.</p>" + equation
+    m.references = ["Sangwal, K. (2012) On the relationship between citations of publication output and Hirsch "
+                    "index <em>h</em> of authors: Conceptualization of tapered Hirsch index <em>h<sub>T</sub></em>, "
+                    "circular citation area radius <em>R</em> and ciation acceleration <em>a.</em> "
+                    "<em>Scientometrics</em> 93:987&ndash;1004."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_circ_cite_area_radius
     return m
@@ -3111,8 +3176,15 @@ def metric_citation_acceleration() -> Metric:
     m = Metric()
     m.name = "citation acceleration"
     m.full_name = "citation acceleration"
+    m.full_name = "<em>a</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$a = \frac{C^P}{\left(Y-Y_0+1\right)^2}=\frac{\sum\limits_{i=1}^{P}{C_i}}{\left(Y-Y_0+1\right)^2}.$$"
+    m.description = "<p>Citation acceleration (Sangwal 2012) is defined as the total number of citations of an " \
+                    "author divided by the square of their academic age,</p>" + equation
+    m.references = ["Sangwal, K. (2012) On the relationship between citations of publication output and Hirsch "
+                    "index <em>h</em> of authors: Conceptualization of tapered Hirsch index <em>h<sub>T</sub></em>, "
+                    "circular citation area radius <em>R</em> and ciation acceleration <em>a.</em> "
+                    "<em>Scientometrics</em> 93:987&ndash;1004."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_citation_acceleration
     return m
@@ -3128,8 +3200,14 @@ def metric_redner_index() -> Metric:
     m = Metric()
     m.name = "Redner index"
     m.full_name = "Redner index"
+    m.symbol = "<em>R</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$R=\sqrt{C^P}=\sqrt{\sum\limits_{i=1}^{P}{C_i}}$$"
+    m.description = "<p>The Redner index (Redner 2010) is just the square-root of the total citation count for " \
+                    "all publications, similar to the Levene <em>j-</em>index, which is the sum of the square-root " \
+                    "of the counts.</p>" + equation
+    m.references = ["Redner, S. (2010) On the meaning of the <em>h-</em>index. <em>Journal of Statistical "
+                    "Mechanics: Theory and Experiment</em> 2010(3):L03005."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_redner_index
     return m
@@ -3146,8 +3224,15 @@ def metric_levene_j_index() -> Metric:
     m.name = "Levene j-index"
     m.full_name = "Levene j-index"
     m.html_name = "Levene <em>j-</em>index"
+    m.symbol = "<em>j</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$j=\sum\limits_{i=1}^{P}{\sqrt{C_1}}$$"
+    m.description = "<p>The Levene <em>j-</em>index (Levene <em>et al.</em> 2012) is the sum of the square-root " \
+                    "of citation counts for all publications, similar to the Redner index which is the square-root " \
+                    "of the sum.</p>" + equation
+    m.references = ["Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list "
+                    "of cited publications. <em>International Journal of Scientometrics, Informetrics and "
+                    "Bibliometrics</em> 16:1."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_levene_j_index
     return m
@@ -3165,8 +3250,14 @@ def metric_s_index_h_mixed() -> Metric:
     m.name = "S-index (h-mixed)"
     m.full_name = "S-index (h-mixed synthetic index)"
     m.html_name = "<em>S-</em>index (<em>h-</em>mixed synthetic index)"
+    m.symbol = "<em>S</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$S=100\log_{10}\left(h \times C/P\right),$$"
+    m.description = "<p>The <em>S-</em>index (Ye 2010) is an <em>h-</em>mixed synthetic index which " \
+                    "combines multiple metrics together into a single value. It is calculated as </p>" + \
+                    equation + "<p>where C/P is the mean number of citations per publication.</p>"
+    m.references = ["Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. "
+                    "<em>Journal of Library and Information Studies</em> 8:1&ndash;9."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_s_index_h_mixed
     return m
@@ -3185,8 +3276,15 @@ def metric_t_index_h_mixed() -> Metric:
     m.name = "T-index (h-mixed)"
     m.full_name = "T-index (h-mixed synthetic index)"
     m.html_name = "<em>T-</em>index (<em>h-</em>mixed synthetic index)"
+    m.symbol = "<em>T</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$T=100\log_{10}\left(R\times h \times C/P\right),$$"
+    m.description = "<p>The <em>T-</em>index (Ye 2010) is an <em>h-</em>mixed synthetic index which " \
+                    "combines multiple metrics together into a single value. It is calculated as </p>" + \
+                    equation + "<p>where <em>R</em> is the <em>R-</em>index and C/P is the mean number of " \
+                    "citations per publication.</p>"
+    m.references = ["Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. "
+                    "<em>Journal of Library and Information Studies</em> 8:1&ndash;9."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_t_index_h_mixed
     return m
@@ -3204,8 +3302,15 @@ def metric_citation_entropy() -> Metric:
     m.name = "citation entropy"
     m.full_name = "citation entropy (s-index)"
     m.html_name = "citation entropy (<em>s-</em>index)"
+    m.html_name = "<em>s</em>"
     m.metric_type = FLOAT
-    m.description = "<p>...</p>"
+    equation = r"$$s=\frac{1}{4}\sqrt{C^P}e^{H^*},$$"
+    heq = r"$$H^*=-\sum\limits_{i=1}^{P}{\left(\frac{C_i}{C^P}\log_2\frac{C_i}{C^P}\right)}.$$"
+    m.description = "<p>Citation entropy attempts to characterize the quality and impact of scientific research" \
+                    "using an entropy model. It is calculated as</p>" + equation + "<p>where <em>H</em><sup>*</sup> " \
+                    "is the standardized Shannon entropy or</p>" + heq
+    m.references = ["Silagadze, Z.K. (2009) Citation entropy and research impact estimation. "
+                    "<em>ArXiv:physics</em> 0905.1039v2:1-7."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_citation_entropy
     return m

@@ -84,18 +84,33 @@ a:visited {
           border: 0;
 		  margin: 0 auto;}
 
-.ferrers td {padding-left: 8px; padding-right: 8px; text-align: center}
+.ferrers td {padding-left: 8px; 
+			padding-right: 8px; 
+			text-align: center}
    
 .tc_bb {border-bottom: 1px solid black}
 .tc_rb {border-right: 1px solid black}
 .tc_bdb {border-bottom: 1px solid silver}
 .tc_rdb {border-right: 1px solid silver}
 
-.j_table {margin: 0 auto; border: 0; border-collapse: collapse}
+.j_table {margin: 0 auto; 
+			border: 0; 
+			border-collapse: collapse}
 
-.j_table td {padding-left: 16px; padding-right: 16px; text-align: center}
+.j_table td {padding-left: 16px; 
+			padding-right: 16px; 
+			text-align: center}
 
 .top_row th,
 .top_row td {border-bottom: 1px solid silver}
 
+.cds_table {border: 0; 
+			border-collapse: collapse; 
+			margin: 0 auto;}
 
+.cds_table th,
+.cds_table td {padding-left: 8px; 
+				padding-right: 8px; 
+				text-align: center}
+
+.cds_table th {border-bottom: 1px solid silver}
