@@ -405,7 +405,7 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'none'},\n")
+    output.append("		     legend: {position: 'bottom'},\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
