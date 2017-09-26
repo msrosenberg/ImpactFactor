@@ -370,7 +370,7 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     graph = metric.description_graphs[0]
     output = list()
     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("['Rank', 'Citations', 'x=y', 'h-square', {'type': 'string', 'role': 'annotation'}],")
+    output.append("           ['Rank', 'Citations', 'x=y', 'h-square', {'type': 'string', 'role': 'annotation'}],\n")
     tmp_cites = [c for c in metric_set.citations]
     tmp_cites.sort(reverse=True)
     h = metric_set.metrics["h-index"].value
@@ -418,8 +418,7 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		     series: { 0: {},\n")
     output.append("		               1: {lineDashStyle: [4, 4]},\n")
     output.append("		               2: {lineDashStyle: [2, 2],\n")
-    output.append("		                   annotations:{textStyle:{color: \'black\',")
-    output.append("		                                           italic: true, bold: true}}}}\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
     output.append("        };\n")
     output.append("\n")
     output.append("        var chart_{} = new google.visualization."
