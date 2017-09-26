@@ -29,7 +29,7 @@ a:visited {
 .metric_data_container {
 	margin-top: 16px;
     display: grid;
-    grid-template-columns: 200px 600px;
+    grid-template-columns: 1fr 3fr;
 	grid-template-rows: auto;
 	grid-template-areas: 
 	  "value_table value_graph";
@@ -38,15 +38,14 @@ a:visited {
 .metric_data_container_wide {
 	margin-top: 16px;
     display: grid;
-    grid-template-columns: 100%
+    grid-template-columns: 1fr 3fr;
 	grid-template-rows: auto;
 	grid-template-areas: 
-	  "value_table";
+	  "value_table value_graph";
 }
 
 .table_container {
 	grid-area: value_table;
-	align-self: left;		
 }
 
 .impact_table {
@@ -78,6 +77,8 @@ a:visited {
 }
 
 .impact_chart {
+	height: 400px;
+	width: 800px;
 }
 
 .ferrers {border-collapse: collapse;
@@ -114,3 +115,9 @@ a:visited {
 				text-align: center}
 
 .cds_table th {border-bottom: 1px solid silver}
+
+.hsq_chart {
+	width: 500px;
+	height: 500px;
+	margin: auto;
+}

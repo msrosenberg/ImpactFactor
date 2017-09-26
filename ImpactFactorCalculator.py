@@ -226,68 +226,6 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 # -----------------------------------------------------
 # Output results as set of webpages
 # -----------------------------------------------------
-# def webheader(outfile, page_title: str, data: list) -> None:
-#     outfile.write("<!DOCTYPE HTML>\n")
-#     outfile.write("<html lang=\"en\">\n")
-#     outfile.write("  <head>\n")
-#     outfile.write("    <meta charset=\"utf-8\" />\n")
-#     outfile.write("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n")
-#     outfile.write("    <title>" + page_title + "</title>\n")
-#     outfile.write("    <meta name=\"description\" content=\"xxx\" />\n")
-#     outfile.write("    <link rel=\"author\" href=\"mailto:msr@asu.edu\" />\n")
-#     outfile.write("    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?"
-#                   "config=TeX-MML-AM_CHTML\"></script>\n")
-#     # graph data
-#     outfile.write("    <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>\n")
-#     outfile.write("    <script type=\"text/javascript\">\n")
-#     outfile.write("      google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});\n")
-#     # outfile.write("      google.charts.load('current', {'packages':['line']});")
-#     outfile.write("      google.setOnLoadCallback(drawChart);\n")
-#     outfile.write("      function drawChart() {\n")
-#     for i, dataset in enumerate(data):
-#         header = dataset[0]
-#         data_values = dataset[1]
-#         chart_type = dataset[2]
-#         vaxis_title = dataset[3]
-#         chart_options = dataset[4]
-#         outfile.write("        var data{} = google.visualization.arrayToDataTable([\n".format(i))
-#         outfile.write("           [" + ",".join(header) + "],\n")
-#         for d in data_values:
-#             outfile.write("           [" + ",".join(d) + "],\n")
-#         outfile.write("		]);\n")
-#         outfile.write("\n")
-#         outfile.write("        var options" + str(i) + " = {\n")
-#         # outfile.write("          title: \"" + chart_title + "\",\n")
-#         outfile.write("		  legend: {position: 'right'},\n")
-#         outfile.write("		  vAxis: {title: '" + vaxis_title + "'},\n")
-#         outfile.write("		  hAxis: {slantedText: true},\n")
-#         if chart_options is not None:
-#             for opt in chart_options:
-#                 outfile.write(opt)
-#         outfile.write("        };\n")
-#         outfile.write("\n")
-#         # outfile.write("        var chart{} = new google.charts."
-#         #               "Line(document.getElementById('impact_chart{}_div'));\n".format(i, i))
-#         outfile.write("        var chart{} = new google.visualization."
-#                       "LineChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
-#         # if chart_type == LINE_CHART:
-#         #     outfile.write("        var chart{} = new google.visualization."
-#         #                   "LineChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
-#         # elif chart_type == POINT_CHART:
-#         #     outfile.write("        var chart{} = new google.visualization."
-#         #                   "ScatterChart(document.getElementById('impact_chart{}_div'));\n".format(i, i))
-#         outfile.write("        chart{}.draw(data{}, options{});\n".format(i, i, i))
-#         # outfile.write("        chart{}.draw(data{}, google.chart.Line.convertOptions(options{}));\n".format(i, i, i))
-#         outfile.write("\n")
-#     outfile.write("		}\n")
-#     outfile.write("    </script>\n")
-#     outfile.write("  </head>\n")
-#
-#
-# def write_paragraph(outfile, p: str) -> None:
-#     outfile.write("    <p>" + p + "</p>\n")
-#
-#
 # def webout_h_rate(date_list: list, metric_list: list) -> None:
 #     """
 #     Output a webpage with the h-rate and least squares h-rates
@@ -450,11 +388,6 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 #         outfile.write("   <div id=\"impact_chart4_div\"></div>\n")
 #         outfile.write("  </body>\n")
 #         outfile.write("</html>\n")
-#
-#
-# def write_webpages(date_list: list, metric_list: list, inc_self: bool) -> None:
-#     webout_basic_data(date_list, metric_list)
-#     webout_h_rate(date_list, metric_list)
 
 
 def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
@@ -494,7 +427,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         outfile.write("      google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});\n")
         outfile.write("      google.setOnLoadCallback(drawChart);\n")
         outfile.write("      function drawChart() {\n")
-        metric_base_data = yearly_metrics_list[0]
+        # metric_base_data = yearly_metrics_list[0]
+        metric_base_data = yearly_metrics_list[len(yearly_metrics_list)-1]
         metric_names = metric_base_data.metric_names
         for name in metric_names:
             metric = metric_base_data.metrics[name]
@@ -503,29 +437,161 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
             elif metric.graph_type is not None:
                 enc_name = encode_name(name)
                 outfile.write("        var data_{} = google.visualization.arrayToDataTable([\n".format(enc_name))
-                # outfile.write("           [\'Year\', \'{}\'],\n".format(metric.full_name))
-                outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
-                for metric_set in yearly_metrics_list:
-                    if metric_set.metrics[name].value == "n/a":
-                        v = "null"
-                    else:
-                        v = metric_set.metrics[name].value
-                    outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
-                outfile.write("		]);\n")
-                outfile.write("\n")
-                outfile.write("        var options_{} = {{\n".format(enc_name))
-                outfile.write("		     legend: {position: 'none'},\n")
-                # outfile.write("		     vAxis: {title: '" + vaxis_title + "'},\n")
-                outfile.write("		     hAxis: {slantedText: true},\n")
-                # if chart_options is not None:
-                #     for opt in chart_options:
-                #         outfile.write(opt)
-                outfile.write("        };\n")
+                if metric.graph_type == Impact_Defs.LINE_CHART:
+                    # outfile.write("           [\'Year\', \'{}\'],\n".format(metric.full_name))
+                    outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
+                    for metric_set in yearly_metrics_list:
+                        if metric_set.metrics[name].value == "n/a":
+                            v = "null"
+                        else:
+                            v = metric_set.metrics[name].value
+                        outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
+                    outfile.write("		]);\n")
+                    outfile.write("\n")
+                    outfile.write("        var options_{} = {{\n".format(enc_name))
+                    outfile.write("		     legend: {position: 'none'},\n")
+                    # outfile.write("		     vAxis: {title: '" + vaxis_title + "'},\n")
+                    outfile.write("		     hAxis: {slantedText: true},\n")
+                    # if chart_options is not None:
+                    #     for opt in chart_options:
+                    #         outfile.write(opt)
+                    outfile.write("        };\n")
+                elif metric.graph_type == Impact_Defs.MULTILINE_CHART_LEFT:
+                    # figure out how many values will be on the x-axis
+                    maxx = 0
+                    for metric_set in yearly_metrics_list:
+                        maxx = max(maxx, len(metric_set.metrics[name].value))
+                    # write header
+                    outstr = "           [\'i\'"
+                    for metric_set in yearly_metrics_list:
+                        outstr += ", \'{}\'".format(metric_set.year())
+                    outstr += "],\n"
+                    outfile.write(outstr)
+                    for x in range(maxx):
+                        outstr = "           [\'{}\'".format(x+1)
+                        for metric_set in yearly_metrics_list:
+                            vlist = metric_set.metrics[name].value
+                            if x >= len(vlist):
+                                v = "null"
+                            else:
+                                v = vlist[x]
+                            outstr += ", {}".format(v)
+                        outstr += "],\n"
+                        outfile.write(outstr)
+                    outfile.write("		]);\n")
+                    outfile.write("\n")
+                    outfile.write("        var options_{} = {{\n".format(enc_name))
+                    outfile.write("		     hAxis: {slantedText: true},\n")
+                    outfile.write("        };\n")
+                elif metric.graph_type == Impact_Defs.MULTILINE_CHART_CENTER:
+                    # figure out how many values will be on the x-axis
+                    maxx = 0
+                    for metric_set in yearly_metrics_list:
+                        maxx = max(maxx, len(metric_set.metrics[name].value))
+                    # write header
+                    outstr = "           [\'i\'"
+                    for metric_set in yearly_metrics_list:
+                        outstr += ", \'{}\'".format(metric_set.year())
+                    outstr += "],\n"
+                    outfile.write(outstr)
+                    d = maxx // 2
+                    for x in range(-d, d+1):
+                        outstr = "           [\'{}\'".format(x)
+                        for metric_set in yearly_metrics_list:
+                            vlist = metric_set.metrics[name].value
+                            vl = len(vlist)
+                            if (x + vl // 2 < 0) or (x + vl // 2 >= vl):
+                                v = "null"
+                            else:
+                                v = vlist[x + vl // 2]
+                            outstr += ", {}".format(v)
+                        outstr += "],\n"
+                        outfile.write(outstr)
+                    outfile.write("		]);\n")
+                    outfile.write("\n")
+                    outfile.write("        var options_{} = {{\n".format(enc_name))
+                    outfile.write("		     hAxis: {slantedText: true},\n")
+                    outfile.write("        };\n")
                 outfile.write("\n")
                 outfile.write("        var chart_{} = new google.visualization."
                               "LineChart(document.getElementById('chart_{}_div'));\n".format(enc_name, enc_name))
                 outfile.write("        chart_{}.draw(data_{}, options_{});\n".format(enc_name, enc_name, enc_name))
                 outfile.write("\n")
+            # plots for descriptions
+            for graph in metric.description_graphs:
+                outfile.write("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+                # graph.components = ["ranked citations", "x=y", "h-square"]
+                cstr = ""
+                for i in range(len(graph.components)):
+                    cstr += ", \'y" + str(i) + "\'"
+                cstr += ", {\'type\': \'string\', \'role\': \'annotation\'}"
+                outfile.write("           [\'X\'" + cstr + "],\n")
+                maxx = 0
+                h = 0
+                tmp_dat = []
+                for c in graph.components:
+                    if c == "ranked citations":
+                        maxx = max(maxx, metric_base_data.metrics["total pubs"].value)
+                        tmp_dat = [c for c in metric_base_data.citations]
+                        tmp_dat.sort(reverse=True)
+                    elif c == "x=y":
+                        maxx = max(maxx, 1)
+                    elif c == "h-square":
+                        h = metric_base_data.metrics["h-index"].value
+                        maxx = max(maxx, h)
+                maxv = 100
+                for x in range(maxx+1):
+                    tmpstr = None
+                    outstr = "           [{}".format(x)
+                    for c in graph.components:
+                        if c == "ranked citations":
+                            if x == 0:
+                                v = "null"
+                            else:
+                                v = tmp_dat[x-1]
+                            outstr += ", {}".format(v)
+                        elif c == "x=y":
+                            outstr += ", {}".format(x)
+                        elif c == "h-square":
+                            if x <= h:
+                                v = h
+                            else:
+                                v = "null"
+                            if x == h:  # close the square by adding an extra point at x, 0
+                                tmpstr = outstr + ", 0, null"
+                                outstr += ", {}, \'h\'".format(v)
+                            else:
+                                outstr += ", {}, null".format(v)
+                    outstr += "],\n"
+                    outfile.write(outstr)
+                    if tmpstr is not None:
+                        outfile.write(tmpstr + "],\n")
+                outfile.write("		]);\n")
+                outfile.write("\n")
+                outfile.write("        var options_{} = {{\n".format(graph.name))
+                outfile.write("		     legend: {position: 'none'},\n")
+                outfile.write("		     hAxis: {slantedText: true,\n")
+                outfile.write("		             title: \'Rank\',\n")
+                outfile.write("		             gridlines: {color: \'transparent\'},\n")
+                outfile.write("		             ticks: [20, 40, 60, 80, 100],\n")
+                outfile.write("		             viewWindow: {max:" + str(maxv) + "}},\n")
+                outfile.write("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+                outfile.write("		             title: \'Citation Count\',\n")
+                outfile.write("		             ticks: [20, 40, 60, 80, 100],\n")
+                outfile.write("		             gridlines: {color: \'transparent\'}},\n")
+                outfile.write("		     series: { 0: {},\n")
+                outfile.write("		               1: {lineDashStyle: [4, 4]},\n")
+                outfile.write("		               2: {lineDashStyle: [2, 2],\n")
+                outfile.write("		                   annotations:{textStyle:{color: \'black\',")
+                outfile.write("		                                           italic: true, bold: true}}}}\n")
+                outfile.write("        };\n")
+                outfile.write("\n")
+                outfile.write("        var chart_{} = new google.visualization."
+                              "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+                outfile.write("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name,
+                                                                                     graph.name))
+                outfile.write("\n")
+
         outfile.write("		}\n")
         outfile.write("    </script>\n")
 

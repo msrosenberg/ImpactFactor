@@ -80,7 +80,7 @@
         chart_total_cites.draw(data_total_cites, options_total_cites);
 
         var data_max_cites = google.visualization.arrayToDataTable([
-           ['Year', '<em>C</em><sub>Max</sub>'],
+           ['Year', '<em>C</em><sub>max</sub>'],
            ['1997', 1],
            ['1998', 6],
            ['1999', 19],
@@ -277,6 +277,93 @@
         var chart_h_index = new google.visualization.LineChart(document.getElementById('chart_h_index_div'));
         chart_h_index.draw(data_h_index, options_h_index);
 
+        var data_h_index_desc = google.visualization.arrayToDataTable([
+           ['X', 'y0', 'y1', 'y2', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, 35, null],
+           [1, 1437, 1, 35, null],
+           [2, 331, 2, 35, null],
+           [3, 316, 3, 35, null],
+           [4, 277, 4, 35, null],
+           [5, 274, 5, 35, null],
+           [6, 263, 6, 35, null],
+           [7, 250, 7, 35, null],
+           [8, 214, 8, 35, null],
+           [9, 179, 9, 35, null],
+           [10, 168, 10, 35, null],
+           [11, 156, 11, 35, null],
+           [12, 134, 12, 35, null],
+           [13, 117, 13, 35, null],
+           [14, 117, 14, 35, null],
+           [15, 101, 15, 35, null],
+           [16, 96, 16, 35, null],
+           [17, 96, 17, 35, null],
+           [18, 83, 18, 35, null],
+           [19, 69, 19, 35, null],
+           [20, 58, 20, 35, null],
+           [21, 56, 21, 35, null],
+           [22, 53, 22, 35, null],
+           [23, 52, 23, 35, null],
+           [24, 50, 24, 35, null],
+           [25, 46, 25, 35, null],
+           [26, 41, 26, 35, null],
+           [27, 40, 27, 35, null],
+           [28, 40, 28, 35, null],
+           [29, 39, 29, 35, null],
+           [30, 39, 30, 35, null],
+           [31, 39, 31, 35, null],
+           [32, 38, 32, 35, null],
+           [33, 36, 33, 35, null],
+           [34, 36, 34, 35, null],
+           [35, 35, 35, 35, 'h'],
+           [35, 35, 35, 0, null],
+           [36, 28, 36, null, null],
+           [37, 23, 37, null, null],
+           [38, 18, 38, null, null],
+           [39, 15, 39, null, null],
+           [40, 11, 40, null, null],
+           [41, 9, 41, null, null],
+           [42, 9, 42, null, null],
+           [43, 8, 43, null, null],
+           [44, 8, 44, null, null],
+           [45, 7, 45, null, null],
+           [46, 6, 46, null, null],
+           [47, 5, 47, null, null],
+           [48, 5, 48, null, null],
+           [49, 4, 49, null, null],
+           [50, 4, 50, null, null],
+           [51, 3, 51, null, null],
+           [52, 3, 52, null, null],
+           [53, 3, 53, null, null],
+           [54, 2, 54, null, null],
+           [55, 2, 55, null, null],
+           [56, 2, 56, null, null],
+           [57, 1, 57, null, null],
+           [58, 1, 58, null, null],
+           [59, 0, 59, null, null],
+           [60, 0, 60, null, null],
+           [61, 0, 61, null, null],
+		]);
+
+        var options_h_index_desc = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [20, 40, 60, 80, 100],
+		             viewWindow: {max:100}},
+		     vAxis: {viewWindow: {max:100},
+		             title: 'Citation Count',
+		             ticks: [20, 40, 60, 80, 100],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4]},
+		               2: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black',		                                           italic: true, bold: true}}}}
+        };
+
+        var chart_h_index_desc = new google.visualization.LineChart(document.getElementById('chart_h_index_desc_div'));
+        chart_h_index_desc.draw(data_h_index_desc, options_h_index_desc);
+
         var data_h_core_cites = google.visualization.arrayToDataTable([
            ['Year', '<em>C<sup>H</sup></em>'],
            ['1997', 1],
@@ -311,7 +398,7 @@
         chart_h_core_cites.draw(data_h_core_cites, options_h_core_cites);
 
         var data_Hirsch_min_const = google.visualization.arrayToDataTable([
-           ['Year', 'a'],
+           ['Year', '<em>a</em>'],
            ['1997', 2.0],
            ['1998', 3.25],
            ['1999', 4.0],
@@ -871,6 +958,45 @@
         var chart_Wohlin_w_index = new google.visualization.LineChart(document.getElementById('chart_Wohlin_w_index_div'));
         chart_Wohlin_w_index.draw(data_Wohlin_w_index, options_Wohlin_w_index);
 
+        var data_hj_indices = google.visualization.arrayToDataTable([
+           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+           ['1', 1, 4, 9, 25, 36, 49, 81, 121, 169, 225, 289, 361, 529, 576, 676, 729, 841, 1024, 1156, 1225, 1225],
+           ['2', null, 9, 19, 42, 39, 61, 98, 152, 193, 268, 321, 434, 550, 621, 699, 782, 870, 1087, 1188, 1287, 1287],
+           ['3', null, null, 32, 44, 49, 91, 112, 181, 216, 294, 336, 452, 590, 664, 746, 809, 952, 1116, 1216, 1305, 1310],
+           ['4', null, null, null, 50, 60, 99, 125, 238, 287, 319, 364, 534, 628, 703, 769, 882, 1006, 1172, 1234, 1354, 1392],
+           ['5', null, null, null, 67, 106, 114, 145, 247, 334, 375, 430, 595, 662, 740, 899, 998, 1108, 1218, 1279, 1400, 1438],
+           ['6', null, null, null, null, 113, 171, 194, 278, 432, 396, 467, 623, 676, 757, 940, 1022, 1207, 1260, 1288, 1410, 1449],
+           ['7', null, null, null, null, null, 216, 219, 295, 496, 496, 480, 675, 706, 790, 978, 1065, 1277, 1273, 1297, 1448, 1458],
+           ['8', null, null, null, null, null, null, 267, 309, 503, 618, 523, 686, 830, 889, 994, 1126, 1317, 1332, 1332, 1456, 1495],
+           ['9', null, null, null, null, null, null, 357, 377, 515, 738, 635, 763, 885, 983, 1027, 1161, 1374, 1531, 1366, 1491, 1503],
+           ['10', null, null, null, null, null, null, null, 397, 559, 787, 749, 813, 945, 1010, 1093, 1212, 1402, 1584, 1423, 1524, 1537],
+           ['11', null, null, null, null, null, null, null, 557, 586, 793, 911, 868, 1027, 1161, 1188, 1261, 1448, 1591, 1622, 1530, 1669],
+           ['12', null, null, null, null, null, null, null, null, 615, 823, 955, 1068, 1078, 1247, 1211, 1301, 1617, 1596, 1651, 1752, 1771],
+           ['13', null, null, null, null, null, null, null, null, 839, 873, 1062, 1103, 1092, 1288, 1370, 1457, 1658, 1620, 1656, 1803, 1822],
+           ['14', null, null, null, null, null, null, null, null, null, 887, 1077, 1239, 1102, 1369, 1478, 1616, 1825, 1719, 1702, 1807, 1849],
+           ['15', null, null, null, null, null, null, null, null, null, 1170, 1092, 1362, 1192, 1443, 1566, 1750, 1859, 2083, 1726, 1853, 1916],
+           ['16', null, null, null, null, null, null, null, null, null, null, 1102, 1372, 1320, 1447, 1680, 1754, 1947, 2103, 1863, 1917, 1960],
+           ['17', null, null, null, null, null, null, null, null, null, null, 1475, 1397, 1355, 1522, 1704, 1879, 2068, 2138, 2191, 2091, 2172],
+           ['18', null, null, null, null, null, null, null, null, null, null, null, 1399, null, 1628, 1742, 1881, 2155, 2140, 2330, 2328, 2427],
+           ['19', null, null, null, null, null, null, null, null, null, null, null, null, null, 1790, 1831, 1936, 2211, 2351, 2348, 2517, 2651],
+           ['20', null, null, null, null, null, null, null, null, null, null, null, null, null, 1910, 1971, 2089, 2322, 2378, 2470, 2599, 2653],
+           ['21', null, null, null, null, null, null, null, null, null, null, null, null, null, 2014, 2121, 2223, 2485, 2379, 2486, 2616, 2730],
+           ['22', null, null, null, null, null, null, null, null, null, null, null, null, null, 2053, 2206, 2319, 2605, 2567, 2566, 2841, 2956],
+           ['23', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2334, 2439, 2675, 2738, 2807, 2868, 2957],
+           ['24', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2376, 2559, 2687, 3099, 2830, 3037, 3162],
+           ['25', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2807, 3179, 3060, 3180, 3404],
+           ['26', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2955, 3179, 3267, 3390, 3524],
+           ['27', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3063, 3209, null, null, 3623],
+           ['28', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3063, null, null, null, null],
+		]);
+
+        var options_hj_indices = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_hj_indices = new google.visualization.LineChart(document.getElementById('chart_hj_indices_div'));
+        chart_hj_indices.draw(data_hj_indices, options_hj_indices);
+
         var data_normalized_h_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h<sup>n</sup></em>'],
            ['1997', 0.2],
@@ -1398,6 +1524,63 @@
 
         var chart_ph_ratio = new google.visualization.LineChart(document.getElementById('chart_ph_ratio_div'));
         chart_ph_ratio.draw(data_ph_ratio, options_ph_ratio);
+
+        var data_multidim_h_index = google.visualization.arrayToDataTable([
+           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+           ['1', 1, 2, 3, 5, 6, 7, 9, 11, 13, 15, 17, 19, 23, 24, 26, 27, 29, 32, 34, 35, 35],
+           ['2', 1, 1, 2, 2, 2, 3, 5, 6, 7, 8, 9, 10, 8, 10, 10, 10, 8, 7, 8, 8, 8],
+           ['3', null, 1, 1, 1, 2, 3, 3, 3, 3, 4, 3, 3, 3, 4, 4, 4, 5, 4, 4, 4, 5],
+           ['4', null, 1, null, null, 1, 2, 3, 2, 2, 3, 2, 2, 1, 2, 2, 2, 3, 3, 4, 3, 3],
+           ['5', null, null, null, null, 1, 1, 1, 1, 2, 1, 1, 1, null, 1, 1, 1, 1, 2, 2, 2, 2],
+           ['6', null, null, null, null, 1, 1, null, 1, 1, null, null, null, null, null, 1, 1, 1, 1, 2, 2, 2],
+           ['7', null, null, null, null, null, 1, null, null, 1, null, null, null, null, null, null, 1, 1, 1, 1, 1, 1],
+           ['8', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1, 1, 1, 1, 1],
+           ['9', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1, 1, 1],
+           ['10', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, 1, null],
+           ['11', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, null, null],
+           ['12', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, null, null],
+		]);
+
+        var options_multidim_h_index = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_multidim_h_index = new google.visualization.LineChart(document.getElementById('chart_multidim_h_index_div'));
+        chart_multidim_h_index.draw(data_multidim_h_index, options_multidim_h_index);
+
+        var data_two_sided_h_index = google.visualization.arrayToDataTable([
+           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+           ['-11', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9, null, null, null],
+           ['-10', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9, null, null, null],
+           ['-9', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9, null, 10, null],
+           ['-8', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9, 10, 10, 11],
+           ['-7', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 8, 9, 10, 10, 11, 11],
+           ['-6', null, null, null, null, null, 2, null, null, 4, null, null, null, null, null, null, 8, 10, 10, 11, 12, 12],
+           ['-5', null, null, null, null, 2, 2, null, 3, 4, null, null, null, null, null, 8, 9, 10, 11, 12, 12, 12],
+           ['-4', null, null, null, null, 2, 2, 4, 3, 7, 7, 8, 8, null, 10, 11, 11, 12, 11, 13, 14, 14],
+           ['-3', null, 1, null, null, 2, 3, 4, 4, 7, 8, 8, 8, 9, 11, 12, 13, 14, 14, 15, 17, 17],
+           ['-2', null, 1, 2, 2, 3, 4, 4, 6, 8, 9, 9, 10, 12, 13, 13, 14, 16, 18, 18, 18, 18],
+           ['-1', 0, 1, 2, 3, 4, 5, 5, 8, 9, 9, 10, 13, 14, 16, 16, 17, 19, 19, 19, 20, 21],
+           ['0', 1, 2, 3, 5, 6, 7, 9, 11, 13, 15, 17, 19, 23, 24, 26, 27, 29, 32, 34, 35, 35],
+           ['1', 1, 1, 2, 2, 2, 3, 5, 6, 7, 8, 9, 10, 8, 10, 10, 10, 8, 7, 8, 8, 8],
+           ['2', null, 1, 1, 1, 2, 3, 3, 3, 3, 4, 3, 3, 3, 4, 4, 4, 5, 4, 4, 4, 5],
+           ['3', null, 1, null, null, 1, 2, 3, 2, 2, 3, 2, 2, 1, 2, 2, 2, 3, 3, 4, 3, 3],
+           ['4', null, null, null, null, 1, 1, 1, 1, 2, 1, 1, 1, null, 1, 1, 1, 1, 2, 2, 2, 2],
+           ['5', null, null, null, null, 1, 1, null, 1, 1, null, null, null, null, null, 1, 1, 1, 1, 2, 2, 2],
+           ['6', null, null, null, null, null, 1, null, null, 1, null, null, null, null, null, null, 1, 1, 1, 1, 1, 1],
+           ['7', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1, 1, 1, 1, 1],
+           ['8', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1, 1, 1],
+           ['9', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, 1, null],
+           ['10', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, null, null],
+           ['11', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, null, null, null],
+		]);
+
+        var options_two_sided_h_index = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_two_sided_h_index = new google.visualization.LineChart(document.getElementById('chart_two_sided_h_index_div'));
+        chart_two_sided_h_index.draw(data_two_sided_h_index, options_two_sided_h_index);
 
         var data_iter_weighted_h_index = google.visualization.arrayToDataTable([
            ['Year', '<em>iw</em>(<em>h</em>)-index'],
@@ -3083,7 +3266,7 @@
         chart_circ_cite_area_radius.draw(data_circ_cite_area_radius, options_circ_cite_area_radius);
 
         var data_citation_acceleration = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>a</em>'],
            ['1997', 2.0],
            ['1998', 3.25],
            ['1999', 4.0],
@@ -3248,7 +3431,7 @@
         chart_T_index_h_mixed.draw(data_T_index_h_mixed, options_T_index_h_mixed);
 
         var data_citation_entropy = google.visualization.arrayToDataTable([
-           ['Year', ''],
+           ['Year', '<em>s</em>'],
            ['1997', 0.5438704451609999],
            ['1998', 1.9447939370901943],
            ['1999', 2.9808827371476374],
@@ -3399,7 +3582,6 @@
         </ul>
       <h2>Index</h2>
       <ul class="index_list">
-        <li><a href="#citation_acceleration"><em>a</em></a></li>
         <li><a href="#alpha_index"><em>a-</em>index</a></li>
         <li><a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#adapt_pure_h_index_geom">adapted pure <em>h-</em>index (geometric credit)</a></li>
@@ -3414,13 +3596,14 @@
         <li><a href="#h_rate">Carbon <em>h-</em>factor</a></li>
         <li><a href="#h_core_cites"><em>C<sup>H</sup></em></a></li>
         <li><a href="#circ_cite_area_radius">circular citation area radius</a></li>
+        <li><a href="#citation_acceleration">citation acceleration</a></li>
         <li><a href="#total_cites">citation count</a></li>
         <li><a href="#CDR_index">citation distribution rate index (CDR-index)</a></li>
         <li><a href="#CDS_index">citation distribution score index (CDS-index)</a></li>
-        <li><a href="#citation_entropy"><em>s</em></a></li>
-        <li><a href="#c_p">citations per publication (<em>CPP</em>)</a></li>
-        <li><a href="#citations_per_year">citations per year (<em>C<sup>TS</sup></em>)</a></li>
-        <li><a href="#max_cites"><em>C</em><sub>Max</sub></a></li>
+        <li><a href="#citation_entropy">citation entropy (<em>s-</em>index)</a></li>
+        <li><a href="#c_p">citations per publication</a></li>
+        <li><a href="#citations_per_year">citations per year</a></li>
+        <li><a href="#max_cites"><em>C</em><sub>max</sub></a></li>
         <li><a href="#contemporary_h_index">contemporary <em>h-</em>index</a></li>
         <li><a href="#cq_index">corrected quality ratio (<em>CQ</em> index)</a></li>
         <li><a href="#total_cites"><em>C<sup>P</sup></em></a></li>
@@ -3443,11 +3626,11 @@
         <li><a href="#fractional_p_index">fractional <em>p-</em>index</a></li>
         <li><a href="#hm_index">fractional paper <em>h</em></a></li>
         <li><a href="#g_index"><em>g-</em>index</a></li>
-        <li><a href="#c_p">generalized impact factor (<em>I<sub>f</sub></em>)</a></li>
+        <li><a href="#c_p">generalized impact factor</a></li>
         <li><a href="#gf_paper"><em>g<sub>F</sub></em></a></li>
         <li><a href="#h2_index"><em>h</em>(2)-index</a></li>
         <li><a href="#h_index"><em>h-</em>index</a></li>
-        <li><a href="#h_rate"><em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)</a></li>
+        <li><a href="#h_rate"><em>h-</em>rate</a></li>
         <li><a href="#h2_center_index"><em>h</em><sup>2</sup>-center index</a></li>
         <li><a href="#h2_tail_index"><em>h</em><sup>2</sup>-tail index</a></li>
         <li><a href="#h2_upper_index"><em>h</em><sup>2</sup>-upper index</a></li>
@@ -3460,7 +3643,7 @@
         <li><a href="#hi_index"><em>h<sub>i</sub>-</em>index</a></li>
         <li><a href="#annual_h_index">hIa</a></li>
         <li><a href="#h_core_cites">Hirsch core citations</a></li>
-        <li><a href="#Hirsch_min_const">Hirsch Proportionality Constant (<em>a</em>)</a></li>
+        <li><a href="#Hirsch_min_const">Hirsch proportionality constant</a></li>
         <li><a href="#hj_indices"><em>H<sub>j</sub>-</em>indices</a></li>
         <li><a href="#hm_index"><em>h<sub>m</sub>-</em>index</a></li>
         <li><a href="#normalized_h_index"><em>h<sup>n</sup></em></a></li>
@@ -3477,20 +3660,20 @@
         <li><a href="#iter_weighted_h_index">iteratively weighted <em>h-</em>index</a></li>
         <li><a href="#iter_weighted_h_index"><em>iw</em>(<em>h</em>)-index</a></li>
         <li><a href="#Todeschini_j_index"><em>j-</em>index (Todeschini)</a></li>
-        <li><a href="#c_p">journal paper citedness (<em>JPC</em>)</a></li>
+        <li><a href="#c_p">journal paper citedness</a></li>
         <li><a href="#c_p"><em>JPC</em></a></li>
         <li><a href="#k_index"><em>k-</em>index</a></li>
-        <li><a href="#ls_h_rate">least squares <em>h-</em>rate (slope)</a></li>
+        <li><a href="#ls_h_rate">least squares <em>h-</em>rate</a></li>
         <li><a href="#Levene_j_index">Levene <em>j-</em>index</a></li>
         <li><a href="#m_index"><em>m-</em>index</a></li>
         <li><a href="#h_rate"><em>m-</em>quotient</a></li>
         <li><a href="#h_rate"><em>m-</em>ratio index</a></li>
-        <li><a href="#max_cites">maximum citations (<em>C</em><sub>Max</sub>)</a></li>
+        <li><a href="#max_cites">maximum citations</a></li>
         <li><a href="#maxprod_index">maxprod-index</a></li>
         <li><a href="#c_p"><em>MCR</em></a></li>
-        <li><a href="#c_p">mean citation rate (<em>MCR</em>)</a></li>
-        <li><a href="#c_p">mean citations per publication (<em>C/P</em> index)</a></li>
-        <li><a href="#c_p">mean observed citation rate(<em>MOCR</em>)</a></li>
+        <li><a href="#c_p">mean citation rate</a></li>
+        <li><a href="#c_p">mean citations per publication</a></li>
+        <li><a href="#c_p">mean observed citation rate</a></li>
         <li><a href="#mean_coauthor_cite_rate">mean self &amp; coauthor-citation rate</a></li>
         <li><a href="#mean_self_cite_rate">mean self-citation rate</a></li>
         <li><a href="#median_cites_per_pub">median citations per publication</a></li>
@@ -3499,8 +3682,9 @@
         <li><a href="#multidim_h_index">multidimensional <em>h-</em>index</a></li>
         <li><a href="#normalized_h_index">normalized <em>h-</em>index</a></li>
         <li><a href="#normal_hi_index">normalized <em>h<sub>i</sub>-</em>index</a></li>
-        <li><a href="#c_p">observed citation rate (<em>OCR</em>)</a></li>
+        <li><a href="#c_p">observed citation rate</a></li>
         <li><a href="#c_p"><em>OCR</em></a></li>
+        <li><a href="#total_pubs"><em>P</em></a></li>
         <li><a href="#p_index"><em>p-</em>index</a></li>
         <li><a href="#fractional_p_index"><em>p<sub>f</sub></em></a></li>
         <li><a href="#harmonic_p_index"><em>p<sub>h</sub></em></a></li>
@@ -3510,7 +3694,7 @@
         <li><a href="#profit_h_index">profit <em>h-</em>index</a></li>
         <li><a href="#profit_p_index">profit <em>p-</em>index</a></li>
         <li><a href="#pubs_per_year"><em>P<sup>TS</sup></em></a></li>
-        <li><a href="#pubs_per_year">publications per year (<em>P<sup>TS</sup></em>)</a></li>
+        <li><a href="#pubs_per_year">publications per year</a></li>
         <li><a href="#pure_h_index_frac">pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#pure_h_index_geom">pure <em>h-</em>index (geometric credit)</a></li>
         <li><a href="#pure_h_index_prop">pure <em>h-</em>index (proportional credit)</a></li>
@@ -3530,7 +3714,7 @@
         <li><a href="#citations_per_year">time-scaled citation index</a></li>
         <li><a href="#time_scaled_h_index">time-scaled <em>h-</em>index (<em>h<sup>TS</sup></em>)</a></li>
         <li><a href="#pubs_per_year">time-scaled number of publications</a></li>
-        <li><a href="#total_cites">total citations (<em>C<sup>P</sup></em>)</a></li>
+        <li><a href="#total_cites">total citations</a></li>
         <li><a href="#total_pubs">total publications</a></li>
         <li><a href="#total_coauthor_cites">total self &amp; coauthor citations</a></li>
         <li><a href="#total_coauthor_cite_rate">total self &amp; coauthor-citation rate</a></li>
@@ -3594,8 +3778,8 @@
       </div>
     </div>
     <div id="total_cites" class="metric_container">
-      <h2>total citations (<em>C<sup>P</sup></em>)</h2>
-      <p>This metric (sometimes called <em>C<sub>T</sub></em>) is the total number of citations to all publications by an author.</p>
+      <h2>total citations</h2>
+      <p>This metric (sometimes called <span class="metric_name"><em>C<sub>T</sub></em></span>) is the total number of citations to all publications by an author, or</p>$$C^P=\sum\limits_{i=1}^{P}{C_i}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3629,12 +3813,12 @@
       </div>
     </div>
     <div id="max_cites" class="metric_container">
-      <h2>maximum citations (<em>C</em><sub>Max</sub>)</h2>
-      <p>This metric is the largest number of citations found for a single publication by an author. When publications are in rank order by citations, <em>C</em><sub>Max</sub> = <em>C</em><sub>1</sub>.</p>
+      <h2>maximum citations</h2>
+      <p>This metric is the largest number of citations found for a single publication by an author. When publications are in rank order by citations, <em>C</em><sub>max</sub> = <em>C</em><sub>1</sub>.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th><em>C</em><sub>Max</sub></th></tr>
+            <tr><th>Year</th><th><em>C</em><sub>max</sub></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">6</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">19</td></tr>
@@ -3664,7 +3848,7 @@
       </div>
     </div>
     <div id="c_p" class="metric_container">
-      <h2>mean citations per publication (<em>C/P</em> index)</h2>
+      <h2>mean citations per publication</h2>
       <p>This metric is the mean number of citations per publication. It has been described under many names, including the <span class="metric_name"><em>C/P</em> index</span>, the <span class="metric_name">mean citation rate (<em>MCR</em>)</span>, the <span class="metric_name">mean observed citation rate (<em>MOCR</em>)</span>, <span class="metric_name">citations per publication (<em>CPP</em>)</span>, the <span class="metric_name">observed citation rate (<em>OCR</em>)</span>, the <span class="metric_name">generalized impact factor (<em>I<sub>f</sub></em>)</span>, and the <span class="metric_name">journal paper citedness (<em>JPC</em>)</span>.</p>$$C/P\text{ index}=\frac{C^P}{P}$$
       <div class="metric_data_container">
         <div class="table_container">
@@ -3700,7 +3884,7 @@
     </div>
     <div id="median_cites_per_pub" class="metric_container">
       <h2>median citations per publication</h2>
-      <p>This metric is the median number of citations per publication.</p>
+      <p>This metric is the median number of citations per publication. It may be a better indicator of the average impact of an author's publications since it is less prone to bias under a heavily skewed citation distribution.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3734,8 +3918,8 @@
       </div>
     </div>
     <div id="pubs_per_year" class="metric_container">
-      <h2>publications per year (<em>P<sup>TS</sup></em>)</h2>
-      <p>This metric, also called the <span class="metric_name">time-scaled number of publications</span> is just the mean number of publications per year, calculated as the total number of publications of an author divided by their academic age (number of years since their first publication).</p>$$P^{TS}=\frac{P}{\text{academic age}}=\frac{P}{Y-Y_0+1}$$<p>where \(Y\) is the current year and \(Y_{0}\) is the year of their first publication.</p>
+      <h2>publications per year</h2>
+      <p>This metric, also called the <span class="metric_name">time-scaled number of publications</span> is just the mean number of publications per year, calculated as the total number of publications of an author divided by their academic age (number of years since their first publication),</p>$$P^{TS}=\frac{P}{\text{academic age}}=\frac{P}{Y-Y_0+1},$$<p>where \(Y\) is the current year and \(Y_{0}\) is the year of their first publication.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3769,8 +3953,8 @@
       </div>
     </div>
     <div id="citations_per_year" class="metric_container">
-      <h2>citations per year (<em>C<sup>TS</sup></em>)</h2>
-      <p>This metric, also called the <span class="metric_name">time-scaled citation index</span>, is just the mean number of citations per year, calculated as the total number of citations of an author divided by their academic age (number of years since their first publication).</p>$$C^{TS}=\frac{C^P}{\text{academic age}}=\frac{C^P}{Y-Y_0+1}$$<p>where \(Y\) is the current year and \(Y_{0}\) is the year of their first publication.</p>
+      <h2>citations per year</h2>
+      <p>This metric, also called the <span class="metric_name">time-scaled citation index</span>, is just the mean number of citations per year, calculated as the total number of citations of an author divided by their academic age (number of years since their first publication),</p>$$C^{TS}=\frac{C^P}{\text{academic age}}=\frac{C^P}{Y-Y_0+1},$$<p>where \(Y\) is the current year and \(Y_{0}\) is the year of their first publication.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3805,7 +3989,7 @@
     </div>
     <div id="h_index" class="metric_container">
       <h2><em>h-</em>index</h2>
-      <p>The <em>h-</em>index (Hirsch 2005) is the most important personal impact factor you need to be familiar with, not because it is necessarily the best, but because (1) it was the first major index of its type and most of the other indices are based on it in some way, and (2) it is the single factor with which most other people you communicate with (<em>e.g.</em>, administrators) are likely to be somewhat familiar. You may find another index which you prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> citations. Note that <em>h</em> is measured in publications. In formal notation, one might write</p>$$h=\underset{i}{\max}\left(i\leq C_i\right)$$
+      <p>The <span class="metric_name"><em>h-</em>index</span> (Hirsch 2005) is the most important personal impact factor one needs to be familiar with, not because it is necessarily the best, but because (1) it was the first major index of its type and most of the other indices are based on it in some way, and (2) it is the single factor with which most other people (<em>e.g.</em>, administrators) are likely to be somewhat familiar. You may find another index which you prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> citations. Note that <em>h</em> is measured in publications. In formal notation, one might write</p>$$h=\underset{i}{\max}\left(i\leq C_i\right).$$<p>These top <em>h</em> publications are often referred to as the &ldquo;Hirsch core.&rdquo;</p><div id="chart_h_index_desc_div" class="hsq_chart"></div><p>One way to graphically visualize <em>h</em> is to imagine a plot of citation count versus rank for all publications (often called the citation curve). By definition, this plot will generally trend from upper left (highest ranked publications with most citations, to lower right (lowest ranked publications with fewest citations), depending on the precise citation distribution of the author. If one were to add a (threshold) line with a slope of one to this plot, the point where the threshold line crosses the citation curve (truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the size (length of sides) of the largest square that one can fit under the citation curve.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3840,7 +4024,7 @@
     </div>
     <div id="h_core_cites" class="metric_container">
       <h2>Hirsch core citations</h2>
-      <p>This is the sum of the citations for all publications in the <em>h-</em>core:</p>$$C^H=\sum\limits_{i=1}^{h}{C_i}$$
+      <p>This is the sum of the citations for all publications in the Hirsch core,</p>$$C^H=\sum\limits_{i=1}^{h}{C_i}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -3874,12 +4058,12 @@
       </div>
     </div>
     <div id="Hirsch_min_const" class="metric_container">
-      <h2>Hirsch Proportionality Constant (<em>a</em>)</h2>
-      <p>This metric describes a relationship between the <em>h-</em>index and the total number of citations and is defined as</p>$$a=\frac{C^P}{h^2}$$
+      <h2>Hirsch proportionality constant</h2>
+      <p>This metric (Hirsch 2005) describes a relationship between the <em>h-</em>index and the total number of citations and is defined as</p>$$a=\frac{C^P}{h^2}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th>a</th></tr>
+            <tr><th>Year</th><th><em>a</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">2.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">3.2500</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">4.0000</td></tr>
@@ -3910,7 +4094,7 @@
     </div>
     <div id="g_index" class="metric_container">
       <h2><em>g-</em>index</h2>
-      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publication cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p>
+      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publications cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4050,7 +4234,7 @@
     </div>
     <div id="Woeginger_w_index" class="metric_container">
       <h2><em>w-</em>index (Woeginger)</h2>
-      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations.</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right)$$<p>for all \(i \leq k\).</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em>.</p>
+      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations:</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$<p>for all <em>i</em> ≤ <em>k</em>.</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em>.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4085,7 +4269,7 @@
     </div>
     <div id="h2_index" class="metric_container">
       <h2><em>h</em>(2)-index</h2>
-      <p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than define the core based on <em>h</em> publications having <em>h</em> citations, this index requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> ciations:</p>$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right)$$<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than many other metrics.</p>
+      <p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than define the core based on <em>h</em> publications having <em>h</em> citations, this index requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> ciations:</p>$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than many other metrics.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4155,7 +4339,7 @@
     </div>
     <div id="hg_index" class="metric_container">
       <h2><em>hg-</em>index</h2>
-      <p>The <em>hg-</em>index (Alonso <em>et al.</em> 2010) is an aggregate index which tries to keep the advantages of both the <em>h-</em> and <em>g-</em>indices while minimizing their disadvantages. The index is simply the geometric mean of <em>h</em> and <em>g,</em> or</p>$$hg=\sqrt{h \times g}$$
+      <p>The <em>hg-</em>index (Alonso <em>et al.</em> 2010) is an aggregate index which tries to keep the advantages of both the <em>h-</em> and <em>g-</em>indices while minimizing their disadvantages. The index is simply the geometric mean of <em>h</em> and <em>g,</em> or</p>$$hg=\sqrt{h \times g}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4190,7 +4374,7 @@
     </div>
     <div id="a_index" class="metric_container">
       <h2><em>a-</em>index</h2>
-      <p>The <em>a-</em>index (Jin 2006; Rousseau 2006) is used to describe the citations within the core itself, being simply the average number of citations per core publication, or:</p>$$a=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$<p>The minimum value of <em>a</em> is <em>h</em> (since every one of the <em>h</em> publications must have at least <em>h</em> citations).</p>
+      <p>The <em>a-</em>index (Jin 2006; Rousseau 2006) is used to describe the citations within the core itself, being simply the average number of citations per core publication, or</p>$$a=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$<p>The minimum value of <em>a</em> is <em>h</em> (since every one of the <em>h</em> publications must have at least <em>h</em> citations).</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4260,7 +4444,7 @@
     </div>
     <div id="rational_h_index" class="metric_container">
       <h2>rational <em>h-</em>index</h2>
-      <p>The rational <em>h-</em>index (Ruane and Tol 2008) (<em>h</em><sup>Δ</sup> or <em>h</em><sub>rat</sub>) is a continuous version of <em>h</em> which not only measures the standard <em>h-</em>index but includes the fractional progress toward the next higher value of <em>h.</em> It is calculated as</p>$$h^\Delta = h + 1 -\frac{n}{2h+1}$$where \(n\) is the number of citations necessary to reach the next value of \(h\). The divisor, \(2h+1\), is the maximum number of possible citations needed to move from \(h\) to \(h+1\) (one additional citation for each of the \(h\) publications in the core plus \(h+1\) citations for a publication outside of the core with no citations). Practically speaking, \(n\) is the number of papers in the core with exactly \(h\) citations (thus needing one more to allow a move to \(h+1\)) plus \(h+1-C_{h+1}\) (the number of citations the \(h+1\)<sup>th</sup> ranked publication needs to reach \(h+1\) citations).</p>
+      <p>The rational <em>h-</em>index (Ruane and Tol 2008) (<em>h</em><sup>Δ</sup> or <em>h</em><sub>rat</sub>) is a continuous version of <em>h</em> which not only measures the standard <em>h-</em>index but includes the fractional progress toward the next higher value of <em>h.</em> It is calculated as</p>$$h^\Delta = h + 1 -\frac{n}{2h+1},$$where \(n\) is the number of citations necessary to reach the next value of \(h\). The divisor, \(2h+1\), is the maximum number of possible citations needed to move from \(h\) to \(h+1\) (one additional citation for each of the \(h\) publications in the core plus \(h+1\) citations for a publication outside of the core with no citations). Practically speaking, \(n\) is the number of publications in the core with exactly \(h\) citations (thus needing one more to allow a move to \(h+1\)) plus \(h+1-C_{h+1}\) (the number of citations the \(h+1\)<sup>th</sup> ranked publication needs to reach \(h+1\) citations).</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4365,7 +4549,7 @@
     </div>
     <div id="tapered_h_index" class="metric_container">
       <h2>tapered <em>h-</em>index</h2>
-      <p>While the rational <em>h-</em>index gives a fractional value to those citations necessary to reach the next value of <em>h,</em> the tapered <em>h-</em>index (Anderson <em>et al.</em> 2008) is designed to give every citation for every publication some fractional value. The best way to understand this index is to first consider the contribution of every citation to the <em>h-</em>index. To have an <em>h-</em>index of 1, an author needs a single paper with a single citation. That citation has a weight (or score) of 1, because it accounts for the entire <em>h</em> value of 1. To move to an <em>h-</em>index of 2, the author needs three additional citations: one additional citation for the original publication and two citations for a second publication. As <em>h</em> has increased by one, each of these three citations is contributing a weight (or score) of 1/3 to the total <em>h-</em>index. This is most easily illustrated by a Ferrers graph of ranked publications versus citations which shows the specific contribution of every citation to a specific value of <em>h</em></p><table class="ferrers"><tr><th></th><th></th><th colspan=7>Citation</th></tr><tr><td></td><td></td><td class="tc_bb">1</td><td class="tc_bb">2</td>  <td class="tc_bb">3</td><td class="tc_bb">4</td>  <td class="tc_bb">5</td><td class="tc_bb">6</td><td class="tc_bb">→</td></tr><tr><th rowspan=6>Ranked<br/>publication</th>  <td class="tc_rb">1</td><td class="tc_bdb tc_rdb">1</td><td class="tc_rdb">1/3</td>  <td class="tc_rdb">1/5</td><td>1/7</td><td>1/9</td><td>1/11</td></tr><tr><td class="tc_rb">2</td><td class="tc_bdb">1/3</td><td class="tc_bdb tc_rdb">1/3</td>  <td class="tc_rdb">1/5</td><td>1/7</td></tr><tr><td class="tc_rb">3</td><td class="tc_bdb">1/5</td><td class="tc_bdb">1/5</td>  <td class="tc_bdb tc_rdb">1/5</td><td>1/7</td></tr><tr><td class="tc_rb">4</td><td>1/7</td><td>1/7</td></tr><tr><td class="tc_rb">5</td><td>1/9</td></tr><tr><td class="tc_rb">↓</td></tr></table><p>The largest filled-in square in the upper left corner (the Durfee square) has a length equal to <em>h;</em> the contents of the square also sum to <em>h.</em> Using this logic, one can determine the credit each citation would give to a larger value of <em>h,</em> regardless of whether that <em>h</em> has been reached. Consider this graph with respect to the rational <em>h-</em>index. In the above example, <em>h</em> is 3. If one just considers the citations necessary to reach an <em>h</em> of 4, we can see that 5 of the 7 necessary citations are already present. Each of these has a weight of 1/7 (since 7 total citations are necessary); adding these to <em>h</em> we get the rational <em>h-</em>index, \(h^\Delta=3.71\). The tapered <em>h-</em>index is simply taking this same concept but expanding it to include all citations for all publications.</p><p>The tapered <em>h-</em>index for a specific publication is the sum of all of its scores and the total score of the index is the sum across all publications. In simple formulaic terms, the score <em>hT</em>(<em>i</em>) for the <em>i</em>th ranked publication is calculated as</p>$$h_{T\left(i\right)}=\left |\begin{matrix} \frac{C_i}{2i-1} & \text{if } C_i \leq i \\ \frac{i}{2i-1}+\sum\limits_{j=i+1}^{C_i}{\frac{1}{2j-1}} &  \text{if } C_i > i \end{matrix}\right .$$<p>and the total tapered h-index is the sum of these scores for all publications,</p>$$h_T=\sum\limits_{i=1}^{P}{h_{T\left(i\right)}} $$This index is consistent with the concept of the <em>h-</em>index, while also giving every citation some small influence on the score.</p>
+      <p>While the rational <em>h-</em>index gives a fractional value to those citations necessary to reach the next value of <em>h,</em> the tapered <em>h-</em>index (Anderson <em>et al.</em> 2008) is designed to give every citation for every publication some fractional value. The best way to understand this index is to first consider the contribution of every citation to the <em>h-</em>index. To have an <em>h-</em>index of 1, an author needs a single paper with a single citation. That citation has a weight (or score) of 1, because it accounts for the entire <em>h</em> value of 1. To move to an <em>h-</em>index of 2, the author needs three additional citations: one additional citation for the original publication and two citations for a second publication. As <em>h</em> has increased by one, each of these three citations is contributing a weight (or score) of 1/3 to the total <em>h-</em>index. This is most easily illustrated by a Ferrers graph of ranked publications versus citations which shows the specific contribution of every citation to a specific value of <em>h</em></p><table class="ferrers"><tr><th></th><th></th><th colspan=7>Citation</th></tr><tr><td></td><td></td><td class="tc_bb">1</td><td class="tc_bb">2</td>  <td class="tc_bb">3</td><td class="tc_bb">4</td>  <td class="tc_bb">5</td><td class="tc_bb">6</td><td class="tc_bb">→</td></tr><tr><th rowspan=6>Ranked<br/>publication</th>  <td class="tc_rb">1</td><td class="tc_bdb tc_rdb">1</td><td class="tc_rdb">1/3</td>  <td class="tc_rdb">1/5</td><td>1/7</td><td>1/9</td><td>1/11</td></tr><tr><td class="tc_rb">2</td><td class="tc_bdb">1/3</td><td class="tc_bdb tc_rdb">1/3</td>  <td class="tc_rdb">1/5</td><td>1/7</td></tr><tr><td class="tc_rb">3</td><td class="tc_bdb">1/5</td><td class="tc_bdb">1/5</td>  <td class="tc_bdb tc_rdb">1/5</td><td>1/7</td></tr><tr><td class="tc_rb">4</td><td>1/7</td><td>1/7</td></tr><tr><td class="tc_rb">5</td><td>1/9</td></tr><tr><td class="tc_rb">↓</td></tr></table><p>The largest filled-in square in the upper left corner (the Durfee square) has a length equal to <em>h;</em> the contents of the square also sum to <em>h.</em> Using this logic, one can determine the credit each citation would give to a larger value of <em>h,</em> regardless of whether that <em>h</em> has been reached. Consider this graph with respect to the rational <em>h-</em>index. In the above example, <em>h</em> is 3. If one just considers the citations necessary to reach an <em>h</em> of 4, we can see that 5 of the 7 necessary citations are already present. Each of these has a weight of 1/7 (since 7 total citations are necessary); adding these to <em>h</em> we get the rational <em>h-</em>index, \(h^\Delta=3.71\). The tapered <em>h-</em>index is simply taking this same concept but expanding it to include all citations for all publications.</p><p>The tapered <em>h-</em>index for a specific publication is the sum of all of its scores and the total score of the index is the sum across all publications. In simple formulaic terms, the score <em>h<sub>T</sub></em>(<em>i</em>) for the <em>i</em><sup>th</sup> ranked publication is calculated as</p>$$h_{T\left(i\right)}=\left |\begin{matrix} \frac{C_i}{2i-1} & \text{if } C_i \leq i \\ \frac{i}{2i-1}+\sum\limits_{j=i+1}^{C_i}{\frac{1}{2j-1}} & \text{if } C_i > i \end{matrix}\right. ,$$<p>and the total tapered <em>h-</em>index is the sum of these scores for all publications,</p>$$h_T=\sum\limits_{i=1}^{P}{h_{T\left(i\right)}}.$$This index is consistent with the concept of the <em>h-</em>index, while also giving every citation some small influence on the score.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4400,7 +4584,7 @@
     </div>
     <div id="Todeschini_j_index" class="metric_container">
       <h2><em>j-</em>index (Todeschini)</h2>
-      <p>The <em>j-</em>index (Todeschini 2011) is a modification of the <em>h-</em>index which allows for over-cited publications in the core to increase the overall value of the index. It uses a set of fixed categorical increases over <em>h:</em></p><table class="j_table"><tr class="top_row"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr><tr><th>Δ<em>h<sub>k</sub></em></th><td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1.5</td><td>1.25</td></tr></table>$$j=h+\frac{\sum\limits_{k=1}^{12}{w_kX_k\left(h\times \Delta h_k\right)}}{\sum\limits_{k=1}^{12}{w_k} } $$<p>where \(w_k\), the weight given to each category, is simply \(1/k\), and \(X_k\left(h \times \Delta h_k\right)\) is the count of publications whose citations are at least equal to \(h \times \Delta h_k\).</p><p>Essentially this metric adds additional scores to <em>h</em> for publications which are cited well more than that necessary for the core, with larger weight given to those much higher than the core value (500 times the core get a weight of 1, 250 times the core get a weight of 0.5, etc.).</p>
+      <p>The <em>j-</em>index (Todeschini 2011) is a modification of the <em>h-</em>index which allows for over-cited publications in the core to increase the overall value of the index. It uses a set of fixed categorical increases over <em>h:</em></p><table class="j_table"><tr class="top_row"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr><tr><th>Δ<em>h<sub>k</sub></em></th><td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1.5</td><td>1.25</td></tr></table>$$j=h+\frac{\sum\limits_{k=1}^{12}{w_kX_k\left(h\times \Delta h_k\right)}}{\sum\limits_{k=1}^{12}{w_k} } ,$$<p>where \(w_k\), the weight given to each category, is simply \(1/k\), and \(X_k\left(h \times \Delta h_k\right)\) is the count of publications whose citations are at least equal to \(h \times \Delta h_k\).</p><p>Essentially this metric adds additional scores to <em>h</em> for publications which are cited well more than that necessary for the core, with larger weight given to those much higher than the core value (500 times the core get a weight of 1, 250 times the core get a weight of 0.5, etc.).</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4498,12 +4682,14 @@
             <tr><td class="cell_year">2017</td><td class="cell_value">[1225, 1287, 1310, 1392, 1438, 1449, 1458, 1495, 1503, 1537, 1669, 1771, 1822, 1849, 1916, 1960, 2172, 2427, 2651, 2653, 2730, 2956, 2957, 3162, 3404, 3524, 3623]</td></tr>
           </table>
         </div>
+        <div class="graph_container">
+          <div id="chart_hj_indices_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
     <div id="normalized_h_index" class="metric_container">
       <h2>normalized <em>h-</em>index</h2>
-      <p>The normalized <em>h-</em>index (Sidiropoulos et al. 2007) is simply the <em>h-</em>index divided by the number of publications (or the <em>v-</em>index expressed as a proportion rather than a percentage):</p>$$h^n=\frac{h}{P}$$
+      <p>The normalized <em>h-</em>index (Sidiropoulos et al. 2007) is simply the <em>h-</em>index divided by the number of publications (or the <em>v-</em>index expressed as a proportion rather than a percentage):</p>$$h^n=\frac{h}{P}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4573,7 +4759,7 @@
     </div>
     <div id="m_index" class="metric_container">
       <h2><em>m-</em>index</h2>
-      <p>Similar to the <em>a-</em>index, the <em>m-</em>index (Bornmann <em>et al.</em> 2008a) is the median number of citations for papers in the Hirsch core publication.</p>
+      <p>Similar to the <em>a-</em>index, the <em>m-</em>index (Bornmann <em>et al.</em> 2008) is the median number of citations for papers in the Hirsch core.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4678,7 +4864,7 @@
     </div>
     <div id="pi_index" class="metric_container">
       <h2><em>π-</em>index</h2>
-      <p>The <em>π-</em>index (Vinkler 2009) is similar to other measures of the quality of the Hirsch core, except that it uses its own unique definition of the core. For this index, the core publication set <em>P<sub>π</sub></em> is defined as the square-root of the total number of publications, truncated down to the nearest integer (<em>e.g.</em>, for 80 publications, the square-root of 80 is 8.944, so <em>P<sub>π</sub></em> would equal 8):</p>$$P_\pi=\text{floor}\left({\sqrt{P}}\right).$$<p>The <em>π-</em>index is 1/100th of the total citations within this core:</p>$$\pi=\frac{C^\pi}{100}=\frac{\sum\limits_{i=1}^{P_\pi}{C_i}}{100}.$$
+      <p>The <em>π-</em>index (Vinkler 2009) is similar to other measures of the quality of the Hirsch core, except that it uses its own unique definition of the core. For this index, the core publication set <em>P<sub>π</sub></em> is defined as the square-root of the total number of publications, truncated down to the nearest integer (<em>e.g.</em>, for 80 publications, the square-root of 80 is 8.944, so <em>P<sub>π</sub></em> would equal 8):</p>$$P_\pi=\text{floor}\left({\sqrt{P}}\right).$$<p>The <em>π-</em>index is 1/100<sup>th</sup> of the total citations within this core:</p>$$\pi=\frac{C^\pi}{100}=\frac{\sum\limits_{i=1}^{P_\pi}{C_i}}{100}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4818,7 +5004,7 @@
     </div>
     <div id="maxprod_index" class="metric_container">
       <h2>maxprod-index</h2>
-      <p>The maxprod index (Kosmulski 2007) is the maximum value for the product between the number of citations for a publication and its rank, or,</p>$$MP=\max\left(i \times C_i\right)$$
+      <p>The maxprod index (Kosmulski 2007) is the maximum value for the product between the number of citations for a publication and its rank, or,</p>$$MP=\max\left(i \times C_i\right).$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4853,7 +5039,7 @@
     </div>
     <div id="h2_upper_index" class="metric_container">
       <h2><em>h</em><sup>2</sup>-upper index</h2>
-      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100$$
+      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4993,7 +5179,7 @@
     </div>
     <div id="p_index" class="metric_container">
       <h2><em>p-</em>index</h2>
-      <p>Also called the mock <em>h<sub>m</sub>-</em>index (Prathap 2010b), the <em>p-</em>index (Prathap 2010a) is derived from mathematical modeling of the relationship of increasing numbers of publications and citations. It is a function of the total number of citations and the average citations per paper,</p>$$p=\sqrt[3]{\frac{\left(C^P\right)^2}{P}}.$$
+      <p>Also called the <span class="metric_name">mock <em>h<sub>m</sub>-</em>index</span> (Prathap 2010b), the <em>p-</em>index (Prathap 2010a) is derived from mathematical modeling of the relationship of increasing numbers of publications and citations. It is a function of the total number of citations and the average citations per paper,</p>$$p=\sqrt[3]{\frac{\left(C^P\right)^2}{P}}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5028,7 +5214,7 @@
     </div>
     <div id="ph_ratio" class="metric_container">
       <h2><em>ph-</em>ratio</h2>
-      <p>The <em>p-</em>index can be considered a predictor of <em>h.</em> The ratio between <em>p</em> and <em>h</em> (the ph-ratio) reflects the sensitivity of the value to the proportion of citations in the upper core and the lower tail.</p>
+      <p>The <em>p-</em>index can be considered a predictor of <em>h.</em> The ratio between <em>p</em> and <em>h</em> (the <em>ph-</em>ratio) reflects the sensitivity of the value to the proportion of citations in the upper core and the lower tail.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5091,6 +5277,8 @@
             <tr><td class="cell_year">2017</td><td class="cell_value">[35, 8, 5, 3, 2, 2, 1, 1, 1]</td></tr>
           </table>
         </div>
+        <div class="graph_container">
+          <div id="chart_multidim_h_index_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -5124,6 +5312,8 @@
             <tr><td class="cell_year">2017</td><td class="cell_value">[11, 11, 12, 12, 14, 17, 18, 21, 35, 8, 5, 3, 2, 2, 1, 1, 1]</td></tr>
           </table>
         </div>
+        <div class="graph_container">
+          <div id="chart_two_sided_h_index_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -5164,7 +5354,7 @@
     </div>
     <div id="EM_index" class="metric_container">
       <h2><em>EM-</em>index</h2>
-      <p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the multidimensional <em>h-</em>index, the two-sided <em>h-</em>index, the iteratively weighted <em>h-</em>index, and the <em>e-</em>index. The <em>EM-</em>index begins by creating a vector (<strong><em>E</em></strong>) which is equivalent to the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values calculated from the citation curve of just the core publications, stopping when one reaches only a single remaining publication, no citation remain, or all remaining publications have onlya single citation. From this vector, <em>EM</em> can be calculated as:</p>$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}}$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
+      <p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the multidimensional <em>h-</em>index, the two-sided <em>h-</em>index, the iteratively weighted <em>h-</em>index, and the <em>e-</em>index. The <em>EM-</em>index begins by creating a vector (<strong><em>E</em></strong>) which is equivalent to the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values calculated from the citation curve of just the core publications, stopping when one reaches only a single remaining publication, no citation remain, or all remaining publications have only a single citation. From this vector, <em>EM</em> can be calculated as:</p>$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5199,7 +5389,7 @@
     </div>
     <div id="EMp_index" class="metric_container">
       <h2><em>EM</em>&prime;-index</h2>
-      <p>The <em>EM</em>&prime;-index (Bihari and Tripathi 2017) is an extension of the <em>EM-</em>index which includes all publications, rather than just those from the core. Like the <em>EM-</em>index, we begin by creating a vector (<strong><em>E</em></strong>) where the first value is <em>E</em><sub>1</sub> = <em>h.</em> Subsequent values of the vector, <em>E</em><sub>i+1</sub>, are determined by subtracting <em>E</em><sub>i</sub> from the citation count for all publications in the core defined by <em>E</em><sub>i</sub>, and recalculating <em>h</em> from these new citation counts, reranking all publications by these new citation counts as necessary (<em>i.e.</em>, some of the publications previously in the tail of the citation distribution may advance beyond publications in the core as citaions representing earlier calculations of <em>h</em> are &ldquo;used up&rdquo;). This process continues until one runs out of citations, all of the remaining publications have only a single remaining citation, or there is only a single publication left to be considered. From this vector, one calculates the index as:</p>$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}}$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
+      <p>The <em>EM</em>&prime;-index (Bihari and Tripathi 2017) is an extension of the <em>EM-</em>index which includes all publications, rather than just those from the core. Like the <em>EM-</em>index, we begin by creating a vector (<strong><em>E</em></strong>) where the first value is <em>E</em><sub>1</sub> = <em>h.</em> Subsequent values of the vector, <em>E</em><sub>i+1</sub>, are determined by subtracting <em>E</em><sub>i</sub> from the citation count for all publications in the core defined by <em>E</em><sub>i</sub>, and recalculating <em>h</em> from these new citation counts, reranking all publications by these new citation counts as necessary (<em>i.e.</em>, some of the publications previously in the tail of the citation distribution may advance beyond publications in the core as citaions representing earlier calculations of <em>h</em> are &ldquo;used up&rdquo;). This process continues until one runs out of citations, all of the remaining publications have only a single remaining citation, or there is only a single publication left to be considered. From this vector, one calculates the index as:</p>$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5234,7 +5424,7 @@
     </div>
     <div id="hi_index" class="metric_container">
       <h2><em>h<sub>i</sub>-</em>index</h2>
-      <p>The <em>h<sub>i</sub>-</em>index (Batista <em>et al.</em> 2006) is a simple correction of the <em>h-</em>index for multi-authored publications. This index is simply the <em>h-</em>index divided by the average number of authors in the core publications, or</p>$$h_i=\frac{h}{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}=\frac{h^2}{\sum\limits_{i=1}^{h}{A_i}}.$$If every publication in the core is solo-authored than <em>h<sub>i</sub></em> = <em>h.</em> This can be an extremely harsh correction. A single core publication with a large number of co-authors may skew the average and thus lower an author's impact factor tremendously. Use of the median rather than the mean might be a fairer approach.</p>
+      <p>The <em>h<sub>i</sub>-</em>index (Batista <em>et al.</em> 2006) is a simple correction of the <em>h-</em>index for multi-authored publications. This index is simply the <em>h-</em>index divided by the average number of authors in the core publications, or</p>$$h_i=\frac{h}{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}=\frac{h^2}{\sum\limits_{i=1}^{h}{A_i}}.$$If every publication in the core is solo-authored then <em>h<sub>i</sub></em> = <em>h.</em> This can be an extremely harsh correction. A single core publication with a large number of co-authors may skew the average and thus lower an author's impact factor tremendously. Use of the median rather than the mean might be a fairer approach.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5479,7 +5669,7 @@
     </div>
     <div id="normal_hi_index" class="metric_container">
       <h2>normalized <em>h<sub>i</sub>-</em>index</h2>
-      <p>Similar to the adapted pure <em>h-</em>index, the normalized <em>h<sub>i</sub>-</em>index (Wohlin 2009) is designed to adjust the <em>h-</em>index for multiple authors by adjusting the citation count by the number of authors. The primary difference is the new citation value is calculated by dividing by the number of authors (<em>C<sub>i</sub></em> / <em>A<sub>i</sub></em>) rather than the square-root of the number of authors. Publications are again ranked by these new citation per author values and the normalized <em>h<sub>i</sub>-</em>index is calculated in the same manner as the <em>h-</em>index, that is an author has a normalized <em>h<sub>i</sub>-</em>index of <em>h</em><sub><em>i</em>-norm</sub> when <em>h</em><sub><em>i</em>-norm</sub> of their publications have at least <em>h</em><sub><em>i</em>-norm</sub> citations per author, or</p>$$h_{i\text{-norm}}=\underset{i}{\max}\left(i \leq \frac{C_i}{A_i}\right).$$<p>This is identical to what Egghe (2008) called the fractional citation <em>h-</em>index (<em>h<sub>f</sub></em>) and was again re-invented by Abbas (2011) as the equally-weighted <em>h-</em>index (<em>h<sub>e</sub></em>).</p>
+      <p>Similar to the adapted pure <em>h-</em>index, the normalized <em>h<sub>i</sub>-</em>index (Wohlin 2009) is designed to adjust the <em>h-</em>index for multiple authors by adjusting the citation count by the number of authors. The primary difference is the new citation value is calculated by dividing by the number of authors (<em>C<sub>i</sub></em> / <em>A<sub>i</sub></em>) rather than the square-root of the number of authors. Publications are again ranked by these new citation per author values and the normalized <em>h<sub>i</sub>-</em>index is calculated in the same manner as the <em>h-</em>index, that is an author has a normalized <em>h<sub>i</sub>-</em>index of <em>h</em><sub><em>i</em>-norm</sub> when <em>h</em><sub><em>i</em>-norm</sub> of their publications have at least <em>h</em><sub><em>i</em>-norm</sub> citations per author, or</p>$$h_{i\text{-norm}}=\underset{i}{\max}\left(i \leq \frac{C_i}{A_i}\right).$$<p>This is identical to what Egghe (2008) called the <span class="metric_name">fractional citation <em>h-</em>index (<em>h<sub>f</sub></em>)</span> and was again re-invented by Abbas (2011) as the <span class="metric_name">equally-weighted <em>h-</em>index (<em>h<sub>e</sub></em>)</span>.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5514,7 +5704,7 @@
     </div>
     <div id="hm_index" class="metric_container">
       <h2><em>h<sub>m</sub>-</em>index</h2>
-      <p>While the normalized <em>h<sub>i</sub>-</em>index accounts for the number of authors of a publication by normalizing the citation count for that publication, <em>h<sub>m</sub></em> (Schreiber 2008), also known as the fractional paper <em>h</em> and <em>h<sub>F</sub>-</em>index (Egghe 2008), accounts for author number by normalizing the ranks. For this index, one counts the number of citations and ranks the publications as for the <em>h-</em>index, but rather than counting the rank of the <em>i</em><sup>th</sup> publication as <em>i</em>, it is instead calculated as the cumulative sum of 1/<em>A<sub>i</sub>.</em> In formal terms, when calculating the <em>h-</em>index the rank of the <em>i</em><sup>th</sup> publication is</p>$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$<p>For <em>h<sub>m</sub></em> we instead calculate the effective rank as</p>$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$<p><em>h<sub>m</sub></em> is determined as the largest value of <em>r</em><sub>eff</sub>(<em>i</em>) for which <em>r</em><sub>eff</sub>(<em>i</em>) ≤ <em>C<sub>i</sub></em> or</p>$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) \leq C_i\right).$$
+      <p>While the normalized <em>h<sub>i</sub>-</em>index accounts for the number of authors of a publication by normalizing the citation count for that publication, <em>h<sub>m</sub></em> (Schreiber 2008), also known as the <span class="metric_name">fractional paper <em>h</em></span> and <span class="metric_name"><em>h<sub>F</sub>-</em>index</span> (Egghe 2008), accounts for author number by normalizing the ranks. For this index, one counts the number of citations and ranks the publications as for the <em>h-</em>index, but rather than counting the rank of the <em>i</em><sup>th</sup> publication as <em>i</em>, it is instead calculated as the cumulative sum of 1/<em>A<sub>i</sub>.</em> In formal terms, when calculating the <em>h-</em>index the rank of the <em>i</em><sup>th</sup> publication is</p>$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$<p>For <em>h<sub>m</sub></em> we instead calculate the effective rank as</p>$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$<p><em>h<sub>m</sub></em> is determined as the largest value of <em>r</em><sub>eff</sub>(<em>i</em>) for which <em>r</em><sub>eff</sub>(<em>i</em>) ≤ <em>C<sub>i</sub></em> or</p>$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) \leq C_i\right).$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -6353,9 +6543,9 @@
       </div>
     </div>
     <div id="h_rate" class="metric_container">
-      <h2><em>h-</em>rate/Hirsch <em>m-</em>quotient (slope)</h2>
+      <h2><em>h-</em>rate</h2>
       <p>Originaly defined by Hirsch (2005), this metric is also known as the <span class="metric_name"><em>m-</em>quotient,</span> <span class="metric_name"><em>m-</em>ratio index,</span> <span class="metric_name">age-normalized <em>h-</em>index,</span> and <span class="metric_name">Carbon <em>h-</em>factor.</span> It measures the rate at which the <em>h-</em>index has increased over the career of a researcher. It is calculated simply as:</p>
-$$m=\frac{h}{Y-Y_{0}+1}$$
+$$m=\frac{h}{Y-Y_{0}+1},$$
 <p>where \(h\) is the <em>h-</em>index in year \(Y\) and \(Y_{0}\) is the year of the researcher's first publication (the denominator of this equation is the academic age of the researcher).</p>
 <p>The above estimation is essentially just the slope of the line from the start of a researcher's career (0 publications, 0 citations) through the most recent estimate of their <em>h-</em>index.</p>
 
@@ -6392,7 +6582,7 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       </div>
     </div>
     <div id="ls_h_rate" class="metric_container">
-      <h2>least squares <em>h-</em>rate (slope)</h2>
+      <h2>least squares <em>h-</em>rate</h2>
       <p>Hirsch's original estimate of the <em>h-</em>rate was based on a single data point, the most recently measured value of <em>h</em> and the time since first publication. Burrell (2007) suggested that a more accurate measure could be estimated through least-squares regression of a series of <em>h-</em>indices measured at different time points of an author's career, while forcing the intercept through zero at the time of their first publication.</p>
       <div class="metric_data_container">
         <div class="table_container">
@@ -6917,12 +7107,12 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       </div>
     </div>
     <div id="citation_acceleration" class="metric_container">
-      <h2><em>a</em></h2>
+      <h2>citation acceleration</h2>
       <p>Citation acceleration (Sangwal 2012) is defined as the total number of citations of an author divided by the square of their academic age,</p>$$a = \frac{C^P}{\left(Y-Y_0+1\right)^2}=\frac{\sum\limits_{i=1}^{P}{C_i}}{\left(Y-Y_0+1\right)^2}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>a</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">2.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">3.2500</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">4.0000</td></tr>
@@ -7092,12 +7282,12 @@ $$m=\frac{h}{Y-Y_{0}+1}$$
       </div>
     </div>
     <div id="citation_entropy" class="metric_container">
-      <h2><em>s</em></h2>
+      <h2>citation entropy (<em>s-</em>index)</h2>
       <p>Citation entropy attempts to characterize the quality and impact of scientific researchusing an entropy model. It is calculated as</p>$$s=\frac{1}{4}\sqrt{C^P}e^{H^*},$$<p>where <em>H</em><sup>*</sup> is the standardized Shannon entropy or</p>$$H^*=-\sum\limits_{i=1}^{P}{\left(\frac{C_i}{C^P}\log_2\frac{C_i}{C^P}\right)}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th></th></tr>
+            <tr><th>Year</th><th><em>s</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">0.5439</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">1.9448</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">2.9809</td></tr>
