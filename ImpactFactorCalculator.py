@@ -519,79 +519,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
                 outfile.write("\n")
             # plots for descriptions
             for graph in metric.description_graphs:
-                outfile.write("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-                # graph.components = ["ranked citations", "x=y", "h-square"]
-                cstr = ""
-                for i in range(len(graph.components)):
-                    cstr += ", \'y" + str(i) + "\'"
-                cstr += ", {\'type\': \'string\', \'role\': \'annotation\'}"
-                outfile.write("           [\'X\'" + cstr + "],\n")
-                maxx = 0
-                h = 0
-                tmp_dat = []
-                for c in graph.components:
-                    if c == "ranked citations":
-                        maxx = max(maxx, metric_base_data.metrics["total pubs"].value)
-                        tmp_dat = [c for c in metric_base_data.citations]
-                        tmp_dat.sort(reverse=True)
-                    elif c == "x=y":
-                        maxx = max(maxx, 1)
-                    elif c == "h-square":
-                        h = metric_base_data.metrics["h-index"].value
-                        maxx = max(maxx, h)
-                maxv = 100
-                for x in range(maxx+1):
-                    tmpstr = None
-                    outstr = "           [{}".format(x)
-                    for c in graph.components:
-                        if c == "ranked citations":
-                            if x == 0:
-                                v = "null"
-                            else:
-                                v = tmp_dat[x-1]
-                            outstr += ", {}".format(v)
-                        elif c == "x=y":
-                            outstr += ", {}".format(x)
-                        elif c == "h-square":
-                            if x <= h:
-                                v = h
-                            else:
-                                v = "null"
-                            if x == h:  # close the square by adding an extra point at x, 0
-                                tmpstr = outstr + ", 0, null"
-                                outstr += ", {}, \'h\'".format(v)
-                            else:
-                                outstr += ", {}, null".format(v)
-                    outstr += "],\n"
-                    outfile.write(outstr)
-                    if tmpstr is not None:
-                        outfile.write(tmpstr + "],\n")
-                outfile.write("		]);\n")
-                outfile.write("\n")
-                outfile.write("        var options_{} = {{\n".format(graph.name))
-                outfile.write("		     legend: {position: 'none'},\n")
-                outfile.write("		     hAxis: {slantedText: true,\n")
-                outfile.write("		             title: \'Rank\',\n")
-                outfile.write("		             gridlines: {color: \'transparent\'},\n")
-                outfile.write("		             ticks: [20, 40, 60, 80, 100],\n")
-                outfile.write("		             viewWindow: {max:" + str(maxv) + "}},\n")
-                outfile.write("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-                outfile.write("		             title: \'Citation Count\',\n")
-                outfile.write("		             ticks: [20, 40, 60, 80, 100],\n")
-                outfile.write("		             gridlines: {color: \'transparent\'}},\n")
-                outfile.write("		     series: { 0: {},\n")
-                outfile.write("		               1: {lineDashStyle: [4, 4]},\n")
-                outfile.write("		               2: {lineDashStyle: [2, 2],\n")
-                outfile.write("		                   annotations:{textStyle:{color: \'black\',")
-                outfile.write("		                                           italic: true, bold: true}}}}\n")
-                outfile.write("        };\n")
-                outfile.write("\n")
-                outfile.write("        var chart_{} = new google.visualization."
-                              "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
-                outfile.write("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name,
-                                                                                     graph.name))
-                outfile.write("\n")
-
+                for outline in graph.data(metric_base_data):
+                    outfile.write(outline)
         outfile.write("		}\n")
         outfile.write("    </script>\n")
 

@@ -159,7 +159,7 @@ class DescriptionGraph:
     """
     def __init__(self):
         self.name = ""  # a label which will be used to identify specific plots
-        self.components = []
+        self.data = None
         # self.data = []
         # self.series_type = []
         # self.graph_options = None
@@ -365,6 +365,71 @@ def calculate_h_index(metric_set: MetricSet) -> int:
     return h
 
 
+def write_h_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("['Rank', 'Citations', 'x=y', 'h-square', {'type': 'string', 'role': 'annotation'}],")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 100
+    for x in range(maxx + 1):
+        tmpstr = None
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+        outstr += ", {}".format(v)
+        # write y for x=y
+        outstr += ", {}".format(x)
+        # write h-square
+        if x <= h:
+            v = h
+        else:
+            v = "null"
+        if x == h:  # close the square by adding an extra point at x, 0
+            tmpstr = outstr + ", 0, null"
+            outstr += ", {}, \'h\'".format(v)
+        else:
+            outstr += ", {}, null".format(v)
+
+        outstr += "],\n"
+        output.append(outstr)
+        if tmpstr is not None:
+            output.append(tmpstr + "],\n")
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'none'},\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [4, 4]},\n")
+    output.append("		               2: {lineDashStyle: [2, 2],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\',")
+    output.append("		                                           italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_h_index() -> Metric:
     m = Metric()
     m.name = "h-index"
@@ -375,7 +440,7 @@ def metric_h_index() -> Metric:
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "h_index_desc"
-    graph.components = ["ranked citations", "x=y", "h-square"]
+    graph.data = write_h_index_desc_data
     equation = r"$$h=\underset{i}{\max}\left(i\leq C_i\right).$$"
     m.description = "<p>The <span class=\"metric_name\"><em>h-</em>index</span> (Hirsch 2005) is the most " \
                     "important personal impact factor one needs " \
@@ -389,7 +454,7 @@ def metric_h_index() -> Metric:
                     "least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> " \
                     "citations. Note that <em>h</em> is measured in publications. In formal notation, one might " \
                     "write</p>" + equation + "<p>These top <em>h</em> publications are often referred to as the " \
-                    "&ldquo;Hirsch core.&rdquo;</p><div id=\"chart_h_index_desc_div\" class=\"hsq_chart\"></div>" \
+                    "&ldquo;Hirsch core.&rdquo;</p><div id=\"chart_" + graph.name + "_div\" class=\"hsq_chart\"></div>" \
                     "<p>One way to graphically visualize <em>h</em> is to imagine a " \
                     "plot of citation count versus rank for all publications (often called the citation curve). By " \
                     "definition, this plot will generally trend from upper left (highest ranked publications with " \
