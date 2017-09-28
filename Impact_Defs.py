@@ -409,7 +409,7 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     legend: {position: 'top'},\n")
     output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
@@ -539,12 +539,11 @@ def write_g_index_desc_data1(metric_set: MetricSet) -> list:
     tmp_cites.sort(reverse=True)
     cum_cites = [tmp_cites[0]]
     for i, c in enumerate(tmp_cites[1:]):
-        cum_cites.append(cum_cites[i-1] + c)
+        cum_cites.append(cum_cites[i] + c)
     g = metric_set.metrics["g-index"].value
     maxx = metric_set.metrics["total pubs"].value
-    maxv = 50
+    maxv = 150
     for x in range(maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
         # write cumulative citation count for ranked publication x
         if x == 0:
@@ -553,26 +552,33 @@ def write_g_index_desc_data1(metric_set: MetricSet) -> list:
             v = cum_cites[x - 1]
         outstr += ", {}".format(v)
         # write y for y=x^2
-        outstr += ", {}".format(x*x)
-        outstr += ", null"
-        outstr += "],\n"
+        v = x**2
+        if v > maxv:
+            v = "null"
+        if x == g:
+            a = "\'g\'"
+        else:
+            a = "null"
+        outstr += ", {}, {}],\n".format(v, a)
         output.append(outstr)
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     legend: {position: 'top'},\n")
+    # output.append("		     chartArea: {width:\'75%\', height:\'75%\'},\n")
     output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Citation Count\',\n")
-    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             title: \'Cumulative Citation Count\',\n")
+    output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
     output.append("		             gridlines: {color: \'transparent\'}},\n")
     output.append("		     series: { 0: {},\n")
-    output.append("		               1: {lineDashStyle: [4, 4]}}\n")
+    output.append("		               1: {lineDashStyle: [4, 4],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
     output.append("        };\n")
     output.append("\n")
     output.append("        var chart_{} = new google.visualization."
@@ -588,7 +594,7 @@ def write_g_index_desc_data2(metric_set: MetricSet) -> list:
     graph = metric.description_graphs[1]
     output = list()
     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("           ['Rank', 'Mean Citations', 'y=x^2', 'g-square', "
+    output.append("           ['Rank', 'Mean Citations', 'y=x', 'g-square', "
                   "{'type': 'string', 'role': 'annotation'}],\n")
     tmp_cites = [c for c in metric_set.citations]
     tmp_cites.sort(reverse=True)
@@ -631,16 +637,16 @@ def write_g_index_desc_data2(metric_set: MetricSet) -> list:
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     legend: {position: 'top'},\n")
     output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Citation Count\',\n")
-    output.append("		             ticks: [20, 40, 60, 80, 100],\n")
+    output.append("		             title: \'Mean Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
     output.append("		             gridlines: {color: \'transparent\'}},\n")
     output.append("		     series: { 0: {},\n")
     output.append("		               1: {lineDashStyle: [4, 4]},\n")
@@ -663,14 +669,14 @@ def metric_g_index() -> Metric:
     m.html_name = "<em>g-</em>index"
     m.symbol = "<em>g</em>"
     m.metric_type = INT
-    # graph1 = DescriptionGraph()
-    # m.description_graphs.append(graph1)
-    # graph1.name = "g_index_desc1"
-    # graph1.data = write_g_index_desc_data1
-    # graph2 = DescriptionGraph()
-    # m.description_graphs.append(graph2)
-    # graph2.name = "g_index_desc2"
-    # graph2.data = write_g_index_desc_data2
+    graph1 = DescriptionGraph()
+    m.description_graphs.append(graph1)
+    graph1.name = "g_index_desc1"
+    graph1.data = write_g_index_desc_data1
+    graph2 = DescriptionGraph()
+    m.description_graphs.append(graph2)
+    graph2.name = "g_index_desc2"
+    graph2.data = write_g_index_desc_data2
     equation = r"$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=" \
                r"\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$"
     m.description = "<p>The best known and most widely studied alternative to the <em>h-</em>index is known as the " \
@@ -679,7 +685,12 @@ def metric_g_index() -> Metric:
                     "formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on " \
                     "cumulative citation counts rather than individual citation counts. Formally, the " \
                     "<em>g-</em>index is the largest value for which <em>g</em> publications have jointly received " \
-                    "at least <em>g</em><sup>2</sup> citations.</p>" + equation + "<p>Although not usually " \
+                    "at least <em>g</em><sup>2</sup> citations.</p>" + equation + \
+                    "<div class=\"chart2container\">" \
+                    "<div id=\"chart_" + graph1.name + "_div\" class=\"proportional_chart2\"></div>" \
+                    "<div id=\"chart_" + graph2.name + "_div\" class=\"proportional_chart2\"></div>" \
+                    "</div><div class=\"clear_float\">" \
+                    "<p>Although not usually " \
                     "formulated this way, the above also shows an alternative interpretation of the <em>g-</em> " \
                     "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em> " \
                     "index is the largest value for which the top <em>g</em> publications average <em>g</em> " \
@@ -744,7 +755,7 @@ def write_h2_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     legend: {position: 'top'},\n")
     output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
@@ -911,7 +922,7 @@ def write_woeginger_w_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     legend: {position: 'top'},\n")
     output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")

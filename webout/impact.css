@@ -117,7 +117,18 @@ a:visited {
 .cds_table th {border-bottom: 1px solid silver}
 
 .proportional_chart {
-	width: 500px;
-	height: 500px;
+	width: 400px;
+	height: 400px;
 	margin: auto;
 }
+
+.proportional_chart2 {
+	width: 400px;
+	height: 400px;
+	float: left;
+	margin: auto;
+}
+
+.chart2container {width: 816px; margin: auto}
+
+.clear_float {clear: both}

@@ -299,7 +299,7 @@
 		]);
 
         var options_h_index_desc = {
-		     legend: {position: 'bottom'},
+		     legend: {position: 'top'},
 		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
@@ -417,6 +417,88 @@
 
         var chart_g_index = new google.visualization.LineChart(document.getElementById('chart_g_index_div'));
         chart_g_index.draw(data_g_index, options_g_index);
+
+        var data_g_index_desc1 = google.visualization.arrayToDataTable([
+           ['Rank', 'Cumulative Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, null],
+           [1, 42, 1, null],
+           [2, 78, 4, null],
+           [3, 92, 9, null],
+           [4, 103, 16, null],
+           [5, 112, 25, null],
+           [6, 121, 36, null],
+           [7, 124, 49, null],
+           [8, 126, 64, null],
+           [9, 128, 81, null],
+           [10, 130, 100, null],
+           [11, 131, 121, 'g'],
+           [12, 132, 144, null],
+           [13, 133, null, null],
+           [14, 133, null, null],
+           [15, 133, null, null],
+		]);
+
+        var options_g_index_desc1 = {
+		     legend: {position: 'top'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],
+		             viewWindow: {max:150}},
+		     vAxis: {viewWindow: {max:150},
+		             title: 'Cumulative Citation Count',
+		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_g_index_desc1 = new google.visualization.LineChart(document.getElementById('chart_g_index_desc1_div'));
+        chart_g_index_desc1.draw(data_g_index_desc1, options_g_index_desc1);
+
+        var data_g_index_desc2 = google.visualization.arrayToDataTable([
+           ['Rank', 'Mean Citations', 'y=x', 'g-square', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, 11, null],
+           [1, 42.0, null, null, null],
+           [2, 39.0, null, null, null],
+           [3, 30.666666666666668, null, null, null],
+           [4, 25.75, null, null, null],
+           [5, 22.4, null, null, null],
+           [6, 20.166666666666668, null, null, null],
+           [7, 17.714285714285715, null, null, null],
+           [8, 15.75, null, null, null],
+           [9, 14.222222222222221, null, null, null],
+           [10, 13.0, null, null, null],
+           [11, 11.909090909090908, null, 11, 'g'],
+           [11, 11.909090909090908, null, 0, null],
+           [12, 11.0, null, null, null],
+           [13, 10.23076923076923, null, null, null],
+           [14, 9.5, null, null, null],
+           [15, 8.866666666666667, 15, null, null],
+		]);
+
+        var options_g_index_desc2 = {
+		     legend: {position: 'top'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Mean Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4]},
+		               2: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_g_index_desc2 = new google.visualization.LineChart(document.getElementById('chart_g_index_desc2_div'));
+        chart_g_index_desc2.draw(data_g_index_desc2, options_g_index_desc2);
 
         var data_Tol_f_index = google.visualization.arrayToDataTable([
            ['Year', '<em>f</em>'],
@@ -571,7 +653,7 @@
 		]);
 
         var options_woeginger_w_index_desc = {
-		     legend: {position: 'bottom'},
+		     legend: {position: 'top'},
 		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
@@ -644,7 +726,7 @@
 		]);
 
         var options_h2_index_desc = {
-		     legend: {position: 'bottom'},
+		     legend: {position: 'top'},
 		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
@@ -4129,7 +4211,7 @@
     </div>
     <div id="g_index" class="metric_container">
       <h2><em>g-</em>index</h2>
-      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publications cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number of citations in the <em>g-</em>core to exceed the square of the total number of publications (<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for the average number of citations per publication to exceed the number of publications. Under this scenario, the threshold curve and the citation curve do not actually cross. Some authors have suggested adding phantom publications with zero citations until the curves cross (essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); a more conservative approach, illustrated here, is to set the maximum possible value of <em>g</em> equal to the number of publications.</p>
+      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publications cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<div class="chart2container"><div id="chart_g_index_desc1_div" class="proportional_chart2"></div><div id="chart_g_index_desc2_div" class="proportional_chart2"></div></div><div class="clear_float"><p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number of citations in the <em>g-</em>core to exceed the square of the total number of publications (<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for the average number of citations per publication to exceed the number of publications. Under this scenario, the threshold curve and the citation curve do not actually cross. Some authors have suggested adding phantom publications with zero citations until the curves cross (essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); a more conservative approach, illustrated here, is to set the maximum possible value of <em>g</em> equal to the number of publications.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
