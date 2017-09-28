@@ -428,7 +428,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         outfile.write("      google.setOnLoadCallback(drawChart);\n")
         outfile.write("      function drawChart() {\n")
         # metric_base_data = yearly_metrics_list[0]
-        metric_base_data = yearly_metrics_list[len(yearly_metrics_list)-1]
+        # metric_base_data = yearly_metrics_list[len(yearly_metrics_list)-1]
+        metric_base_data = yearly_metrics_list[4]  # use data from the 5th year for examples
         metric_names = metric_base_data.metric_names
         for name in metric_names:
             metric = metric_base_data.metrics[name]

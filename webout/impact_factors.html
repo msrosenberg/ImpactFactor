@@ -278,86 +278,42 @@
         chart_h_index.draw(data_h_index, options_h_index);
 
         var data_h_index_desc = google.visualization.arrayToDataTable([
-['Rank', 'Citations', 'x=y', 'h-square', {'type': 'string', 'role': 'annotation'}],           [0, null, 0, 35, null],
-           [1, 1437, 1, 35, null],
-           [2, 331, 2, 35, null],
-           [3, 316, 3, 35, null],
-           [4, 277, 4, 35, null],
-           [5, 274, 5, 35, null],
-           [6, 263, 6, 35, null],
-           [7, 250, 7, 35, null],
-           [8, 214, 8, 35, null],
-           [9, 179, 9, 35, null],
-           [10, 168, 10, 35, null],
-           [11, 156, 11, 35, null],
-           [12, 134, 12, 35, null],
-           [13, 117, 13, 35, null],
-           [14, 117, 14, 35, null],
-           [15, 101, 15, 35, null],
-           [16, 96, 16, 35, null],
-           [17, 96, 17, 35, null],
-           [18, 83, 18, 35, null],
-           [19, 69, 19, 35, null],
-           [20, 58, 20, 35, null],
-           [21, 56, 21, 35, null],
-           [22, 53, 22, 35, null],
-           [23, 52, 23, 35, null],
-           [24, 50, 24, 35, null],
-           [25, 46, 25, 35, null],
-           [26, 41, 26, 35, null],
-           [27, 40, 27, 35, null],
-           [28, 40, 28, 35, null],
-           [29, 39, 29, 35, null],
-           [30, 39, 30, 35, null],
-           [31, 39, 31, 35, null],
-           [32, 38, 32, 35, null],
-           [33, 36, 33, 35, null],
-           [34, 36, 34, 35, null],
-           [35, 35, 35, 35, 'h'],
-           [35, 35, 35, 0, null],
-           [36, 28, 36, null, null],
-           [37, 23, 37, null, null],
-           [38, 18, 38, null, null],
-           [39, 15, 39, null, null],
-           [40, 11, 40, null, null],
-           [41, 9, 41, null, null],
-           [42, 9, 42, null, null],
-           [43, 8, 43, null, null],
-           [44, 8, 44, null, null],
-           [45, 7, 45, null, null],
-           [46, 6, 46, null, null],
-           [47, 5, 47, null, null],
-           [48, 5, 48, null, null],
-           [49, 4, 49, null, null],
-           [50, 4, 50, null, null],
-           [51, 3, 51, null, null],
-           [52, 3, 52, null, null],
-           [53, 3, 53, null, null],
-           [54, 2, 54, null, null],
-           [55, 2, 55, null, null],
-           [56, 2, 56, null, null],
-           [57, 1, 57, null, null],
-           [58, 1, 58, null, null],
-           [59, 0, 59, null, null],
-           [60, 0, 60, null, null],
-           [61, 0, 61, null, null],
+           ['Rank', 'Citations', 'y=x', 'h-square', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, 6, null],
+           [1, 42, null, null, null],
+           [2, 36, null, null, null],
+           [3, 14, null, null, null],
+           [4, 11, null, null, null],
+           [5, 9, null, null, null],
+           [6, 9, null, 6, 'h'],
+           [6, 9, null, 0, null],
+           [7, 3, null, null, null],
+           [8, 2, null, null, null],
+           [9, 2, null, null, null],
+           [10, 2, null, null, null],
+           [11, 1, null, null, null],
+           [12, 1, null, null, null],
+           [13, 1, null, null, null],
+           [14, 0, null, null, null],
+           [15, 0, 15, null, null],
 		]);
 
         var options_h_index_desc = {
 		     legend: {position: 'bottom'},
+		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
 		             gridlines: {color: 'transparent'},
-		             ticks: [20, 40, 60, 80, 100],
-		             viewWindow: {max:100}},
-		     vAxis: {viewWindow: {max:100},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
 		             title: 'Citation Count',
-		             ticks: [20, 40, 60, 80, 100],
+		             ticks: [0, 10, 20, 30, 40, 50],
 		             gridlines: {color: 'transparent'}},
 		     series: { 0: {},
 		               1: {lineDashStyle: [4, 4]},
 		               2: {lineDashStyle: [2, 2],
-		                   annotations:{textStyle:{color: 'black',		                                           italic: true, bold: true}}}}
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
         };
 
         var chart_h_index_desc = new google.visualization.LineChart(document.getElementById('chart_h_index_desc_div'));
@@ -594,6 +550,46 @@
         var chart_Woeginger_w_index = new google.visualization.LineChart(document.getElementById('chart_Woeginger_w_index_div'));
         chart_Woeginger_w_index.draw(data_Woeginger_w_index, options_Woeginger_w_index);
 
+        var data_woeginger_w_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'w-triangle', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 9, null],
+           [1, 42, null, null],
+           [2, 36, null, null],
+           [3, 14, null, null],
+           [4, 11, null, null],
+           [5, 9, null, null],
+           [6, 9, null, null],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, 0, 'w'],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_woeginger_w_index_desc = {
+		     legend: {position: 'bottom'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_woeginger_w_index_desc = new google.visualization.LineChart(document.getElementById('chart_woeginger_w_index_desc_div'));
+        chart_woeginger_w_index_desc.draw(data_woeginger_w_index_desc, options_woeginger_w_index_desc);
+
         var data_h2_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h</em>(2)'],
            ['1997', 1],
@@ -626,6 +622,46 @@
 
         var chart_h2_index = new google.visualization.LineChart(document.getElementById('chart_h2_index_div'));
         chart_h2_index.draw(data_h2_index, options_h2_index);
+
+        var data_h2_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, null],
+           [1, 42, 1, null],
+           [2, 36, 4, null],
+           [3, 14, 9, 'h(2)'],
+           [4, 11, 16, null],
+           [5, 9, 25, null],
+           [6, 9, 36, null],
+           [7, 3, 49, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_h2_index_desc = {
+		     legend: {position: 'bottom'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_h2_index_desc = new google.visualization.LineChart(document.getElementById('chart_h2_index_desc_div'));
+        chart_h2_index_desc.draw(data_h2_index_desc, options_h2_index_desc);
 
         var data_Wu_w_index = google.visualization.arrayToDataTable([
            ['Year', '<em>w</em>'],
@@ -3988,7 +4024,7 @@
     </div>
     <div id="h_index" class="metric_container">
       <h2><em>h-</em>index</h2>
-      <p>The <span class="metric_name"><em>h-</em>index</span> (Hirsch 2005) is the most important personal impact factor one needs to be familiar with, not because it is necessarily the best, but because (1) it was the first major index of its type and most of the other indices are based on it in some way, and (2) it is the single factor with which most other people (<em>e.g.</em>, administrators) are likely to be somewhat familiar. You may find another index which you prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> citations. Note that <em>h</em> is measured in publications. In formal notation, one might write</p>$$h=\underset{i}{\max}\left(i\leq C_i\right).$$<p>These top <em>h</em> publications are often referred to as the &ldquo;Hirsch core.&rdquo;</p><div id="chart_h_index_desc_div" class="hsq_chart"></div><p>One way to graphically visualize <em>h</em> is to imagine a plot of citation count versus rank for all publications (often called the citation curve). By definition, this plot will generally trend from upper left (highest ranked publications with most citations, to lower right (lowest ranked publications with fewest citations), depending on the precise citation distribution of the author. If one were to add a (threshold) line with a slope of one to this plot, the point where the threshold line crosses the citation curve (truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the size (length of sides) of the largest square that one can fit under the citation curve.</p>
+      <p>The <span class="metric_name"><em>h-</em>index</span> (Hirsch 2005) is the most important personal impact factor one needs to be familiar with, not because it is necessarily the best, but because (1) it was the first major index of its type and most of the other indices are based on it in some way, and (2) it is the single factor with which most other people (<em>e.g.</em>, administrators) are likely to be somewhat familiar. You may find another index which you prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> citations. Note that <em>h</em> is measured in publications. In formal notation, one might write</p>$$h=\underset{i}{\max}\left(i\leq C_i\right).$$<p>These top <em>h</em> publications are often referred to as the &ldquo;Hirsch core.&rdquo;</p><div id="chart_h_index_desc_div" class="proportional_chart"></div><p>One way to graphically visualize <em>h</em> is to imagine a plot of citation count versus rank for all publications (often called the citation curve). By definition, this plot will generally trend from upper left (highest ranked publications with most citations, to lower right (lowest ranked publications with fewest citations), depending on the precise citation distribution of the author. If one were to add a (threshold) line with a slope of one to this plot, the point where the threshold line crosses the citation curve (truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the size (length of sides) of the largest square that one can fit under the citation curve.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4093,7 +4129,7 @@
     </div>
     <div id="g_index" class="metric_container">
       <h2><em>g-</em>index</h2>
-      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publications cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p>
+      <p>The best known and most widely studied alternative to the <em>h-</em>index is known as the <em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for publications cited in excess of the <em>h</em> threshold. The primary difference between the formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on cumulative citation counts rather than individual citation counts. Formally, the <em>g-</em>index is the largest value for which <em>g</em> publications have jointly received at least <em>g</em><sup>2</sup> citations.</p>$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$<p>Although not usually formulated this way, the above also shows an alternative interpretation of the <em>g-</em> index, which makes it's meaning and relationship to <em>h</em> much clearer: the <em>g-</em> index is the largest value for which the top <em>g</em> publications average <em>g</em> citations, while <em>h</em> is the largest value for which the top <em>h</em> publications have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number of citations in the <em>g-</em>core to exceed the square of the total number of publications (<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for the average number of citations per publication to exceed the number of publications. Under this scenario, the threshold curve and the citation curve do not actually cross. Some authors have suggested adding phantom publications with zero citations until the curves cross (essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); a more conservative approach, illustrated here, is to set the maximum possible value of <em>g</em> equal to the number of publications.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4233,7 +4269,7 @@
     </div>
     <div id="Woeginger_w_index" class="metric_container">
       <h2><em>w-</em>index (Woeginger)</h2>
-      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations:</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$<p>for all <em>i</em> ≤ <em>k</em>.</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em>.</p>
+      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations:</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$<p>for all <em>i</em> ≤ <em>k</em>.</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em>.</p><div id="chart_woeginger_w_index_desc_div" class="proportional_chart"></div>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4268,7 +4304,7 @@
     </div>
     <div id="h2_index" class="metric_container">
       <h2><em>h</em>(2)-index</h2>
-      <p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than define the core based on <em>h</em> publications having <em>h</em> citations, this index requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> ciations:</p>$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than many other metrics.</p>
+      <p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than define the core based on <em>h</em> publications having <em>h</em> citations, this index requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> citations:</p>$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$<div id="chart_h2_index_desc_div" class="proportional_chart"></div><p>This leads to <em>h</em>(2) having a stricter definition of the core publications than many other metrics.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
