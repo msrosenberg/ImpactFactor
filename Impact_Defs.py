@@ -733,7 +733,6 @@ def write_h2_index_desc_data(metric_set: MetricSet) -> list:
     maxx = metric_set.metrics["total pubs"].value
     maxv = 50
     for x in range(maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
         # write citation count for ranked publication x
         if x == 0:
@@ -979,6 +978,66 @@ def calculate_wu_w_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_wu_w_index(citations, rank_order)
 
 
+def write_wu_w_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["Wu w-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'y=10x', {'type': 'string', 'role': 'annotation'}],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    w = metric_set.metrics["Wu w-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(maxx + 1):
+        tmpstr = None
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+        outstr += ", {}".format(v)
+        # write y for y=10x
+        if 10*x <= maxv:
+            v = 10*x
+        else:
+            v = "null"
+        if x == w:
+            a = "\'w\'"
+        else:
+            a = "null"
+        outstr += ", {}, {}],\n".format(v, a)
+        output.append(outstr)
+        if tmpstr is not None:
+            output.append(tmpstr + "],\n")
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [4, 4],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_wu_w_index() -> Metric:
     m = Metric()
     m.name = "Wu w-index"
@@ -986,10 +1045,17 @@ def metric_wu_w_index() -> Metric:
     m.html_name = "<em>w-</em>index (Wu)"
     m.symbol = "<em>w</em>"
     m.metric_type = INT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "wu_w_index_desc"
+    graph.data = write_wu_w_index_desc_data
     equation = r"$$w=\underset{i}{\max}\left(i \leq 10C_i\right)$$"
     m.description = "<p>Wu\'s <em>w-</em>index (Wu 2010) is very similar to the <em>h-</em>index, but defines a " \
                     "stricter core by requiring that each of the <em>w</em> publications have at least 10<em>w</em> " \
-                    "citations.</p>" + equation
+                    "citations.</p>" + equation + "<div id=\"chart_" + graph.name + \
+                    "_div\" class=\"proportional_chart\"></div>" \
+                    "<p>One can view this graphically as identical to the " \
+                    "<em>h-</em>index, except the threshold line has a slope of 10 rather than 1.</p>"
     m.references = ["Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely "
                     "cited papers. <em>Journal of the American Society for Information Science and Technology</em> "
                     "61(3):609&ndash;614."]
@@ -1186,16 +1252,110 @@ def calculate_real_h_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_real_h_index(citations, rank_order, h)
 
 
+def write_real_h_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["real h-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'y=x', {'type': 'string', 'role': 'annotation'}, 'h-square', "
+                  "'h+1-square'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    hr = metric_set.metrics["real h-index"].value
+    h = int(hr)
+    minv = h - 4
+    maxv = h + 4
+    ticks = list(range(minv, maxv + 1))
+    # maxx = metric_set.metrics["total pubs"].value
+    for x in range(minv, maxv + 1):
+        tmpstr = None
+        tmpstr2 = None
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        v = tmp_cites[x - 1]
+        # if (v > maxv) or (v < minv):
+        #     v = "null"
+        outstr += ", {}".format(v)
+        # write y for x=y
+        if (x == minv) or (x == maxv) or (x == h) or (x == h+1):
+            v = x
+        else:
+            v = "null"
+        if x == h:
+            tmpstr2 = "           [{0}, null, {0}, \'real h\', null, null],\n".format(hr)
+        outstr += ", {}".format(v)
+        # write h-square
+        if (x == minv) or (x == h):
+            v = h
+        else:
+            v = "null"
+        if x == h:  # close the square by adding an extra point at x, minv
+            tmpstr = outstr + ", null, " + str(minv) + ", null"
+            outstr += ", \'h\', {}".format(v)
+        elif x == h + 1:
+            outstr += ", \'h+1\', {}".format(v)
+        else:
+            outstr += ", null, {}".format(v)
+
+        # write h+1-square
+        if (x == minv) or (x == h+1):
+            v = h+1
+        else:
+            v = "null"
+        if x == h+1:  # close the square by adding an extra point at x, minv
+            tmpstr = outstr + ", " + str(minv)
+        outstr += ", {}".format(v)
+
+        outstr += "],\n"
+        output.append(outstr)
+        if tmpstr is not None:
+            output.append(tmpstr + "],\n")
+        if tmpstr2 is not None:
+            output.append(tmpstr2)
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'bottom'},\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: " + str(ticks) + ",\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + ", minv: " + str(minv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + ", minv: " + str(minv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: " + str(ticks) + ",\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [4, 4],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}},\n")
+    output.append("		               2: {lineDashStyle: [2, 2], visibleInLegend: false},\n")
+    output.append("		               3: {lineDashStyle: [2, 2], visibleInLegend: false}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_real_h_index() -> Metric:
     m = Metric()
     m.name = "real h-index"
     m.full_name = "real h-index"
     m.html_name = "real <em>h-</em>index"
     m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "real_h_index_desc"
+    graph.data = write_real_h_index_desc_data
     equation = r"$$h_r=\frac{\left(h+1\right)C_h-hC_{h+1}}{1-C_{h+1}+C_h}.$$"
     m.description = "<p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009) as the point at which " \
                     "the linear interpolation between the citation counts associated with publications <em>h</em> " \
-                    "and <em>h</em> + 1 crosses a line with slope one,</p>" + equation + \
+                    "and <em>h</em> + 1 crosses a line with slope one,</p>" + equation + "<div id=\"chart_" + \
+                    graph.name + "_div\" class=\"proportional_chart\"></div>"\
                     "The real <em>h-</em>index has the same graphical definition as <em>h,</em> except it is not " \
                     "restricted to integer values and thus represents the actual point where the citation and " \
                     "threshold curves cross.</p>"
@@ -1689,6 +1849,94 @@ def calculate_h2_upper_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_h2_upper_index(total_cites, core_cites, h)
 
 
+def write_h2_upper_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h2-upper index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        tmpstr = None
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+            tmpstr = "           [{}, {}, 0, 0],\n".format(h+0.001, h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+        if tmpstr is not None:
+            output.append(tmpstr)
+
+    # output.append("           ['Rank', 'Center and Tail', 'Upper'],\n")
+    # tmp_cites = [c for c in metric_set.citations]
+    # tmp_cites.sort(reverse=True)
+    # h = metric_set.metrics["h-index"].value
+    # maxx = metric_set.metrics["total pubs"].value
+    # maxv = 50
+    # for x in range(1, maxx + 1):
+    #     outstr = "           [{}".format(x)  # write rank
+    #     if x <= h:
+    #         outstr += ", {}, {}".format(h, tmp_cites[x - 1] - h)
+    #     # elif x == h:
+    #     #     outstr += ", {}, {}, {}".format(tmp_cites[x], h, tmp_cites[x - 1] - h)
+    #     else:
+    #         outstr += ", {}, null".format(tmp_cites[x - 1])
+    #     outstr += "],\n"
+    #     output.append(outstr)
+
+    # output.append("           ['Rank', 'Upper', 'Center and Tail', 'Upper'],\n")
+    # tmp_cites = [c for c in metric_set.citations]
+    # tmp_cites.sort(reverse=True)
+    # h = metric_set.metrics["h-index"].value
+    # maxx = metric_set.metrics["total pubs"].value
+    # maxv = 50
+    # for x in range(1, maxx + 1):
+    #     outstr = "           [{}".format(x)  # write rank
+    #     outstr += ", {}".format(tmp_cites[x - 1])
+    #     if x <= h:
+    #         outstr += ", {}, null".format(h)
+    #     else:
+    #         outstr += ", null, {}".format(tmp_cites[x - 1])
+    #     outstr += "],\n"
+    #     output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    # output.append("		     series: { 0: {},\n")
+    # output.append("		               1: {lineDashStyle: [4, 4]},\n")
+    # output.append("		               2: {lineDashStyle: [2, 2],\n")
+    # output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "AreaChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_h2_upper_index() -> Metric:
     m = Metric()
     m.name = "h2-upper index"
@@ -1696,6 +1944,10 @@ def metric_h2_upper_index() -> Metric:
     m.html_name = "<em>h</em><sup>2</sup>-upper index"
     m.symbol = r"\(h_\text{upper}^2\)"
     m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "h2_upper_index_desc"
+    graph.data = write_h2_upper_index_desc_data
     equation = r"$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=" \
                r"\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$"
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
@@ -1703,7 +1955,8 @@ def metric_h2_upper_index() -> Metric:
                     "the citation curve into three sections based on this square and describing each section as the " \
                     "percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is " \
                     "the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, " \
-                    "the citations found above the <em>h-</em>square. It is calculated as:" + equation
+                    "the citations found above the <em>h-</em>square. It is calculated as:" + equation + \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
     m.references = ["Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output "
                     "measurement: Two approaches to enhance its accuracy. <em>Journal of Informetrics</em> "
                     "4:407&ndash;414."]

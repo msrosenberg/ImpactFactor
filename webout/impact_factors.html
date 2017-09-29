@@ -778,6 +778,46 @@
         var chart_Wu_w_index = new google.visualization.LineChart(document.getElementById('chart_Wu_w_index_div'));
         chart_Wu_w_index.draw(data_Wu_w_index, options_Wu_w_index);
 
+        var data_wu_w_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'y=10x', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, null],
+           [1, 42, 10, null],
+           [2, 36, 20, 'w'],
+           [3, 14, 30, null],
+           [4, 11, 40, null],
+           [5, 9, 50, null],
+           [6, 9, null, null],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_wu_w_index_desc = {
+		     legend: {position: 'top'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_wu_w_index_desc = new google.visualization.LineChart(document.getElementById('chart_wu_w_index_desc_div'));
+        chart_wu_w_index_desc.draw(data_wu_w_index_desc, options_wu_w_index_desc);
+
         var data_hg_index = google.visualization.arrayToDataTable([
            ['Year', '<em>hg</em>'],
            ['1997', 1.0],
@@ -942,6 +982,44 @@
 
         var chart_real_h_index = new google.visualization.LineChart(document.getElementById('chart_real_h_index_div'));
         chart_real_h_index.draw(data_real_h_index, options_real_h_index);
+
+        var data_real_h_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'y=x', {'type': 'string', 'role': 'annotation'}, 'h-square', 'h+1-square'],
+           [2, 36, 2, null, 6, 7],
+           [3, 14, null, null, null, null],
+           [4, 11, null, null, null, null],
+           [5, 9, null, null, null, null],
+           [6, 9, 6, 'h', 6, null],
+           [6, 9, 6, null, 2, null],
+           [6.428571428571429, null, 6.428571428571429, 'real h', null, null],
+           [7, 3, 7, 'h+1', null, 7],
+           [7, 3, 7, 'h+1', null, 2],
+           [8, 2, null, null, null, null],
+           [9, 2, null, null, null, null],
+           [10, 2, 10, null, null, null],
+		]);
+
+        var options_real_h_index_desc = {
+		     legend: {position: 'bottom'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+		             viewWindow: {max:10, minv: 2}},
+		     vAxis: {viewWindow: {max:10, minv: 2},
+		             title: 'Citation Count',
+		             ticks: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}},
+		               2: {lineDashStyle: [2, 2], visibleInLegend: false},
+		               3: {lineDashStyle: [2, 2], visibleInLegend: false}}
+        };
+
+        var chart_real_h_index_desc = new google.visualization.LineChart(document.getElementById('chart_real_h_index_desc_div'));
+        chart_real_h_index_desc.draw(data_real_h_index_desc, options_real_h_index_desc);
 
         var data_Wu_wq = google.visualization.arrayToDataTable([
            ['Year', '<em>q</em>'],
@@ -1476,6 +1554,44 @@
 
         var chart_h2_upper_index = new google.visualization.LineChart(document.getElementById('chart_h2_upper_index_div'));
         chart_h2_upper_index.draw(data_h2_upper_index, options_h2_upper_index);
+
+        var data_h2_upper_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 36],
+           [2, null, 6, 30],
+           [3, null, 6, 8],
+           [4, null, 6, 5],
+           [5, null, 6, 3],
+           [6, null, 6, 3],
+           [6.001, 6, 0, 0],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_h2_upper_index_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_h2_upper_index_desc = new google.visualization.AreaChart(document.getElementById('chart_h2_upper_index_desc_div'));
+        chart_h2_upper_index_desc.draw(data_h2_upper_index_desc, options_h2_upper_index_desc);
 
         var data_h2_center_index = google.visualization.arrayToDataTable([
            ['Year', '\(h_\text{center}^2\)'],
@@ -4421,7 +4537,7 @@
     </div>
     <div id="Wu_w_index" class="metric_container">
       <h2><em>w-</em>index (Wu)</h2>
-      <p>Wu's <em>w-</em>index (Wu 2010) is very similar to the <em>h-</em>index, but defines a stricter core by requiring that each of the <em>w</em> publications have at least 10<em>w</em> citations.</p>$$w=\underset{i}{\max}\left(i \leq 10C_i\right)$$
+      <p>Wu's <em>w-</em>index (Wu 2010) is very similar to the <em>h-</em>index, but defines a stricter core by requiring that each of the <em>w</em> publications have at least 10<em>w</em> citations.</p>$$w=\underset{i}{\max}\left(i \leq 10C_i\right)$$<div id="chart_wu_w_index_desc_div" class="proportional_chart"></div><p>One can view this graphically as identical to the <em>h-</em>index, except the threshold line has a slope of 10 rather than 1.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -4596,7 +4712,7 @@
     </div>
     <div id="real_h_index" class="metric_container">
       <h2>real <em>h-</em>index</h2>
-      <p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009) as the point at which the linear interpolation between the citation counts associated with publications <em>h</em> and <em>h</em> + 1 crosses a line with slope one,</p>$$h_r=\frac{\left(h+1\right)C_h-hC_{h+1}}{1-C_{h+1}+C_h}.$$The real <em>h-</em>index has the same graphical definition as <em>h,</em> except it is not restricted to integer values and thus represents the actual point where the citation and threshold curves cross.</p>
+      <p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009) as the point at which the linear interpolation between the citation counts associated with publications <em>h</em> and <em>h</em> + 1 crosses a line with slope one,</p>$$h_r=\frac{\left(h+1\right)C_h-hC_{h+1}}{1-C_{h+1}+C_h}.$$<div id="chart_real_h_index_desc_div" class="proportional_chart"></div>The real <em>h-</em>index has the same graphical definition as <em>h,</em> except it is not restricted to integer values and thus represents the actual point where the citation and threshold curves cross.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5156,7 +5272,7 @@
     </div>
     <div id="h2_upper_index" class="metric_container">
       <h2><em>h</em><sup>2</sup>-upper index</h2>
-      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$
+      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$<div id="chart_h2_upper_index_desc_div" class="proportional_chart"></div>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
