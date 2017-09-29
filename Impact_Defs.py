@@ -1861,52 +1861,15 @@ def write_h2_upper_index_desc_data(metric_set: MetricSet) -> list:
     maxx = metric_set.metrics["total pubs"].value
     maxv = 50
     for x in range(1, maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
         if x < h:
             outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
         elif x == h:
             outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
-            tmpstr = "           [{}, {}, 0, 0],\n".format(h+0.001, h)
         else:
             outstr += ", {}, null, null".format(tmp_cites[x - 1])
         outstr += "],\n"
         output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr)
-
-    # output.append("           ['Rank', 'Center and Tail', 'Upper'],\n")
-    # tmp_cites = [c for c in metric_set.citations]
-    # tmp_cites.sort(reverse=True)
-    # h = metric_set.metrics["h-index"].value
-    # maxx = metric_set.metrics["total pubs"].value
-    # maxv = 50
-    # for x in range(1, maxx + 1):
-    #     outstr = "           [{}".format(x)  # write rank
-    #     if x <= h:
-    #         outstr += ", {}, {}".format(h, tmp_cites[x - 1] - h)
-    #     # elif x == h:
-    #     #     outstr += ", {}, {}, {}".format(tmp_cites[x], h, tmp_cites[x - 1] - h)
-    #     else:
-    #         outstr += ", {}, null".format(tmp_cites[x - 1])
-    #     outstr += "],\n"
-    #     output.append(outstr)
-
-    # output.append("           ['Rank', 'Upper', 'Center and Tail', 'Upper'],\n")
-    # tmp_cites = [c for c in metric_set.citations]
-    # tmp_cites.sort(reverse=True)
-    # h = metric_set.metrics["h-index"].value
-    # maxx = metric_set.metrics["total pubs"].value
-    # maxv = 50
-    # for x in range(1, maxx + 1):
-    #     outstr = "           [{}".format(x)  # write rank
-    #     outstr += ", {}".format(tmp_cites[x - 1])
-    #     if x <= h:
-    #         outstr += ", {}, null".format(h)
-    #     else:
-    #         outstr += ", null, {}".format(tmp_cites[x - 1])
-    #     outstr += "],\n"
-    #     output.append(outstr)
 
     output.append("		]);\n")
     output.append("\n")
@@ -1923,14 +1886,10 @@ def write_h2_upper_index_desc_data(metric_set: MetricSet) -> list:
     output.append("		             title: \'Citation Count\',\n")
     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
     output.append("		             gridlines: {color: \'transparent\'}},\n")
-    # output.append("		     series: { 0: {},\n")
-    # output.append("		               1: {lineDashStyle: [4, 4]},\n")
-    # output.append("		               2: {lineDashStyle: [2, 2],\n")
-    # output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
     output.append("        };\n")
     output.append("\n")
     output.append("        var chart_{} = new google.visualization."
-                  "AreaChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
     output.append("\n")
 
@@ -1953,10 +1912,11 @@ def metric_h2_upper_index() -> Metric:
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
-                    "percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is " \
+                    "percent of all citations found within the section.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
+                    "<p>The <em>h</em><sup>2</sup>-upper index is " \
                     "the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, " \
-                    "the citations found above the <em>h-</em>square. It is calculated as:" + equation + \
-                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
+                    "the citations found above the <em>h-</em>square. It is calculated as:" + equation
     m.references = ["Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output "
                     "measurement: Two approaches to enhance its accuracy. <em>Journal of Informetrics</em> "
                     "4:407&ndash;414."]
@@ -1972,6 +1932,53 @@ def calculate_h2_center_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_h2_center_index(total_cites, h)
 
 
+def write_h2_center_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h2-center index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_h2_center_index() -> Metric:
     m = Metric()
     m.name = "h2-center index"
@@ -1979,11 +1986,17 @@ def metric_h2_center_index() -> Metric:
     m.html_name = "<em>h</em><sup>2</sup>-center index"
     m.symbol = r"\(h_\text{center}^2\)"
     m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "h2_center_index_desc"
+    graph.data = write_h2_center_index_desc_data
     equation = r"$$h_\text{center}^2=\frac{h^2}{C^P}\times 100$$"
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
-                    "percent of all citations found within the section. The <em>h</em><sup>2</sup>-center index is " \
+                    "percent of all citations found within the section.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
+                    "The <em>h</em><sup>2</sup>-center index is " \
                     "the percent of citations found within the <em>h-</em>square. It is calculated as:" + equation
     m.references = ["Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output "
                     "measurement: Two approaches to enhance its accuracy. <em>Journal of Informetrics</em> "
@@ -2000,6 +2013,53 @@ def calculate_h2_tail_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_h2_tail_index(total_cites, core_cites)
 
 
+def write_h2_tail_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h2-tail index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_h2_tail_index() -> Metric:
     m = Metric()
     m.name = "h2-tail index"
@@ -2007,11 +2067,17 @@ def metric_h2_tail_index() -> Metric:
     m.html_name = "<em>h</em><sup>2</sup>-tail index"
     m.symbol = r"\(h_\text{tail}^2\)"
     m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "h2_tail_index_desc"
+    graph.data = write_h2_tail_index_desc_data
     equation = r"$$h_\text{tail}^2=\frac{C^P - C^h}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$"
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
-                    "percent of all citations found within the section. The <em>h</em><sup>2</sup>-tail index is " \
+                    "percent of all citations found within the section.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
+                    "The <em>h</em><sup>2</sup>-tail index is " \
                     "the percent of citations found within the tail of the citation curve, <em>i.e.</em>, " \
                     "the citations of publications outside the <em>h-</em>core. It is calculated as:" + equation
     m.references = ["Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output "
@@ -2139,6 +2205,78 @@ def calculate_multidimensional_h_index(metric_set: MetricSet) -> list:
     return Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
 
 
+def write_multidim_h_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["multidim h-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'h-squares'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    multih = metric_set.metrics["multidim h-index"].value
+    xpos = [multih[0]]
+    for h in multih[1:]:
+        xpos.append(h + xpos[len(xpos)-1])
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 20
+    for x in range(maxx + 1):
+        tmpstr = None
+        tmpstr2 = None
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+            if v > maxv:
+                v = "null"
+        outstr += ", {}".format(v)
+        # write h-square
+        if x == 0:
+            v = multih[0]
+        elif x in xpos:
+            i = xpos.index(x)
+            v = multih[i]
+            tmpstr = outstr + ", 0"  # close the square by adding an extra point at x, 0
+            if i < len(xpos) - 1:  # start next square
+                tmpstr2 = outstr + ", {}".format(multih[i+1])
+        else:
+            v = "null"
+        outstr += ", {}".format(v)
+
+        outstr += "],\n"
+        output.append(outstr)
+        if tmpstr is not None:
+            output.append(tmpstr + "],\n")
+        if tmpstr2 is not None:
+            output.append(tmpstr2 + "],\n")
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [2, 2],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_multdim_h_index() -> Metric:
     m = Metric()
     m.name = "multidim h-index"
@@ -2146,6 +2284,10 @@ def metric_multdim_h_index() -> Metric:
     m.html_name = "multidimensional <em>h-</em>index"
     m.symbol = "<strong><em>H</em></strong>"
     m.metric_type = INTLIST
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "multidim_h_index_desc"
+    graph.data = write_multidim_h_index_desc_data
     m.description = "<p>The multidimensional <em>h-</em>index (García-Pérez 2009) is a simple expansion of the " \
                     "original <em>h-</em>index used to separate individuals with identical <em>h-</em>indices. The " \
                     "concept is to calculate the <em>h-</em>index from all <em>P</em> publications (this would be " \
@@ -2155,7 +2297,8 @@ def metric_multdim_h_index() -> Metric:
                     "tail to the right of the original square represented by <em>h</em><sub>1</sub>. A third, " \
                     "<em>h</em><sub>3</sub>, can be calculated from the <em>P</em> – <em>h</em><sub>1</sub> – " \
                     "<em>h</em><sub>2</sub> remaining publications, etc., continuing until one reaches " \
-                    "publications with 0 citations. It should be obvious that <em>h</em><sub>1</sub> ≥ " \
+                    "publications with 0 citations.</p><div id=\"chart_" + graph.name + \
+                    "_div\" class=\"proportional_chart\"></div><p>It should be obvious that <em>h</em><sub>1</sub> ≥ " \
                     "<em>h</em><sub>2</sub> ≥ <em>h</em><sub>3</sub>…</p><p>Unlike most of the other indices, this " \
                     "index set is primarily focused on the tail of the distribution, ignoring the excess/upper " \
                     "part of the citation curve completely. Because it is simply recalculating <em>h</em> for a " \

@@ -1563,7 +1563,6 @@
            [4, null, 6, 5],
            [5, null, 6, 3],
            [6, null, 6, 3],
-           [6.001, 6, 0, 0],
            [7, 3, null, null],
            [8, 2, null, null],
            [9, 2, null, null],
@@ -1590,7 +1589,7 @@
 		             gridlines: {color: 'transparent'}},
         };
 
-        var chart_h2_upper_index_desc = new google.visualization.AreaChart(document.getElementById('chart_h2_upper_index_desc_div'));
+        var chart_h2_upper_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_h2_upper_index_desc_div'));
         chart_h2_upper_index_desc.draw(data_h2_upper_index_desc, options_h2_upper_index_desc);
 
         var data_h2_center_index = google.visualization.arrayToDataTable([
@@ -1626,6 +1625,43 @@
         var chart_h2_center_index = new google.visualization.LineChart(document.getElementById('chart_h2_center_index_div'));
         chart_h2_center_index.draw(data_h2_center_index, options_h2_center_index);
 
+        var data_h2_center_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 36],
+           [2, null, 6, 30],
+           [3, null, 6, 8],
+           [4, null, 6, 5],
+           [5, null, 6, 3],
+           [6, null, 6, 3],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_h2_center_index_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_h2_center_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_h2_center_index_desc_div'));
+        chart_h2_center_index_desc.draw(data_h2_center_index_desc, options_h2_center_index_desc);
+
         var data_h2_tail_index = google.visualization.arrayToDataTable([
            ['Year', '\(h_\text{tail}^2\)'],
            ['1997', 50.0],
@@ -1658,6 +1694,43 @@
 
         var chart_h2_tail_index = new google.visualization.LineChart(document.getElementById('chart_h2_tail_index_div'));
         chart_h2_tail_index.draw(data_h2_tail_index, options_h2_tail_index);
+
+        var data_h2_tail_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 36],
+           [2, null, 6, 30],
+           [3, null, 6, 8],
+           [4, null, 6, 5],
+           [5, null, 6, 3],
+           [6, null, 6, 3],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_h2_tail_index_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_h2_tail_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_h2_tail_index_desc_div'));
+        chart_h2_tail_index_desc.draw(data_h2_tail_index_desc, options_h2_tail_index_desc);
 
         var data_k_index = google.visualization.arrayToDataTable([
            ['Year', '<em>k</em>'],
@@ -1780,6 +1853,57 @@
 
         var chart_multidim_h_index = new google.visualization.LineChart(document.getElementById('chart_multidim_h_index_div'));
         chart_multidim_h_index.draw(data_multidim_h_index, options_multidim_h_index);
+
+        var data_multidim_h_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'h-squares'],
+           [0, null, 6],
+           [1, null, null],
+           [2, null, null],
+           [3, 14, null],
+           [4, 11, null],
+           [5, 9, null],
+           [6, 9, 6],
+           [6, 9, 0],
+           [6, 9, 2],
+           [7, 3, null],
+           [8, 2, 2],
+           [8, 2, 0],
+           [8, 2, 2],
+           [9, 2, null],
+           [10, 2, 2],
+           [10, 2, 0],
+           [10, 2, 1],
+           [11, 1, 1],
+           [11, 1, 0],
+           [11, 1, 1],
+           [12, 1, 1],
+           [12, 1, 0],
+           [12, 1, 1],
+           [13, 1, 1],
+           [13, 1, 0],
+           [14, 0, null],
+           [15, 0, null],
+		]);
+
+        var options_multidim_h_index_desc = {
+		     legend: {position: 'top'},
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:20}},
+		     vAxis: {viewWindow: {max:20},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_multidim_h_index_desc = new google.visualization.LineChart(document.getElementById('chart_multidim_h_index_desc_div'));
+        chart_multidim_h_index_desc.draw(data_multidim_h_index_desc, options_multidim_h_index_desc);
 
         var data_two_sided_h_index = google.visualization.arrayToDataTable([
            ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
@@ -5272,7 +5396,7 @@
     </div>
     <div id="h2_upper_index" class="metric_container">
       <h2><em>h</em><sup>2</sup>-upper index</h2>
-      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$<div id="chart_h2_upper_index_desc_div" class="proportional_chart"></div>
+      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section.</p><div id="chart_h2_upper_index_desc_div" class="proportional_chart"></div><p>The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5307,7 +5431,7 @@
     </div>
     <div id="h2_center_index" class="metric_container">
       <h2><em>h</em><sup>2</sup>-center index</h2>
-      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-center index is the percent of citations found within the <em>h-</em>square. It is calculated as:$$h_\text{center}^2=\frac{h^2}{C^P}\times 100$$
+      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section.</p><div id="chart_h2_center_index_desc_div" class="proportional_chart"></div>The <em>h</em><sup>2</sup>-center index is the percent of citations found within the <em>h-</em>square. It is calculated as:$$h_\text{center}^2=\frac{h^2}{C^P}\times 100$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5342,7 +5466,7 @@
     </div>
     <div id="h2_tail_index" class="metric_container">
       <h2><em>h</em><sup>2</sup>-tail index</h2>
-      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section. The <em>h</em><sup>2</sup>-tail index is the percent of citations found within the tail of the citation curve, <em>i.e.</em>, the citations of publications outside the <em>h-</em>core. It is calculated as:$$h_\text{tail}^2=\frac{C^P - C^h}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$
+      <p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section.</p><div id="chart_h2_tail_index_desc_div" class="proportional_chart"></div>The <em>h</em><sup>2</sup>-tail index is the percent of citations found within the tail of the citation curve, <em>i.e.</em>, the citations of publications outside the <em>h-</em>core. It is calculated as:$$h_\text{tail}^2=\frac{C^P - C^h}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -5482,7 +5606,7 @@
     </div>
     <div id="multidim_h_index" class="metric_container">
       <h2>multidimensional <em>h-</em>index</h2>
-      <p>The multidimensional <em>h-</em>index (García-Pérez 2009) is a simple expansion of the original <em>h-</em>index used to separate individuals with identical <em>h-</em>indices. The concept is to calculate the <em>h-</em>index from all <em>P</em> publications (this would be the first <em>h-</em>index or <em>h</em><sub>1</sub>). One can then calculate a second <em>h</em>-index, <em>h</em><sub>2</sub>, from the <em>P</em> – <em>h</em><sub>1</sub> remaining publications. Graphically, this is finding the largest square which can fit in the tail to the right of the original square represented by <em>h</em><sub>1</sub>. A third, <em>h</em><sub>3</sub>, can be calculated from the <em>P</em> – <em>h</em><sub>1</sub> – <em>h</em><sub>2</sub> remaining publications, etc., continuing until one reaches publications with 0 citations. It should be obvious that <em>h</em><sub>1</sub> ≥ <em>h</em><sub>2</sub> ≥ <em>h</em><sub>3</sub>…</p><p>Unlike most of the other indices, this index set is primarily focused on the tail of the distribution, ignoring the excess/upper part of the citation curve completely. Because it is simply recalculating <em>h</em> for a smaller data set, its interpretation is quite straightforward and certainly could serve as a solid method of distinguishing individuals with identical <em>h.</em></p>
+      <p>The multidimensional <em>h-</em>index (García-Pérez 2009) is a simple expansion of the original <em>h-</em>index used to separate individuals with identical <em>h-</em>indices. The concept is to calculate the <em>h-</em>index from all <em>P</em> publications (this would be the first <em>h-</em>index or <em>h</em><sub>1</sub>). One can then calculate a second <em>h</em>-index, <em>h</em><sub>2</sub>, from the <em>P</em> – <em>h</em><sub>1</sub> remaining publications. Graphically, this is finding the largest square which can fit in the tail to the right of the original square represented by <em>h</em><sub>1</sub>. A third, <em>h</em><sub>3</sub>, can be calculated from the <em>P</em> – <em>h</em><sub>1</sub> – <em>h</em><sub>2</sub> remaining publications, etc., continuing until one reaches publications with 0 citations.</p><div id="chart_multidim_h_index_desc_div" class="proportional_chart"></div><p>It should be obvious that <em>h</em><sub>1</sub> ≥ <em>h</em><sub>2</sub> ≥ <em>h</em><sub>3</sub>…</p><p>Unlike most of the other indices, this index set is primarily focused on the tail of the distribution, ignoring the excess/upper part of the citation curve completely. Because it is simply recalculating <em>h</em> for a smaller data set, its interpretation is quite straightforward and certainly could serve as a solid method of distinguishing individuals with identical <em>h.</em></p>
     <div id="multidim_h_index" class="metric_data_container_wide">
         <div class="table_container">
           <table class="impact_table">
