@@ -536,10 +536,11 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
             if metric.is_self and not inc_self:
                 pass  # skip self-citation metrics
             else:
-                name_links[metric.full_name.lower()] = [metric.html_name, encode_name(name)]
+                name_links[metric.full_name] = [metric.html_name, encode_name(name)]
                 for n in metric.synonyms:
-                    name_links[strip_html(n).lower()] = [n, encode_name(name)]
-        index_list = list(name_links.keys())
+                    name_links[strip_html(n)] = [n, encode_name(name)]
+        # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
+        index_list = [[i.lower(), i] for i in list(name_links.keys())]
         index_list.sort()
         outfile.write("    <div>\n")
         outfile.write("      <h1>Metric Values and Descriptions</h1>\n")
@@ -571,7 +572,7 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         outfile.write("      <h2>Index</h2>\n")
         outfile.write("      <ul class=\"index_list\">\n")
         for i in index_list:
-            name = name_links[i]
+            name = name_links[i[1]]
             outfile.write("        <li><a href=\"#" + name[1] + "\">" + name[0] + "</a></li>\n")
         outfile.write("      </ul>\n")
         outfile.write("    </div>\n")

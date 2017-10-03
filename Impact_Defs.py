@@ -1139,8 +1139,7 @@ def calculate_indifference(metric_set: MetricSet) -> float:
 def metric_indifference() -> Metric:
     m = Metric()
     m.name = "indifference"
-    m.full_name = "indifference (D)"
-    m.html_name = "indifference (<em>D</em>)"
+    m.full_name = "indifference"
     m.citation = "Egghe and Rousseau (1996)"
     m.metric_type = FLOAT
     equation = r"$$D=\frac{P}{C^P}$$"
@@ -3182,8 +3181,8 @@ def calculate_gf_cite_index(metric_set: MetricSet) -> int:
 def metric_gf_cite_index() -> Metric:
     m = Metric()
     m.name = "gf-cite"
-    m.full_name = "fractional citation g-index (gf)"
-    m.html_name = "fractional citation <em>g-</em>index (<em>g<sub>f</sub></em>)"
+    m.full_name = "fractional citation g-index"
+    m.html_name = "fractional citation <em>g-</em>index"
     m.metric_type = INT
     m.symbol = "<em>g<sub>f</sub></em>"
     equation = r"$$g_f=\underset{i}{\max}\left(i^2 \leq \sum\limits_{j=1}^{i}{\frac{C_j}{A_j}}\right).$$"
@@ -3254,8 +3253,8 @@ def calculate_gf_paper_index(metric_set: MetricSet) -> float:
 def metric_gf_paper_index() -> Metric:
     m = Metric()
     m.name = "gf-paper"
-    m.full_name = "fractional g-index (gF)"
-    m.html_name = "fractional <em>g-</em>index (<em>g<sub>F</sub></em>)"
+    m.full_name = "fractional g-index"
+    m.html_name = "fractional <em>g-</em>index"
     m.metric_type = FLOAT
     equation = r"$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 " \
                r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$"
@@ -3285,8 +3284,8 @@ def calculate_pos_weight_h_index(metric_set: MetricSet) -> int:
 def metric_pos_weight_h_index() -> Metric:
     m = Metric()
     m.name = "position-weighted h-index"
-    m.full_name = "position-weighted h-index (hp)"
-    m.html_name = "position-weighted <em>h-</em>index (<em>h<sub>p</sub></em>)"
+    m.full_name = "position-weighted h-index"
+    m.html_name = "position-weighted <em>h-</em>index"
     m.symbol = "<em>h<sub>p</sub></em>"
     m.synonyms = ["<em>h<sub>p</sub></em>"]
     m.metric_type = INT
@@ -3498,9 +3497,10 @@ def calculate_time_scaled_h_index(metric_set: MetricSet) -> float:
 def metric_time_scaled_h_index() -> Metric:
     m = Metric()
     m.name = "time-scaled h-index"
-    m.full_name = "time-scaled h-index (hTS)"
-    m.html_name = "time-scaled <em>h-</em>index (<em>h<sup>TS</sup></em>)"
+    m.full_name = "time-scaled h-index"
+    m.html_name = "time-scaled <em>h-</em>index"
     m.symbol = "<em>h<sup>TS</sup></em>"
+    m.synonyms = ["<em>h<sup>TS</sup></em>"]
     m.metric_type = FLOAT
     equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_0+1}}.$$"
     m.description = "<p>The time-scaled <em>h-</em>index (Mannella and Rossi 2013) is a variant of the " \
@@ -3823,8 +3823,8 @@ def calculate_annual_h_index(metric_set: MetricSet) -> float:
 def metric_annual_h_index() -> Metric:
     m = Metric()
     m.name = "annual h-index"
-    m.full_name = "annual h-index (hIa)"
-    m.html_name = "annual <em>h</em>-index (hIa)"
+    m.full_name = "annual h-index"
+    m.html_name = "annual <em>h</em>-index"
     m.symbol = "hIa"
     m.synonyms = ["hIa"]
     m.metric_type = FLOAT
@@ -3849,8 +3849,9 @@ def calculate_cds_index(metric_set: MetricSet) -> int:
 def metric_cds_index() -> Metric:
     m = Metric()
     m.name = "CDS-index"
-    m.full_name = "citation distribution score index (CDS-index)"
+    m.full_name = "citation distribution score index"
     m.symbol = "CDS"
+    m.synonyms = ["CDS-index"]
     m.metric_type = INT
     table = "<table class=\"cds_table\">" \
             "<tr><th>Category</th><th>Range of<br/>Citations</th>" \
@@ -3900,7 +3901,8 @@ def calculate_cdr_index(metric_set: MetricSet) -> float:
 def metric_cdr_index() -> Metric:
     m = Metric()
     m.name = "CDR-index"
-    m.full_name = "citation distribution rate index (CDR-index)"
+    m.full_name = "citation distribution rate index"
+    m.synonyms = ["CDR-index"]
     m.symbol = "CDR"
     m.metric_type = FLOAT
     equation = r"$$\text{CDR}=100\frac{\text{CDS}}{\text{CDS}_\max}=100\frac{\text{CDS}}{14P}.$$"
@@ -4103,8 +4105,8 @@ def calculate_cq_index(metric_set: MetricSet) -> float:
 def metric_cq_index() -> Metric:
     m = Metric()
     m.name = "cq index"
-    m.full_name = "corrected quality ratio (CQ index)"
-    m.html_name = "corrected quality ratio (<em>CQ</em> index)"
+    m.full_name = "corrected quality ratio"
+    m.html_name = "corrected quality ratio"
     m.symbol = "<em>CQ</em>"
     m.metric_type = FLOAT
     eq_str = r"$$CQ=\frac{C^P}{P}\sqrt{C^P \times P}$$"
