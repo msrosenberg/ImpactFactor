@@ -2219,9 +2219,8 @@ def write_multidim_h_index_desc_data(metric_set: MetricSet) -> list:
         xpos.append(h + xpos[len(xpos)-1])
     maxx = metric_set.metrics["total pubs"].value
     maxv = 20
+    # citation curve
     for x in range(maxx + 1):
-        tmpstr = None
-        tmpstr2 = None
         outstr = "           [{}".format(x)  # write rank
         # write citation count for ranked publication x
         if x == 0:
@@ -2230,31 +2229,21 @@ def write_multidim_h_index_desc_data(metric_set: MetricSet) -> list:
             v = tmp_cites[x - 1]
             if v > maxv:
                 v = "null"
-        outstr += ", {}".format(v)
-        # write h-square
-        if x == 0:
-            v = multih[0]
-        elif x in xpos:
-            i = xpos.index(x)
-            v = multih[i]
-            tmpstr = outstr + ", 0"  # close the square by adding an extra point at x, 0
-            if i < len(xpos) - 1:  # start next square
-                tmpstr2 = outstr + ", {}".format(multih[i+1])
-        else:
-            v = "null"
-        outstr += ", {}".format(v)
-
-        outstr += "],\n"
+        outstr += ", {}, null],\n".format(v)
         output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr + "],\n")
-        if tmpstr2 is not None:
-            output.append(tmpstr2 + "],\n")
+    # h-squares
+    xstart = 0
+    for h in multih:
+        xend = xstart + h
+        output.append("           [{}, null, {}],\n".format(xstart, h))
+        output.append("           [{}, null, {}],\n".format(xend, h))
+        output.append("           [{}, null, {}],\n".format(xend, 0))
+        output.append("           [null, null, null],\n")
+        xstart = xend
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
@@ -2320,12 +2309,86 @@ def calculate_two_sided_h_index(metric_set: MetricSet) -> list:
     return Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, multidim_h)
 
 
+def write_two_sided_h_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["two-sided h-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'h-squares'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 40
+    # citation curve
+    for x in range(maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+            if v > maxv:
+                v = "null"
+        outstr += ", {}, null],\n".format(v)
+        output.append(outstr)
+    # h-squares
+    twosided_h = metric_set.metrics["two-sided h-index"].value
+    midh = len(twosided_h) // 2
+    xstart = 0
+    for h in twosided_h[midh:]:
+        xend = xstart + h
+        output.append("           [{}, null, {}],\n".format(xstart, h))
+        output.append("           [{}, null, {}],\n".format(xend, h))
+        output.append("           [{}, null, {}],\n".format(xend, 0))
+        output.append("           [null, null, null],\n")
+        xstart = xend
+    h = twosided_h[midh]
+    ystart = h
+    rev_h = twosided_h[::-1]
+    for h in rev_h[midh+1:]:
+        yend = ystart + h
+        output.append("           [{}, null, {}],\n".format(0, yend))
+        output.append("           [{}, null, {}],\n".format(h, yend))
+        output.append("           [{}, null, {}],\n".format(h, ystart))
+        output.append("           [null, null, null],\n")
+        ystart = yend
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [2, 2],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_two_sided_h_index() -> Metric:
     m = Metric()
     m.name = "two-sided h-index"
     m.full_name = "two-sided h-index"
     m.html_name = "two-sided <em>h-</em>index"
     m.symbol = "<em>h</em>±<em>k</em>"
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "two_sided_h_index_desc"
+    graph.data = write_two_sided_h_index_desc_data
     m.metric_type = INTLIST
     m.description = "<p>The two-sided <em>h-</em>index (García-Pérez 2012) is an extension of the multidimensional " \
                     "<em>h-</em>index, which recalcultes <em>h</em> not only for the tail of the distribution (as " \
@@ -2337,7 +2400,8 @@ def metric_two_sided_h_index() -> Metric:
                     "calculate the upper part, after the initial <em>h</em> is determined, one calculates " \
                     "<em>h</em><sub>-1</sub> (the value immediately in front of <em>h</em>) by first subtracting " \
                     "<em>h</em> from the citation count for all of the publications in the core, then determining a " \
-                    "new <em>h</em> from this reduced citation set. Graphically, this is finding the largest square " \
+                    "new <em>h</em> from this reduced citation set.</p><div id=\"chart_" + graph.name + \
+                    "_div\" class=\"proportional_chart\"></div><p>Graphically, this is finding the largest square " \
                     "which can fit on top of the original square representing <em>h.</em> This process is repeated " \
                     "for the remaining excess citations in the (new) core.</p><p>To ensure symmetry, " \
                     "we calculate <em>h</em>±<em>k</em> such that the number of steps above the core is identical to " \
