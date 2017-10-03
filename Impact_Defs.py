@@ -873,32 +873,22 @@ def write_woeginger_w_index_desc_data(metric_set: MetricSet) -> list:
     w = metric_set.metrics["Woeginger w-index"].value
     maxx = metric_set.metrics["total pubs"].value
     maxv = 50
+    # write citation count for ranked publication x
     for x in range(maxx + 1):
         outstr = "           [{}".format(x)  # write rank
-        # write citation count for ranked publication x
         if x == 0:
             v = "null"
         else:
             v = tmp_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write h-square
-        if x == 0:
-            v = w
-            a = "null"
-        elif x == w:
-            v = 0
-            a = "\'w\'"
-        else:
-            v = "null"
-            a = "null"
-        outstr += ", {}, {}".format(v, a)
-        outstr += "],\n"
+        outstr += ", {}, null, null],\n".format(v)
         output.append(outstr)
+    # write w-triangle
+    output.append("           [{}, null, {}, null],\n".format(0, w))
+    output.append("           [{}, null, {}, \'w\'],\n".format(w, 0))
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
