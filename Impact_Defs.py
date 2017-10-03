@@ -376,41 +376,59 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     h = metric_set.metrics["h-index"].value
     maxx = metric_set.metrics["total pubs"].value
     maxv = 50
+    # write citation count for ranked publication x
     for x in range(maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
-        # write citation count for ranked publication x
         if x == 0:
             v = "null"
         else:
             v = tmp_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write y for x=y
-        if (x == 0) or (x == maxx):
-            v = x
-        else:
-            v = "null"
-        outstr += ", {}".format(v)
-        # write h-square
-        if (x == 0) or (x == h):
-            v = h
-        else:
-            v = "null"
-        if x == h:  # close the square by adding an extra point at x, 0
-            tmpstr = outstr + ", 0, null"
-            outstr += ", {}, \'h\'".format(v)
-        else:
-            outstr += ", {}, null".format(v)
-
-        outstr += "],\n"
+        outstr += ", {}, null, null, null],\n".format(v)
         output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr + "],\n")
+    # write y for x=y
+    output.append("           [{}, null, {}, null, null],\n".format(0, 0))
+    output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
+    output.append("           [null, null, null, null, null],\n")
+    # write h-square
+    output.append("           [{}, null, null, {}, null],\n".format(0, h))
+    output.append("           [{}, null, null, {}, \'h\'],\n".format(h, h))
+    output.append("           [{}, null, null, {}, null],\n".format(h, 0))
+
+    # for x in range(maxx + 1):
+    #     tmpstr = None
+    #     outstr = "           [{}".format(x)  # write rank
+    #     # write citation count for ranked publication x
+    #     if x == 0:
+    #         v = "null"
+    #     else:
+    #         v = tmp_cites[x - 1]
+    #     outstr += ", {}".format(v)
+    #     # write y for x=y
+    #     if (x == 0) or (x == maxx):
+    #         v = x
+    #     else:
+    #         v = "null"
+    #     outstr += ", {}".format(v)
+    #     # write h-square
+    #     if (x == 0) or (x == h):
+    #         v = h
+    #     else:
+    #         v = "null"
+    #     if x == h:  # close the square by adding an extra point at x, 0
+    #         tmpstr = outstr + ", 0, null"
+    #         outstr += ", {}, \'h\'".format(v)
+    #     else:
+    #         outstr += ", {}, null".format(v)
+    #
+    #     outstr += "],\n"
+    #     output.append(outstr)
+    #     if tmpstr is not None:
+    #         output.append(tmpstr + "],\n")
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
+    # output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")

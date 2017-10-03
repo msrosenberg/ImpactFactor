@@ -279,14 +279,13 @@
 
         var data_h_index_desc = google.visualization.arrayToDataTable([
            ['Rank', 'Citations', 'y=x', 'h-square', {'type': 'string', 'role': 'annotation'}],
-           [0, null, 0, 6, null],
+           [0, null, null, null, null],
            [1, 42, null, null, null],
            [2, 36, null, null, null],
            [3, 14, null, null, null],
            [4, 11, null, null, null],
            [5, 9, null, null, null],
-           [6, 9, null, 6, 'h'],
-           [6, 9, null, 0, null],
+           [6, 9, null, null, null],
            [7, 3, null, null, null],
            [8, 2, null, null, null],
            [9, 2, null, null, null],
@@ -295,12 +294,17 @@
            [12, 1, null, null, null],
            [13, 1, null, null, null],
            [14, 0, null, null, null],
-           [15, 0, 15, null, null],
+           [15, 0, null, null, null],
+           [0, null, 0, null, null],
+           [50, null, 50, null, null],
+           [null, null, null, null, null],
+           [0, null, null, 6, null],
+           [6, null, null, 6, 'h'],
+           [6, null, null, 0, null],
 		]);
 
         var options_h_index_desc = {
 		     legend: {position: 'top'},
-		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
 		             gridlines: {color: 'transparent'},
@@ -1010,7 +1014,6 @@
 
         var options_real_h_index_desc = {
 		     legend: {position: 'bottom'},
-		     interpolateNulls: true,
 		     hAxis: {slantedText: true,
 		             title: 'Rank',
 		             gridlines: {color: 'transparent'},
