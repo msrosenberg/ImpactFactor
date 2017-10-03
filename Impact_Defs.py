@@ -731,7 +731,7 @@ def write_h2_index_desc_data(metric_set: MetricSet) -> list:
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
+    # output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
@@ -955,33 +955,24 @@ def write_wu_w_index_desc_data(metric_set: MetricSet) -> list:
     w = metric_set.metrics["Wu w-index"].value
     maxx = metric_set.metrics["total pubs"].value
     maxv = 50
+    # write citation count for ranked publication x
     for x in range(maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
         # write citation count for ranked publication x
         if x == 0:
             v = "null"
         else:
             v = tmp_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write y for y=10x
-        if 10*x <= maxv:
-            v = 10*x
-        else:
-            v = "null"
-        if x == w:
-            a = "\'w\'"
-        else:
-            a = "null"
-        outstr += ", {}, {}],\n".format(v, a)
+        outstr += ", {}, null, null],\n".format(v)
         output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr + "],\n")
+    # write y for y=10x
+    output.append("           [{}, null, {}, null],\n".format(0, 0))
+    output.append("           [{}, null, {}, \'w\'],\n".format(w, 10*w))
+    output.append("           [{}, null, {}, null],\n".format(maxv/10, maxv))
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
