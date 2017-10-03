@@ -1266,57 +1266,28 @@ def write_real_h_index_desc_data(metric_set: MetricSet) -> list:
     minv = h - 4
     maxv = h + 4
     ticks = list(range(minv, maxv + 1))
-    # maxx = metric_set.metrics["total pubs"].value
+    # write citation count for ranked publication x
     for x in range(minv, maxv + 1):
-        tmpstr = None
-        tmpstr2 = None
-        outstr = "           [{}".format(x)  # write rank
-        # write citation count for ranked publication x
         v = tmp_cites[x - 1]
-        # if (v > maxv) or (v < minv):
-        #     v = "null"
-        outstr += ", {}".format(v)
-        # write y for x=y
-        if (x == minv) or (x == maxv) or (x == h) or (x == h+1):
-            v = x
-        else:
-            v = "null"
-        if x == h:
-            tmpstr2 = "           [{0}, null, {0}, \'real h\', null, null],\n".format(hr)
-        outstr += ", {}".format(v)
-        # write h-square
-        if (x == minv) or (x == h):
-            v = h
-        else:
-            v = "null"
-        if x == h:  # close the square by adding an extra point at x, minv
-            tmpstr = outstr + ", null, " + str(minv) + ", null"
-            outstr += ", \'h\', {}".format(v)
-        elif x == h + 1:
-            outstr += ", \'h+1\', {}".format(v)
-        else:
-            outstr += ", null, {}".format(v)
-
-        # write h+1-square
-        if (x == minv) or (x == h+1):
-            v = h+1
-        else:
-            v = "null"
-        if x == h+1:  # close the square by adding an extra point at x, minv
-            tmpstr = outstr + ", " + str(minv)
-        outstr += ", {}".format(v)
-
-        outstr += "],\n"
-        output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr + "],\n")
-        if tmpstr2 is not None:
-            output.append(tmpstr2)
+        output.append("           [{}, {}, null, null, null, null],\n".format(x, v))
+    # write x = y
+    output.append("           [0, null, 0, null, null, null],\n")
+    output.append("           [{}, null, {}, \'h\', null, null],\n".format(int(h), int(h)))
+    output.append("           [{}, null, {}, \'real h\', null, null],\n".format(hr, hr))
+    output.append("           [{}, null, {}, \'h+1\', null, null],\n".format(int(h)+1, int(h)+1))
+    output.append("           [{}, null, {}, null, null, null],\n".format(maxv, maxv))
+    # write squares
+    output.append("           [{}, null, null, null, {}, null],\n".format(0, int(h)))
+    output.append("           [{}, null, null, null, {}, null],\n".format(int(h), int(h)))
+    output.append("           [{}, null, null, null, {}, null],\n".format(int(h), 0))
+    output.append("           [null, null, null, null, null, null],\n")
+    output.append("           [{}, null, null, null, null, {}],\n".format(0, int(h)+1))
+    output.append("           [{}, null, null, null, null, {}],\n".format(int(h)+1, int(h)+1))
+    output.append("           [{}, null, null, null, null, {}],\n".format(int(h)+1, 0))
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'bottom'},\n")
-    output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
