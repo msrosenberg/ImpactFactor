@@ -226,187 +226,24 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 # -----------------------------------------------------
 # Output results as set of webpages
 # -----------------------------------------------------
-# def webout_h_rate(date_list: list, metric_list: list) -> None:
-#     """
-#     Output a webpage with the h-rate and least squares h-rates
-#     """
-#     graphs = []
-#     data1 = []
-#     data2 = []
-#     data3 = []
-#     for i, d in enumerate(date_list):
-#         year = d.year
-#         m = metric_list[i]
-#         data1.append(["\'" + str(year) + "\'", str(m.values["h-rate"]), str(m.values["ls h-rate"])])
-#         if i == 0:
-#             v = "0,0"
-#         elif i == len(date_list) - 1:
-#             v = str(m.values["h-index"]) + "," + str(m.values["ls h-rate"]*(len(date_list)-1))
-#         else:
-#             v = "null,null"
-#         data2.append(["\'" + str(year) + "\'", str(m.values["h-index"]), v])
-#         data3.append(["\'" + str(year) + "\'", str(m.values["time-scaled h-index"])])
-#     header1 = ["\'Year\'", "\'h-rate\'", "\'ls h-rate\'"]
-#     header2 = ["\'Year\'", "\'h-index\'", "\'h-rate\'", "\'ls h-rate\'"]
-#     header3 = ["\'Year\'", "\'time-scaled h-index\'"]
-#     graphs.append([header1, data1, LINE_CHART, "h per year", None])
-#     options = ["       interpolateNulls: true,\n",
-#                "       series: {\n",
-#                "       0: {\n",
-#                "           pointsVisible: true,\n",
-#                "           lineWidth: 0,\n",
-#                "           pointSize: 10\n",
-#                "          }\n",
-#                "         }\n"]
-#     graphs.append([header2, data2, LINE_CHART, "h-index", options])
-#     graphs.append([header3, data3, LINE_CHART, "h per sqrt(year)", None])
-#
-#     with open("webout/h_rate.html", "w", encoding="utf-8") as outfile:
-#         webheader(outfile, "h-rate", graphs)
-#
-#         # define equations and symbols
-#         m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
-#         hstr = r"\(h\)"
-#         ystr = r"\(Y\)"
-#         y0str = r"\(Y_{0}\)"
-#         hts_equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_{0}+1}}$$"
-#         p1 = "Originaly defined by Hirsch (2005), this metric is also known as the " \
-#              "<strong><em>m-</em>quotient,</strong> " \
-#              "<strong><em>m-</em>ratio index,</strong> <strong>age-normalized <em>h-</em>index,</strong> and " \
-#              "<strong>Carbon <em>h-</em>factor.</strong> It measures the rate at which the <em>h-</em>index has " \
-#              "increased over the career of a researcher. It is calculated simply as:"
-#         p2 = "where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
-#              " is the year of the researcher's first publication (the denominator of this equation is the academic " \
-#              "age of the researcher)."
-#         p3 = "The above estimation is essentially just the slope of the line from the start of a researcher's " + \
-#              "career through the most recent estimate of the <em>h-</em>index. If one has access to yearly " \
-#              "estimates of " + hstr + ", an alternative would be to perform a linear regression of " + hstr + \
-#              " versus year of academic career (through the origin) and use the slope of that line for a more accurate" \
-#              " measure. This is known as the <strong>least squares <em>h-</em>rate</strong> (Burrell, 2007)."
-#         p4 = "Another similar measure, the <strong>time-scaled <em>h-</em>index</strong> (Mannella and Rossi 2013) " \
-#              "scales " + hstr + " by the square-root of the academic age."
-#         outfile.write("  <body>\n")
-#         outfile.write("    <h1><em>h-</em>rate</h1>\n")
-#         outfile.write("    <h2>Description</h2>\n")
-#         write_paragraph(outfile, p1)
-#         write_paragraph(outfile, m_equation)
-#         write_paragraph(outfile, p2)
-#         write_paragraph(outfile, p3)
-#         outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
-#         outfile.write("   <p class=\"caption\" style=\"font-style: italic; font-size: 0.75em; text-align: center\">"
-#                       "The points represent the <em>h-</em>index at the end of each year. "
-#                       "The simple <em>h-</em>rate is the slope of the line passing from the origin through the final "
-#                       "point. The least-squares estimate is based on the linear regression of all points, "
-#                       "with the intercept forced through the origin.</p>\n")
-#
-#         write_paragraph(outfile, p4)
-#         write_paragraph(outfile, hts_equation)
-#         outfile.write("    <h2>History</h2>\n")
-#         outfile.write("   <div id=\"impact_chart0_div\"></div>\n")
-#         outfile.write("   <div id=\"impact_chart2_div\"></div>\n")
-#         outfile.write("  </body>\n")
-#         outfile.write("</html>\n")
-#
-#
-# def webout_basic_data(date_list: list, metric_list: list) -> None:
-#     """
-#     Output a webpage with the base data and simple stats
-#     """
-#     graphs = []
-#     data1 = []
-#     data2 = []
-#     data3 = []
-#     data4 = []
-#     data5 = []
-#     for i, d in enumerate(date_list):
-#         year = d.year
-#         m = metric_list[i]
-#         data1.append(["\'" + str(year) + "\'", str(m.values["total pubs"])])
-#         data2.append(["\'" + str(year) + "\'", str(m.values["total cites"]), str(m.values["max cites"])])
-#         data3.append(["\'" + str(year) + "\'", str(m.values["avg cites per pub"]),
-#                       str(m.values["median cites per pub"])])
-#         data4.append(["\'" + str(year) + "\'", str(m.values["time-scaled num papers"])])
-#         data5.append(["\'" + str(year) + "\'", str(m.values["time-scaled num citations"])])
-#     header1 = ["\'Year\'", "\'total\'"]
-#     header2 = ["\'Year\'", "\'total\'", "\'maximum\'"]
-#     header3 = ["\'Year\'", "\'mean\'", "\'median\'"]
-#     header4 = ["\'Year\'", "\'time-scaled number of papers\'"]
-#     header5 = ["\'Year\'", "\'time-scaled citation index\'"]
-#     graphs.append([header1, data1, LINE_CHART, "Publications", None])
-#     graphs.append([header2, data2, LINE_CHART, "Citations", None])
-#     graphs.append([header3, data3, LINE_CHART, "Citations per Publication", None])
-#     graphs.append([header4, data4, LINE_CHART, "Publications per Year", None])
-#     graphs.append([header5, data5, LINE_CHART, "Citations per Year", None])
-#
-#     with open("webout/basic_data.html", "w", encoding="utf-8") as outfile:
-#         webheader(outfile, "basic data", graphs)
-#
-#         # # define equations and symbols
-#         # m_equation = r"$$m=\frac{h}{Y-Y_{0}+1}$$"
-#         # hstr = r"\(h\)"
-#         # ystr = r"\(Y\)"
-#         # y0str = r"\(Y_{0}\)"
-#         # hts_equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_{0}+1}}$$"
-#         p1 = "The raw data of impact are publications and citations to the publications. Beyond simply counting how " \
-#              "many of these there are each year, some simple obvious summaries one can make include identifying the " \
-#              "publication with the maximum number of citations, as well as considering the average number of " \
-#              "citations per publication (as both mean and median)."
-#         p2 = "If one wants to consider simple rates of impact, then other obvious measures would be the mean number " \
-#              "of publications per year and the mean number of citations per year. These have been referred to as the " \
-#              "<strong>time-scaled number of papers (<em>P<sup>TS</sup></em>)</strong> and <strong>time-scaled " \
-#              "citation index (<em>C<sup>TS</sup></em>)</strong> in the literature."
-#         # p2 = "where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
-#         #      " is the year of the researcher's first publication (the denominator of this equation is the academic " \
-#         #      "age of the researcher)."
-#         # p3 = "The above estimation is essentially just the slope of the line from the start of a researcher's " + \
-#         #      "career through the most recent estimate of the <em>h-</em>index. If one has access to yearly " \
-#         #      "estimates of " + hstr + ", an alternative would be to perform a linear regression of " + hstr + \
-#         #      " versus year of academic career (through the origin) and use the slope of that line for a more accurate" \
-#         #      " measure. This is known as the <strong>least squares <em>h-</em>rate</strong> (Burrell, 2007)."
-#         # p4 = "Another similar measure, the <strong>time-scaled <em>h-</em>index</strong> (Mannella and Rossi 2013) " \
-#         #      "scales " + hstr + " by the square-root of the academic age."
-#         outfile.write("  <body>\n")
-#         outfile.write("    <h1>Basic Data</h1>\n")
-#         outfile.write("    <h2>Description</h2>\n")
-#         write_paragraph(outfile, p1)
-#         # write_paragraph(outfile, m_equation)
-#         write_paragraph(outfile, p2)
-#         # write_paragraph(outfile, p3)
-#         # outfile.write("   <p class=\"caption\" style=\"font-style: italic; font-size: 0.75em; text-align: center\">"
-#         #               "The points represent the <em>h-</em>index at the end of each year. "
-#         #               "The simple <em>h-</em>rate is the slope of the line passing from the origin through the final "
-#         #               "point. The least-squares estimate is based on the linear regression of all points, "
-#         #               "with the intercept forced through the origin.</p>\n")
-#         #
-#         # write_paragraph(outfile, p4)
-#         # write_paragraph(outfile, hts_equation)
-#         outfile.write("    <h2>History</h2>\n")
-#         outfile.write("   <div id=\"impact_chart0_div\"></div>\n")
-#         outfile.write("   <div id=\"impact_chart1_div\"></div>\n")
-#         outfile.write("   <div id=\"impact_chart2_div\"></div>\n")
-#         outfile.write("   <div id=\"impact_chart3_div\"></div>\n")
-#         outfile.write("   <div id=\"impact_chart4_div\"></div>\n")
-#         outfile.write("  </body>\n")
-#         outfile.write("</html>\n")
-
 
 def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
-    def encode_name(x : str) -> str:
-        x = x.replace(" ", "_")
-        x = x.replace("-", "_")
-        x = x.replace("/", "_")
-        x = x.replace("(", "")
-        x = x.replace(")", "")
-        x = x.replace(".", "_")
-        x = x.replace("%", "")
-        return x
+    def encode_name(tname: str) -> str:
+        tname = tname.replace(" ", "_")
+        tname = tname.replace("-", "_")
+        tname = tname.replace("/", "_")
+        tname = tname.replace("(", "")
+        tname = tname.replace(")", "")
+        tname = tname.replace(".", "_")
+        tname = tname.replace("%", "")
+        return tname
 
-    def strip_html(x: str) -> str:
+    def strip_html(html_str: str) -> str:
         """
         remove any stray html tags from string
         """
         regex = r"<.+?>"
-        return re.sub(regex, "", x)
+        return re.sub(regex, "", html_str)
 
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
         outfile.write("<!DOCTYPE HTML>\n")
