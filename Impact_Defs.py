@@ -393,37 +393,6 @@ def write_h_index_desc_data(metric_set: MetricSet) -> list:
     output.append("           [{}, null, null, {}, null],\n".format(0, h))
     output.append("           [{}, null, null, {}, \'h\'],\n".format(h, h))
     output.append("           [{}, null, null, {}, null],\n".format(h, 0))
-
-    # for x in range(maxx + 1):
-    #     tmpstr = None
-    #     outstr = "           [{}".format(x)  # write rank
-    #     # write citation count for ranked publication x
-    #     if x == 0:
-    #         v = "null"
-    #     else:
-    #         v = tmp_cites[x - 1]
-    #     outstr += ", {}".format(v)
-    #     # write y for x=y
-    #     if (x == 0) or (x == maxx):
-    #         v = x
-    #     else:
-    #         v = "null"
-    #     outstr += ", {}".format(v)
-    #     # write h-square
-    #     if (x == 0) or (x == h):
-    #         v = h
-    #     else:
-    #         v = "null"
-    #     if x == h:  # close the square by adding an extra point at x, 0
-    #         tmpstr = outstr + ", 0, null"
-    #         outstr += ", {}, \'h\'".format(v)
-    #     else:
-    #         outstr += ", {}, null".format(v)
-    #
-    #     outstr += "],\n"
-    #     output.append(outstr)
-    #     if tmpstr is not None:
-    #         output.append(tmpstr + "],\n")
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
@@ -561,6 +530,7 @@ def write_g_index_desc_data1(metric_set: MetricSet) -> list:
     g = metric_set.metrics["g-index"].value
     maxx = metric_set.metrics["total pubs"].value
     maxv = 150
+    # write cumulative citation count for ranked publication x
     for x in range(maxx + 1):
         outstr = "           [{}".format(x)  # write rank
         # write cumulative citation count for ranked publication x
@@ -568,8 +538,11 @@ def write_g_index_desc_data1(metric_set: MetricSet) -> list:
             v = "null"
         else:
             v = cum_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write y for y=x^2
+        outstr += ", {}, null, null],\n".format(v)
+        output.append(outstr)
+    # write y for y=x^2
+    for x in range(maxx + 1):
+        outstr = "           [{}, null".format(x)  # write rank
         v = x**2
         if v > maxv:
             v = "null"
@@ -621,42 +594,27 @@ def write_g_index_desc_data2(metric_set: MetricSet) -> list:
         avg_cites.append(sum(tmp_cites[:i+1])/(i+1))
     g = metric_set.metrics["g-index"].value
     maxx = metric_set.metrics["total pubs"].value
-    maxv = 50
+    maxv = 45
+    # write avg citation count for top x ranked publications
     for x in range(maxx + 1):
-        tmpstr = None
         outstr = "           [{}".format(x)  # write rank
-        # write avg citation count for top x ranked publications
         if x == 0:
             v = "null"
         else:
             v = avg_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write y for y=x
-        if (x == 0) or (x == maxx):
-            v = x
-        else:
-            v = "null"
-        outstr += ", {}".format(v)
-        # write g-square
-        if (x == 0) or (x == g):
-            v = g
-        else:
-            v = "null"
-        if x == g:  # close the square by adding an extra point at x, 0
-            tmpstr = outstr + ", 0, null"
-            outstr += ", {}, \'g\'".format(v)
-        else:
-            outstr += ", {}, null".format(v)
-
-        outstr += "],\n"
+        outstr += ", {}, null, null, null],\n".format(v)
         output.append(outstr)
-        if tmpstr is not None:
-            output.append(tmpstr + "],\n")
+    # write y for y=x
+    output.append("           [{}, null, {}, null, null],\n".format(0, 0))
+    output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
+    # write g-square
+    output.append("           [{}, null, null, {}, null],\n".format(0, g))
+    output.append("           [{}, null, null, {}, \'g\'],\n".format(g, g))
+    output.append("           [{}, null, null, {}, null],\n".format(g, 0))
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
     output.append("		     legend: {position: 'top'},\n")
-    output.append("		     interpolateNulls: true,\n")
     output.append("		     hAxis: {slantedText: true,\n")
     output.append("		             title: \'Rank\',\n")
     output.append("		             gridlines: {color: \'transparent\'},\n")
