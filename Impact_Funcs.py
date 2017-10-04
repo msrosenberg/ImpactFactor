@@ -1136,34 +1136,51 @@ def calculate_trend_h_index(pub_list: list) -> int:
     return trend_h_index
 
 
+# average activity, at (Popov 2005)
+def calculate_mean_at_index(total_cites: int, th: int) -> float:
+    return total_cites / (2 * th)
+
+
+# characteristic times scale, th (Popov 2005)
+def calculate_th_index(citations: list, years: list, total_cites: int) -> int:
+    target = total_cites / 2
+    cite_sum = 0
+    maxy = max(years)
+    cur_y = maxy + 1
+    while cite_sum < target:
+        cur_y -= 1
+        for i, y in enumerate(years):
+            if y == cur_y:
+                cite_sum += citations[i]
+    return maxy - cur_y + 1
+
+
 # DCI-index: discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
-# def calculate_discounted_cumulated_impact(metric_list: list) -> None:
-#     logbase = 2
-#     # create list of novel citation counts per year
-#     yearly_cites = []
-#     mold = None
-#     for m in metric_list:
-#         if mold is None:
-#             yearly_cites.append(m.values["total cites"])
-#         else:
-#             yearly_cites.append(m.values["total cites"] - mold.values["total cites"])
-#         mold = m
-#
-#     ddci = []
-#     for i, metric in enumerate(metric_list):
-#         print(i+1, "[", end="")
-#         if i == 0:
-#             dci = yearly_cites[0]
-#         else:
-#             dci = 0
-#             for j in range(i+1):
-#                 m = metric_list[j]
-#                 if j == 0:
-#                     dci = yearly_cites[j] / max(1.0, math.log(i, logbase))
-#                 elif j == i:
-#                     dci += yearly_cites[j]
-#                 else:
-#                     dci += yearly_cites[j] / max(1.0, math.log(i - j, logbase))
-#                 print("", dci, end="")
-#         ddci.append(dci)
-#         print("]", ddci)
+def calculate_dci_index(total_citations: list, logbase: int) -> list:
+    # create list of novel citation counts per year
+    yearly_cites = []
+    cold = None
+    for c in total_citations:
+        if cold is None:
+            yearly_cites.append(c)
+        else:
+            yearly_cites.append(c - cold)
+        cold = c
+    y = len(yearly_cites)
+    dci = []
+    for i, c in enumerate(yearly_cites):
+        if (i == 0) and (y == 1):
+            d = c
+        elif i == 0:
+            d = c / max(1.0, math.log(y-1, logbase))
+        elif i + 1 == y:
+            d = dci[i-1] + c
+        else:
+            d = dci[i-1] + c / max(1.0, math.log(y-(i+1), logbase))
+        dci.append(d)
+    return dci
+
+
+# dDCI-index: dynamic discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
+def calculate_ddci_index(dci: list) -> float:
+    return dci[len(dci)-1]
