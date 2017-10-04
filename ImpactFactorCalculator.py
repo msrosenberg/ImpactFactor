@@ -19,10 +19,6 @@ from typing import Tuple
 import re
 
 tb = '\t'
-# LINE_CHART = 1
-
-# these aren't really proper classes, but rather just simple
-# multivariate data objects
 
 
 class Article:
@@ -164,7 +160,6 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
-
 def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: bool) -> Impact_Defs.MetricSet:
     """
     function to calculate impact factor metrics for data for a given date 
@@ -226,7 +221,6 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 # -----------------------------------------------------
 # Output results as set of webpages
 # -----------------------------------------------------
-
 def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
     def encode_name(tname: str) -> str:
         tname = tname.replace(" ", "_")
