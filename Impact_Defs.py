@@ -10,6 +10,9 @@ INT = 0
 FLOAT = 1
 INTLIST = 2
 FLOAT_NA = 3
+# LISTLIST = 4
+FLOATLIST = 5
+
 LINE_CHART = 1
 MULTILINE_CHART_LEFT = 2
 MULTILINE_CHART_CENTER = 3
@@ -68,6 +71,16 @@ class Metric:
                 return self.value
             else:
                 return format(self.value, FSTR)
+        elif self.metric_type == FLOATLIST:
+            vl = self.value
+            # tmpstr = "[" + format(tl[0], FSTR)
+            # for v in tl[1:]:
+            #     tmpstr += ", {}".format(v, FSTR)
+            # tmpstr += "]"
+            # return tmpstr
+            return "[" + ", ".join([format(v, FSTR) for v in vl]) + "]"
+        elif self.metric_type == LISTLIST:
+            return "0"
 
 
 class MetricSet:
@@ -3743,10 +3756,10 @@ def metric_impact_vitality() -> Metric:
     m.full_name = "impact vitality"
     m.symbol = "<em>IV</em>"
     m.metric_type = FLOAT_NA
-    equation = r"$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{C^{Y-w}}{i}}}" \
-               r"{\sum\limits_{i=1}^{w}{C^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$"
+    equation = r"$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{c^{Y-w}}{i}}}" \
+               r"{\sum\limits_{i=1}^{w}{c^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$"
     m.description = "<p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend " \
-                    "<em>h-</em>index, but more complicated to measure. If <em>C<sup>x</sup></em> is the total " \
+                    "<em>h-</em>index, but more complicated to measure. If <em>c<sup>x</sup></em> is the total " \
                     "number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the " \
                     "number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for " \
                     "(the citation window), " \
@@ -4219,6 +4232,168 @@ def metric_mean_at_index() -> Metric:
     return m
 
 
+# Discounted Cumulated Impact (DCI) (Jarvelin and Pearson 2008; Ahlgren and Jarvelin 2010)
+def calculate_dci_index2(metric_set: MetricSet) -> list:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_list[:metric_pos+1]]
+    return Impact_Funcs.calculate_dci_index(total_cite_list, 2)
+
+
+def metric_dci_index2() -> Metric:
+    m = Metric()
+    m.name = "dci index 2"
+    m.full_name = "discounted cumulated impact (sharp decay)"
+    m.symbol = "DCI (<em>b</em> = 2)"
+    m.synonyms = ["DCI index (sharp decay)"]
+    m.metric_type = FLOATLIST
+    equation = r"$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} " \
+               r"\frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & " \
+               r"\text{if }i=1 \\ " \
+               r"\text{DCI}_Y\left(i-1\right)+\frac{c^i}{\max\left[1, \log_b\left(Y-i\right)\right]} & " \
+               r"\text{otherwise} \end{matrix} \right. ,$$"
+    m.description = "<p>The discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) " \
+                    "is designed to reduce the role of older citations, but still reward researchers for older " \
+                    "publications receiving new citations. To begin, let <em>c<sup>x</sup></em> represet the total " \
+                    "number of citations received by a researcher to all of their publications in year <em>x</em>. " \
+                    "Over a citation interval of <em>Y</em> years, the cumulated impact vector is simply the sum of " \
+                    "these values from the first year to be considered (<em>Y</em> years ago) up through the current " \
+                    "year. If the citation interval is the entire career of a researcher, this would be " \
+                    "a vector of <em>C<sup>P</sup></em> calculated each year. This raw vector incorporates citation " \
+                    "counts without decay over time, <em>i.e.</em>, old and new citations are treated equally. " \
+                    "To incorporate a time decay, one divides the count of new citations each year by the logarithm " \
+                    "of the number of years elapsed. The discounted cumulative impact vector is thus:</p>" + \
+                    equation + "<p>where <em>b</em> is the base of the logarithm used for scaling. Larger values " \
+                    "of <em>b</em> discount older citations less than smaller values.</p><p>In this version we " \
+                    "use a sharp decay with <em>b</em> = 2.</p>"
+    m.references = ["Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research "
+                    "evaluation. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "59:1433&ndash;1440.",
+                    "Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the "
+                    "DCI-index. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "67:1424&ndash;1439."]
+    m.graph_type = MULTILINE_CHART_LEFT
+    m.calculate = calculate_dci_index2
+    return m
+
+
+# Dynamic Discounted Cumulated Impact (dDCI) (Jarvelin and Pearson 2008; Ahlgren and Jarvelin 2010)
+def calculate_ddci_index2(metric_set: MetricSet) -> float:
+    dci = metric_set.metrics["dci index 2"].value
+    return Impact_Funcs.calculate_ddci_index(dci)
+
+
+def metric_ddci_index2() -> Metric:
+    m = Metric()
+    m.name = "ddci index 2"
+    m.full_name = "dynamic discounted cumulated impact (sharp decay)"
+    m.symbol = "dDCI (<em>b</em> = 2)"
+    m.synonyms = ["dDCI index (sharp decay)"]
+    m.metric_type = FLOAT
+    equation = r"$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$"
+    m.description = "<p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; " \
+                    "Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which " \
+                    "cumulates across different time intervals, rather than a single fixed interval. Formally, " \
+                    "it is a vector defined as:</p>" + equation + "<p>where DCI<em><sub>j</sub></em>[<em>j</em>] " \
+                    "is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated " \
+                    "for a career, where each subsequent interval is the length of the career up to that point, " \
+                    "the values calculated for earlier career points are identical those same intervals for later " \
+                    "career points, thus we just report the final value for each year, with all values up to that " \
+                    "year actually representing the full dDCI vector.</p><p>Because DCI can be calculated with " \
+                    "varying degrees of citation decay, dDCI is also dependent on this same decay. This version is " \
+                    "calculated from the DCI index with a sharp decay of <em>b</em> = 2.</p>"
+    m.references = ["Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research "
+                    "evaluation. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "59:1433&ndash;1440.",
+                    "Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the "
+                    "DCI-index. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "67:1424&ndash;1439."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_ddci_index2
+    return m
+
+
+# Discounted Cumulated Impact (DCI) (Jarvelin and Pearson 2008; Ahlgren and Jarvelin 2010)
+def calculate_dci_index10(metric_set: MetricSet) -> list:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_list[:metric_pos+1]]
+    return Impact_Funcs.calculate_dci_index(total_cite_list, 10)
+
+
+def metric_dci_index10() -> Metric:
+    m = Metric()
+    m.name = "dci index 10"
+    m.full_name = "discounted cumulated impact (mild decay)"
+    m.symbol = "DCI (<em>b</em> = 10)"
+    m.synonyms = ["DCI index (mild decay)"]
+    m.metric_type = FLOATLIST
+    equation = r"$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} " \
+               r"\frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & " \
+               r"\text{if }i=1 \\ " \
+               r"\text{DCI}_Y\left(i-1\right)+\frac{c^i}{\max\left[1, \log_b\left(Y-i\right)\right]} & " \
+               r"\text{otherwise} \end{matrix} \right. ,$$"
+    m.description = "<p>The discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) " \
+                    "is designed to reduce the role of older citations, but still reward researchers for older " \
+                    "publications receiving new citations. To begin, let <em>c<sup>x</sup></em> represet the total " \
+                    "number of citations received by a researcher to all of their publications in year <em>x</em>. " \
+                    "Over a citation interval of <em>Y</em> years, the cumulated impact vector is simply the sum of " \
+                    "these values from the first year to be considered (<em>Y</em> years ago) up through the current " \
+                    "year. If the citation interval is the entire career of a researcher, this would be " \
+                    "a vector of <em>C<sup>P</sup></em> calculated each year. This raw vector incorporates citation " \
+                    "counts without decay over time, <em>i.e.</em>, old and new citations are treated equally. " \
+                    "To incorporate a time decay, one divides the count of new citations each year by the logarithm " \
+                    "of the number of years elapsed. The discounted cumulative impact vector is thus:</p>" + \
+                    equation + "<p>where <em>b</em> is the base of the logarithm used for scaling. Larger values " \
+                    "of <em>b</em> discount older citations less than smaller values.</p><p>In this version we " \
+                    "use a mild decay with <em>b</em> = 10.</p>"
+    m.references = ["Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research "
+                    "evaluation. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "59:1433&ndash;1440.",
+                    "Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the "
+                    "DCI-index. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "67:1424&ndash;1439."]
+    m.graph_type = MULTILINE_CHART_LEFT
+    m.calculate = calculate_dci_index10
+    return m
+
+
+# Dynamic Discounted Cumulated Impact (dDCI) (Jarvelin and Pearson 2008; Ahlgren and Jarvelin 2010)
+def calculate_ddci_index10(metric_set: MetricSet) -> float:
+    dci = metric_set.metrics["dci index 10"].value
+    return Impact_Funcs.calculate_ddci_index(dci)
+
+
+def metric_ddci_index10() -> Metric:
+    m = Metric()
+    m.name = "ddci index 10"
+    m.full_name = "dynamic discounted cumulated impact (mild decay)"
+    m.symbol = "dDCI (<em>b</em> = 10)"
+    m.synonyms = ["dDCI index (mild decay)"]
+    m.metric_type = FLOAT
+    equation = r"$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$"
+    m.description = "<p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; " \
+                    "Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which " \
+                    "cumulates across different time intervals, rather than a single fixed interval. Formally, " \
+                    "it is a vector defined as:</p>" + equation + "<p>where DCI<em><sub>j</sub></em>[<em>j</em>] " \
+                    "is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated " \
+                    "for a career, where each subsequent interval is the length of the career up to that point, " \
+                    "the values calculated for earlier career points are identical those same intervals for later " \
+                    "career points, thus we just report the final value for each year, with all values up to that " \
+                    "year actually representing the full dDCI vector.</p><p>Because DCI can be calculated with " \
+                    "varying degrees of citation decay, dDCI is also dependent on this same decay. This version is " \
+                    "calculated from the DCI index with a mild decay of <em>b</em> = 10.</p>"
+    m.references = ["Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research "
+                    "evaluation. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "59:1433&ndash;1440.",
+                    "Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the "
+                    "DCI-index. <em>Journal of the American Society for Information Science and Technology</em> "
+                    "67:1424&ndash;1439."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_ddci_index10
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -4330,5 +4505,9 @@ def load_all_metrics() -> list:
                    metric_cq04_index(),
                    metric_indifference(),
                    metric_th_index(),
-                   metric_mean_at_index()]
+                   metric_mean_at_index(),
+                   metric_dci_index2(),
+                   metric_ddci_index2(),
+                   metric_dci_index10(),
+                   metric_ddci_index10()]
     return metric_list

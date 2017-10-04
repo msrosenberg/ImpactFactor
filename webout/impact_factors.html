@@ -4113,6 +4113,136 @@
         var chart_mean_at_index = new google.visualization.LineChart(document.getElementById('chart_mean_at_index_div'));
         chart_mean_at_index.draw(data_mean_at_index, options_mean_at_index);
 
+        var data_dci_index_2 = google.visualization.arrayToDataTable([
+           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+           ['1', 2, 2.0, 2.0, 1.2618595071429148, 1.0, 0.8613531161467861, 0.7737056144690833, 0.7124143742160444, 0.6666666666666666, 0.6309297535714574, 0.6020599913279623, 0.5781296526357756, 0.5578858913022596, 0.5404763088546395, 0.5252990700743871, 0.511916049619631, 0.5, 0.48930108423645197, 0.4796249331362629, 0.4708178267332765, 0.4627564263195183],
+           ['2', null, 13.0, 13.0, 12.261859507142916, 7.940227289286032, 6.361353116146786, 5.511147753276407, 4.967795253796003, 4.584945724854911, 4.297596420238124, 4.072173635970978, 3.8894596049395687, 3.7375989807990257, 3.6088487110170675, 3.4979187687749045, 3.4010609350287604, 3.31553827290797, 3.239301084236452, 3.1707808964367485, 3.1087549589827224, 3.052254473352539],
+           ['3', null, null, 36.0, 35.261859507142916, 30.94022728928603, 20.872737448290305, 17.011147753276408, 14.873356089484044, 13.482560291249367, 12.490361723722634, 11.738840302637644, 11.145151771011328, 10.661288881070593, 10.257339716328488, 9.913606518750889, 9.616538486857113, 9.356477578763421, 9.126335654862208, 8.92078089643675, 8.73571742770192, 8.567941204419562],
+           ['4', null, null, null, 66.26185950714292, 61.94022728928603, 51.87273744829031, 36.56997011399159, 30.373356089484044, 26.833533591524553, 24.482798747993424, 22.78126310298633, 21.478485104344664, 20.44070006142818, 19.589269581911907, 18.87461613460541, 18.263769802042138, 17.733860366010333, 17.26847124101521, 16.85547966554103, 16.48571742770192, 16.152108010084568],
+           ['5', null, null, null, null, 127.94022728928603, 117.87273744829031, 102.56997011399159, 72.01471982520023, 59.83353359152456, 52.90745158083737, 48.313548380466074, 44.988159453474125, 42.44070006142818, 40.409951449770006, 38.74259584842817, 37.34204833902273, 36.1440947789849, 35.10418943321831, 34.190348977995804, 33.378947065149745, 32.65210801008457],
+           ['6', null, null, null, null, null, 224.8727374482903, 209.5699701139916, 179.01471982520025, 127.3430172236705, 106.40745158083737, 94.39594009431914, 86.38140982757008, 80.55486908198655, 76.07661811643666, 72.49733766450115, 69.55225787506872, 67.0740311949989, 64.9510846178892, 63.10583150171902, 61.48244731412946, 60.03961666473482],
+           ['7', null, null, null, null, null, null, 336.5699701139916, 306.01471982520025, 254.3430172236705, 186.53553028441246, 157.89594009431914, 141.077332702891, 129.68517560077333, 121.31493087915547, 114.83067099783449, 109.61629722685626, 105.30484064432451, 101.66231756026095, 98.5315855994125, 95.80269292639906, 93.3961076144584],
+           ['8', null, null, null, null, null, null, null, 524.0147198252002, 472.3430172236705, 404.53553028441246, 295.43862637289686, 250.077332702891, 223.57266526077302, 205.64884285628554, 192.48383778738332, 182.28296389352295, 174.07618378361337, 167.28685661500884, 161.54771773671203, 156.61225507834536, 152.3080252796141],
+           ['9', null, null, null, null, null, null, null, null, 732.3430172236705, 664.5355302844125, 555.4386263728968, 414.11906863146993, 353.572665260773, 317.62474795536775, 293.0655676683641, 274.8968325416087, 260.74285045028006, 249.3077245792983, 239.81551660934713, 231.7691099209962, 224.83319114890787],
+           ['10', null, null, null, null, null, null, null, null, null, 995.5355302844125, 886.4386263728968, 745.1190686314699, 562.4104136929254, 483.12474795536775, 435.6195083906572, 402.945111736242, 378.6474293830354, 359.64105791263165, 344.23439082542336, 331.41003848577395, 320.51364866012875],
+           ['11', null, null, null, null, null, null, null, null, null, null, 1219.4386263728968, 1078.1190686314699, 895.4104136929254, 693.2243558946631, 602.1195083906572, 546.3604055746819, 507.4694141921377, 478.25805121960303, 455.23439082542336, 436.4598424554216, 420.7566372162345],
+           ['12', null, null, null, null, null, null, null, null, null, null, null, 1459.1190686314699, 1276.4104136929254, 1074.224355894663, 842.5037445013825, 736.8604055746819, 671.5571828181005, 625.6489707759633, 590.9493291135798, 563.4598424554216, 540.9487552715971],
+           ['13', null, null, null, null, null, null, null, null, null, null, null, null, 1701.4104136929254, 1499.224355894663, 1267.5037445013825, 1005.0055508425512, 884.0571828181005, 808.6865079571554, 755.3617721882599, 714.8478969763311, 682.6154219382637],
+           ['14', null, null, null, null, null, null, null, null, null, null, null, null, null, 1970.224355894663, 1738.5037445013825, 1476.0055508425512, 1181.2250967502569, 1044.1865079571553, 958.2104310408281, 897.0555691838001, 850.3890070661421],
+           ['15', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2167.5037445013822, 1905.0055508425512, 1610.2250967502569, 1314.8553722393106, 1172.710431040828, 1081.8158125972857, 1016.3488613697605],
+           ['16', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2290.005550842551, 1995.2250967502569, 1699.8553722393106, 1415.6183861658392, 1274.3158125972857, 1182.1593362280169],
+           ['17', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2438.225096750257, 2142.855372239311, 1858.6183861658392, 1553.8176934294413, 1403.6593362280169],
+           ['18', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2586.855372239311, 2302.618386165839, 1997.8176934294413, 1683.792146813744],
+           ['19', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2724.618386165839, 2419.8176934294415, 2105.792146813744],
+           ['20', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2829.8176934294415, 2515.792146813744],
+           ['21', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2749.792146813744],
+		]);
+
+        var options_dci_index_2 = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_dci_index_2 = new google.visualization.LineChart(document.getElementById('chart_dci_index_2_div'));
+        chart_dci_index_2.draw(data_dci_index_2, options_dci_index_2);
+
+        var data_ddci_index_2 = google.visualization.arrayToDataTable([
+           ['Year', 'dDCI (<em>b</em> = 2)'],
+           ['1997', 2],
+           ['1998', 13.0],
+           ['1999', 36.0],
+           ['2000', 66.26185950714292],
+           ['2001', 127.94022728928603],
+           ['2002', 224.8727374482903],
+           ['2003', 336.5699701139916],
+           ['2004', 524.0147198252002],
+           ['2005', 732.3430172236705],
+           ['2006', 995.5355302844125],
+           ['2007', 1219.4386263728968],
+           ['2008', 1459.1190686314699],
+           ['2009', 1701.4104136929254],
+           ['2010', 1970.224355894663],
+           ['2011', 2167.5037445013822],
+           ['2012', 2290.005550842551],
+           ['2013', 2438.225096750257],
+           ['2014', 2586.855372239311],
+           ['2015', 2724.618386165839],
+           ['2016', 2829.8176934294415],
+           ['2017', 2749.792146813744],
+		]);
+
+        var options_ddci_index_2 = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_ddci_index_2 = new google.visualization.LineChart(document.getElementById('chart_ddci_index_2_div'));
+        chart_ddci_index_2.draw(data_ddci_index_2, options_ddci_index_2);
+
+        var data_dci_index_10 = google.visualization.arrayToDataTable([
+           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'],
+           ['1', 2, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 1.9205051355782552, 1.8532568160582539, 1.7954234350052463, 1.7450057390983122, 1.7005483074552055, 1.6609640474436815, 1.625423018583918, 1.5932795403938247, 1.5640229661990814, 1.537243573680482],
+           ['2', null, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 13.0, 12.920505135578255, 12.416035061738658, 11.988335923325643, 11.619834631627167, 11.298079872495922, 11.01397973844731, 10.760725279524166, 10.533106142605375, 10.327060438365116, 10.13936988777543],
+           ['3', null, null, 36.0, 36.0, 36.0, 36.0, 36.0, 36.0, 36.0, 36.0, 36.0, 35.92050513557825, 35.416035061738654, 34.07414498247557, 32.932288016297086, 31.945449375056253, 31.0815457380779, 30.317030815259027, 29.634192688207712, 29.019425152080174, 28.462084602304415],
+           ['4', null, null, null, 67.0, 67.0, 67.0, 67.0, 67.0, 67.0, 67.0, 67.0, 66.92050513557825, 66.41603506173865, 65.07414498247557, 62.70011761776004, 60.67093002395919, 58.91060898065922, 57.36461977128287, 55.9926914537634, 54.76436788745724, 53.656141390355145],
+           ['5', null, null, null, null, 133.0, 133.0, 133.0, 133.0, 133.0, 133.0, 133.0, 132.92050513557825, 132.41603506173865, 131.07414498247556, 128.70011761776004, 124.0475994980416, 120.0680839105816, 116.613593126456, 113.5778808440077, 110.88246203347902, 108.46795495599663],
+           ['6', null, null, null, null, null, 240.0, 240.0, 240.0, 240.0, 240.0, 240.0, 239.92050513557825, 239.41603506173865, 238.07414498247556, 235.70011761776004, 231.04759949804162, 222.81510866401825, 215.76283278557258, 209.63303461678836, 204.2402690752387, 199.44728940485012],
+           ['7', null, null, null, null, null, null, 367.0, 367.0, 367.0, 367.0, 367.0, 366.92050513557825, 366.4160350617386, 365.07414498247556, 362.70011761776004, 358.0475994980416, 349.8151086640182, 337.7149088947918, 327.3148424364875, 318.2496571980719, 310.25515383759296],
+           ['8', null, null, null, null, null, null, null, 585.0, 585.0, 585.0, 585.0, 584.9205051355782, 584.4160350617386, 583.0741449824756, 580.70011761776, 576.0475994980416, 567.8151086640182, 555.7149088947917, 536.6499022145173, 520.2546501484215, 505.9563082531648],
+           ['9', null, null, null, null, null, null, null, null, 845.0, 845.0, 845.0, 844.9205051355782, 844.4160350617386, 843.0741449824756, 840.70011761776, 836.0475994980416, 827.8151086640182, 815.7149088947917, 796.6499022145173, 769.9203177735947, 746.8796943407378],
+           ['10', null, null, null, null, null, null, null, null, null, 1176.0, 1176.0, 1175.9205051355782, 1175.4160350617385, 1174.0741449824754, 1171.70011761776, 1167.0475994980416, 1158.8151086640182, 1146.7149088947917, 1127.6499022145172, 1100.9203177735947, 1064.7232942789392],
+           ['11', null, null, null, null, null, null, null, null, null, null, 1509.0, 1508.9205051355782, 1508.4160350617385, 1507.0741449824754, 1504.70011761776, 1500.0475994980416, 1491.8151086640182, 1479.7149088947917, 1460.6499022145172, 1433.9203177735947, 1397.7232942789392],
+           ['12', null, null, null, null, null, null, null, null, null, null, null, 1889.9205051355782, 1889.4160350617385, 1888.0741449824754, 1885.70011761776, 1881.0475994980416, 1872.8151086640182, 1860.7149088947917, 1841.6499022145172, 1814.9203177735947, 1778.7232942789392],
+           ['13', null, null, null, null, null, null, null, null, null, null, null, null, 2314.4160350617385, 2313.0741449824754, 2310.70011761776, 2306.0475994980416, 2297.815108664018, 2285.7149088947917, 2266.649902214517, 2239.9203177735944, 2203.723294278939],
+           ['14', null, null, null, null, null, null, null, null, null, null, null, null, null, 2784.0741449824754, 2781.70011761776, 2777.0475994980416, 2768.815108664018, 2756.7149088947917, 2737.649902214517, 2710.9203177735944, 2674.723294278939],
+           ['15', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3210.70011761776, 3206.0475994980416, 3197.815108664018, 3185.7149088947917, 3166.649902214517, 3139.9203177735944, 3103.723294278939],
+           ['16', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3591.0475994980416, 3582.815108664018, 3570.7149088947917, 3551.649902214517, 3524.9203177735944, 3488.723294278939],
+           ['17', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4025.815108664018, 4013.7149088947917, 3994.649902214517, 3967.9203177735944, 3931.723294278939],
+           ['18', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4457.714908894792, 4438.649902214517, 4411.920317773594, 4375.72329427894],
+           ['19', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4860.649902214517, 4833.920317773594, 4797.72329427894],
+           ['20', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 5243.920317773594, 5207.72329427894],
+           ['21', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 5441.72329427894],
+		]);
+
+        var options_dci_index_10 = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_dci_index_10 = new google.visualization.LineChart(document.getElementById('chart_dci_index_10_div'));
+        chart_dci_index_10.draw(data_dci_index_10, options_dci_index_10);
+
+        var data_ddci_index_10 = google.visualization.arrayToDataTable([
+           ['Year', 'dDCI (<em>b</em> = 10)'],
+           ['1997', 2],
+           ['1998', 13.0],
+           ['1999', 36.0],
+           ['2000', 67.0],
+           ['2001', 133.0],
+           ['2002', 240.0],
+           ['2003', 367.0],
+           ['2004', 585.0],
+           ['2005', 845.0],
+           ['2006', 1176.0],
+           ['2007', 1509.0],
+           ['2008', 1889.9205051355782],
+           ['2009', 2314.4160350617385],
+           ['2010', 2784.0741449824754],
+           ['2011', 3210.70011761776],
+           ['2012', 3591.0475994980416],
+           ['2013', 4025.815108664018],
+           ['2014', 4457.714908894792],
+           ['2015', 4860.649902214517],
+           ['2016', 5243.920317773594],
+           ['2017', 5441.72329427894],
+		]);
+
+        var options_ddci_index_10 = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_ddci_index_10 = new google.visualization.LineChart(document.getElementById('chart_ddci_index_10_div'));
+        chart_ddci_index_10.draw(data_ddci_index_10, options_ddci_index_10);
+
 		}
     </script>
   </head>
@@ -4169,6 +4299,14 @@
         <li><a href="#total_cites"><em>C<sub>T</sub></em></a></li>
         <li><a href="#citations_per_year"><em>C<sup>TS</sup></em></a></li>
         <li><a href="#indifference">D</a></li>
+        <li><a href="#dci_index_10">DCI index (mild decay)</a></li>
+        <li><a href="#dci_index_2">DCI index (sharp decay)</a></li>
+        <li><a href="#ddci_index_10">dDCI index (mild decay)</a></li>
+        <li><a href="#ddci_index_2">dDCI index (sharp decay)</a></li>
+        <li><a href="#dci_index_10">discounted cumulated impact (mild decay)</a></li>
+        <li><a href="#dci_index_2">discounted cumulated impact (sharp decay)</a></li>
+        <li><a href="#ddci_index_10">dynamic discounted cumulated impact (mild decay)</a></li>
+        <li><a href="#ddci_index_2">dynamic discounted cumulated impact (sharp decay)</a></li>
         <li><a href="#dynamic_h_type_index">dynamic <em>h-</em>type-index</a></li>
         <li><a href="#e_index"><em>e-</em>index</a></li>
         <li><a href="#EMp_index"><em>EM</em>&prime;-index</a></li>
@@ -7423,7 +7561,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="impact_vitality" class="metric_container">
       <h2>impact vitality</h2>
-      <p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend <em>h-</em>index, but more complicated to measure. If <em>C<sup>x</sup></em> is the total number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for (the citation window), then</p>$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{C^{Y-w}}{i}}}{\sum\limits_{i=1}^{w}{C^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$<p>The numerator of the numerator is the sum of citation counts divided by their age for the window of time in question; the denominator of the numerator is the total number of citations for the same window of time. An impact vitality score of 1 indicates that the number of citations is approximately constant over time. A value above 1 indicates that the number of citations is increasing through time, while a value below 1 indicates the number of citations is decreasing through time. Individuals with very different total numbers of citations can have identical scores because the metric is focused on proportional change and not absolute numbers. However, even beyond the issues of more difficult data collection, this metric has odd properties because of its overwhelming focus on immediacy. It would produce a higher score for someone with just 1 citation a year ago and no citations 2 years ago than another person with 1,000 citations 2 years ago and no citations one year ago.</p>
+      <p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend <em>h-</em>index, but more complicated to measure. If <em>c<sup>x</sup></em> is the total number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for (the citation window), then</p>$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{c^{Y-w}}{i}}}{\sum\limits_{i=1}^{w}{c^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$<p>The numerator of the numerator is the sum of citation counts divided by their age for the window of time in question; the denominator of the numerator is the total number of citations for the same window of time. An impact vitality score of 1 indicates that the number of citations is approximately constant over time. A value above 1 indicates that the number of citations is increasing through time, while a value below 1 indicates the number of citations is decreasing through time. Individuals with very different total numbers of citations can have identical scores because the metric is focused on proportional change and not absolute numbers. However, even beyond the issues of more difficult data collection, this metric has odd properties because of its overwhelming focus on immediacy. It would produce a higher score for someone with just 1 citation a year ago and no citations 2 years ago than another person with 1,000 citations 2 years ago and no citations one year ago.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -8018,7 +8156,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="mean_at_index" class="metric_container">
       <h2>average scientific activity</h2>
-      <p>The average activity (Popov 2005) of a researcher over the characteristic time scale of their scientific activity is define as:</p>$$\bar{a_t}=\frac{C^P}{2t_h}.$$
+      <p>The average activity (Popov 2005) of a researcher over the characteristic time scale of their scientific activity is defined as:</p>$$\bar{a_t}=\frac{C^P}{2t_h}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -8051,11 +8189,152 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="dci_index_2" class="metric_container">
+      <h2>discounted cumulated impact (sharp decay)</h2>
+      <p>The discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) is designed to reduce the role of older citations, but still reward researchers for older publications receiving new citations. To begin, let <em>c<sup>x</sup></em> represet the total number of citations received by a researcher to all of their publications in year <em>x</em>. Over a citation interval of <em>Y</em> years, the cumulated impact vector is simply the sum of these values from the first year to be considered (<em>Y</em> years ago) up through the current year. If the citation interval is the entire career of a researcher, this would be a vector of <em>C<sup>P</sup></em> calculated each year. This raw vector incorporates citation counts without decay over time, <em>i.e.</em>, old and new citations are treated equally. To incorporate a time decay, one divides the count of new citations each year by the logarithm of the number of years elapsed. The discounted cumulative impact vector is thus:</p>$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} \frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & \text{if }i=1 \\ \text{DCI}_Y\left(i-1\right)+\frac{c^i}{\max\left[1, \log_b\left(Y-i\right)\right]} & \text{otherwise} \end{matrix} \right. ,$$<p>where <em>b</em> is the base of the logarithm used for scaling. Larger values of <em>b</em> discount older citations less than smaller values.</p><p>In this version we use a sharp decay with <em>b</em> = 2.</p>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>DCI (<em>b</em> = 2)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">[2.0000]</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">[2.0000, 13.0000]</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">[2.0000, 13.0000, 36.0000]</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">[1.2619, 12.2619, 35.2619, 66.2619]</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">[1.0000, 7.9402, 30.9402, 61.9402, 127.9402]</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">[0.8614, 6.3614, 20.8727, 51.8727, 117.8727, 224.8727]</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">[0.7737, 5.5111, 17.0111, 36.5700, 102.5700, 209.5700, 336.5700]</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">[0.7124, 4.9678, 14.8734, 30.3734, 72.0147, 179.0147, 306.0147, 524.0147]</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">[0.6667, 4.5849, 13.4826, 26.8335, 59.8335, 127.3430, 254.3430, 472.3430, 732.3430]</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">[0.6309, 4.2976, 12.4904, 24.4828, 52.9075, 106.4075, 186.5355, 404.5355, 664.5355, 995.5355]</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">[0.6021, 4.0722, 11.7388, 22.7813, 48.3135, 94.3959, 157.8959, 295.4386, 555.4386, 886.4386, 1219.4386]</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">[0.5781, 3.8895, 11.1452, 21.4785, 44.9882, 86.3814, 141.0773, 250.0773, 414.1191, 745.1191, 1078.1191, 1459.1191]</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">[0.5579, 3.7376, 10.6613, 20.4407, 42.4407, 80.5549, 129.6852, 223.5727, 353.5727, 562.4104, 895.4104, 1276.4104, 1701.4104]</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">[0.5405, 3.6088, 10.2573, 19.5893, 40.4100, 76.0766, 121.3149, 205.6488, 317.6247, 483.1247, 693.2244, 1074.2244, 1499.2244, 1970.2244]</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">[0.5253, 3.4979, 9.9136, 18.8746, 38.7426, 72.4973, 114.8307, 192.4838, 293.0656, 435.6195, 602.1195, 842.5037, 1267.5037, 1738.5037, 2167.5037]</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">[0.5119, 3.4011, 9.6165, 18.2638, 37.3420, 69.5523, 109.6163, 182.2830, 274.8968, 402.9451, 546.3604, 736.8604, 1005.0056, 1476.0056, 1905.0056, 2290.0056]</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">[0.5000, 3.3155, 9.3565, 17.7339, 36.1441, 67.0740, 105.3048, 174.0762, 260.7429, 378.6474, 507.4694, 671.5572, 884.0572, 1181.2251, 1610.2251, 1995.2251, 2438.2251]</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">[0.4893, 3.2393, 9.1263, 17.2685, 35.1042, 64.9511, 101.6623, 167.2869, 249.3077, 359.6411, 478.2581, 625.6490, 808.6865, 1044.1865, 1314.8554, 1699.8554, 2142.8554, 2586.8554]</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">[0.4796, 3.1708, 8.9208, 16.8555, 34.1903, 63.1058, 98.5316, 161.5477, 239.8155, 344.2344, 455.2344, 590.9493, 755.3618, 958.2104, 1172.7104, 1415.6184, 1858.6184, 2302.6184, 2724.6184]</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">[0.4708, 3.1088, 8.7357, 16.4857, 33.3789, 61.4824, 95.8027, 156.6123, 231.7691, 331.4100, 436.4598, 563.4598, 714.8479, 897.0556, 1081.8158, 1274.3158, 1553.8177, 1997.8177, 2419.8177, 2829.8177]</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">[0.4628, 3.0523, 8.5679, 16.1521, 32.6521, 60.0396, 93.3961, 152.3080, 224.8332, 320.5136, 420.7566, 540.9488, 682.6154, 850.3890, 1016.3489, 1182.1593, 1403.6593, 1683.7921, 2105.7921, 2515.7921, 2749.7921]</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_dci_index_2_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="ddci_index_2" class="metric_container">
+      <h2>dynamic discounted cumulated impact (sharp decay)</h2>
+      <p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which cumulates across different time intervals, rather than a single fixed interval. Formally, it is a vector defined as:</p>$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$<p>where DCI<em><sub>j</sub></em>[<em>j</em>] is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated for a career, where each subsequent interval is the length of the career up to that point, the values calculated for earlier career points are identical those same intervals for later career points, thus we just report the final value for each year, with all values up to that year actually representing the full dDCI vector.</p><p>Because DCI can be calculated with varying degrees of citation decay, dDCI is also dependent on this same decay. This version is calculated from the DCI index with a sharp decay of <em>b</em> = 2.</p>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>dDCI (<em>b</em> = 2)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">13.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">36.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">66.2619</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">127.9402</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">224.8727</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">336.5700</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">524.0147</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">732.3430</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">995.5355</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">1219.4386</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">1459.1191</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">1701.4104</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">1970.2244</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">2167.5037</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">2290.0056</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">2438.2251</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">2586.8554</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">2724.6184</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">2829.8177</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">2749.7921</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_ddci_index_2_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="dci_index_10" class="metric_container">
+      <h2>discounted cumulated impact (mild decay)</h2>
+      <p>The discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) is designed to reduce the role of older citations, but still reward researchers for older publications receiving new citations. To begin, let <em>c<sup>x</sup></em> represet the total number of citations received by a researcher to all of their publications in year <em>x</em>. Over a citation interval of <em>Y</em> years, the cumulated impact vector is simply the sum of these values from the first year to be considered (<em>Y</em> years ago) up through the current year. If the citation interval is the entire career of a researcher, this would be a vector of <em>C<sup>P</sup></em> calculated each year. This raw vector incorporates citation counts without decay over time, <em>i.e.</em>, old and new citations are treated equally. To incorporate a time decay, one divides the count of new citations each year by the logarithm of the number of years elapsed. The discounted cumulative impact vector is thus:</p>$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} \frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & \text{if }i=1 \\ \text{DCI}_Y\left(i-1\right)+\frac{c^i}{\max\left[1, \log_b\left(Y-i\right)\right]} & \text{otherwise} \end{matrix} \right. ,$$<p>where <em>b</em> is the base of the logarithm used for scaling. Larger values of <em>b</em> discount older citations less than smaller values.</p><p>In this version we use a mild decay with <em>b</em> = 10.</p>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>DCI (<em>b</em> = 10)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">[2.0000]</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">[2.0000, 13.0000]</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">[2.0000, 13.0000, 36.0000]</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000]</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000]</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000]</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000, 367.0000]</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000, 367.0000, 585.0000]</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000, 367.0000, 585.0000, 845.0000]</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000, 367.0000, 585.0000, 845.0000, 1176.0000]</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">[2.0000, 13.0000, 36.0000, 67.0000, 133.0000, 240.0000, 367.0000, 585.0000, 845.0000, 1176.0000, 1509.0000]</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">[1.9205, 12.9205, 35.9205, 66.9205, 132.9205, 239.9205, 366.9205, 584.9205, 844.9205, 1175.9205, 1508.9205, 1889.9205]</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">[1.8533, 12.4160, 35.4160, 66.4160, 132.4160, 239.4160, 366.4160, 584.4160, 844.4160, 1175.4160, 1508.4160, 1889.4160, 2314.4160]</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">[1.7954, 11.9883, 34.0741, 65.0741, 131.0741, 238.0741, 365.0741, 583.0741, 843.0741, 1174.0741, 1507.0741, 1888.0741, 2313.0741, 2784.0741]</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">[1.7450, 11.6198, 32.9323, 62.7001, 128.7001, 235.7001, 362.7001, 580.7001, 840.7001, 1171.7001, 1504.7001, 1885.7001, 2310.7001, 2781.7001, 3210.7001]</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">[1.7005, 11.2981, 31.9454, 60.6709, 124.0476, 231.0476, 358.0476, 576.0476, 836.0476, 1167.0476, 1500.0476, 1881.0476, 2306.0476, 2777.0476, 3206.0476, 3591.0476]</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">[1.6610, 11.0140, 31.0815, 58.9106, 120.0681, 222.8151, 349.8151, 567.8151, 827.8151, 1158.8151, 1491.8151, 1872.8151, 2297.8151, 2768.8151, 3197.8151, 3582.8151, 4025.8151]</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">[1.6254, 10.7607, 30.3170, 57.3646, 116.6136, 215.7628, 337.7149, 555.7149, 815.7149, 1146.7149, 1479.7149, 1860.7149, 2285.7149, 2756.7149, 3185.7149, 3570.7149, 4013.7149, 4457.7149]</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">[1.5933, 10.5331, 29.6342, 55.9927, 113.5779, 209.6330, 327.3148, 536.6499, 796.6499, 1127.6499, 1460.6499, 1841.6499, 2266.6499, 2737.6499, 3166.6499, 3551.6499, 3994.6499, 4438.6499, 4860.6499]</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">[1.5640, 10.3271, 29.0194, 54.7644, 110.8825, 204.2403, 318.2497, 520.2547, 769.9203, 1100.9203, 1433.9203, 1814.9203, 2239.9203, 2710.9203, 3139.9203, 3524.9203, 3967.9203, 4411.9203, 4833.9203, 5243.9203]</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">[1.5372, 10.1394, 28.4621, 53.6561, 108.4680, 199.4473, 310.2552, 505.9563, 746.8797, 1064.7233, 1397.7233, 1778.7233, 2203.7233, 2674.7233, 3103.7233, 3488.7233, 3931.7233, 4375.7233, 4797.7233, 5207.7233, 5441.7233]</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_dci_index_10_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="ddci_index_10" class="metric_container">
+      <h2>dynamic discounted cumulated impact (mild decay)</h2>
+      <p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which cumulates across different time intervals, rather than a single fixed interval. Formally, it is a vector defined as:</p>$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$<p>where DCI<em><sub>j</sub></em>[<em>j</em>] is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated for a career, where each subsequent interval is the length of the career up to that point, the values calculated for earlier career points are identical those same intervals for later career points, thus we just report the final value for each year, with all values up to that year actually representing the full dDCI vector.</p><p>Because DCI can be calculated with varying degrees of citation decay, dDCI is also dependent on this same decay. This version is calculated from the DCI index with a mild decay of <em>b</em> = 10.</p>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>dDCI (<em>b</em> = 10)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">13.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">36.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">67.0000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">133.0000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">240.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">367.0000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">585.0000</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">845.0000</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">1176.0000</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">1509.0000</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">1889.9205</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">2314.4160</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">2784.0741</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">3210.7001</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">3591.0476</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">4025.8151</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">4457.7149</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">4860.6499</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">5243.9203</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">5441.7233</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_ddci_index_10_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
         <li>Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple authorship. <em>Scientometrics</em> 88:107&ndash;131.</li>
         <li>Abt, H.A. (2012) A publication index that is independent of age. <em>Scientometrics</em> 91:863&ndash;868.</li>
+        <li>Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the DCI-index. <em>Journal of the American Society for Information Science and Technology</em> 67:1424&ndash;1439.</li>
         <li>Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new index to characterize the scientific outpuf of researchers based on the <em>h-</em> and <em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400.</li>
         <li>Anderson, T.R., R.K.S. Hankin, and P.D. Killworth (2008) Beyond the Durfee square: Enhancing the <em>h-</em>index to score total publication output. <em>Scientometrics</em> 76(3):577&ndash;588.</li>
         <li>Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors profit from co-authors. <em>PLoS ONE</em> 8(4):e59814.</li>
@@ -8087,6 +8366,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Jin, B. (2006) <em>h-</em>index: An evaluation indicator proposed by scientist. <em>Science Focus</em> 1(1):8&ndash;9.</li>
         <li>Jin, B. (2007) The <em>ar-</em>index: Complementing the <em>h-</em>index. <em>ISSI</em> Newsletter 3(1):6.</li>
         <li>Jin, B., L. Liang, R. Rousseau, and L. Egghe (2007) The <em>R-</em> and <em>AR-</em>indices: Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863.</li>
+        <li>Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research evaluation. <em>Journal of the American Society for Information Science and Technology</em> 59:1433&ndash;1440.</li>
         <li>Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original <em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6.</li>
         <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
