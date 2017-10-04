@@ -2,6 +2,7 @@
 
 import Impact_Funcs
 import datetime
+import math
 from typing import Union
 
 # --- Internal Constants ---
@@ -1424,6 +1425,23 @@ def metric_wohlin_w_index() -> Metric:
     m.html_name = "<em>w-</em>index (Wohlin)"
     m.symbol = "<em>w</em>"
     m.metric_type = FLOAT
+    table = "<table class=\"cds_table\">" \
+            "<tr><th>Class<br/>(<em>c</em>)</th><th>Citation Range</th>" \
+            "<th>ln (lower limit)<br/>(<em>T<sub>c</sub></em>)</th>" \
+            "<th>cumulative<br/>sum of <em>T<sub>c</sub></em><br />(<em>V<sub>c</sub></em>)</th></tr>"
+    v = 0
+    low = 0
+    high = 4
+    for i in range(11):
+        if i == 0:
+            t = 0
+        else:
+            low = high + 1
+            high = high*2 + 1
+            t = math.log(low)
+        v += t
+        table += "<tr><td>{}</td><td>{}&ndash;{}</td><td>{:0.4f}</td><td>{:0.4f}</td></tr>".format(i, low, high, t, v)
+    table += "<tr><td>etc.</td></tr></table>"
     equation = r"$$w=\sum\limits_{c=1}^{c^\prime}{X_c V_c}$$"
     # cprime = r"\(c^\prime\)"
     m.description = "<p>Wohlin\'s <em>w-</em>index (Wohlin 2009) is similar to others that try to address the issue " \
@@ -1438,7 +1456,8 @@ def metric_wohlin_w_index() -> Metric:
                     "represents 10-19 citations, the third class 20-39 citations, etc. This structure was " \
                     "chosen (other classification schemes could be substituted) because citations curves are " \
                     "usually skewed with many publications with relatively smaller numbers of citations, and few " \
-                    "publications with relative large numbers of citations. To calculate the metric, for each of " \
+                    "publications with relative large numbers of citations.</p>" + table + \
+                    "<p>To calculate the metric, for each of " \
                     "the <em>c\'</em> classes, one can count the number of publications within the " \
                     "<em>c</em><sup>th</sup> class, <em>X<sub>c</sub>.</em> Skewed distributions are often " \
                     "normalized using a logarithmic transform. Therefore, one calculates the natural logarithm of " \
@@ -3729,7 +3748,8 @@ def metric_impact_vitality() -> Metric:
     m.description = "<p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend " \
                     "<em>h-</em>index, but more complicated to measure. If <em>C<sup>x</sup></em> is the total " \
                     "number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the " \
-                    "number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for, " \
+                    "number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for " \
+                    "(the citation window), " \
                     "then</p>" + equation + "<p>The numerator of the numerator is the sum of citation counts divided " \
                     "by their age for the window of time in question; the denominator of the numerator is the total " \
                     "number of citations for the same window of time. An impact vitality score of 1 indicates " \
@@ -3856,20 +3876,20 @@ def metric_cds_index() -> Metric:
     table = "<table class=\"cds_table\">" \
             "<tr><th>Category</th><th>Range of<br/>Citations</th>" \
             "<th>Minimum<br/>Citations</th><th>Maximum<br/>Citations</th></tr>" \
-            "<tr><td>1</td><td>[0&ndash;2<sup>0</sup>]</td><td>0</td><td>1</td></tr>" \
-            "<tr><td>2</td><td>[(2<sup>0</sup>+1)&ndash;2<sup>2</sup>]</td><td>2</td><td>4</td></tr>" \
-            "<tr><td>3</td><td>[(2<sup>2</sup>+1)&ndash;2<sup>3</sup>]</td><td>5</td><td>8</td></tr>" \
-            "<tr><td>4</td><td>[(2<sup>3</sup>+1)&ndash;2<sup>4</sup>]</td><td>9</td><td>16</td></tr>" \
-            "<tr><td>5</td><td>[(2<sup>4</sup>+1)&ndash;2<sup>5</sup>]</td><td>17</td><td>32</td></tr>" \
-            "<tr><td>6</td><td>[(2<sup>5</sup>+1)&ndash;2<sup>6</sup>]</td><td>33</td><td>64</td></tr>" \
-            "<tr><td>7</td><td>[(2<sup>6</sup>+1)&ndash;2<sup>7</sup>]</td><td>65</td><td>128</td></tr>" \
-            "<tr><td>8</td><td>[(2<sup>7</sup>+1)&ndash;2<sup>8</sup>]</td><td>129</td><td>256</td></tr>" \
-            "<tr><td>9</td><td>[(2<sup>8</sup>+1)&ndash;2<sup>9</sup>]</td><td>257</td><td>512</td></tr>" \
-            "<tr><td>10</td><td>[(2<sup>9</sup>+1)&ndash;2<sup>10</sup>]</td><td>513</td><td>1024</td></tr>" \
-            "<tr><td>11</td><td>[(2<sup>10</sup>+1)&ndash;2<sup>11</sup>]</td><td>1025</td><td>2048</td></tr>" \
-            "<tr><td>12</td><td>[(2<sup>11</sup>+1)&ndash;2<sup>12</sup>]</td><td>2049</td><td>4096</td></tr>" \
-            "<tr><td>13</td><td>[(2<sup>12</sup>+1)&ndash;2<sup>13</sup>]</td><td>4097</td><td>8192</td></tr>" \
-            "<tr><td>14</td><td>[(2<sup>12</sup>+1)&ndash;&#x221e;]</td><td>>8192</td><td>&#x221e;</td></tr>" \
+            "<tr><td>1</td><td>0&ndash;2<sup>0</sup></td><td>0</td><td>1</td></tr>" \
+            "<tr><td>2</td><td>(2<sup>0</sup>+1)&ndash;2<sup>2</sup></td><td>2</td><td>4</td></tr>" \
+            "<tr><td>3</td><td>(2<sup>2</sup>+1)&ndash;2<sup>3</sup></td><td>5</td><td>8</td></tr>" \
+            "<tr><td>4</td><td>(2<sup>3</sup>+1)&ndash;2<sup>4</sup></td><td>9</td><td>16</td></tr>" \
+            "<tr><td>5</td><td>(2<sup>4</sup>+1)&ndash;2<sup>5</sup></td><td>17</td><td>32</td></tr>" \
+            "<tr><td>6</td><td>(2<sup>5</sup>+1)&ndash;2<sup>6</sup></td><td>33</td><td>64</td></tr>" \
+            "<tr><td>7</td><td>(2<sup>6</sup>+1)&ndash;2<sup>7</sup></td><td>65</td><td>128</td></tr>" \
+            "<tr><td>8</td><td>(2<sup>7</sup>+1)&ndash;2<sup>8</sup></td><td>129</td><td>256</td></tr>" \
+            "<tr><td>9</td><td>(2<sup>8</sup>+1)&ndash;2<sup>9</sup></td><td>257</td><td>512</td></tr>" \
+            "<tr><td>10</td><td>(2<sup>9</sup>+1)&ndash;2<sup>10</sup></td><td>513</td><td>1024</td></tr>" \
+            "<tr><td>11</td><td>(2<sup>10</sup>+1)&ndash;2<sup>11</sup></td><td>1025</td><td>2048</td></tr>" \
+            "<tr><td>12</td><td>(2<sup>11</sup>+1)&ndash;2<sup>12</sup></td><td>2049</td><td>4096</td></tr>" \
+            "<tr><td>13</td><td>(2<sup>12</sup>+1)&ndash;2<sup>13</sup></td><td>4097</td><td>8192</td></tr>" \
+            "<tr><td>14</td><td>(2<sup>12</sup>+1)&ndash;&#x221e;</td><td>>8192</td><td>&#x221e;</td></tr>" \
             "</table>"
     equation = r"$$\text{CDS}=\sum\limits_{k=1}^{14}{k P^k}.$$"
     m.description = "<p>The citation distribution score index (Vinkler 2011, 2013) is a weighted sum of publication " \
@@ -4148,6 +4168,57 @@ def metric_cq04_index() -> Metric:
     return m
 
 
+# characteristic times scale, th (Popov 2005)
+def calculate_th_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    years = metric_set.publication_years()
+    total_cites = metric_set.metrics["total cites"].value
+    return Impact_Funcs.calculate_th_index(citations, years, total_cites)
+
+
+def metric_th_index() -> Metric:
+    m = Metric()
+    m.name = "th index"
+    m.full_name = "characteristic time scale of scientific activity"
+    m.symbol = "<em>t<sub>h</sub></em>"
+    m.synonyms = ["<em>t<sub>h</sub></em>"]
+    m.metric_type = INT
+    m.description = "<p>The characteristic time scale of scientific activity of a researcher " \
+                    "(<em>t<sub>h</sub></em> index) (Popov 2005) is the amount of time from the present to the " \
+                    "past accounting for publications to which the researcher receives half of their citations. " \
+                    "Put another way, if one sums a researcher\'s citations in reverse chronological order by " \
+                    "publication, it is the number of years necessary to reach half of their total citations.</p>"
+    m.references = ["Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. "
+                    "<em>ArXiv:physics</em>:0508113v1."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_th_index
+    return m
+
+
+# average activity, at (Popov 2005)
+def calculate_mean_at_index(metric_set: MetricSet) -> float:
+    total_cites = metric_set.metrics["total cites"].value
+    th = metric_set.metrics["th index"].value
+    return Impact_Funcs.calculate_mean_at_index(total_cites, th)
+
+
+def metric_mean_at_index() -> Metric:
+    m = Metric()
+    m.name = "mean at index"
+    m.full_name = "average scientific activity"
+    m.symbol = r"\(\bar{a_t}\)"
+    m.synonyms = ["<em>a<sub>t</sub></em>"]
+    m.metric_type = FLOAT
+    equation = r"$$\bar{a_t}=\frac{C^P}{2t_h}.$$"
+    m.description = "<p>The average activity (Popov 2005) of a researcher over the characteristic time scale of " \
+                    "their scientific activity is defined as:</p>" + equation
+    m.references = ["Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. "
+                    "<em>ArXiv:physics</em>:0508113v1."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_mean_at_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -4257,5 +4328,7 @@ def load_all_metrics() -> list:
                    metric_citation_entropy(),
                    metric_cq_index(),
                    metric_cq04_index(),
-                   metric_indifference()]
+                   metric_indifference(),
+                   metric_th_index(),
+                   metric_mean_at_index()]
     return metric_list

@@ -4047,6 +4047,72 @@
         var chart_indifference = new google.visualization.LineChart(document.getElementById('chart_indifference_div'));
         chart_indifference.draw(data_indifference, options_indifference);
 
+        var data_th_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>t<sub>h</sub></em>'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 3],
+           ['2000', 4],
+           ['2001', 5],
+           ['2002', 3],
+           ['2003', 4],
+           ['2004', 5],
+           ['2005', 6],
+           ['2006', 6],
+           ['2007', 7],
+           ['2008', 8],
+           ['2009', 9],
+           ['2010', 10],
+           ['2011', 11],
+           ['2012', 12],
+           ['2013', 13],
+           ['2014', 14],
+           ['2015', 14],
+           ['2016', 15],
+           ['2017', 16],
+		]);
+
+        var options_th_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_th_index = new google.visualization.LineChart(document.getElementById('chart_th_index_div'));
+        chart_th_index.draw(data_th_index, options_th_index);
+
+        var data_mean_at_index = google.visualization.arrayToDataTable([
+           ['Year', '\(\bar{a_t}\)'],
+           ['1997', 1.0],
+           ['1998', 3.25],
+           ['1999', 6.0],
+           ['2000', 8.375],
+           ['2001', 13.3],
+           ['2002', 40.0],
+           ['2003', 45.875],
+           ['2004', 58.5],
+           ['2005', 70.41666666666667],
+           ['2006', 98.0],
+           ['2007', 107.78571428571429],
+           ['2008', 118.125],
+           ['2009', 128.61111111111111],
+           ['2010', 139.3],
+           ['2011', 146.13636363636363],
+           ['2012', 150.0],
+           ['2013', 155.5],
+           ['2014', 160.25],
+           ['2015', 175.32142857142858],
+           ['2016', 177.3],
+           ['2017', 173.53125],
+		]);
+
+        var options_mean_at_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_mean_at_index = new google.visualization.LineChart(document.getElementById('chart_mean_at_index_div'));
+        chart_mean_at_index.draw(data_mean_at_index, options_mean_at_index);
+
 		}
     </script>
   </head>
@@ -4074,6 +4140,8 @@
         <li><a href="#h_rate">age-normalized <em>h-</em>index</a></li>
         <li><a href="#annual_h_index">annual <em>h</em>-index</a></li>
         <li><a href="#ar_index"><em>ar-</em>index</a></li>
+        <li><a href="#mean_at_index"><em>a<sub>t</sub></em></a></li>
+        <li><a href="#mean_at_index">average scientific activity</a></li>
         <li><a href="#b_index_10"><em>b-</em>index (10% rate)</a></li>
         <li><a href="#b_index_mean_coauthor"><em>b-</em>index (mean self &amp; coauthor-citation rate)</a></li>
         <li><a href="#b_index_mean_self"><em>b-</em>index (mean self-citation rate)</a></li>
@@ -4082,6 +4150,7 @@
         <li><a href="#CDR_index">CDR-index</a></li>
         <li><a href="#CDS_index">CDS-index</a></li>
         <li><a href="#h_core_cites"><em>C<sup>H</sup></em></a></li>
+        <li><a href="#th_index">characteristic time scale of scientific activity</a></li>
         <li><a href="#circ_cite_area_radius">circular citation area radius</a></li>
         <li><a href="#citation_acceleration">citation acceleration</a></li>
         <li><a href="#total_cites">citation count</a></li>
@@ -4201,6 +4270,7 @@
         <li><a href="#T_index_h_mixed"><em>T-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="#Tol_t_index"><em>t-</em>index (Tol)</a></li>
         <li><a href="#tapered_h_index">tapered <em>h-</em>index</a></li>
+        <li><a href="#th_index"><em>t<sub>h</sub></em></a></li>
         <li><a href="#citations_per_year">time-scaled citation index</a></li>
         <li><a href="#time_scaled_h_index">time-scaled <em>h-</em>index</a></li>
         <li><a href="#pubs_per_year">time-scaled number of publications</a></li>
@@ -5109,7 +5179,7 @@
     </div>
     <div id="Wohlin_w_index" class="metric_container">
       <h2><em>w-</em>index (Wohlin)</h2>
-      <p>Wohlin's <em>w-</em>index (Wohlin 2009) is similar to others that try to address the issue where not all citations are included in the <em>h-</em>index and that many different distributions of citations can have identical <em>h-</em>indices. Unlike the other indices, however, it does not start with <em>h,</em> and instead uses a somewhat complicated procedure of dividing papers into classes based on the number of citations. Rather than give publications more weight for every citation, this index gives more weight to citations as the publication moves from one class to the next. Publications with fewer than five citations are ignored (given a weight of 0). The first class represents publications with 5-9 citations; each subsequent class has a width double that of the previous class, thus the second class represents 10-19 citations, the third class 20-39 citations, etc. This structure was chosen (other classification schemes could be substituted) because citations curves are usually skewed with many publications with relatively smaller numbers of citations, and few publications with relative large numbers of citations. To calculate the metric, for each of the <em>c'</em> classes, one can count the number of publications within the <em>c</em><sup>th</sup> class, <em>X<sub>c</sub>.</em> Skewed distributions are often normalized using a logarithmic transform. Therefore, one calculates the natural logarithm of the lower limit of each class as <em>T<sub>c</sub></em> = ln(<em>B<sub>c</sub></em>) where <em>B<sub>c</sub></em> is the lower limit of the <em>c</em><sup>th</sup> class. One can also calculate <em>V<sub>c</sub></em> as the cumulative sum of <em>T<sub>c</sub></em> for all classes from 1 to <em>c.</em> The <em>w-</em>index is then calculated as</p>$$w=\sum\limits_{c=1}^{c^\prime}{X_c V_c}$$<p>The <em>w-</em>index increases as a publication moves from one class to the next. Moving between larger classes gives more weight than moving between smaller classes. Because it considers citations more broadly, the <em>w-</em>index is more fine-grained than the <em>h-</em>index.</p>
+      <p>Wohlin's <em>w-</em>index (Wohlin 2009) is similar to others that try to address the issue where not all citations are included in the <em>h-</em>index and that many different distributions of citations can have identical <em>h-</em>indices. Unlike the other indices, however, it does not start with <em>h,</em> and instead uses a somewhat complicated procedure of dividing papers into classes based on the number of citations. Rather than give publications more weight for every citation, this index gives more weight to citations as the publication moves from one class to the next. Publications with fewer than five citations are ignored (given a weight of 0). The first class represents publications with 5-9 citations; each subsequent class has a width double that of the previous class, thus the second class represents 10-19 citations, the third class 20-39 citations, etc. This structure was chosen (other classification schemes could be substituted) because citations curves are usually skewed with many publications with relatively smaller numbers of citations, and few publications with relative large numbers of citations.</p><table class="cds_table"><tr><th>Class<br/>(<em>c</em>)</th><th>Citation Range</th><th>ln (lower limit)<br/>(<em>T<sub>c</sub></em>)</th><th>cumulative<br/>sum of <em>T<sub>c</sub></em><br />(<em>V<sub>c</sub></em>)</th></tr><tr><td>0</td><td>0&ndash;4</td><td>0.0000</td><td>0.0000</td></tr><tr><td>1</td><td>5&ndash;9</td><td>1.6094</td><td>1.6094</td></tr><tr><td>2</td><td>10&ndash;19</td><td>2.3026</td><td>3.9120</td></tr><tr><td>3</td><td>20&ndash;39</td><td>2.9957</td><td>6.9078</td></tr><tr><td>4</td><td>40&ndash;79</td><td>3.6889</td><td>10.5966</td></tr><tr><td>5</td><td>80&ndash;159</td><td>4.3820</td><td>14.9787</td></tr><tr><td>6</td><td>160&ndash;319</td><td>5.0752</td><td>20.0538</td></tr><tr><td>7</td><td>320&ndash;639</td><td>5.7683</td><td>25.8222</td></tr><tr><td>8</td><td>640&ndash;1279</td><td>6.4615</td><td>32.2836</td></tr><tr><td>9</td><td>1280&ndash;2559</td><td>7.1546</td><td>39.4382</td></tr><tr><td>10</td><td>2560&ndash;5119</td><td>7.8478</td><td>47.2860</td></tr><tr><td>etc.</td></tr></table><p>To calculate the metric, for each of the <em>c'</em> classes, one can count the number of publications within the <em>c</em><sup>th</sup> class, <em>X<sub>c</sub>.</em> Skewed distributions are often normalized using a logarithmic transform. Therefore, one calculates the natural logarithm of the lower limit of each class as <em>T<sub>c</sub></em> = ln(<em>B<sub>c</sub></em>) where <em>B<sub>c</sub></em> is the lower limit of the <em>c</em><sup>th</sup> class. One can also calculate <em>V<sub>c</sub></em> as the cumulative sum of <em>T<sub>c</sub></em> for all classes from 1 to <em>c.</em> The <em>w-</em>index is then calculated as</p>$$w=\sum\limits_{c=1}^{c^\prime}{X_c V_c}$$<p>The <em>w-</em>index increases as a publication moves from one class to the next. Moving between larger classes gives more weight than moving between smaller classes. Because it considers citations more broadly, the <em>w-</em>index is more fine-grained than the <em>h-</em>index.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -7353,7 +7423,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="impact_vitality" class="metric_container">
       <h2>impact vitality</h2>
-      <p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend <em>h-</em>index, but more complicated to measure. If <em>C<sup>x</sup></em> is the total number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for, then</p>$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{C^{Y-w}}{i}}}{\sum\limits_{i=1}^{w}{C^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$<p>The numerator of the numerator is the sum of citation counts divided by their age for the window of time in question; the denominator of the numerator is the total number of citations for the same window of time. An impact vitality score of 1 indicates that the number of citations is approximately constant over time. A value above 1 indicates that the number of citations is increasing through time, while a value below 1 indicates the number of citations is decreasing through time. Individuals with very different total numbers of citations can have identical scores because the metric is focused on proportional change and not absolute numbers. However, even beyond the issues of more difficult data collection, this metric has odd properties because of its overwhelming focus on immediacy. It would produce a higher score for someone with just 1 citation a year ago and no citations 2 years ago than another person with 1,000 citations 2 years ago and no citations one year ago.</p>
+      <p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend <em>h-</em>index, but more complicated to measure. If <em>C<sup>x</sup></em> is the total number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for (the citation window), then</p>$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{C^{Y-w}}{i}}}{\sum\limits_{i=1}^{w}{C^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$<p>The numerator of the numerator is the sum of citation counts divided by their age for the window of time in question; the denominator of the numerator is the total number of citations for the same window of time. An impact vitality score of 1 indicates that the number of citations is approximately constant over time. A value above 1 indicates that the number of citations is increasing through time, while a value below 1 indicates the number of citations is decreasing through time. Individuals with very different total numbers of citations can have identical scores because the metric is focused on proportional change and not absolute numbers. However, even beyond the issues of more difficult data collection, this metric has odd properties because of its overwhelming focus on immediacy. It would produce a higher score for someone with just 1 citation a year ago and no citations 2 years ago than another person with 1,000 citations 2 years ago and no citations one year ago.</p>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -7493,7 +7563,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="CDS_index" class="metric_container">
       <h2>citation distribution score index</h2>
-      <p>The citation distribution score index (Vinkler 2011, 2013) is a weighted sum of publication counts in a set of pre-defined citation-count-based categories. The 14 categories are defined predominantly by their upper limits, with the <em>k</em><sup>th</sup> category usually having an upper limits of 2<sup><em>k</em></sup> citations, except for the first category which has an upper limit of 2<sup>0</sup> = 1 citation, and the last category, which has no upper limit.</p><table class="cds_table"><tr><th>Category</th><th>Range of<br/>Citations</th><th>Minimum<br/>Citations</th><th>Maximum<br/>Citations</th></tr><tr><td>1</td><td>[0&ndash;2<sup>0</sup>]</td><td>0</td><td>1</td></tr><tr><td>2</td><td>[(2<sup>0</sup>+1)&ndash;2<sup>2</sup>]</td><td>2</td><td>4</td></tr><tr><td>3</td><td>[(2<sup>2</sup>+1)&ndash;2<sup>3</sup>]</td><td>5</td><td>8</td></tr><tr><td>4</td><td>[(2<sup>3</sup>+1)&ndash;2<sup>4</sup>]</td><td>9</td><td>16</td></tr><tr><td>5</td><td>[(2<sup>4</sup>+1)&ndash;2<sup>5</sup>]</td><td>17</td><td>32</td></tr><tr><td>6</td><td>[(2<sup>5</sup>+1)&ndash;2<sup>6</sup>]</td><td>33</td><td>64</td></tr><tr><td>7</td><td>[(2<sup>6</sup>+1)&ndash;2<sup>7</sup>]</td><td>65</td><td>128</td></tr><tr><td>8</td><td>[(2<sup>7</sup>+1)&ndash;2<sup>8</sup>]</td><td>129</td><td>256</td></tr><tr><td>9</td><td>[(2<sup>8</sup>+1)&ndash;2<sup>9</sup>]</td><td>257</td><td>512</td></tr><tr><td>10</td><td>[(2<sup>9</sup>+1)&ndash;2<sup>10</sup>]</td><td>513</td><td>1024</td></tr><tr><td>11</td><td>[(2<sup>10</sup>+1)&ndash;2<sup>11</sup>]</td><td>1025</td><td>2048</td></tr><tr><td>12</td><td>[(2<sup>11</sup>+1)&ndash;2<sup>12</sup>]</td><td>2049</td><td>4096</td></tr><tr><td>13</td><td>[(2<sup>12</sup>+1)&ndash;2<sup>13</sup>]</td><td>4097</td><td>8192</td></tr><tr><td>14</td><td>[(2<sup>12</sup>+1)&ndash;&#x221e;]</td><td>>8192</td><td>&#x221e;</td></tr></table><p>The rank of each category is also its weight. If <em>P<sup>k</sup></em> is the count of publications within the <em>k</em><sup>th</sup> category, then the index is calculated as</p>$$\text{CDS}=\sum\limits_{k=1}^{14}{k P^k}.$$
+      <p>The citation distribution score index (Vinkler 2011, 2013) is a weighted sum of publication counts in a set of pre-defined citation-count-based categories. The 14 categories are defined predominantly by their upper limits, with the <em>k</em><sup>th</sup> category usually having an upper limits of 2<sup><em>k</em></sup> citations, except for the first category which has an upper limit of 2<sup>0</sup> = 1 citation, and the last category, which has no upper limit.</p><table class="cds_table"><tr><th>Category</th><th>Range of<br/>Citations</th><th>Minimum<br/>Citations</th><th>Maximum<br/>Citations</th></tr><tr><td>1</td><td>0&ndash;2<sup>0</sup></td><td>0</td><td>1</td></tr><tr><td>2</td><td>(2<sup>0</sup>+1)&ndash;2<sup>2</sup></td><td>2</td><td>4</td></tr><tr><td>3</td><td>(2<sup>2</sup>+1)&ndash;2<sup>3</sup></td><td>5</td><td>8</td></tr><tr><td>4</td><td>(2<sup>3</sup>+1)&ndash;2<sup>4</sup></td><td>9</td><td>16</td></tr><tr><td>5</td><td>(2<sup>4</sup>+1)&ndash;2<sup>5</sup></td><td>17</td><td>32</td></tr><tr><td>6</td><td>(2<sup>5</sup>+1)&ndash;2<sup>6</sup></td><td>33</td><td>64</td></tr><tr><td>7</td><td>(2<sup>6</sup>+1)&ndash;2<sup>7</sup></td><td>65</td><td>128</td></tr><tr><td>8</td><td>(2<sup>7</sup>+1)&ndash;2<sup>8</sup></td><td>129</td><td>256</td></tr><tr><td>9</td><td>(2<sup>8</sup>+1)&ndash;2<sup>9</sup></td><td>257</td><td>512</td></tr><tr><td>10</td><td>(2<sup>9</sup>+1)&ndash;2<sup>10</sup></td><td>513</td><td>1024</td></tr><tr><td>11</td><td>(2<sup>10</sup>+1)&ndash;2<sup>11</sup></td><td>1025</td><td>2048</td></tr><tr><td>12</td><td>(2<sup>11</sup>+1)&ndash;2<sup>12</sup></td><td>2049</td><td>4096</td></tr><tr><td>13</td><td>(2<sup>12</sup>+1)&ndash;2<sup>13</sup></td><td>4097</td><td>8192</td></tr><tr><td>14</td><td>(2<sup>12</sup>+1)&ndash;&#x221e;</td><td>>8192</td><td>&#x221e;</td></tr></table><p>The rank of each category is also its weight. If <em>P<sup>k</sup></em> is the count of publications within the <em>k</em><sup>th</sup> category, then the index is calculated as</p>$$\text{CDS}=\sum\limits_{k=1}^{14}{k P^k}.$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
@@ -7911,6 +7981,76 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="th_index" class="metric_container">
+      <h2>characteristic time scale of scientific activity</h2>
+      <p>The characteristic time scale of scientific activity of a researcher (<em>t<sub>h</sub></em> index) (Popov 2005) is the amount of time from the present to the past accounting for publications to which the researcher receives half of their citations. Put another way, if one sums a researcher's citations in reverse chronological order by publication, it is the number of years necessary to reach half of their total citations.</p>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>t<sub>h</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">11</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">16</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_th_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="mean_at_index" class="metric_container">
+      <h2>average scientific activity</h2>
+      <p>The average activity (Popov 2005) of a researcher over the characteristic time scale of their scientific activity is define as:</p>$$\bar{a_t}=\frac{C^P}{2t_h}.$$
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>\(\bar{a_t}\)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.2500</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">6.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">8.3750</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">13.3000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">40.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">45.8750</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">58.5000</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">70.4167</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">98.0000</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">107.7857</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">118.1250</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">128.6111</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">139.3000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">146.1364</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">150.0000</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">155.5000</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">160.2500</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">175.3214</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">177.3000</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">173.5312</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_mean_at_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -7954,6 +8094,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>
+        <li>Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. <em>ArXiv:physics</em>:0508113v1.</li>
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>
         <li>Prathap, G. (2010) The 100 most prolific economists using the <em>p-</em>index. <em>Scientometrics</em> 84:167&ndash;172.</li>
         <li>Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. <em>Scientometrics</em> 86:239&ndash;244.</li>
