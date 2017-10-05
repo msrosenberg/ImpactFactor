@@ -132,3 +132,23 @@ a:visited {
 .chart2container {width: 816px; margin: auto}
 
 .clear_float {clear: both}
+
+.example_table {margin: 0 auto;
+               border; 0;
+			   border-collapse: collapse}
+
+.example_table td {padding-left: 16px;
+           padding-right: 16px;
+		   text-align: center;
+		   width: 45px;}
+
+.example_table th {padding-left: 16px; padding-right: 16px}
+		   
+
+.box {background: black; color: white}
+.xbox_top {border-top: 1px solid black}
+.xbox_sides {border-left: 1px solid black;
+              border-right: 1px solid black}
+.xbox_bottom {border-bottom: 1px solid black}
+.xbox_left {border-left: 1px solid black}
+.xbox_right {border-right: 1px solid black}

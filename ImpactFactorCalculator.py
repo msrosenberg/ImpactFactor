@@ -358,7 +358,7 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
 
         outfile.write("  </head>\n")
         outfile.write("  <body>\n")
-        metric_base_data = yearly_metrics_list[0]
+        # metric_base_data = yearly_metrics_list[0]
         metric_names = metric_base_data.metric_names
         # output index of names
         name_links = {}
@@ -417,6 +417,10 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
                 outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
                 outfile.write("      <h2>" + metric.html_name + "</h2>\n")
                 outfile.write("      " + metric.description + "\n")
+                if metric.example is not None:
+                    outfile.write("      <h3>Example</h3>\n")
+                    outfile.write("      " + metric.example(metric_base_data) + "\n")
+                outfile.write("      <h3>History</h3>\n")
                 if metric.metric_type == Impact_Defs.INTLIST:
                     outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_data_container_wide\">\n")
                 else:
