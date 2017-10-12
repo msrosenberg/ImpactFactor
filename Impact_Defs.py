@@ -518,14 +518,6 @@ def write_h_core_example(metric_set: MetricSet) -> str:
             ec = " class=\"box\""
         else:
             ec = ""
-        # if i == 0:
-        #     ec1 = " class=\"box box_top box_bottom box_left\""
-        # elif i + 1 < h:
-        #     ec1 = " class=\"box box_top box_bottom\""
-        # elif i + 1 == h:
-        #     ec1 = " class=\"box box_top box_bottom box_right\""
-        # else:
-        #     ec1 = ""
         if i + 1 == h:
             v = "<em>h</em> = {}".format(h)
         else:
@@ -1476,12 +1468,50 @@ def calculate_rational_h_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_rational_h(citations, rank_order, is_core, h)
 
 
+def write_rational_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    rath = metric_set.metrics["rational h-index"].value
+    hnext = h + 1 - citations[h]
+    hin = 0
+    for i, c in enumerate(citations):
+        if i < h:
+            if c == h:
+                hin += 1
+        if i + 1 == h:
+            v = "<em>h</em> = {}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i+1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {5}. To reach an <em>h</em> of {0}, we would need to add {1} citations to " \
+              "the publications within the core and {2} citations to the {0}<sup>th</sup> publication " \
+              "(for a total of {6}). The " \
+              "maximum number of citations that could be required is {3} (if all {5} core publications had exactly " \
+              "{5} citations and the {0}<sup>th</sup> publication had zero), thus the rational <em>h</em> " \
+              "is {5} + 1 - {6}/{3} = {4:0.4f}.</p>".format(h+1, hin, hnext, 2*h+1, rath, h, hnext)
+    return outstr
+
+
 def metric_rational_h_index() -> Metric:
     m = Metric()
     m.name = "rational h-index"
     m.full_name = "rational h-index"
     m.html_name = "rational <em>h-</em>index"
     m.metric_type = FLOAT
+    m.example = write_rational_h_index_example
     equation = r"$$h^\Delta = h + 1 -\frac{n}{2h+1},$$"
     nstr = r"\(n\)"
     hstr = r"\(h\)"
