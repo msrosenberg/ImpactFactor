@@ -2603,7 +2603,7 @@ def metric_h2_tail_index() -> Metric:
     m.description_graphs.append(graph)
     graph.name = "h2_tail_index_desc"
     graph.data = write_h2_tail_index_desc_data
-    equation = r"$$h_\text{tail}^2=\frac{C^P - C^h}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$"
+    equation = r"$$h_\text{tail}^2=\frac{C^P - C^H}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$"
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
