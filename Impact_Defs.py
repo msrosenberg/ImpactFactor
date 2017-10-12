@@ -1813,17 +1813,63 @@ def calculate_wohlin_w_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_wohlin_w(citations, max_cites)
 
 
+def write_wohlin_j_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    for c in citations:
+        row1 += "<td>{}</td>".format(c)
+    row1 += "</tr>"
+    outstr += row1 + "</table>"
+    outstr += "<p></p><table class=\"cds_table\">" \
+              "<tr><th>Class<br/>(<em>c</em>)</th><th>Citation<br/>Range</th><th>Count of Pubs<br/>in " \
+              "Range<br/>(<em>X<sub>c</sub></em>)</th>" \
+              "<th>ln (lower limit)<br/>(<em>T<sub>c</sub></em>)</th>" \
+              "<th>Cumulative<br/>Sum of <em>T<sub>c</sub></em><br />(<em>V<sub>c</sub></em>)</th>" \
+              "<th><em>X<sub>c</sub></em><em>V<sub>c</sub></em></th></tr>"
+    max_cites = max(citations)
+    j = 5
+    nc = 1
+    while max_cites > j-1:
+        j *= 2
+        nc += 1
+    v = 0
+    low = 0
+    high = 4
+    for i in range(nc):
+        x = 0
+        if i == 0:
+            t = 0
+        else:
+            low = high + 1
+            high = high*2 + 1
+            t = math.log(low)
+        v += t
+        for c in citations:
+            if (c >= low) and (c <= high):
+                x += 1
+        outstr += "<tr><td>{}</td><td>{}&ndash;{}</td><td>{}</td><td>{:0.4f}</td><td>{:0.4f}</td>" \
+                  "<td>{:0.4f}</td></tr>".format(i, low, high, x, t, v, x*v)
+    outstr += "</table>"
+    w = metric_set.metrics["Wohlin w-index"].value
+    outstr += "<p>The index is the sum of <em>X<sub>c</sub></em><em>V<sub>c</sub></em>, thus " \
+              "<em>w</em> = {:0.4f}.</p>".format(w)
+    return outstr
+
+
 def metric_wohlin_w_index() -> Metric:
     m = Metric()
     m.name = "Wohlin w-index"
     m.full_name = "w-index (Wohlin)"
     m.html_name = "<em>w-</em>index (Wohlin)"
     m.symbol = "<em>w</em>"
+    m.example = write_wohlin_j_index_example
     m.metric_type = FLOAT
     table = "<table class=\"cds_table\">" \
             "<tr><th>Class<br/>(<em>c</em>)</th><th>Citation Range</th>" \
             "<th>ln (lower limit)<br/>(<em>T<sub>c</sub></em>)</th>" \
-            "<th>cumulative<br/>sum of <em>T<sub>c</sub></em><br />(<em>V<sub>c</sub></em>)</th></tr>"
+            "<th>Cumulative<br/>Sum of <em>T<sub>c</sub></em><br />(<em>V<sub>c</sub></em>)</th></tr>"
     v = 0
     low = 0
     high = 4

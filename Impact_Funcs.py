@@ -503,7 +503,7 @@ def calculate_wu_wq(citations: list, rank_order: list, w: int) -> int:
 def calculate_wohlin_w(citations: list, max_cites: int) -> float:
     j = 5
     nc = 1
-    while max_cites > j:
+    while max_cites > j-1:
         j *= 2
         nc += 1
     wval = []
