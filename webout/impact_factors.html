@@ -1522,6 +1522,43 @@
         var chart_e_index = new google.visualization.LineChart(document.getElementById('chart_e_index_div'));
         chart_e_index.draw(data_e_index, options_e_index);
 
+        var data_e_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 36],
+           [2, null, 6, 30],
+           [3, null, 6, 8],
+           [4, null, 6, 5],
+           [5, null, 6, 3],
+           [6, null, 6, 3],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+		]);
+
+        var options_e_index_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_e_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_e_index_desc_div'));
+        chart_e_index_desc.draw(data_e_index_desc, options_e_index_desc);
+
         var data_maxprod_index = google.visualization.arrayToDataTable([
            ['Year', 'MP'],
            ['1997', 2],
@@ -5658,7 +5695,7 @@
     </div>
     <div id="pi_rate" class="metric_container">
       <h2><em>π-</em>core citation rate</h2>
-      <p>The π-core citation rate, or π-rate, is the ratio of the π-core citations divided by the number of papers in the π-core.</p>$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$
+      <p>The π-core citation rate, or π-rate, is the ratio of the π-core citations divided by the number of publications in the π-core. It is simply the average number of citations per core publication.</p>$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -5730,7 +5767,7 @@
     </div>
     <div id="e_index" class="metric_container">
       <h2><em>e-</em>index</h2>
-      <p>The <em>e-</em>index (Zhang 2009) is simply a measure of the excess citations in the Hirsch core beyond those necessary to produce the core itself. It is measured as:</p>$$e=\sqrt{\sum\limits_{i=1}^{h}{C_i}-h^2}.$$
+      <p>The <em>e-</em>index (Zhang 2009) is simply a measure of the excess citations in the Hirsch core beyond those necessary to produce the core itself. It is measured as:</p>$$e=\sqrt{C^H-h^2}=\sqrt{\sum\limits_{i=1}^{h}{C_i}-h^2}.$$<p>Graphically, it is the square-root of the total citations within the upper part of the citation curve.</p><div id="chart_e_index_desc_div" class="proportional_chart"></div>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">

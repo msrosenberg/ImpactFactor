@@ -2278,6 +2278,53 @@ def calculate_e_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_e_index(core_cites, h)
 
 
+def write_e_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["e-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_e_index() -> Metric:
     m = Metric()
     m.name = "e-index"
@@ -2285,9 +2332,16 @@ def metric_e_index() -> Metric:
     m.html_name = "<em>e-</em>index"
     m.symbol = "<em>e</em>"
     m.metric_type = FLOAT
-    equation = r"$$e=\sqrt{\sum\limits_{i=1}^{h}{C_i}-h^2}.$$"
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "e_index_desc"
+    graph.data = write_e_index_desc_data
+    equation = r"$$e=\sqrt{C^H-h^2}=\sqrt{\sum\limits_{i=1}^{h}{C_i}-h^2}.$$"
     m.description = "<p>The <em>e-</em>index (Zhang 2009) is simply a measure of the excess citations in the " \
-                    "Hirsch core beyond those necessary to produce the core itself. It is measured as:</p>" + equation
+                    "Hirsch core beyond those necessary to produce the core itself. It is measured as:</p>" + \
+                    equation + "<p>Graphically, it is the square-root of the total citations within the upper " \
+                    "part of the citation curve.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
     m.references = ["Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess "
                     "citations. <em>PLoS ONE</em> 4(5):e5429."]
     m.graph_type = LINE_CHART
@@ -2385,7 +2439,7 @@ def metric_h2_upper_index() -> Metric:
     m.description_graphs.append(graph)
     graph.name = "h2_upper_index_desc"
     graph.data = write_h2_upper_index_desc_data
-    equation = r"$$h_\text{upper}^2=\frac{C^h - h^2}{C^P}\times 100=" \
+    equation = r"$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100=" \
                r"\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$"
     m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
