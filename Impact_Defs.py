@@ -441,15 +441,9 @@ def write_h_index_example(metric_set: MetricSet) -> str:
         if i + 1 == h:
             v = "<em>h</em> = {}".format(h)
             ec = " class=\"box\""
-            # ec1 = " class=\"box box_top box_sides\""
-            # ec2 = " class=\"box box_sides\""
-            # ec3 = " class=\"box_bottom box_sides\""
         else:
             v = ""
             ec = ""
-            # ec1 = ""
-            # ec2 = ""
-            # ec3 = ""
         row1 += "<td" + ec + ">{}</td>".format(c)
         row2 += "<td" + ec + ">{}</td>".format(i+1)
         row3 += "<td>{}</td>".format(v)
@@ -520,7 +514,7 @@ def write_h_core_example(metric_set: MetricSet) -> str:
     h = metric_set.metrics["h-index"].value
     hc = metric_set.metrics["h-core cites"].value
     for i, c in enumerate(citations):
-        if i +1 <= h:
+        if i + 1 <= h:
             ec = " class=\"box\""
         else:
             ec = ""
@@ -873,6 +867,35 @@ def write_h2_index_desc_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_h2_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank-squared (<em>i</em><sup>2</sup>)"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    h = metric_set.metrics["h(2)-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == h:
+            v = "<em>h</em>(2)={}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format((i + 1)**2)
+        row3 += "<td>{}</td>".format(i + 1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em><sup>2</sup> ≤ <em>C<sub>i</sub></em> is {}.</p>".format(h)
+    return outstr
+
+
 def metric_h2_index() -> Metric:
     m = Metric()
     m.name = "h(2)-index"
@@ -882,6 +905,7 @@ def metric_h2_index() -> Metric:
     m.metric_type = INT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
+    m.example = write_h2_index_example
     graph.name = "h2_index_desc"
     graph.data = write_h2_index_desc_data
     equation = r"$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$"
@@ -904,12 +928,44 @@ def calculate_mu_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_mu_index(citations)
 
 
+def write_mu_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th>Median Citations</th>"
+    row4 = "<tr><th></th>"
+    mu = metric_set.metrics["mu-index"].value
+    for i, c in enumerate(citations):
+        s = Impact_Funcs.calculate_median(citations[:i+1])
+        if i + 1 == mu:
+            v = "<em>μ</em> = {}".format(mu)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i + 1)
+        row3 += "<td" + ec + ">{:0.1f}</td>".format(s)
+        row4 += "<td>{}</td>".format(v)
+
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em> ≤ median citations is {}.</p>".format(mu)
+    return outstr
+
+
 def metric_mu_index() -> Metric:
     m = Metric()
     m.name = "mu-index"
     m.full_name = "μ-index"
     m.html_name = "<em>μ-</em>index"
     m.symbol = "<em>μ</em>"
+    m.example = write_mu_index_example
     m.metric_type = INT
     m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
@@ -928,15 +984,48 @@ def calculate_tol_f_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_tol_f_index(citations)
 
 
+def write_tol_f_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th>Harmonic Mean Citations</th>"
+    row4 = "<tr><th></th>"
+    f = metric_set.metrics["Tol f-index"].value
+    s = 0
+    for i, c in enumerate(citations):
+        if c != 0:
+            s += 1/c
+        if i + 1 == f:
+            v = "<em>f</em> = {}".format(f)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i + 1)
+        row3 += "<td" + ec + ">{:0.1f}</td>".format(1/(s/(i+1)))
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em> ≤ harmonic mean citations is {}.</p>".format(f)
+    return outstr
+
+
 def metric_tol_f_index() -> Metric:
     m = Metric()
     m.name = "Tol f-index"
     m.full_name = "f-index (Tol)"
     m.html_name = "<em>f-</em>index (Tol)"
     m.symbol = "<em>f</em>"
+    m.example = write_tol_f_index_example
     m.metric_type = INT
-    equation = r"$$f=\underset{k}{\max}\left(\frac{1}{\frac{1}{k}\sum\limits_{i=1}^{k}{\frac{1}{C_i}}}\geq " \
-               r"k\right)=\underset{k}{\max}\left(\frac{k}{\sum\limits_{i=1}^{k}{\frac{1}{C_i}} }\geq k\right)$$"
+    equation = r"$$f=\underset{i}{\max}\left(\frac{1}{\frac{1}{i}\sum\limits_{j=1}^{i}{\frac{1}{C_j}}}\geq " \
+               r"i\right)=\underset{i}{\max}\left(\frac{i}{\sum\limits_{j=1}^{i}{\frac{1}{C_j}} }\geq i\right)$$"
     m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
                     "equal to <em>x,</em> then Tol\'s <em>f-</em>index (Tol 2007) is the same idea, except based on " \
@@ -954,15 +1043,48 @@ def calculate_tol_t_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_tol_t_index(citations)
 
 
+def write_tol_t_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th>Geometric Mean Citations</th>"
+    row4 = "<tr><th></th>"
+    t = metric_set.metrics["Tol t-index"].value
+    s = 0
+    for i, c in enumerate(citations):
+        if c != 0:
+            s += math.log(c)
+        if i + 1 == t:
+            v = "<em>t</em> = {}".format(t)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i + 1)
+        row3 += "<td" + ec + ">{:0.1f}</td>".format(math.exp(s/(i+1)))
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em> ≤ geometic mean citations is {}.</p>".format(t)
+    return outstr
+
+
 def metric_tol_t_index() -> Metric:
     m = Metric()
     m.name = "Tol t-index"
     m.full_name = "t-index (Tol)"
     m.html_name = "<em>t-</em>index (Tol)"
     m.symbol = "<em>t</em>"
+    m.example = write_tol_t_index_example
     m.metric_type = INT
-    equation = r"$$t=\underset{k}{\max}\left(\exp\left(\frac{1}{k}\sum\limits_{i=1}^{k}\ln{C_i}\right)\geq " \
-               r"k\right)$$"
+    equation = r"$$t=\underset{i}{\max}\left(\exp\left(\frac{1}{i}\sum\limits_{j=1}^{i}\ln{C_j}\right)\geq " \
+               r"i\right)$$"
     m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
                     "equal to <em>x,</em> then Tol\'s <em>t-</em>index (Tol 2007) is the same idea, except based on " \
@@ -1030,6 +1152,42 @@ def write_woeginger_w_index_desc_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_woeginger_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row0 = "<tr><td></td><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    rows = []
+    row1 = "<tr class=\"top_row\"><td></td><th>Rank (<em>k</em>)</th><td><em>k</em>…1</td>"
+    w = metric_set.metrics["Woeginger w-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == w:
+            v = "<td><em>w</em> = {}</td>".format(w)
+            ec = " class=\"box\""
+        else:
+            v = "<td></td>"
+            ec = ""
+        row0 += "<td>{}</td>".format(c)
+        if i != 0:
+            row1 += "<td></td>"
+        newrow = "<tr>" + v + "<th>{}</th>".format(i + 1)
+        for j in range(i+1):
+            newrow += "<td" + ec + ">{}</td>".format(i+1 - j)
+        for j in range(i+1, len(citations)+1):
+            newrow += "<td></td>"
+        newrow += "</tr>"
+        rows.append(newrow)
+    row0 += "</tr>"
+    row1 += "</tr>"
+    outstr += row0 + row1
+    for row in rows:
+        outstr += row
+    outstr += "</table>"
+    outstr += "<p>The largest rank where the minimum number of citations for publications 1…<em>k</em> " \
+              "≤ <em>k</em>…1 is {}.</p>".format(w)
+    return outstr
+
+
 def metric_woeginger_w_index() -> Metric:
     m = Metric()
     m.name = "Woeginger w-index"
@@ -1037,6 +1195,7 @@ def metric_woeginger_w_index() -> Metric:
     m.html_name = "<em>w-</em>index (Woeginger)"
     m.symbol = "<em>w</em>"
     m.metric_type = INT
+    m.example = write_woeginger_index_example
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "woeginger_w_index_desc"
@@ -1045,7 +1204,9 @@ def metric_woeginger_w_index() -> Metric:
     # iltk = r"\(i \leq k\)"
     m.description = "<p>Woeginger\'s <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. " \
                     "It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> " \
-                    "citations:</p>" + equation + "<p>for all <em>i</em> ≤ <em>k</em>.</p><p>Graphically, if the " \
+                    "citations:</p>" + equation + "<p>for all <em>i</em> ≤ <em>k</em>. Put another way, the top " \
+                    "1…<em>k</em> publications have to have at least <em>k</em>…1 citations, respectively.</p>" \
+                    "<p>Graphically, if the " \
                     "<em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation " \
                     "curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of " \
                     "<em>w</em>.</p><div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
@@ -1114,6 +1275,35 @@ def write_wu_w_index_desc_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_wu_w_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>10&times;Rank (10<em>i</em>)"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    w = metric_set.metrics["Wu w-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == w:
+            v = "<em>w</em> = {}".format(w)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format((i + 1)*10)
+        row3 += "<td>{}</td>".format(i + 1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where 10<em>i</em> ≤ <em>C<sub>i</sub></em> is {}.</p>".format(w)
+    return outstr
+
+
 def metric_wu_w_index() -> Metric:
     m = Metric()
     m.name = "Wu w-index"
@@ -1121,6 +1311,7 @@ def metric_wu_w_index() -> Metric:
     m.html_name = "<em>w-</em>index (Wu)"
     m.symbol = "<em>w</em>"
     m.metric_type = INT
+    m.example = write_wu_w_index_example
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "wu_w_index_desc"
@@ -1206,7 +1397,7 @@ def metric_a_index() -> Metric:
     m.html_name = "<em>a-</em>index"
     m.symbol = "<em>a</em>"
     m.metric_type = FLOAT
-    equation = r"$$a=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$"
+    equation = r"$$a=\frac{C^H}{h}=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$"
     m.description = "<p>The <em>a-</em>index (Jin 2006; Rousseau 2006) is used to describe the citations within " \
                     "the core itself, being simply the average number of citations per core publication, or</p>" + \
                     equation + "<p>The minimum value of <em>a</em> is <em>h</em> (since every one of the <em>h</em> " \
@@ -1233,7 +1424,7 @@ def metric_r_index() -> Metric:
     m.html_name = "<em>R-</em>index"
     m.symbol = "<em>R</em>"
     m.metric_type = FLOAT
-    equation = r"$$R=\sqrt{\sum\limits_{i=1}^{h}{C_i}}.$$"
+    equation = r"$$R=\sqrt{C^H}=\sqrt{\sum\limits_{i=1}^{h}{C_i}}.$$"
     m.description = "<p>The <em>R-</em>index (Jin <em>et al.</em> 2007) is a measure of the quality of the Hirsch " \
                     "core, designed to avoid punishing scientists with larger cores. As a simple arithmetic average, " \
                     "the <em>a-</em>index has the size of the core in the divisor and therefore can lead to smaller " \
