@@ -1713,6 +1713,61 @@ def calculate_todeschini_j_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_todeschini_j_index(citations, h)
 
 
+def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
+    dhk = (500, 250, 100, 50, 25, 10, 5, 4, 3, 2, 1.5, 1.25)
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    j = metric_set.metrics["Todeschini j-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == h:
+            v = "<em>h</em> = {}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i + 1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    cnts = [0 for k in dhk]
+    for k, d in enumerate(dhk):
+        for c in citations:
+            if c >= d * h:
+                cnts[k] += 1
+    outstr += "<p></p><table class=\"example_table\">"
+    row1 = "<tr class=\"top_row\"><th><em>k</em></th>"
+    row2 = "<tr><th>Δ<em>h<sub>k</sub></em></th>"
+    row3 = "<tr><th><em>h</em>&times;Δ<em>h<sub>k</sub></em></th>"
+    row4 = "<tr><th>Count <em>C<sub>i</sub></em> ≥ " \
+           "<em>h</em>&times;Δ<em>h<sub>k</sub></em> (<em>X<sub>k</sub></em>)</th>"
+    row5 = "<tr><th>Weight (<em>w<sub>k</sub></em>)</th>"
+    row6 = "<tr><th><em>w<sub>k</sub></em><em>X<sub>k</sub></em></th>"
+    sumwkxk = 0
+    sumw = 0
+    for k, d in enumerate(dhk):
+        row1 += "<td>{}</td>".format(k+1)
+        row2 += "<td>{}</td>".format(d)
+        row3 += "<td>{}</td>".format(h*d)
+        row4 += "<td>{}</td>".format(cnts[k])
+        row5 += "<td>{:0.2f}</td>".format(1/(k+1))
+        row6 += "<td>{:0.2f}</td>".format(cnts[k]/(k+1))
+        sumw += 1/(k+1)
+        sumwkxk += cnts[k]/(k+1)
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + "</table>"
+    outstr += "<p>The sum of <em>w<sub>k</sub></em><em>X<sub>k</sub></em> = {0:0.4f} and the sum of " \
+              "<em>w<sub>k</sub></em> = {1:0.4f}, therefore <em>j</em> = {2} + {0:0.4f}/{1:0.4f} = " \
+              "{3:0.4f}.</p>".format(sumwkxk, sumw, h, j)
+    return outstr
+
+
 def metric_todeschini_j_index() -> Metric:
     m = Metric()
     m.name = "Todeschini j-index"
@@ -1720,6 +1775,7 @@ def metric_todeschini_j_index() -> Metric:
     m.html_name = "<em>j-</em>index (Todeschini)"
     m.symbol = "<em>j</em>"
     m.metric_type = FLOAT
+    m.example = write_todeschini_j_index_example
     j_table = "<table class=\"j_table\">" \
               "<tr class=\"top_row\"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>" \
               "<td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr>" \
