@@ -1737,7 +1737,7 @@ def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
     row2 += "</tr>"
     row3 += "</tr>"
     outstr += row1 + row2 + row3 + "</table>"
-    cnts = [0 for k in dhk]
+    cnts = [0 for _ in dhk]
     for k, d in enumerate(dhk):
         for c in citations:
             if c >= d * h:
@@ -2070,12 +2070,66 @@ def calculate_weighted_h_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_weighted_h_index(citations, cumulative_citations, rank_order, h)
 
 
+def write_weighted_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row0 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row1 = "<tr><th>Rank (<em>i</em>)</th>"
+    row2 = "<tr><th></th>"
+    row3 = "<tr class=\"top_row\"><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>"
+    row4 = "<tr><th><em>r<sub>w</sub></em>(<em>i</em>) = Σ<em>C<sub>i</sub></em> / <em>h</em></th>"
+    row5 = "<tr><th></th>"
+
+    h = metric_set.metrics["h-index"].value
+    hw = metric_set.metrics["weighted h-index"].value
+    s = 0
+    r0 = 0
+    for i, c in enumerate(citations):
+        s += c
+        if s/h <= c:
+            r0 += 1
+    s = 0
+    root_sum = 0
+    for i, c in enumerate(citations):
+        s += c
+        v = ""
+        v2 = ""
+        ec = ""
+        ec2 = ""
+        if i + 1 == h:
+            v = "<em>h</em> = {}".format(h)
+            ec = " class=\"light_box\""
+        if i + 1 == r0:
+            v2 = "<em>r</em><sub>0</sub> = {}".format(r0)
+            ec2 = " class=\"box\""
+            root_sum = s
+        row0 += "<td" + ec + ec2 + ">{}</td>".format(c)
+        row1 += "<td" + ec + ">{}</td>".format(i + 1)
+        row2 += "<td>{}</td>".format(v)
+        row3 += "<td>{}</td>".format(s)
+        row4 += "<td" + ec2 + ">{:0.2f}</td>".format(s/h)
+        row5 += "<td>{}</td>".format(v2)
+    row0 += "</tr>"
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row0 + row1 + row2 + row3 + row4 + row5 + "</table>"
+    outstr += "<p>The largest rank where <em>r<sub>w</sub></em>(<em>i</em>) ≤ <em>C<sub>i</sub></em> is " \
+              "{}. The weighted <em>h-</em>index is the square-root of the sum of citations up to this " \
+              "rank, thus <em>h<sub>w</sub></em> = √{} = {:0.4f}</p>".format(r0, root_sum, hw)
+    return outstr
+
+
 def metric_weighted_h_index() -> Metric:
     m = Metric()
     m.name = "weighted h-index"
     m.full_name = "weighted h-index"
     m.html_name = "weighted <em>h-</em>index"
     m.symbol = "<em>h<sub>w</sub></em>"
+    m.example = write_weighted_h_index_example
     m.metric_type = FLOAT
     rweq = r"$$r_w\left(i\right)=\frac{\sum\limits_{j=1}^{i}{C_j}}{h},$$"
     rwci = r"\(r_w\left(i\right)\leq C_i\)"
@@ -2108,6 +2162,41 @@ def calculate_pi_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_pi_index(total_pubs, citations, rank_order)
 
 
+def write_pi_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    p = metric_set.metrics["total pubs"].value
+    ppi = int(math.floor(math.sqrt(p)))
+    pi = metric_set.metrics["pi-index"].value
+    s = 0
+    for i, c in enumerate(citations):
+        if i + 1 <= ppi:
+            ec = " class=\"box\""
+            s += c
+        else:
+            ec = ""
+        if i + 1 == ppi:
+            v = "<em>P<sub>π</sub></em> = {}".format(ppi)
+        else:
+            v = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i+1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The <em>π-</em>core is the floor of the square-root of the total number of publications, thus " \
+              "<em>P<sub>π</sub></em> = floor(√{}) = floor({:0.2f}) = {}. ".format(p, math.sqrt(p), ppi)
+    outstr += "The <em>π-</em>index is 1/100<sup>th</sup> of the sum of the citations within the <em>π-</em>core, " \
+              "thus <em>π</em> = {}/100 = {:0.2f}.</p>".format(s, pi)
+    return outstr
+
+
 def metric_pi_index() -> Metric:
     m = Metric()
     m.name = "pi-index"
@@ -2115,6 +2204,7 @@ def metric_pi_index() -> Metric:
     m.html_name = "<em>π-</em>index"
     m.symbol = "<em>π</em>"
     m.metric_type = FLOAT
+    m.example = write_pi_index_example
     ppistr = r"$$P_\pi=\text{floor}\left({\sqrt{P}}\right).$$"
     equation = r"$$\pi=\frac{C^\pi}{100}=\frac{\sum\limits_{i=1}^{P_\pi}{C_i}}{100}.$$"
     m.description = "<p>The <em>π-</em>index (Vinkler 2009) is similar to other measures of the quality of the " \
@@ -2147,7 +2237,8 @@ def metric_pi_rate() -> Metric:
     equation = r"$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=" \
                r"\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$"
     m.description = "<p>The π-core citation rate, or π-rate, is the ratio of the π-core citations divided by the " \
-                    "number of papers in the π-core.</p>" + equation
+                    "number of publications in the π-core. It is simply the average number of citations per " \
+                    "core publication.</p>" + equation
     m.symbol = "<em>π-</em>rate"
     m.graph_type = LINE_CHART
     m.calculate = calculate_pi_rate

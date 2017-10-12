@@ -152,3 +152,5 @@ a:visited {
 .xbox_bottom {border-bottom: 1px solid black}
 .xbox_left {border-left: 1px solid black}
 .xbox_right {border-right: 1px solid black}
+
+.light_box {background: dimgray; color: white}
