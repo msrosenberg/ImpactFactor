@@ -439,7 +439,7 @@ def write_h_index_example(metric_set: MetricSet) -> str:
     h = metric_set.metrics["h-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em> = {}".format(h)
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
             ec = " class=\"box\""
         else:
             v = ""
@@ -519,7 +519,7 @@ def write_h_core_example(metric_set: MetricSet) -> str:
         else:
             ec = ""
         if i + 1 == h:
-            v = "<em>h</em> = {}".format(h)
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
         else:
             v = ""
         row1 += "<td" + ec + ">{}</td>".format(c)
@@ -719,7 +719,7 @@ def write_g_index_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s += c
         if i + 1 == g:
-            v = "<em>g</em> = {}".format(g)
+            v = "<em>g</em>&nbsp;=&nbsp;{}".format(g)
             ec = " class=\"box\""
         else:
             v = ""
@@ -870,7 +870,7 @@ def write_h2_index_example(metric_set: MetricSet) -> str:
     h = metric_set.metrics["h(2)-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em>(2)={}".format(h)
+            v = "<em>h</em>(2)&nbsp;=&nbsp;{}".format(h)
             ec = " class=\"box\""
         else:
             v = ""
@@ -932,7 +932,7 @@ def write_mu_index_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s = Impact_Funcs.calculate_median(citations[:i+1])
         if i + 1 == mu:
-            v = "<em>μ</em> = {}".format(mu)
+            v = "<em>μ</em>&nbsp;=&nbsp;{}".format(mu)
             ec = " class=\"box\""
         else:
             v = ""
@@ -990,7 +990,7 @@ def write_tol_f_index_example(metric_set: MetricSet) -> str:
         if c != 0:
             s += 1/c
         if i + 1 == f:
-            v = "<em>f</em> = {}".format(f)
+            v = "<em>f</em>&nbsp;=&nbsp;{}".format(f)
             ec = " class=\"box\""
         else:
             v = ""
@@ -1049,7 +1049,7 @@ def write_tol_t_index_example(metric_set: MetricSet) -> str:
         if c != 0:
             s += math.log(c)
         if i + 1 == t:
-            v = "<em>t</em> = {}".format(t)
+            v = "<em>t</em>&nbsp;=&nbsp;{}".format(t)
             ec = " class=\"box\""
         else:
             v = ""
@@ -1154,7 +1154,7 @@ def write_woeginger_index_example(metric_set: MetricSet) -> str:
     w = metric_set.metrics["Woeginger w-index"].value
     for i, c in enumerate(citations):
         if i + 1 == w:
-            v = "<td><em>w</em> = {}</td>".format(w)
+            v = "<td><em>w</em>&nbsp;=&nbsp;{}</td>".format(w)
             ec = " class=\"box\""
         else:
             v = "<td></td>"
@@ -1278,7 +1278,7 @@ def write_wu_w_index_example(metric_set: MetricSet) -> str:
     w = metric_set.metrics["Wu w-index"].value
     for i, c in enumerate(citations):
         if i + 1 == w:
-            v = "<em>w</em> = {}".format(w)
+            v = "<em>w</em>&nbsp;=&nbsp;{}".format(w)
             ec = " class=\"box\""
         else:
             v = ""
@@ -1484,7 +1484,7 @@ def write_rational_h_index_example(metric_set: MetricSet) -> str:
             if c == h:
                 hin += 1
         if i + 1 == h:
-            v = "<em>h</em> = {}".format(h)
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
             ec = " class=\"box\""
         else:
             v = ""
@@ -1725,7 +1725,7 @@ def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
     j = metric_set.metrics["Todeschini j-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em> = {}".format(h)
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
             ec = " class=\"box\""
         else:
             v = ""
@@ -2099,9 +2099,9 @@ def write_weighted_h_index_example(metric_set: MetricSet) -> str:
         ec2 = ""
         if i + 1 == h:
             v = "<em>h</em> = {}".format(h)
-            ec = " class=\"light_box\""
+            ec = " class=\"dark_box\""
         if i + 1 == r0:
-            v2 = "<em>r</em><sub>0</sub> = {}".format(r0)
+            v2 = "<em>r</em><sub>0</sub>&nbsp;=&nbsp;{}".format(r0)
             ec2 = " class=\"box\""
             root_sum = s
         row0 += "<td" + ec + ec2 + ">{}</td>".format(c)
@@ -2180,7 +2180,7 @@ def write_pi_index_example(metric_set: MetricSet) -> str:
         else:
             ec = ""
         if i + 1 == ppi:
-            v = "<em>P<sub>π</sub></em> = {}".format(ppi)
+            v = "<em>P<sub>π</sub></em>&nbsp;=&nbsp;{}".format(ppi)
         else:
             v = ""
         row1 += "<td" + ec + ">{}</td>".format(c)
@@ -2798,6 +2798,41 @@ def write_multidim_h_index_desc_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_multidim_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. Publications determined " \
+             "to be part of a core are removed for subsequent calcluations.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    multi_h = metric_set.metrics["multidim h-index"].value
+    outstr += "<table class=\"example_table\">"
+    skip = 0
+    for j, h in enumerate(multi_h):
+        row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            if i < skip:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 - skip == h:
+                    v = "<em>h</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i+1-skip)
+                row3 += "<td>{}</td>".format(v)
+        skip += h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3
+    outstr += "</table>"
+    return outstr
+
+
 def metric_multdim_h_index() -> Metric:
     m = Metric()
     m.name = "multidim h-index"
@@ -2805,6 +2840,7 @@ def metric_multdim_h_index() -> Metric:
     m.html_name = "multidimensional <em>h-</em>index"
     m.symbol = "<strong><em>H</em></strong>"
     m.metric_type = INTLIST
+    m.example = write_multidim_h_index_example
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "multidim_h_index_desc"
@@ -2911,6 +2947,84 @@ def write_two_sided_h_index_desc_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    two_sided_h = metric_set.metrics["two-sided h-index"].value
+    nsteps = len(two_sided_h) // 2
+    outstr += "<table class=\"example_table\">"
+    # first row is standard h
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    h = two_sided_h[nsteps]
+    for i, c in enumerate(citations):
+        if i + 1 == h:
+            v = "<em>h</em><sub>0</sub>={}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i+1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3
+    tail_skip = h
+    core_skip = h
+    oldhm = h
+    for j in range(1, nsteps + 1):
+        hp = two_sided_h[nsteps + j]
+        hm = two_sided_h[nsteps - j]
+        row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            if i < tail_skip:
+                if i >= oldhm:
+                    row1 += "<td class=\"light_box\"></td>"
+                    row2 += "<td class=\"light_box\"></td>"
+                    row3 += "<td></td>"
+                else:
+                    if i + 1 == hm:
+                        v = "<em>h</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(-j, hm)
+                        ec = " class=\"box\""
+                    else:
+                        v = ""
+                        ec = ""
+                    row1 += "<td" + ec + ">{}</td>".format(max(0, c - core_skip))
+                    row2 += "<td" + ec + ">{}</td>".format(i+1)
+                    row3 += "<td>{}</td>".format(v)
+            else:
+                if (j == 1) and (i == h):
+                    ec2 = " class=\"left_border\""
+                else:
+                    ec2 = ""
+                if i + 1 - tail_skip == hp:
+                    v = "<em>h</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j, hp)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                if (ec2 != "") and (ec != ""):
+                    ec = " class=\"box left_border\""
+                    ec2 = ""
+                row1 += "<td" + ec + ec2 + ">{}</td>".format(c)
+                row2 += "<td" + ec + ec2 + ">{}</td>".format(i+1-tail_skip)
+                row3 += "<td>{}</td>".format(v)
+        tail_skip += hp
+        core_skip += hm
+        oldhm = hm
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3
+    outstr += "</table>"
+    return outstr
+
+
 def metric_two_sided_h_index() -> Metric:
     m = Metric()
     m.name = "two-sided h-index"
@@ -2921,6 +3035,7 @@ def metric_two_sided_h_index() -> Metric:
     m.description_graphs.append(graph)
     graph.name = "two_sided_h_index_desc"
     graph.data = write_two_sided_h_index_desc_data
+    m.example = write_two_sided_h_index_example
     m.metric_type = INTLIST
     m.description = "<p>The two-sided <em>h-</em>index (García-Pérez 2012) is an extension of the multidimensional " \
                     "<em>h-</em>index, which recalcultes <em>h</em> not only for the tail of the distribution (as " \

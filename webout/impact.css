@@ -150,7 +150,10 @@ a:visited {
 .xbox_sides {border-left: 1px solid black;
               border-right: 1px solid black}
 .xbox_bottom {border-bottom: 1px solid black}
-.xbox_left {border-left: 1px solid black}
 .xbox_right {border-right: 1px solid black}
 
-.light_box {background: dimgray; color: white}
+.dark_box {background: dimgray; color: white}
+.light_box {background: whitesmoke; color: white}
+
+.right_border {border-right: 1px solid black}
+.left_border {border-left: 1px solid black}
