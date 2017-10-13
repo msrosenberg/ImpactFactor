@@ -2828,7 +2828,11 @@ def write_multidim_h_index_example(metric_set: MetricSet) -> str:
         row1 += "</tr>"
         row2 += "</tr>"
         row3 += "</tr>"
-        outstr += row1 + row2 + row3
+        if j + 1 != len(multi_h):
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(citations)*"<td></td>" + "</tr>"
+        else:
+            row4 = ""
+        outstr += row1 + row2 + row3 + row4
     outstr += "</table>"
     return outstr
 
@@ -2948,7 +2952,9 @@ def write_two_sided_h_index_desc_data(metric_set: MetricSet) -> list:
 
 
 def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
-    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. Publications within the " \
+             "original core have <em>h</em> citations removed at each step; publications in the original tail are " \
+             "ranked independently at each subsequent step.</p>"
     citations = sorted(metric_set.citations, reverse=True)
     two_sided_h = metric_set.metrics["two-sided h-index"].value
     nsteps = len(two_sided_h) // 2
@@ -2960,7 +2966,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
     h = two_sided_h[nsteps]
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em><sub>0</sub>={}".format(h)
+            v = "<em>h</em><sub>0</sub>&nbsp;=&nbsp;{}".format(h)
             ec = " class=\"box\""
         else:
             v = ""
@@ -2978,6 +2984,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
     for j in range(1, nsteps + 1):
         hp = two_sided_h[nsteps + j]
         hm = two_sided_h[nsteps - j]
+        row0 = "<tr class=\"spacer_row\"><th></th>" + len(citations)*"<td></td>" + "</tr>"
         row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
         row2 = "<tr><th>Rank (<em>i</em>)</th>"
         row3 = "<tr><th></th>"
@@ -3020,7 +3027,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
         row1 += "</tr>"
         row2 += "</tr>"
         row3 += "</tr>"
-        outstr += row1 + row2 + row3
+        outstr += row0 + row1 + row2 + row3
     outstr += "</table>"
     return outstr
 
@@ -3096,12 +3103,84 @@ def calculate_em_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_em_index(citations, rank_order)
 
 
+def write_em_index_example(metric_set: MetricSet) -> str:
+    def count_cited(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    # calculate vector
+    em_components = []
+    n_cited = count_cited(citations)
+    while n_cited > 1:
+        if max(citations) == 1:
+            em_components.append(1)
+            n_cited = 0
+        else:
+            h = 0
+            for i, c in enumerate(citations):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            citations = [max(0, c-h) for c in citations]
+            n_cited = count_cited(citations)
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    outstr += "<table class=\"example_table\">"
+    oldh = len(em_components)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(citations) * "<td></td>" + "</tr>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            if i >= oldh:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 == h:
+                    v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i+1)
+                row3 += "<td>{}</td>".format(v)
+        citations = [max(0, c-h) for c in citations]
+        oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    em = metric_set.metrics["EM-index"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The <em>EM-</em>index is the square-root of this " \
+              "sum, thus <em>EM</em>&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), em)
+    return outstr
+
+
 def metric_em_index() -> Metric:
     m = Metric()
     m.name = "EM-index"
     m.full_name = "EM-index"
     m.html_name = "<em>EM-</em>index"
     m.symbol = "<em>EM</em>"
+    m.example = write_em_index_example
     m.metric_type = FLOAT
     equation = r"$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
     m.description = "<p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the multidimensional " \
@@ -3110,8 +3189,8 @@ def metric_em_index() -> Metric:
                     "(<strong><em>E</em></strong>) which is equivalent to " \
                     "the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values " \
                     "calculated from the citation curve of just the core publications, stopping when one reaches " \
-                    "only a single remaining publication, no citation remain, or all remaining publications have only" \
-                    " a single citation. From this vector, <em>EM</em> can be calculated as:</p>" + \
+                    "only a single remaining publication, no citations remain, or all remaining publications have " \
+                    "only a single citation. From this vector, <em>EM</em> can be calculated as:</p>" + \
                     equation + "<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> " \
                     "element and length of <strong><em>E</em></strong>, respectively.</p>"
     m.references = ["Bihari, A., and S. Tripathi (2017) EM-index: A new measure to evaluate the scientific impact "
@@ -3128,12 +3207,90 @@ def calculate_emp_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_emp_index(citations, rank_order)
 
 
+def write_emp_index_example(metric_set: MetricSet) -> str:
+    def count_cited(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "publications and all publications are re-ranked by this adjusted citation count for the next step.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    # calculate vector
+    em_components = []
+    n_cited = count_cited(citations)
+    while n_cited > 1:
+        if max(citations) == 1:
+            em_components.append(1)
+            n_cited = 0
+        else:
+            h = 0
+            for i, c in enumerate(citations):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            for i in range(h):
+                citations[i] -= h
+            citations.sort(reverse=True)
+            n_cited = count_cited(citations)
+    # print(em_components)
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    outstr += "<table class=\"example_table\">"
+    # oldh = len(em_components)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>New Rank (<em>i</em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(citations) * "<td></td>" + "</tr>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            # if i >= oldh:
+            #     row1 += "<td class=\"light_box\"></td>"
+            #     row2 += "<td class=\"light_box\"></td>"
+            #     row3 += "<td></td>"
+            # else:
+            if i + 1 == h:
+                v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                ec = " class=\"box\""
+            else:
+                v = ""
+                ec = ""
+            row1 += "<td" + ec + ">{}</td>".format(c)
+            row2 += "<td" + ec + ">{}</td>".format(i+1)
+            row3 += "<td>{}</td>".format(v)
+        for i in range(h):
+            citations[i] -= h
+        citations.sort(reverse=True)
+        # oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    emp = metric_set.metrics["EMp-index"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The <em>EM&prime;-</em>index is the square-root of this " \
+              "sum, thus <em>EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), emp)
+    return outstr
+
+
 def metric_emp_index() -> Metric:
     m = Metric()
     m.name = "EMp-index"
     m.full_name = "EM\'-index"
     m.html_name = "<em>EM</em>&prime;-index"
     m.symbol = "<em>EM</em>&prime;"
+    m.example = write_emp_index_example
     m.metric_type = FLOAT
     equation = r"$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
     m.description = "<p>The <em>EM</em>&prime;-index (Bihari and Tripathi 2017) is an extension of the " \
