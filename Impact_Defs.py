@@ -4631,6 +4631,62 @@ def calculate_pos_weight_h_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_position_weighted_h_index(citations, n_authors, author_pos)
 
 
+def write_pos_weight_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        ap = metric_set.author_position()[i]
+        e = Impact_Funcs.author_effort("proportional", a, ap)
+        data.append([c*e, c, a, ap, e])
+    data.sort(reverse=True)
+    cstari = r"\(C^*_i\)"
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Weight (<em>w<sub>i</sub></em>)</th>"
+    row6 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row7 = "<tr><th>Rank (<em>i</em>)</th>"
+    row8 = "<tr><th></th>"
+    hp = metric_set.metrics["position-weighted h-index"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        ap = d[3]
+        e = d[4]
+        w = 1/e
+        if i + 1 == hp:
+            v = "<em>h<sub>p</sub></em>&nbsp;=&nbsp;{}".format(hp)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{}</td>".format(ap)
+        row4 += "<td>{:0.2f}</td>".format(e)
+        row5 += "<td>{:0.2f}</td>".format(w)
+        row6 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row7 += "<td" + ec + ">{}</td>".format(i + 1)
+        row8 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    row8 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
+    eq = r"\(i \lt C^*_i\)"
+    outstr += "<p>The largest rank where " + eq + " is {}.</p>".format(hp)
+    return outstr
+
+
 def metric_pos_weight_h_index() -> Metric:
     m = Metric()
     m.name = "position-weighted h-index"
@@ -4638,17 +4694,34 @@ def metric_pos_weight_h_index() -> Metric:
     m.html_name = "position-weighted <em>h-</em>index"
     m.symbol = "<em>h<sub>p</sub></em>"
     m.synonyms = ["<em>h<sub>p</sub></em>"]
+    m.example = write_pos_weight_h_index_example
     m.metric_type = INT
-    eistr = r"$$E_i=\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}=" \
-            r"C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)},$$"
-    equation = r"$$h_p=\underset{i}{\max}\left(i \leq E_i\right).$$"
+    eistr = r"$$E_i=\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)},$$"
+    cistr = r"$$C^{*}_i = \frac{C_i}{w_i} = C_i E_i,$$"
+    equation = r"$$h_p=\underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
     m.description = "<p>The position-weighted <em>h-</em>index (Abbas 2011) is similar to the adapted pure " \
                     "<em>h-</em>index with proportional weighting in that it uses an author\'s position to " \
                     "weight citation counts prior to ranking, but differs by dividing the raw citation count " \
-                    "directly by the calculated effort rather than the square-root of the effort,</p>" + eistr + \
+                    "directly by the inverse of the effort rather than the square-root of the effort. The effort is " \
+                    "calculated as</p>" + eistr + "<p>with weight " \
+                    "<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>, and the adjusted citation " \
+                    "count as</p>" + cistr + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
                     "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
-                    "Publications are ranked by these values and then the metric is calculated as:</p>" + equation
+                    "Publications are ranked by these adjusted citation counts and then the metric is calculated " \
+                    "as:</p>" + equation
+
+
+    # eistr = r"$$E_i=\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}=" \
+    #         r"C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)},$$"
+    # equation = r"$$h_p=\underset{i}{\max}\left(i \leq E_i\right).$$"
+    # m.description = "<p>The position-weighted <em>h-</em>index (Abbas 2011) is similar to the adapted pure " \
+    #                 "<em>h-</em>index with proportional weighting in that it uses an author\'s position to " \
+    #                 "weight citation counts prior to ranking, but differs by dividing the raw citation count " \
+    #                 "directly by the calculated effort rather than the square-root of the effort,</p>" + eistr + \
+    #                 "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
+    #                 "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
+    #                 "Publications are ranked by these values and then the metric is calculated as:</p>" + equation
     m.references = ["Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple "
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
