@@ -3624,6 +3624,48 @@ def calculate_hi_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_hi_index(is_core, n_authors, h)
 
 
+def write_hi_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    tmp_citations = [c for c in metric_set.citations]
+    tmp_author_cnts = [a for a in metric_set.author_counts()]
+    data = []
+    for i in range(len(tmp_citations)):
+        data.append([tmp_citations[i], tmp_author_cnts[i]])
+    data.sort(reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    hi = metric_set.metrics["hi-index"].value
+    s = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+        else:
+            v = ""
+        if i + 1 <= h:
+            ec = " class=\"box\""
+            s += a
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(a)
+        row3 += "<td>{}</td>".format(i + 1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row3 + row4 + row2 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {} and the sum of the authors for publications in the core is {}, thus " \
+              "<em>h<sub>i</sub></em>&nbsp;=&nbsp;{:0.4f}.</p>".format(h, s, hi)
+    return outstr
+
+
 def metric_hi_index() -> Metric:
     m = Metric()
     m.name = "hi-index"
@@ -3631,6 +3673,7 @@ def metric_hi_index() -> Metric:
     m.html_name = "<em>h<sub>i</sub>-</em>index"
     m.symbol = "<em>h<sub>i</sub></em>"
     m.metric_type = FLOAT
+    m.example = write_hi_index_example
     equation = r"$$h_i=\frac{h}{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}=\frac{h^2}{\sum\limits_{i=1}^{h}{A_i}}.$$"
     m.description = "<p>The <em>h<sub>i</sub>-</em>index (Batista <em>et al.</em> 2006) is a simple correction of " \
                     "the <em>h-</em>index for multi-authored publications. This index is simply the <em>h-</em>index " \
@@ -3655,6 +3698,48 @@ def calculate_pure_h_index_frac(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h)
 
 
+def write_pure_h_index_frac_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    tmp_citations = [c for c in metric_set.citations]
+    tmp_author_cnts = [a for a in metric_set.author_counts()]
+    data = []
+    for i in range(len(tmp_citations)):
+        data.append([tmp_citations[i], tmp_author_cnts[i]])
+    data.sort(reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    hp = metric_set.metrics["pure h-index frac"].value
+    s = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+        else:
+            v = ""
+        if i + 1 <= h:
+            ec = " class=\"box\""
+            s += a
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(a)
+        row3 += "<td>{}</td>".format(i + 1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row3 + row4 + row2 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {} and the sum of the authors for publications in the core is {}, thus " \
+              "<em>h<sub>i</sub></em>&nbsp;=&nbsp;{:0.4f}.</p>".format(h, s, hp)
+    return outstr
+
+
 def metric_pure_h_index_frac() -> Metric:
     m = Metric()
     m.name = "pure h-index frac"
@@ -3662,6 +3747,7 @@ def metric_pure_h_index_frac() -> Metric:
     m.html_name = "pure <em>h-</em>index (fractional credit)"
     m.symbol = "<em>h</em><sub><em>p</em>.frac</sub>"
     m.metric_type = FLOAT
+    m.example = write_pure_h_index_frac_example
     equation = r"$$h_{p.\text{frac}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}}$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
                     "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
@@ -3689,15 +3775,73 @@ def calculate_pure_h_index_prop(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h)
 
 
+def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    tmp_citations = [c for c in metric_set.citations]
+    tmp_author_cnts = [a for a in metric_set.author_counts()]
+    tmp_author_pos = [a for a in metric_set.author_position()]
+    data = []
+    for i in range(len(tmp_citations)):
+        data.append([tmp_citations[i], tmp_author_cnts[i], tmp_author_pos[i]])
+    data.sort(reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    row4 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row6 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row7 = "<tr><th>Weight (<em>w<sub>i</sub></em>)</th>"
+    h = metric_set.metrics["h-index"].value
+    hp = metric_set.metrics["pure h-index prop"].value
+    s = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        ap = d[2]
+        e = (2*(a + 1 - ap)) / (a*(a + 1))
+        w = 1 / e
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+        else:
+            v = ""
+        if i + 1 <= h:
+            ec = " class=\"box\""
+            s += w
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i + 1)
+        row3 += "<td>{}</td>".format(v)
+        row4 += "<td>{}</td>".format(a)
+        row5 += "<td>{}</td>".format(ap)
+        row6 += "<td>{:0.2f}</td>".format(e)
+        row7 += "<td" + ec + ">{:0.2f}</td>".format(w)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {} and the sum of the weights for the publications in the core is {}, thus " \
+              "<em>h</em><sub><em>p</em>.prop</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(h, s, hp)
+    return outstr
+
+
 def metric_pure_h_index_prop() -> Metric:
     m = Metric()
     m.name = "pure h-index prop"
     m.full_name = "pure h-index (proportional credit)"
     m.html_name = "pure <em>h-</em>index (proportional credit)"
     m.symbol = "<em>h</em><sub><em>p</em>.prop</sub>"
+    m.example = write_pure_h_index_prop_example
     m.metric_type = FLOAT
-    effort_eq = r"$$E_i=\frac{A_i\left(A_i + 1\right)}{2\left(A_i + 1 - a_i\right)},$$"
-    equation = r"$$h_{p.\text{prop}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{E_i}}{h}}}.$$"
+    # effort_eq = r"$$E_i=\frac{A_i\left(A_i + 1\right)}{2\left(A_i + 1 - a_i\right)},$$"
+    # equation = r"$$h_{p.\text{prop}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{E_i}}{h}}}.$$"
+    effort_eq = r"$$E_i=\frac{2\left(A_i + 1 - a_i\right)}{A_i\left(A_i + 1\right)},$$"
+    equation = r"$$h_{p.\text{prop}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{w_i}}{h}}}.$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
                     "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
                     "allows for different methods of assigning authorship credit. If one has information on author " \
@@ -3705,6 +3849,8 @@ def metric_pure_h_index_prop() -> Metric:
                     "(artihmetic) assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
                     "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
+                    "Each publication can then be weighted by the inverse of the author effort, " \
+                    "<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. " \
                     "Given the credited effort for each publication, the metric is calculated as:</p>" + equation
     m.references = ["Wan, J.-k., P.-h. Hua, and R. Rousseau (2007) The pure <em>h-</em>index: Calculating an "
                     "author\'s <em>h-</em>index by taking co-authors into account. <em>Collnet Journal of "
@@ -3723,6 +3869,61 @@ def calculate_pure_h_index_geom(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_pure_h_index_geom(is_core, n_authors, author_pos, h)
 
 
+def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    tmp_citations = [c for c in metric_set.citations]
+    tmp_author_cnts = [a for a in metric_set.author_counts()]
+    tmp_author_pos = [a for a in metric_set.author_position()]
+    data = []
+    for i in range(len(tmp_citations)):
+        data.append([tmp_citations[i], tmp_author_cnts[i], tmp_author_pos[i]])
+    data.sort(reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    row4 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row6 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row7 = "<tr><th>Weight (<em>w<sub>i</sub></em>)</th>"
+    h = metric_set.metrics["h-index"].value
+    hp = metric_set.metrics["pure h-index geom"].value
+    s = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        ap = d[2]
+        e = (2**(a-ap)) / (2**a - 1)
+        w = 1 / e
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+        else:
+            v = ""
+        if i + 1 <= h:
+            ec = " class=\"box\""
+            s += w
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i + 1)
+        row3 += "<td>{}</td>".format(v)
+        row4 += "<td>{}</td>".format(a)
+        row5 += "<td>{}</td>".format(ap)
+        row6 += "<td>{:0.2f}</td>".format(e)
+        row7 += "<td" + ec + ">{:0.2f}</td>".format(w)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {} and the sum of the weights for the publications in the core is {}, thus " \
+              "<em>h</em><sub><em>p</em>.geom</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(h, s, hp)
+    return outstr
+
+
 def metric_pure_h_index_geom() -> Metric:
     m = Metric()
     m.name = "pure h-index geom"
@@ -3730,8 +3931,11 @@ def metric_pure_h_index_geom() -> Metric:
     m.html_name = "pure <em>h-</em>index (geometric credit)"
     m.symbol = "<em>h</em><sub><em>p</em>.geom</sub>"
     m.metric_type = FLOAT
-    effort_eq = r"$$E_i=\frac{2^{A_i} - 1}{2^{A_i - a_i}},$$"
-    equation = r"$$h_{p.\text{geom}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{E_i}}{h}}}.$$"
+    m.example = write_pure_h_index_geom_example
+    # effort_eq = r"$$E_i=\frac{2^{A_i} - 1}{2^{A_i - a_i}},$$"
+    # equation = r"$$h_{p.\text{geom}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{E_i}}{h}}}.$$"
+    effort_eq = r"$$E_i=\frac{2^{A_i - a_i}}{2^{A_i} - 1},$$"
+    equation = r"$$h_{p.\text{geom}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{w_i}}{h}}}.$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
                     "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
                     "allows for different methods of assigning authorship credit. If one has information on author " \
@@ -3739,6 +3943,8 @@ def metric_pure_h_index_geom() -> Metric:
                     "assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
                     "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
+                    "Each publication can then be weighted by the inverse of the author effort, " \
+                    "<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. " \
                     "Given the credited effort for each publication, the metric is calculated as:</p>" + equation
     m.references = ["Wan, J.-k., P.-h. Hua, and R. Rousseau (2007) The pure <em>h-</em>index: Calculating an "
                     "author\'s <em>h-</em>index by taking co-authors into account. <em>Collnet Journal of "
