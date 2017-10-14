@@ -3799,7 +3799,8 @@ def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         c = d[0]
         a = d[1]
         ap = d[2]
-        e = (2*(a + 1 - ap)) / (a*(a + 1))
+        e = Impact_Funcs.author_effort("proportional", a, ap)
+        # e = (2*(a + 1 - ap)) / (a*(a + 1))
         w = 1 / e
         if i + 1 == h:
             v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
@@ -3893,7 +3894,8 @@ def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         c = d[0]
         a = d[1]
         ap = d[2]
-        e = (2**(a-ap)) / (2**a - 1)
+        e = Impact_Funcs.author_effort("geometric", a, ap)
+        # e = (2**(a-ap)) / (2**a - 1)
         w = 1 / e
         if i + 1 == h:
             v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)

@@ -70,6 +70,20 @@ def citations_per_year(citations: list, pub_ages: list) -> list:
     return [citations[i]/pub_ages[i] for i in range(len(citations))]
 
 
+def author_effort(measure: str, n_authors: int, author_pos: int=1) -> float:
+    """
+    returns the estimated effort of an author for a publication
+    """
+    if measure == "fractional":
+        return 1 / n_authors
+    elif measure == "proportional":
+        return 2*(n_authors + 1 - author_pos) / (n_authors*(n_authors + 1))
+    elif measure == "geometric":
+        return 2**(n_authors - author_pos) / (2**n_authors - 1)
+    else:
+        return 1
+
+
 # --- Metric Calculations ---
 
 # Total Publications
@@ -414,7 +428,8 @@ def calculate_pure_h_index_prop(is_core: list, n_authors: list, author_pos: list
     sump = 0
     for i in range(len(is_core)):
         if is_core[i]:
-            sump += n_authors[i]*(n_authors[i] + 1) / (2*(n_authors[i] + 1 - author_pos[i]))
+            # sump += n_authors[i]*(n_authors[i] + 1) / (2*(n_authors[i] + 1 - author_pos[i]))
+            sump += 1 / author_effort("proportional", n_authors[i], author_pos[i])
     return h / math.sqrt(sump / h)
 
 
@@ -423,7 +438,8 @@ def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list
     sumg = 0
     for i in range(len(is_core)):
         if is_core[i]:
-            sumg += (2**n_authors[i] - 1) / (2**(n_authors[i] - author_pos[i]))
+            sumg += 1 / author_effort("geometric", n_authors[i], author_pos[i])
+            # sumg += (2**n_authors[i] - 1) / (2**(n_authors[i] - author_pos[i]))
     return h / math.sqrt(sumg / h)
 
 
@@ -677,7 +693,8 @@ def calculate_position_weighted_h_index(citations: list, n_authors: list, author
 def calculate_prop_weight_cite_agg(citations: list, n_authors: list, author_pos: list) -> float:
     weighted_aggregate = 0
     for i in range(len(citations)):
-        w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
+        w = author_effort("proportional", n_authors[i], author_pos[i])
+        # w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
         weighted_aggregate += citations[i] * w
     return weighted_aggregate
 
@@ -687,7 +704,8 @@ def calculate_prop_weight_cite_h_cut(citations: list, n_authors: list, author_po
     n = len(citations)
     sc = []
     for i in range(n):
-        w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
+        # w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
+        w = author_effort("proportional", n_authors[i], author_pos[i])
         sc.append(citations[i] * w)
     _, tmporder = sort_and_rank(sc, n)
     hcut = 0
@@ -791,8 +809,9 @@ def calculate_adapt_pure_h_index_frac(citations: list, n_authors: list) -> float
 def calculate_adapt_pure_h_index_prop(citations: list, n_authors: list, author_pos: list) -> float:
     sc = []
     for i in range(len(citations)):
-        ea = n_authors[i]*(n_authors[i] + 1) / (2*(n_authors[i] + 1 - author_pos[i]))
-        sc.append(citations[i] / math.sqrt(ea))
+        # ea = n_authors[i]*(n_authors[i] + 1) / (2*(n_authors[i] + 1 - author_pos[i]))
+        ea = author_effort("proportional", n_authors[i], author_pos[i])
+        sc.append(citations[i] / math.sqrt(1/ea))
     return calculate_adapt_pure_h_index(sc)
 
 
@@ -800,8 +819,8 @@ def calculate_adapt_pure_h_index_prop(citations: list, n_authors: list, author_p
 def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_pos: list) -> float:
     sc = []
     for i in range(len(citations)):
-        ea = (2**n_authors[i] - 1) / (2**(n_authors[i] - author_pos[i]))
-        sc.append(citations[i] / math.sqrt(ea))
+        ea = author_effort("geometric", n_authors[i], author_pos[i])
+        sc.append(citations[i] / math.sqrt(1/ea))
     return calculate_adapt_pure_h_index(sc)
 
 
