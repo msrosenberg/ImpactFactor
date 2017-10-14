@@ -2469,27 +2469,27 @@
 
         var data_hm_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h<sub>m</sub></em>'],
-           ['1997', 0.3333333333333333],
-           ['1998', 1.6666666666666665],
-           ['1999', 1.9166666666666665],
-           ['2000', 5.499999999999999],
-           ['2001', 7.0],
-           ['2002', 9.920634920634921],
-           ['2003', 9.844877344877345],
-           ['2004', 11.594877344877347],
-           ['2005', 15.344877344877345],
-           ['2006', 17.67821067821068],
-           ['2007', 19.01154401154401],
-           ['2008', 18.678210678210675],
-           ['2009', 18.01154401154401],
-           ['2010', 19.832215007215005],
-           ['2011', 21.276659451659448],
-           ['2012', 22.10999278499278],
-           ['2013', 26.20523088023087],
-           ['2014', 28.988564213564207],
-           ['2015', 26.37189754689754],
-           ['2016', 28.012373737373732],
-           ['2017', 27.746897546897543],
+           ['1997', 0.5833333333333333],
+           ['1998', 1.1666666666666665],
+           ['1999', 1.4166666666666665],
+           ['2000', 2.75],
+           ['2001', 3.0],
+           ['2002', 4.25],
+           ['2003', 5.67063492063492],
+           ['2004', 7.670634920634921],
+           ['2005', 9.26154401154401],
+           ['2006', 10.594877344877345],
+           ['2007', 12.678210678210679],
+           ['2008', 13.428210678210679],
+           ['2009', 14.678210678210679],
+           ['2010', 16.51911976911977],
+           ['2011', 17.39411976911977],
+           ['2012', 17.576659451659456],
+           ['2013', 18.576659451659452],
+           ['2014', 18.576659451659452],
+           ['2015', 18.826659451659452],
+           ['2016', 18.826659451659452],
+           ['2017', 18.969516594516595],
 		]);
 
         var options_hm_index = {
@@ -6549,33 +6549,33 @@
       <h2><em>h<sub>m</sub>-</em>index</h2>
       <p>While the normalized <em>h<sub>i</sub>-</em>index accounts for the number of authors of a publication by normalizing the citation count for that publication, <em>h<sub>m</sub></em> (Schreiber 2008), also known as the <span class="metric_name">fractional paper <em>h</em></span> and <span class="metric_name"><em>h<sub>F</sub>-</em>index</span> (Egghe 2008), accounts for author number by normalizing the ranks. For this index, one counts the number of citations and ranks the publications as for the <em>h-</em>index, but rather than counting the rank of the <em>i</em><sup>th</sup> publication as <em>i</em>, it is instead calculated as the cumulative sum of 1/<em>A<sub>i</sub>.</em> In formal terms, when calculating the <em>h-</em>index the rank of the <em>i</em><sup>th</sup> publication is</p>$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$<p>For <em>h<sub>m</sub></em> we instead calculate the effective rank as</p>$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$<p><em>h<sub>m</sub></em> is determined as the largest value of <em>r</em><sub>eff</sub>(<em>i</em>) for which <em>r</em><sub>eff</sub>(<em>i</em>) ≤ <em>C<sub>i</sub></em> or</p>$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) \leq C_i\right).$$
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td class="box">3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>2</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th><td>0.33</td><td>0.33</td><td>0.33</td><td>0.50</td><td>0.25</td><td>1.00</td><td>0.25</td><td>0.25</td><td>1.00</td><td>1.00</td><td>0.25</td><td>0.50</td><td>1.00</td><td>0.50</td><td>1.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th>Adjusted Rank (<em>r<sub>eff</sub>&nbsp;=&nbsp;Σ<em>E<sub>i</sub>)</th><td>0.33</td><td>0.67</td><td>1.00</td><td>1.50</td><td>1.75</td><td>2.75</td><td class="box">3.00</td><td>3.25</td><td>4.25</td><td>5.25</td><td>5.50</td><td>6.00</td><td>7.00</td><td>7.50</td><td>8.50</td></tr></table><p>The largest adjusted rank where <em>r<sub>eff</sub></em> ≤ <em>C<sub>i</sub></em> is 7.0.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td class="box">14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>2</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th><td>0.33</td><td>0.33</td><td>0.33</td><td>0.50</td><td>0.25</td><td>1.00</td><td>0.25</td><td>0.25</td><td>1.00</td><td>1.00</td><td>0.25</td><td>0.50</td><td>1.00</td><td>0.50</td><td>1.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th>Adjusted Rank (<em>r<sub>eff</sub>&nbsp;=&nbsp;Σ<em>E<sub>i</sub>)</th><td>0.33</td><td>0.67</td><td class="box">1.00</td><td>1.50</td><td>1.75</td><td>2.75</td><td>3.00</td><td>3.25</td><td>4.25</td><td>5.25</td><td>5.50</td><td>6.00</td><td>7.00</td><td>7.50</td><td>8.50</td></tr></table><p>The largest adjusted rank where <em>r<sub>eff</sub></em> ≤ <em>C<sub>i</sub></em> is 3.0.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>h<sub>m</sub></em></th></tr>
-            <tr><td class="cell_year">1997</td><td class="cell_value">0.3333</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.6667</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">1.9167</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">5.5000</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">7.0000</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">9.9206</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">9.8449</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">11.5949</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">15.3449</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">17.6782</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">19.0115</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">18.6782</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">18.0115</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">19.8322</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">21.2767</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">22.1100</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">26.2052</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">28.9886</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">26.3719</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">28.0124</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">27.7469</td></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.5833</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.1667</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1.4167</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.7500</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">4.2500</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">5.6706</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">7.6706</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">9.2615</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">10.5949</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">12.6782</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">13.4282</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">14.6782</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">16.5191</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">17.3941</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">17.5767</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">18.5767</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">18.5767</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">18.8267</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">18.8267</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">18.9695</td></tr>
           </table>
         </div>
         <div class="graph_container">

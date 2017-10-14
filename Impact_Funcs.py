@@ -581,10 +581,21 @@ def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: i
 def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> float:
     hm_index = 0
     cumulative_rank = 0
+    data = []
     for i in range(len(citations)):
-        cumulative_rank += 1/n_authors[rank_order[i]-1]
-        if cumulative_rank <= citations[rank_order[i]-1]:
+        data.append([citations[i], n_authors[i]])
+    data.sort(reverse=True)
+    for d in data:
+        c = d[0]
+        a = d[1]
+        e = 1/a
+        cumulative_rank += e
+        if cumulative_rank <= c:
             hm_index = cumulative_rank
+    # for i in range(len(citations)):
+    #     cumulative_rank += 1/n_authors[rank_order[i]-1]
+    #     if cumulative_rank <= citations[rank_order[i]-1]:
+    #         hm_index = cumulative_rank
     return hm_index
 
 
