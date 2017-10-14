@@ -3963,12 +3963,60 @@ def calculate_adapt_pure_h_index_frac(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_adapt_pure_h_index_frac(citations, n_authors)
 
 
+def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c/math.sqrt(a), c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    cstari = r"\(C^*_i\)"
+    row3 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th></th>"
+    he = 0
+    for i, d in enumerate(data):
+        if i + 1 <= d[0]:
+            he = i+1
+    hp = metric_set.metrics["adapt pure h-index frac"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        if i + 1 == he:
+            v = "<em>h<sub>e</sub></em>&nbsp;=&nbsp;{}".format(he)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row4 += "<td" + ec + ">{}</td>".format(i + 1)
+        row5 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    eq = r"\(i \lt C^*_i\)"
+    outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
+              "next largest rank yields <em>h</em><sub><em>ap</em>.frac</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
+    return outstr
+
+
 def metric_adapt_pure_h_index_frac() -> Metric:
     m = Metric()
     m.name = "adapt pure h-index frac"
     m.full_name = "adapted pure h-index (fractional credit)"
     m.html_name = "adapted pure <em>h-</em>index (fractional credit)"
     m.metric_type = FLOAT
+    m.example = write_adapt_pure_h_index_frac_example
     m.symbol = "<em>h</em><sub><em>ap</em>.frac</sub>"
     cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{A_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
@@ -4001,6 +4049,67 @@ def calculate_adapt_pure_h_index_prop(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_adapt_pure_h_index_prop(citations, n_authors, author_pos)
 
 
+def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        ap = metric_set.author_position()[i]
+        e = Impact_Funcs.author_effort("proportional", a, ap)
+        data.append([c/math.sqrt(1/e), c, a, ap, e])
+    data.sort(reverse=True)
+    cstari = r"\(C^*_i\)"
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Weight (<em>w<sub>i</sub></em>)</th>"
+    row6 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row7 = "<tr><th>Rank (<em>i</em>)</th>"
+    row8 = "<tr><th></th>"
+    he = 0
+    for i, d in enumerate(data):
+        if i + 1 <= d[0]:
+            he = i+1
+    hp = metric_set.metrics["adapt pure h-index prop"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        ap = d[3]
+        e = d[4]
+        w = 1/e
+        if i + 1 == he:
+            v = "<em>h<sub>e</sub></em>&nbsp;=&nbsp;{}".format(he)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{}</td>".format(ap)
+        row4 += "<td>{:0.2f}</td>".format(e)
+        row5 += "<td>{:0.2f}</td>".format(w)
+        row6 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row7 += "<td" + ec + ">{}</td>".format(i + 1)
+        row8 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    row8 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
+    eq = r"\(i \lt C^*_i\)"
+    outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
+              "next largest rank yields <em>h</em><sub><em>ap</em>.prop</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
+    return outstr
+
+
 def metric_adapt_pure_h_index_prop() -> Metric:
     m = Metric()
     m.name = "adapt pure h-index prop"
@@ -4008,8 +4117,10 @@ def metric_adapt_pure_h_index_prop() -> Metric:
     m.html_name = "adapted pure <em>h-</em>index (proportional credit)"
     m.symbol = "<em>h</em><sub><em>ap</em>.prop</sub>"
     m.metric_type = FLOAT
-    effort_eq = r"$$E_i=\frac{A_i\left(A_i + 1\right)}{2\left(A_i + 1 - a_i\right)},$$"
-    cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{E_i}}.$$"
+    m.example = write_adapt_pure_h_index_prop_example
+    # effort_eq = r"$$E_i=\frac{A_i\left(A_i + 1\right)}{2\left(A_i + 1 - a_i\right)},$$"
+    effort_eq = r"$$E_i=\frac{2\left(A_i + 1 - a_i\right)}{A_i\left(A_i + 1\right)},$$"
+    cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{w_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
     equation = r"$$h_{ap.\text{prop}}= " \
                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
@@ -4020,6 +4131,8 @@ def metric_adapt_pure_h_index_prop() -> Metric:
                     "(artihmetic) assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
                     "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
+                    "Each publication can then be weighted by the inverse of the author effort, " \
+                    "<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. " \
                     "The effective number of citations for each publication is then calculated as</p>" + cistr + \
                     "<p>Publications are ranked according to these new citation " \
                     "counts and the <em>h-</em>equivalent value, <em>h<sub>e</sub>,</em> is found as the largest " \
@@ -4043,15 +4156,78 @@ def calculate_adapt_pure_h_index_geom(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_adapt_pure_h_index_geom(citations, n_authors, author_pos)
 
 
+def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        ap = metric_set.author_position()[i]
+        e = Impact_Funcs.author_effort("geometric", a, ap)
+        data.append([c/math.sqrt(1/e), c, a, ap, e])
+    data.sort(reverse=True)
+    cstari = r"\(C^*_i\)"
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Weight (<em>w<sub>i</sub></em>)</th>"
+    row6 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row7 = "<tr><th>Rank (<em>i</em>)</th>"
+    row8 = "<tr><th></th>"
+    he = 0
+    for i, d in enumerate(data):
+        if i + 1 <= d[0]:
+            he = i+1
+    hp = metric_set.metrics["adapt pure h-index geom"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        ap = d[3]
+        e = d[4]
+        w = 1/e
+        if i + 1 == he:
+            v = "<em>h<sub>e</sub></em>&nbsp;=&nbsp;{}".format(he)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{}</td>".format(ap)
+        row4 += "<td>{:0.2f}</td>".format(e)
+        row5 += "<td>{:0.2f}</td>".format(w)
+        row6 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row7 += "<td" + ec + ">{}</td>".format(i + 1)
+        row8 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    row8 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
+    eq = r"\(i \lt C^*_i\)"
+    outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
+              "next largest rank yields <em>h</em><sub><em>ap</em>.geom</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
+    return outstr
+
+
 def metric_adapt_pure_h_index_geom() -> Metric:
     m = Metric()
     m.name = "adapt pure h-index geom"
     m.full_name = "adapted pure h-index (geometric credit)"
     m.html_name = "adapted pure <em>h-</em>index (geometric credit)"
     m.symbol = "<em>h</em><sub><em>ap</em>.geom</sub>"
+    m.example = write_adapt_pure_h_index_geom_example
     m.metric_type = FLOAT
-    effort_eq = r"$$E_i=\frac{2^{A_i} - 1}{2^{A_i - a_i}},$$"
-    cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{E_i}}.$$"
+    # effort_eq = r"$$E_i=\frac{2^{A_i} - 1}{2^{A_i - a_i}},$$"
+    effort_eq = r"$$E_i=\frac{2^{A_i - a_i}}{2^{A_i} - 1},$$"
+    cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{w_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
     equation = r"$$h_{ap.\text{geom}}= " \
                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
@@ -4062,6 +4238,8 @@ def metric_adapt_pure_h_index_geom() -> Metric:
                     "assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
                     "list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). " \
+                    "Each publication can then be weighted by the inverse of the author effort, " \
+                    "<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. " \
                     "The effective number of citations for each publication is then calculated as</p>" + cistr + \
                     "<p>Publications are ranked according to these new citation " \
                     "counts and the <em>h-</em>equivalent value, <em>h<sub>e</sub>,</em> is found as the largest " \
