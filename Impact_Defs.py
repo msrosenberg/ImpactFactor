@@ -4524,7 +4524,7 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
     row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
     row3 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th>"
     row4 = "<tr><th>Rank (<em>i</em>)</th>"
-    row5 = "<tr><th>Adjusted Rank (<em>r<sub>eff</sub>&nbsp;=&nbsp;Σ<em>E<sub>i</sub>)</th>"
+    row5 = "<tr><th>Adjusted Rank (<em>r<sub>eff</sub>(<em>i</em>)&nbsp;=&nbsp;Σ<em>E<sub>i</sub>)</th>"
     row6 = "<tr><th></th>"
     hm = metric_set.metrics["hm-index"].value
     s = 0
@@ -4532,7 +4532,7 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
         c = d[0]
         a = d[1]
         s += 1/a
-        if i + 1 == hm:
+        if s == hm:
             v = "<em>h<sub>m</sub></em>&nbsp;=&nbsp;{}".format(hm)
             ec = " class=\"box\""
         else:
@@ -4550,7 +4550,7 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
     row4 += "</tr>"
     row5 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
-    outstr += "<p>The largest adjusted rank where <em>r<sub>eff</sub></em> ≤ " \
+    outstr += "<p>The largest adjusted rank where <em>r<sub>eff</sub></em>(<em>i</em>) ≤ " \
               "<em>C<sub>i</sub></em> is {}.</p>".format(hm)
     return outstr
 

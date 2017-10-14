@@ -592,10 +592,6 @@ def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> fl
         cumulative_rank += e
         if cumulative_rank <= c:
             hm_index = cumulative_rank
-    # for i in range(len(citations)):
-    #     cumulative_rank += 1/n_authors[rank_order[i]-1]
-    #     if cumulative_rank <= citations[rank_order[i]-1]:
-    #         hm_index = cumulative_rank
     return hm_index
 
 
