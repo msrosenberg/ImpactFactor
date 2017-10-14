@@ -4395,12 +4395,54 @@ def calculate_normal_hi_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_normal_hi_index(citations, n_authors)
 
 
+def write_normal_hi_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c/a, c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th></th>"
+    hi = metric_set.metrics["normal hi-index"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        if i + 1 == hi:
+            v = "<em>h</em><sub><em>i-</em>norm</sub>&nbsp;=&nbsp;{}".format(hi)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row4 += "<td" + ec + ">{}</td>".format(i + 1)
+        row5 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em> ≤ <em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is " \
+              "{}.</p>".format(hi)
+    return outstr
+
+
 def metric_normal_hi_index() -> Metric:
     m = Metric()
     m.name = "normal hi-index"
     m.full_name = "normalized hi-index"
     m.html_name = "normalized <em>h<sub>i</sub>-</em>index"
     m.symbol = "<em>h</em><sub><em>i</em>-norm</sub>"
+    m.example = write_normal_hi_index_example
     m.metric_type = INT
     equation = r"$$h_{i\text{-norm}}=\underset{i}{\max}\left(i \leq \frac{C_i}{A_i}\right).$$"
     m.description = "<p>Similar to the adapted pure <em>h-</em>index, the normalized <em>h<sub>i</sub>-</em>index " \
@@ -4469,12 +4511,57 @@ def calculate_hm_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_hm_index(citations, rank_order, n_authors)
 
 
+def write_hm_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th>Adjusted Rank (<em>r<sub>eff</sub>&nbsp;=&nbsp;Σ<em>E<sub>i</sub>)</th>"
+    row6 = "<tr><th></th>"
+    hm = metric_set.metrics["hm-index"].value
+    s = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        s += 1/a
+        if i + 1 == hm:
+            v = "<em>h<sub>m</sub></em>&nbsp;=&nbsp;{}".format(hm)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{:0.2f}</td>".format(1/a)
+        row4 += "<td>{}</td>".format(i + 1)
+        row5 += "<td" + ec + ">{:0.2f}</td>".format(s)
+        row6 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    outstr += "<p>The largest adjusted rank where <em>r<sub>eff</sub></em> ≤ " \
+              "<em>C<sub>i</sub></em> is {}.</p>".format(hm)
+    return outstr
+
+
 def metric_hm_index() -> Metric:
     m = Metric()
     m.name = "hm-index"
     m.full_name = "hm-index"
     m.html_name = "<em>h<sub>m</sub>-</em>index"
     m.symbol = "<em>h<sub>m</sub></em>"
+    m.example = write_hm_index_example
     m.metric_type = FLOAT
     rheq = r"$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$"
     reeq = r"$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$"
