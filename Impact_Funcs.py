@@ -414,7 +414,7 @@ def calculate_pure_h_index_prop(is_core: list, n_authors: list, author_pos: list
     sump = 0
     for i in range(len(is_core)):
         if is_core[i]:
-            sump += n_authors[i]*(n_authors[i] + 1) / (2*n_authors[i] + 1 - author_pos[i])
+            sump += n_authors[i]*(n_authors[i] + 1) / (2*(n_authors[i] + 1 - author_pos[i]))
     return h / math.sqrt(sump / h)
 
 

@@ -2272,26 +2272,26 @@
         var data_pure_h_index_prop = google.visualization.arrayToDataTable([
            ['Year', '<em>h</em><sub><em>p</em>.prop</sub>'],
            ['1997', 0.7071067811865475],
-           ['1998', 1.414213562373095],
-           ['1999', 1.9639610121239313],
-           ['2000', 3.1835726998350666],
-           ['2001', 4.024922359499621],
-           ['2002', 4.808699980828288],
-           ['2003', 6.334701284746778],
-           ['2004', 6.2876588222761045],
-           ['2005', 7.7940069142131145],
-           ['2006', 8.674493731083334],
-           ['2007', 10.185971849860298],
-           ['2008', 11.557132947165442],
-           ['2009', 14.56518576378084],
-           ['2010', 15.197639791465127],
-           ['2011', 16.789335243348624],
-           ['2012', 16.22911205192225],
-           ['2013', 17.17767624959773],
-           ['2014', 18.647803253138303],
-           ['2015', 20.20972924337639],
-           ['2016', 20.751514743264746],
-           ['2017', 20.751514743264746],
+           ['1998', 1.2649110640673518],
+           ['1999', 1.5666989036012806],
+           ['2000', 2.6352313834736494],
+           ['2001', 3.3717089216940983],
+           ['2002', 4.090440968535443],
+           ['2003', 5.617690055391233],
+           ['2004', 3.8542068852470437],
+           ['2005', 4.884107489784578],
+           ['2006', 5.760715294819264],
+           ['2007', 6.866564795596887],
+           ['2008', 7.925361525593349],
+           ['2009', 10.188915210858388],
+           ['2010', 10.74656790815148],
+           ['2011', 11.992905704375506],
+           ['2012', 11.76806208151057],
+           ['2013', 12.56907992777831],
+           ['2014', 14.023300226606498],
+           ['2015', 15.266967994946667],
+           ['2016', 15.714170846012001],
+           ['2017', 15.714170846012001],
 		]);
 
         var options_pure_h_index_prop = {
@@ -6321,33 +6321,33 @@
       <h2>pure <em>h-</em>index (proportional credit)</h2>
       <p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the <em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index allows for different methods of assigning authorship credit. If one has information on author order and assumes the order directly correlates with effort, one can use a proportional (artihmetic) assignment of credit for each publication as:</p>$$E_i=\frac{2\left(A_i + 1 - a_i\right)}{A_i\left(A_i + 1\right)},$$<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). Each publication can then be weighted by the inverse of the author effort, <em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. Given the credited effort for each publication, the metric is calculated as:</p>$$h_{p.\text{prop}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{w_i}}{h}}}.$$
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>2</td><td>1</td></tr><tr><th>Author Position (<em>a<sub>i</sub></em>)</th><td>1</td><td>1</td><td>3</td><td>2</td><td>3</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>)</th><td>0.50</td><td>0.50</td><td>0.17</td><td>0.33</td><td>0.20</td><td>1.00</td><td>0.20</td><td>0.40</td><td>1.00</td><td>1.00</td><td>0.20</td><td>0.67</td><td>1.00</td><td>0.67</td><td>1.00</td></tr><tr><th>Weight (<em>w<sub>i</sub></em>)</th><td class="box">2.00</td><td class="box">2.00</td><td class="box">6.00</td><td class="box">3.00</td><td class="box">5.00</td><td class="box">1.00</td><td>5.00</td><td>2.50</td><td>1.00</td><td>1.00</td><td>5.00</td><td>1.50</td><td>1.00</td><td>1.50</td><td>1.00</td></tr></table><p>The <em>h-</em>index is 6 and the sum of the weights for the publications in the core is 19.0, thus <em>h</em><sub><em>p</em>.prop</sub>&nbsp;=&nbsp;4.0249.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>2</td><td>1</td></tr><tr><th>Author Position (<em>a<sub>i</sub></em>)</th><td>1</td><td>1</td><td>3</td><td>2</td><td>3</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>)</th><td>0.50</td><td>0.50</td><td>0.17</td><td>0.33</td><td>0.20</td><td>1.00</td><td>0.20</td><td>0.40</td><td>1.00</td><td>1.00</td><td>0.20</td><td>0.67</td><td>1.00</td><td>0.67</td><td>1.00</td></tr><tr><th>Weight (<em>w<sub>i</sub></em>)</th><td class="box">2.00</td><td class="box">2.00</td><td class="box">6.00</td><td class="box">3.00</td><td class="box">5.00</td><td class="box">1.00</td><td>5.00</td><td>2.50</td><td>1.00</td><td>1.00</td><td>5.00</td><td>1.50</td><td>1.00</td><td>1.50</td><td>1.00</td></tr></table><p>The <em>h-</em>index is 6 and the sum of the weights for the publications in the core is 19.0, thus <em>h</em><sub><em>p</em>.prop</sub>&nbsp;=&nbsp;3.3717.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>h</em><sub><em>p</em>.prop</sub></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">0.7071</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.4142</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">1.9640</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">3.1836</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">4.0249</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">4.8087</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">6.3347</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">6.2877</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">7.7940</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">8.6745</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">10.1860</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">11.5571</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">14.5652</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">15.1976</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">16.7893</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">16.2291</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">17.1777</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">18.6478</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">20.2097</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">20.7515</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">20.7515</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.2649</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1.5667</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.6352</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.3717</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">4.0904</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">5.6177</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">3.8542</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">4.8841</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">5.7607</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">6.8666</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">7.9254</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">10.1889</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">10.7466</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">11.9929</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">11.7681</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">12.5691</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">14.0233</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">15.2670</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">15.7142</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">15.7142</td></tr>
           </table>
         </div>
         <div class="graph_container">
