@@ -5546,6 +5546,85 @@ def calculate_trend_h_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_trend_h_index(pub_data)
 
 
+def write_trend_h_index_example(metric_set: MetricSet) -> str:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    year_list = [m.year() for m in metric_list[:metric_pos+1]]
+    ny = len(pub_data[0])
+    # take total citations for each pub at each year and convert to yearly only totals
+    pub_cites = []
+    for p in pub_data:
+        cites = [p[0]]
+        for i in range(1, len(p)):
+            if p[i-1] is None:
+                cites.append(p[i])
+            else:
+                cites.append(p[i] - p[i-1])
+        pub_cites.append(cites)
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i, p in enumerate(pub_cites):
+        s = 0
+        for y, c in enumerate(p):
+            if c is not None:
+                s += c / (ny - y)
+        s *= 4
+        c = metric_set.citations[i]
+        pdata = [s, c]
+        for c in p:
+            if c is None:
+                c = -1
+            pdata.append(c)
+        data.append(pdata)
+    data.sort(reverse=True)
+    rows = []
+    for y in range(ny):
+        if y + 1 == ny:
+            ec = " class=\"top_row\""
+        else:
+            ec = ""
+        row = "<tr " + ec + "><th>&mdash;{}&mdash;</th>".format(year_list[y])
+        for d in data:
+            c = d[y+2]
+            if c == -1:
+                c = "&mdash;"
+            row += "<td>{}</td>".format(c)
+        row += "</tr>"
+        rows.append(row)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    ststr = r"\(S^{t}_i\)"
+    row2 = "<tr class=\"top_row\"><th>Adjusted Citations (" + ststr + ")</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    ht = metric_set.metrics["trend h-index"].value
+    for i, d in enumerate(data):
+        sc = d[0]
+        c = d[1]
+        if i + 1 == ht:
+            v = "<em>h<sup>C</sup></em>&nbsp;=&nbsp;{}".format(ht)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{:1.2f}</td>".format(sc)
+        row3 += "<td" + ec + ">{}</td>".format(i + 1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1
+    for row in rows:
+        outstr += row
+    outstr += row2 + row3 + row4 + "</table>"
+    steq = r"\(i \leq S^{t}_i\)"
+    outstr += "<p>The largest rank where " + steq + " is {}.</p>".format(ht)
+    return outstr
+
+
 def metric_trend_h_index() -> Metric:
     m = Metric()
     m.name = "trend h-index"
@@ -5553,8 +5632,10 @@ def metric_trend_h_index() -> Metric:
     m.html_name = "trend <em>h-</em>index"
     m.symbol = "<em>h<sup>t</sup></em>"
     m.synonyms = ["<em>h<sup>t</sup></em>"]
+    m.example = write_trend_h_index_example
     m.metric_type = INT
     steq = r"$$S^t_i = \gamma \sum\limits_{j=1}^{C_i}{\left(Y-Y_{j.i}+1\right)^{-\delta}}$$"
+    st2eq = r"$$S^t_i = \gamma \sum\limits_{k=1}^{Y}{C_{i.k}\left(Y-Y_k+1\right)^{-\delta}}.$$"
     hteq = r"$$h^t = \underset{i}{\max}\left(i \leq S^t_i\right)$$"
     m.description = "<p>The trend <em>h-</em>index (Sidiropoulos <em>et al.</em> 2007) is essentially the " \
                     "opposite of the contemporary <em>h-</em>index. It is designed to measure how current an " \
@@ -5562,7 +5643,10 @@ def metric_trend_h_index() -> Metric:
                     "is measured as</p>" + steq + "<p>where <em>γ</em> and <em>δ</em> are parameters " \
                     "(often set to 4 and 1, respectively, just as with the contemporary <em>h-</em>index) and " \
                     "<em>Y<sub>j.i</sub></em> is the year of the <em>j</em><sup>th</sup> citation for publication " \
-                    "<em>i.</em> The trend <em>h-</em>index is the largest value " \
+                    "<em>i.</em> If the number of citations for publication <em>i</em> in year " \
+                    "<em>Y<sub>k</sub></em> is <em>C<sub>i.k</sub></em>, this can also be written as " + st2eq + \
+                                                  "" \
+                    "The trend <em>h-</em>index is the largest value " \
                     "for which an author has <em>h<sup>t</sup></em> publications with at least " \
                     "<em>S<sup>t</sup></em> ≥ <em>h<sup>t</sup></em>.</p>" + hteq
     m.references = ["Sidiropoulos, A., D. Katsaros, and Y. Manolopoulos (2007) Generalized Hirsch <em>h-</em>index "
@@ -5692,7 +5776,7 @@ def metric_annual_h_index() -> Metric:
     m.synonyms = ["hIa"]
     m.metric_type = FLOAT
     equation = r"$$\text{hIa} = \frac{h_i}{Y-Y_0+1}.$$"
-    m.description = "<p>The annual <em>h</em>-index attempts to normalize by both the number of coauthors of each" \
+    m.description = "<p>The annual <em>h</em>-index attempts to normalize by both the number of coauthors of each " \
                     "publication as well as the academic age of the researcher and is calculated as the " \
                     "normalized <em>h<sub>i</sub>-</em>index divided by academic age, or:</p>" + equation
     m.references = ["Harzing, A.-W., S. Alakangas, and D. Adams (2014) hIa: an individual annual <em>h-</em>index "
