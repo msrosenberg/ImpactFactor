@@ -5992,7 +5992,7 @@ def metric_levene_j_index() -> Metric:
     m.html_name = "Levene <em>j-</em>index"
     m.symbol = "<em>j</em>"
     m.metric_type = FLOAT
-    equation = r"$$j=\sum\limits_{i=1}^{P}{\sqrt{C_1}}$$"
+    equation = r"$$j=\sum\limits_{i=1}^{P}{\sqrt{C_i}}$$"
     m.description = "<p>The Levene <em>j-</em>index (Levene <em>et al.</em> 2012) is the sum of the square-root " \
                     "of citation counts for all publications, similar to the Redner index which is the square-root " \
                     "of the sum.</p>" + equation
