@@ -4344,10 +4344,10 @@ def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
         a = metric_set.author_counts()[i]
         ap = metric_set.author_position()[i]
         # e = Impact_Funcs.author_effort("proportional", a, ap)
-        if a % 2 == 0:
-            d = 0
-        else:
-            d = 1 / (2*a)
+        # if a % 2 == 0:
+        #     d = 0
+        # else:
+        #     d = 1 / (2*a)
         e = Impact_Funcs.author_effort("harmonic", a, ap)
         # e = (1 + abs(a + 1 - 2*ap)) / (a**2/2 + a*(1-d))
         data.append([c*e, c, a, ap, e])
@@ -5120,23 +5120,23 @@ def write_h_rate_desc_data(metric_set: MetricSet) -> list:
         year.append(s.year())
         h.append(s.metrics["h-index"].value)
     max_year = max(year)
-    min_year = min(year)
+    min_year = min(year) - 1
     # write h-indices per year
     for i in range(len(h)):
         output.append("           [{}, {}, null],\n".format(year[i], h[i]))
     # write line through final point
+    # m = metric.value
     output.append("           [{}, null, {}],\n".format(min_year, 0))
     output.append("           [{}, null, {}],\n".format(max_year, metric_set.metrics["h-index"].value))
     output.append("		]);\n")
     output.append("\n")
     output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'top'},\n")
-    # output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		     legend: {position: 'none'},\n")
     output.append("		     hAxis: { format: \'#\',\n")
     output.append("		             title: \'Year\',\n")
     output.append("		             gridlines: {color: \'transparent\'}},\n")
     output.append("		     vAxis: {title: \'h-index\'},\n")
-    output.append("		     series: { 0: {pointsVisible: true, pointSize: 5},\n")
+    output.append("		     series: { 0: {pointsVisible: true, pointSize: 8, lineWidth: 0},\n")
     output.append("		               1: {lineDashStyle: [4, 4]}},\n")
     output.append("        };\n")
     output.append("\n")
@@ -5144,7 +5144,6 @@ def write_h_rate_desc_data(metric_set: MetricSet) -> list:
                   "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
     output.append("\n")
-
     return output
 
 
@@ -5195,19 +5194,66 @@ def calculate_ls_h_rate(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_least_squares_h_rate(year_list, h_list)
 
 
+def write_ls_h_rate_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["ls h-rate"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Year', 'h-index', 'slope (m)'],\n")
+    all_sets = metric_set.parent_list
+    last_set = all_sets.index(metric_set)
+    h = []
+    year = []
+    for s in all_sets[:last_set+1]:
+        year.append(s.year())
+        h.append(s.metrics["h-index"].value)
+    max_year = max(year)
+    min_year = min(year)
+    m = metric.value
+    y = m * (max_year - min_year + 1)
+    # write h-indices per year
+    for i in range(len(h)):
+        output.append("           [{}, {}, null],\n".format(year[i], h[i]))
+    # write line
+    output.append("           [{}, null, {}],\n".format(min_year - 1, 0))
+    output.append("           [{}, null, {}],\n".format(max_year, y))
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'none'},\n")
+    output.append("		     hAxis: { format: \'#\',\n")
+    output.append("		             title: \'Year\',\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     vAxis: {title: \'h-index\'},\n")
+    output.append("		     series: { 0: {pointsVisible: true, pointSize: 8, lineWidth: 0},\n")
+    output.append("		               1: {lineDashStyle: [4, 4]}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+    return output
+
+
 def metric_ls_h_rate() -> Metric:
     m = Metric()
     m.name = "ls h-rate"
     m.full_name = "least squares h-rate"
     m.html_name = "least squares <em>h-</em>rate"
     m.symbol = "<em>m<sub>ls</sub></em>"
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "ls_h_rate_desc"
+    graph.data = write_ls_h_rate_desc_data
     m.metric_type = FLOAT
     m.description = "<p>Hirsch\'s original estimate of the <em>h-</em>rate was based on a single data point, " \
                     "the most recently measured value of <em>h</em> and the time since first publication. " \
                     "Burrell (2007) suggested that a more accurate measure could be estimated through least-squares " \
                     "regression of a series of <em>h-</em>indices measured at different time points of an " \
-                    "author\'s career, while forcing the intercept through zero at the time of their first " \
-                    "publication.</p>"
+                    "author\'s career, while forcing the intercept through zero at the start of their career (prior " \
+                    "to first publication).</p><div id=\"chart_" + graph.name + \
+                    "_div\" class=\"time_chart\"></div></p>"
     m.references = ["Burrell, Q.L. (2007) Hirsch index or Hirsch rate? Some thoughts arising from Liang's data. "
                     "<em>Scientometrics</em> 73(1):19-28."]
     m.graph_type = LINE_CHART
@@ -5377,6 +5423,50 @@ def calculate_contemporary_h_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_contemporary_h_index(citations, pub_years, year)
 
 
+def write_contemporary_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    cur_year = metric_set.year()
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        age = cur_year - metric_set.publication_years()[i] + 1
+        s = 4*c/age
+        data.append([s, c, age])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>&nbsp;+&nbsp;1)</th>"
+    scstr = r"\(S^{C}_i\)"
+    row3 = "<tr class=\"top_row\"><th>Adjusted Citations (" + scstr + ")</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th></th>"
+    hc = metric_set.metrics["contemporary h-index"].value
+    for i, d in enumerate(data):
+        sc = d[0]
+        c = d[1]
+        y = d[2]
+        if i + 1 == hc:
+            v = "<em>h<sup>C</sup></em>&nbsp;=&nbsp;{}".format(hc)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(y)
+        row3 += "<td" + ec + ">{:1.2f}</td>".format(sc)
+        row4 += "<td" + ec + ">{}</td>".format(i + 1)
+        row5 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    sceq = r"\(i \leq S^{C}_i\)"
+    outstr += "<p>The largest rank where " + sceq + " is {}.</p>".format(hc)
+    return outstr
+
+
 def metric_contemporary_h_index() -> Metric:
     m = Metric()
     m.name = "contemporary h-index"
@@ -5384,6 +5474,7 @@ def metric_contemporary_h_index() -> Metric:
     m.html_name = "contemporary <em>h-</em>index"
     m.symbol = "<em>h<sup>C</sup></em>"
     m.synonyms = ["<em>h<sup>C</sup></em>"]
+    m.example = write_contemporary_h_index_example
     m.metric_type = INT
     sceq = r"$$S^C_i=\gamma \left(Y-Y_i+1\right)^{-\delta}C_i.$$"
     hceq = r"$$h^C=\underset{i}{\max}\left(i \leq S^C_i\right)$$"

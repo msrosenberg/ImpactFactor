@@ -3293,23 +3293,23 @@
         chart_h_rate.draw(data_h_rate, options_h_rate);
 
         var data_h_rate_desc = google.visualization.arrayToDataTable([
-           ['Year', 'h-index', 'slope'],
+           ['Year', 'h-index', 'slope (m)'],
            [1997, 1, null],
            [1998, 2, null],
            [1999, 3, null],
            [2000, 5, null],
            [2001, 6, null],
-           [1997, null, 0],
+           [1996, null, 0],
            [2001, null, 6],
 		]);
 
         var options_h_rate_desc = {
-		     legend: {position: 'top'},
+		     legend: {position: 'none'},
 		     hAxis: { format: '#',
 		             title: 'Year',
 		             gridlines: {color: 'transparent'}},
 		     vAxis: {title: 'h-index'},
-		     series: { 0: {pointsVisible: true, pointSize: 5},
+		     series: { 0: {pointsVisible: true, pointSize: 8, lineWidth: 0},
 		               1: {lineDashStyle: [4, 4]}},
         };
 
@@ -3348,6 +3348,30 @@
 
         var chart_ls_h_rate = new google.visualization.LineChart(document.getElementById('chart_ls_h_rate_div'));
         chart_ls_h_rate.draw(data_ls_h_rate, options_ls_h_rate);
+
+        var data_ls_h_rate_desc = google.visualization.arrayToDataTable([
+           ['Year', 'h-index', 'slope (m)'],
+           [1997, 1, null],
+           [1998, 2, null],
+           [1999, 3, null],
+           [2000, 5, null],
+           [2001, 6, null],
+           [1996, null, 0],
+           [2001, null, 5.818181818181818],
+		]);
+
+        var options_ls_h_rate_desc = {
+		     legend: {position: 'none'},
+		     hAxis: { format: '#',
+		             title: 'Year',
+		             gridlines: {color: 'transparent'}},
+		     vAxis: {title: 'h-index'},
+		     series: { 0: {pointsVisible: true, pointSize: 8, lineWidth: 0},
+		               1: {lineDashStyle: [4, 4]}},
+        };
+
+        var chart_ls_h_rate_desc = new google.visualization.LineChart(document.getElementById('chart_ls_h_rate_desc_div'));
+        chart_ls_h_rate_desc.draw(data_ls_h_rate_desc, options_ls_h_rate_desc);
 
         var data_time_scaled_h_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h<sup>TS</sup></em>'],
@@ -3517,26 +3541,26 @@
         var data_contemporary_h_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h<sup>C</sup></em>'],
            ['1997', 2],
-           ['1998', 2],
+           ['1998', 3],
            ['1999', 3],
            ['2000', 5],
-           ['2001', 6],
-           ['2002', 6],
-           ['2003', 8],
+           ['2001', 7],
+           ['2002', 9],
+           ['2003', 10],
            ['2004', 10],
-           ['2005', 11],
-           ['2006', 13],
-           ['2007', 15],
-           ['2008', 14],
-           ['2009', 16],
-           ['2010', 18],
+           ['2005', 12],
+           ['2006', 14],
+           ['2007', 16],
+           ['2008', 17],
+           ['2009', 18],
+           ['2010', 20],
            ['2011', 20],
            ['2012', 20],
-           ['2013', 20],
-           ['2014', 20],
-           ['2015', 20],
+           ['2013', 21],
+           ['2014', 21],
+           ['2015', 21],
            ['2016', 20],
-           ['2017', 19],
+           ['2017', 20],
 		]);
 
         var options_contemporary_h_index = {
@@ -7489,7 +7513,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="ls_h_rate" class="metric_container">
       <h2>least squares <em>h-</em>rate</h2>
-      <p>Hirsch's original estimate of the <em>h-</em>rate was based on a single data point, the most recently measured value of <em>h</em> and the time since first publication. Burrell (2007) suggested that a more accurate measure could be estimated through least-squares regression of a series of <em>h-</em>indices measured at different time points of an author's career, while forcing the intercept through zero at the time of their first publication.</p>
+      <p>Hirsch's original estimate of the <em>h-</em>rate was based on a single data point, the most recently measured value of <em>h</em> and the time since first publication. Burrell (2007) suggested that a more accurate measure could be estimated through least-squares regression of a series of <em>h-</em>indices measured at different time points of an author's career, while forcing the intercept through zero at the start of their career (prior to first publication).</p><div id="chart_ls_h_rate_desc_div" class="time_chart"></div></p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -7706,32 +7730,34 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     <div id="contemporary_h_index" class="metric_container">
       <h2>contemporary <em>h-</em>index</h2>
       <p>The contemporary <em>h-</em>index (Sidiropoulos <em>et al.</em> 2007) is designed to give more weight to the citations of recent publications and less weight to the citations of older publications. In its most general form, the contemporary score for a specific publication is</p>$$S^C_i=\gamma \left(Y-Y_i+1\right)^{-\delta}C_i.$$<p>The contemporary <em>h-</em>index for an author, <em>h<sup>C</sup></em>, is calculated similarly to the standard <em>h-</em>index, in that an author has a score of <em>h<sup>C</sup></em> if <em>h<sup>C</sup></em> of their articles (ranked by <em>S<sup>C</sup></em>) have <em>S<sup>C</sup></em> ≥ <em>h<sup>C</sup></em>.</p>$$h^C=\underset{i}{\max}\left(i \leq S^C_i\right)$$Sidiropuolos <em>et al.</em> (2007) set <em>γ</em> = 4 and <em>δ</em> = 1. These choices have the consequence of making this metric virtually identical to <em>hpd,</em> except measured on a four year cycle rather than a decade.</p>
+      <h3>Example</h3>
+      <p>Publications are ordered by adjusted number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>36</td><td>42</td><td>14</td><td>11</td><td>2</td><td>9</td><td>9</td><td>2</td><td>1</td><td>2</td><td>3</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>&nbsp;+&nbsp;1)</th><td>2</td><td>5</td><td>5</td><td>4</td><td>1</td><td>5</td><td>5</td><td>2</td><td>1</td><td>3</td><td>5</td><td>2</td><td>2</td><td>1</td><td>1</td></tr><tr class="top_row"><th>Adjusted Citations (\(S^{C}_i\))</th><td>72.00</td><td>33.60</td><td>11.20</td><td>11.00</td><td>8.00</td><td>7.20</td><td class="box">7.20</td><td>4.00</td><td>4.00</td><td>2.67</td><td>2.40</td><td>2.00</td><td>2.00</td><td>0.00</td><td>0.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td class="box">7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td><em>h<sup>C</sup></em>&nbsp;=&nbsp;7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where \(i \leq S^{C}_i\) is 7.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>h<sup>C</sup></em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">2</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">3</td></tr>
             <tr><td class="cell_year">2000</td><td class="cell_value">5</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">6</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">6</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10</td></tr>
             <tr><td class="cell_year">2004</td><td class="cell_value">10</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">11</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">13</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">15</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">14</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">16</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">17</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">20</td></tr>
             <tr><td class="cell_year">2011</td><td class="cell_value">20</td></tr>
             <tr><td class="cell_year">2012</td><td class="cell_value">20</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">20</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">20</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">20</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">21</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">21</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">21</td></tr>
             <tr><td class="cell_year">2016</td><td class="cell_value">20</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">20</td></tr>
           </table>
         </div>
         <div class="graph_container">

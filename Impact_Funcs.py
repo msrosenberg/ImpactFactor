@@ -549,7 +549,8 @@ def calculate_wohlin_w(citations: list, max_cites: int) -> float:
 def calculate_contemporary_h_index(citations: list, pub_years: list, year: int) -> int:
     n = len(citations)
     pub_ages = publication_ages(year, pub_years)
-    sc = [4*citations[i]/(1 + pub_ages[i]) for i in range(n)]
+    # sc = [4*citations[i]/(1 + pub_ages[i]) for i in range(n)]
+    sc = [4*citations[i]/pub_ages[i] for i in range(n)]
     _, tmporder = sort_and_rank(sc, n)
     contemp_h_index = 0
     for i in range(n):
