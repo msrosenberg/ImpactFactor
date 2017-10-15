@@ -4005,7 +4005,7 @@ def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
     row4 += "</tr>"
     row5 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
-    eq = r"\(i \lt C^*_i\)"
+    eq = r"\(i \leq C^*_i\)"
     outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
               "next largest rank yields <em>h</em><sub><em>ap</em>.frac</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
     return outstr
@@ -4105,7 +4105,7 @@ def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
     row7 += "</tr>"
     row8 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
-    eq = r"\(i \lt C^*_i\)"
+    eq = r"\(i \leq C^*_i\)"
     outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
               "next largest rank yields <em>h</em><sub><em>ap</em>.prop</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
     return outstr
@@ -4212,7 +4212,7 @@ def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
     row7 += "</tr>"
     row8 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
-    eq = r"\(i \lt C^*_i\)"
+    eq = r"\(i \leq C^*_i\)"
     outstr += "<p>The largest rank where " + eq + " is {}. Interpolating between this and the " \
               "next largest rank yields <em>h</em><sub><em>ap</em>.geom</sub>&nbsp;=&nbsp;{:0.4f}.</p>".format(he, hp)
     return outstr
@@ -4388,7 +4388,7 @@ def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
     row7 += "</tr>"
     row8 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row6 + row7 + row8 + "</table>"
-    eq = r"\(i \lt C^*_i\)"
+    eq = r"\(i \leq C^*_i\)"
     outstr += "<p>The largest rank where " + eq + " is {}.</p>".format(ha)
     return outstr
 
@@ -4847,7 +4847,7 @@ def write_pos_weight_h_index_example(metric_set: MetricSet) -> str:
     row7 += "</tr>"
     row8 += "</tr>"
     outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
-    eq = r"\(i \lt C^*_i\)"
+    eq = r"\(i \leq C^*_i\)"
     outstr += "<p>The largest rank where " + eq + " is {}.</p>".format(hp)
     return outstr
 
