@@ -4335,26 +4335,85 @@ def calculate_profit_adj_h_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_profit_adj_h_index(citations, n_authors, author_pos)
 
 
+def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        ap = metric_set.author_position()[i]
+        # e = Impact_Funcs.author_effort("proportional", a, ap)
+        if a % 2 == 0:
+            d = 0
+        else:
+            d = 1 / (2*a)
+        e = Impact_Funcs.author_effort("harmonic", a, ap)
+        # e = (1 + abs(a + 1 - 2*ap)) / (a**2/2 + a*(1-d))
+        data.append([c*e, c, a, ap, e])
+    data.sort(reverse=True)
+    cstari = r"\(C^*_i\)"
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>)</th>"
+    row6 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row7 = "<tr><th>Rank (<em>i</em>)</th>"
+    row8 = "<tr><th></th>"
+    ha = metric_set.metrics["profit adj h-index"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        ap = d[3]
+        e = d[4]
+        if i + 1 == ha:
+            v = "<em>h<sub>a</sub></em>&nbsp;=&nbsp;{}".format(ha)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{}</td>".format(ap)
+        row4 += "<td>{:0.2f}</td>".format(e)
+        row6 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row7 += "<td" + ec + ">{}</td>".format(i + 1)
+        row8 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    row8 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row6 + row7 + row8 + "</table>"
+    eq = r"\(i \lt C^*_i\)"
+    outstr += "<p>The largest rank where " + eq + " is {}.</p>".format(ha)
+    return outstr
+
+
 def metric_profit_adj_h_index() -> Metric:
     m = Metric()
     m.name = "profit adj h-index"
     m.full_name = "profit adjusted h-index"
     m.html_name = "profit adjusted <em>h-</em>index"
     m.symbol = "<em>h<sub>a</sub></em>"
+    m.example = write_profit_adj_h_index_example
     m.metric_type = INT
-    weq = r"$$w_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
+    weq = r"$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
     deq = r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ " \
           r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$"
-    ceq = r"$$E_i=w_i C_i,$$"
-    equation = r"$$h_a=\underset{i}{\max}\left(i \leq w_iC_i\right)=\underset{i}{\max}\left(i \leq E_i\right).$$"
+    ceq = r"$$C^{*}_i=E_i C_i,$$"
+    equation = r"$$h_a=\underset{i}{\max}\left(i \leq E_iC_i\right)=\underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
     m.description = "<p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on " \
                     "an author\'s impact. They use a harmonic weighting algorithm and information on author " \
                     "order (assuming that authors in the middle of an author list had the least impact) to " \
-                    "estimate weights for each publication. The weight given to the <em>i</em><sup>th</sup> " \
-                    "publication is</p>" + weq + "<p>where</p>" + deq + "<p>The sum of <em>w<sub>i</sub></em> for " \
+                    "estimate effort for each publication. The effort for the <em>i</em><sup>th</sup> " \
+                    "publication is</p>" + weq + "<p>where</p>" + deq + "<p>The sum of <em>E<sub>i</sub></em> for " \
                     "all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being " \
                     "defined as a single-authored publication). The profit adjusted <em>h-</em> index is calculated " \
-                    "by weighting each publications citation count by this weight,</p>" + ceq + \
+                    "by weighting each publications citation count by this effort,</p>" + ceq + \
                     "<p>reranking the publications based these weighted counts, and calculating the index as</p>" + \
                     equation
     m.references = ["Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors "

@@ -80,6 +80,12 @@ def author_effort(measure: str, n_authors: int, author_pos: int=1) -> float:
         return 2*(n_authors + 1 - author_pos) / (n_authors*(n_authors + 1))
     elif measure == "geometric":
         return 2**(n_authors - author_pos) / (2**n_authors - 1)
+    elif measure == "harmonic":
+        if n_authors % 2 == 0:
+            d = 0
+        else:
+            d = 1 / (2*n_authors)
+        return (1 + abs(n_authors + 1 - 2*author_pos)) / ((n_authors**2)/2 + n_authors*(1 - d))
     else:
         return 1
 
@@ -835,12 +841,13 @@ def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_p
 def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list) -> float:
     mon_equiv = []
     for i in range(len(citations)):
-        if n_authors[i] % 2 == 0:
-            me_d = 0
-        else:
-            me_d = 1 / (2 * n_authors[i])
-        mon_equiv.append((1 + abs(n_authors[i] + 1 - 2*author_pos[i])) /
-                         ((n_authors[i]**2)/2 + n_authors[i]*(1 - me_d)))
+        # if n_authors[i] % 2 == 0:
+        #     me_d = 0
+        # else:
+        #     me_d = 1 / (2 * n_authors[i])
+        # mon_equiv.append((1 + abs(n_authors[i] + 1 - 2*author_pos[i])) /
+        #                  ((n_authors[i]**2)/2 + n_authors[i]*(1 - me_d)))
+        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
     monograph_equiv = sum(mon_equiv)
     return 1 - monograph_equiv / len(citations)
 
@@ -850,12 +857,13 @@ def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: l
     n = len(citations)
     mon_equiv = []
     for i in range(n):
-        if n_authors[i] % 2 == 0:
-            me_d = 0
-        else:
-            me_d = 1 / (2 * n_authors[i])
-        mon_equiv.append((1 + abs(n_authors[i] + 1 - 2*author_pos[i])) /
-                         ((n_authors[i]**2)/2 + n_authors[i]*(1 - me_d)))
+        # if n_authors[i] % 2 == 0:
+        #     me_d = 0
+        # else:
+        #     me_d = 1 / (2 * n_authors[i])
+        # mon_equiv.append((1 + abs(n_authors[i] + 1 - 2*author_pos[i])) /
+        #                  ((n_authors[i]**2)/2 + n_authors[i]*(1 - me_d)))
+        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
     sc = [citations[i] * mon_equiv[i] for i in range(n)]
     _, tmporder = sort_and_rank(sc, n)
     profit_adj_h_index = 0
