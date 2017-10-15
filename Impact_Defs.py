@@ -4652,12 +4652,66 @@ def calculate_gf_paper_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_gf_paper_index(cumulative_citations, rank_order, n_authors)
 
 
+def write_gf_paper_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Rank (<em>i</em>)</th>"
+    row6 = "<tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>)&nbsp;=&nbsp;Σ<em>E<sub>i</sub></em>)</th>"
+    row7 = "<tr><th>Adjusted Rank Squared (<em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup></th>"
+    row8 = "<tr><th></th>"
+    gf = metric_set.metrics["gf-paper"].value
+    s = 0
+    sc = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        s += 1/a
+        sc += c
+        if s == gf:
+            v = "<em>g<sub>F</sub></em>&nbsp;=&nbsp;{:0.2f}".format(gf)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(sc)
+        row3 += "<td>{}</td>".format(a)
+        row4 += "<td>{:0.2f}</td>".format(1/a)
+        row5 += "<td>{}</td>".format(i + 1)
+        row6 += "<td>{:0.2f}</td>".format(s)
+        row7 += "<td" + ec + ">{:0.2f}</td>".format(s**2)
+        row8 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    row8 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8 + "</table>"
+    outstr += "<p>The largest adjusted rank where <em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup> ≤ " \
+              "Σ<em>C<sub>i</sub></em> is {:0.4f}.</p>".format(gf)
+    return outstr
+
+
 def metric_gf_paper_index() -> Metric:
     m = Metric()
     m.name = "gf-paper"
     m.full_name = "fractional g-index"
     m.html_name = "fractional <em>g-</em>index"
     m.metric_type = FLOAT
+    m.example = write_gf_paper_index_example
     equation = r"$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 " \
                r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$"
     m.symbol = "<em>g<sub>F</sub></em>"
