@@ -5793,12 +5793,52 @@ def calculate_cds_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_cds_index(citations)
 
 
+def write_cds_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    for c in citations:
+        row1 += "<td>{}</td>".format(c)
+    row1 += "</tr>"
+    outstr += row1 + "</table>"
+
+    outstr += "<p></p><table class=\"cds_table\">" \
+              "<tr><th>Category<br/>(<em>k</em>)</th><th>Citation<br/>Range</th><th>Count of Pubs<br/>in " \
+              "Range<br/>(<em>P<sup>k</sup></em>)</th>" \
+              "<th><em>kP<sup>k</sub></em></th></tr>"
+    max_cites = max(citations)
+    nc = 1
+    while max_cites > 2**nc:
+        nc += 1
+    for i in range(nc):
+        if i == 0:
+            low = 0
+            high = 1
+        elif i == 1:
+            low = 2
+            high =4
+        else:
+            low = 2**i + 1
+            high = 2**(i+1)
+        x = 0
+        for c in citations:
+            if (c >= low) and (c <= high):
+                x += 1
+        outstr += "<tr><td>{}</td><td>{}&ndash;{}</td><td>{}</td><td>{}</td></tr>".format(i+1, low, high, x, (i+1)*x)
+    outstr += "</table>"
+    cds = metric_set.metrics["CDS-index"].value
+    outstr += "<p>The index is the sum of <em>kP<sup>k</sub></em>, thus CDS&nbsp;=&nbsp;{}.</p>".format(cds)
+    return outstr
+
+
 def metric_cds_index() -> Metric:
     m = Metric()
     m.name = "CDS-index"
     m.full_name = "citation distribution score index"
     m.symbol = "CDS"
     m.synonyms = ["CDS-index"]
+    m.example = write_cds_index_example
     m.metric_type = INT
     table = "<table class=\"cds_table\">" \
             "<tr><th>Category</th><th>Range of<br/>Citations</th>" \
