@@ -6143,12 +6143,64 @@ def calculate_th_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_th_index(citations, years, total_cites)
 
 
+def write_th_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by year of publication, from most recent to oldest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    years = metric_set.publication_years()
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        y = years[i]
+        data.append([y, c])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Year (<em>Y<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>"
+    row4 = "<tr><th></th>"
+    th = metric_set.metrics["th index"].value
+    s = 0
+    cp = sum(metric_set.citations)
+    ty = -1
+    fy = max(years)
+    for i, d in enumerate(data):
+        y = d[0]
+        c = d[1]
+        s += c
+        if (ty == -1) and (s >= cp/2):
+            ty = y
+            ec = " class=\"box\""
+            v = "½<em>C<sup>P</sup></em>&nbsp;=&nbsp;{}".format(cp/2)
+        else:
+            ec = ""
+            v = ""
+        # if i + 1 == h:
+        #     v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+        #     ec = " class=\"box\""
+        # else:
+        #     v = ""
+        #     ec = ""
+        # row1 += "<td" + ec + ">{}</td>".format(y)
+        row1 += "<td" + ec + ">{}</td>".format(y)
+        row2 += "<td>{}</td>".format(c)
+        row3 += "<td" + ec + ">{}</td>".format(s)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The first year where Σ<em>C<sub>i</sub></em> ≥ ½<em>C<sup>P</sup></em> is {0}, thus the " \
+              "characteristic time scale of scientific activity is " \
+              "{1}&nbsp;&minus;&nbsp;{0}&nbsp;+&nbsp;1&nbsp;=&nbsp;{2}</p>".format(ty, fy, th)
+    return outstr
+
+
 def metric_th_index() -> Metric:
     m = Metric()
     m.name = "th index"
     m.full_name = "characteristic time scale of scientific activity"
     m.symbol = "<em>t<sub>h</sub></em>"
     m.synonyms = ["<em>t<sub>h</sub></em>"]
+    m.example = write_th_index_example
     m.metric_type = INT
     m.description = "<p>The characteristic time scale of scientific activity of a researcher " \
                     "(<em>t<sub>h</sub></em> index) (Popov 2005) is the amount of time from the present to the " \
