@@ -129,6 +129,12 @@ a:visited {
 	margin: auto;
 }
 
+.time_chart {
+	height: 400px;
+	width: 800px;
+	margin: auto;
+}
+
 .chart2container {width: 816px; margin: auto}
 
 .clear_float {clear: both}

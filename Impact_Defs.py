@@ -462,9 +462,9 @@ def metric_h_index() -> Metric:
     m.html_name = "<em>h-</em>index"
     m.symbol = "<em>h</em>"
     m.metric_type = INT
+    m.example = write_h_index_example
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
-    m.example = write_h_index_example
     graph.name = "h_index_desc"
     graph.data = write_h_index_desc_data
     equation = r"$$h=\underset{i}{\max}\left(i\leq C_i\right).$$"
@@ -4305,15 +4305,15 @@ def metric_profit_p_index() -> Metric:
     m.html_name = "profit <em>p-</em>index"
     m.symbol = "profit <em>p</em>"
     m.metric_type = FLOAT
-    weq = r"$$w_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
+    weq = r"$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
     deq = r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ " \
           r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$"
-    equation = r"$$p=1-\frac{\sum\limits_{i=1}^{P}{w_i}}{P}.$$"
+    equation = r"$$p=1-\frac{\sum\limits_{i=1}^{P}{E_i}}{P}.$$"
     m.description = "<p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on " \
                     "an author\'s impact. They use a harmonic weighting algorithm and information on author " \
                     "order (assuming that authors in the middle of an author list had the least impact) to " \
-                    "estimate weights for each publication. The weight given to the <em>i</em><sup>th</sup> " \
-                    "publication is</p>" + weq + "<p>where</p>" + deq + "<p>The sum of <em>w<sub>i</sub></em> for " \
+                    "estimate effort for each publication. The effort for the <em>i</em><sup>th</sup> " \
+                    "publication is</p>" + weq + "<p>where</p>" + deq + "<p>The sum of <em>E<sub>i</sub></em> for " \
                     "all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being " \
                     "defined as a single-authored publication). The profit (<em>p</em>)-index is the relative " \
                     "contribution of collaborators to an individual\'s total publication record, or</p>" + equation + \
@@ -5106,6 +5106,48 @@ def calculate_h_rate(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_h_rate(h, age)
 
 
+def write_h_rate_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h-rate"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Year', 'h-index', 'slope (m)'],\n")
+    all_sets = metric_set.parent_list
+    last_set = all_sets.index(metric_set)
+    h = []
+    year = []
+    for s in all_sets[:last_set+1]:
+        year.append(s.year())
+        h.append(s.metrics["h-index"].value)
+    max_year = max(year)
+    min_year = min(year)
+    # write h-indices per year
+    for i in range(len(h)):
+        output.append("           [{}, {}, null],\n".format(year[i], h[i]))
+    # write line through final point
+    output.append("           [{}, null, {}],\n".format(min_year, 0))
+    output.append("           [{}, null, {}],\n".format(max_year, metric_set.metrics["h-index"].value))
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    # output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		     hAxis: { format: \'#\',\n")
+    output.append("		             title: \'Year\',\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     vAxis: {title: \'h-index\'},\n")
+    output.append("		     series: { 0: {pointsVisible: true, pointSize: 5},\n")
+    output.append("		               1: {lineDashStyle: [4, 4]}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def metric_h_rate() -> Metric:
     m = Metric()
     m.name = "h-rate"
@@ -5117,7 +5159,10 @@ def metric_h_rate() -> Metric:
                   "<em>m-</em>ratio index",
                   "age-normalized <em>h-</em>index",
                   "Carbon <em>h-</em>factor"]
-
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "h_rate_desc"
+    graph.data = write_h_rate_desc_data
     m_equation = r"$$m=\frac{h}{Y-Y_{0}+1},$$"
     hstr = r"\(h\)"
     ystr = r"\(Y\)"
@@ -5131,7 +5176,8 @@ def metric_h_rate() -> Metric:
     m.description += m_equation + "\n"
     m.description += "<p>where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
                      " is the year of the researcher's first publication (the denominator of this equation is the " \
-                     "academic age of the researcher).</p>\n"
+                     "academic age of the researcher).</p><div id=\"chart_" + graph.name + \
+                     "_div\" class=\"time_chart\"></div>\n"
     m.description += "<p>The above estimation is essentially just the slope of the line from the start of a " \
                      "researcher\'s career (0 publications, 0 citations) through the most recent estimate of their " \
                      "<em>h-</em>index.</p>\n"

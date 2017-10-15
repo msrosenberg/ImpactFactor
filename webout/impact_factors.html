@@ -3292,6 +3292,30 @@
         var chart_h_rate = new google.visualization.LineChart(document.getElementById('chart_h_rate_div'));
         chart_h_rate.draw(data_h_rate, options_h_rate);
 
+        var data_h_rate_desc = google.visualization.arrayToDataTable([
+           ['Year', 'h-index', 'slope'],
+           [1997, 1, null],
+           [1998, 2, null],
+           [1999, 3, null],
+           [2000, 5, null],
+           [2001, 6, null],
+           [1997, null, 0],
+           [2001, null, 6],
+		]);
+
+        var options_h_rate_desc = {
+		     legend: {position: 'top'},
+		     hAxis: { format: '#',
+		             title: 'Year',
+		             gridlines: {color: 'transparent'}},
+		     vAxis: {title: 'h-index'},
+		     series: { 0: {pointsVisible: true, pointSize: 5},
+		               1: {lineDashStyle: [4, 4]}},
+        };
+
+        var chart_h_rate_desc = new google.visualization.LineChart(document.getElementById('chart_h_rate_desc_div'));
+        chart_h_rate_desc.draw(data_h_rate_desc, options_h_rate_desc);
+
         var data_ls_h_rate = google.visualization.arrayToDataTable([
            ['Year', '<em>m<sub>ls</sub></em>'],
            ['1997', 1.0],
@@ -6919,7 +6943,7 @@
     </div>
     <div id="profit_p_index" class="metric_container">
       <h2>profit <em>p-</em>index</h2>
-      <p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on an author's impact. They use a harmonic weighting algorithm and information on author order (assuming that authors in the middle of an author list had the least impact) to estimate weights for each publication. The weight given to the <em>i</em><sup>th</sup> publication is</p>$$w_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$<p>where</p>$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ \frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$<p>The sum of <em>w<sub>i</sub></em> for all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being defined as a single-authored publication). The profit (<em>p</em>)-index is the relative contribution of collaborators to an individual's total publication record, or</p>$$p=1-\frac{\sum\limits_{i=1}^{P}{w_i}}{P}.$$<p>This value ranges from 0 to 1, with 0 indicating no contribution of co-authors (all solo-authored papers) and 1 meaning complete contribution from co-authors (a value of exactly 1 is impossible).</p>
+      <p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on an author's impact. They use a harmonic weighting algorithm and information on author order (assuming that authors in the middle of an author list had the least impact) to estimate effort for each publication. The effort for the <em>i</em><sup>th</sup> publication is</p>$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$<p>where</p>$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ \frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$<p>The sum of <em>E<sub>i</sub></em> for all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being defined as a single-authored publication). The profit (<em>p</em>)-index is the relative contribution of collaborators to an individual's total publication record, or</p>$$p=1-\frac{\sum\limits_{i=1}^{P}{E_i}}{P}.$$<p>This value ranges from 0 to 1, with 0 indicating no contribution of co-authors (all solo-authored papers) and 1 meaning complete contribution from co-authors (a value of exactly 1 is impossible).</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -7427,7 +7451,7 @@
       <h2><em>h-</em>rate</h2>
       <p>Originaly defined by Hirsch (2005), this metric is also known as the <span class="metric_name"><em>m-</em>quotient,</span> <span class="metric_name"><em>m-</em>ratio index,</span> <span class="metric_name">age-normalized <em>h-</em>index,</span> and <span class="metric_name">Carbon <em>h-</em>factor.</span> It measures the rate at which the <em>h-</em>index has increased over the career of a researcher. It is calculated simply as:</p>
 $$m=\frac{h}{Y-Y_{0}+1},$$
-<p>where \(h\) is the <em>h-</em>index in year \(Y\) and \(Y_{0}\) is the year of the researcher's first publication (the denominator of this equation is the academic age of the researcher).</p>
+<p>where \(h\) is the <em>h-</em>index in year \(Y\) and \(Y_{0}\) is the year of the researcher's first publication (the denominator of this equation is the academic age of the researcher).</p><div id="chart_h_rate_desc_div" class="time_chart"></div>
 <p>The above estimation is essentially just the slope of the line from the start of a researcher's career (0 publications, 0 citations) through the most recent estimate of their <em>h-</em>index.</p>
 
       <h3>History</h3>
