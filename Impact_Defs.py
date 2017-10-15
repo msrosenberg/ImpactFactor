@@ -3280,7 +3280,8 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
     outstr += "</table>"
     emp = metric_set.metrics["EMp-index"].value
     outstr += "<p>The sum of the {} <em>E</em> values is {}. The <em>EM&prime;-</em>index is the square-root of this " \
-              "sum, thus <em>EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), emp)
+              "sum, thus <em>EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components),
+                                                                             emp)
     return outstr
 
 
@@ -4483,11 +4484,62 @@ def calculate_gf_cite_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_gf_cite_index(citations, n_authors)
 
 
+def write_gf_cite_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c/a, c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Adjusted Citations (<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th>"
+    row4 = "<tr class=\"top_row\"><th>Cumulative Adjusted Citations " \
+           "(Σ<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Rank (<em>i</em>)</th>"
+    row6 = "<tr><th>Rank Squared (<em>i</em><sup>2</sup>)</th>"
+    row7 = "<tr><th></th>"
+    gf = metric_set.metrics["gf-cite"].value
+    s = 0
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        s += cs
+        if i + 1 == gf:
+            v = "<em>g<sub>f</sub></em>&nbsp;=&nbsp;{}".format(gf)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td>{:1.2f}</td>".format(cs)
+        row4 += "<td" + ec + ">{:1.2f}</td>".format(s)
+        row5 += "<td>{}</td>".format(i + 1)
+        row6 += "<td" + ec + ">{}</td>".format((i + 1)**2)
+        row7 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em><sup>2</sup> ≤ " \
+              "Σ<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is {}.</p>".format(gf)
+    return outstr
+
+
 def metric_gf_cite_index() -> Metric:
     m = Metric()
     m.name = "gf-cite"
     m.full_name = "fractional citation g-index"
     m.html_name = "fractional citation <em>g-</em>index"
+    m.example = write_gf_cite_index_example
     m.metric_type = INT
     m.symbol = "<em>g<sub>f</sub></em>"
     equation = r"$$g_f=\underset{i}{\max}\left(i^2 \leq \sum\limits_{j=1}^{i}{\frac{C_j}{A_j}}\right).$$"
