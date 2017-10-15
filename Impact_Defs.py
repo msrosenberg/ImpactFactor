@@ -5392,12 +5392,55 @@ def calculate_hpd_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_hpd_index(citations, pub_years, year)
 
 
+def write_hpd_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    cur_year = metric_set.year()
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        age = cur_year - metric_set.publication_years()[i] + 1
+        s = 10*c/age
+        data.append([s, c, age])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>&nbsp;+&nbsp;1)</th>"
+    row3 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>cpd<sub>i</sub></em>)</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th></th>"
+    hpd = metric_set.metrics["hpd-index"].value
+    for i, d in enumerate(data):
+        cpd = d[0]
+        c = d[1]
+        y = d[2]
+        if i + 1 == hpd:
+            v = "<em>hpd</em>&nbsp;=&nbsp;{}".format(hpd)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(y)
+        row3 += "<td" + ec + ">{:1.2f}</td>".format(cpd)
+        row4 += "<td" + ec + ">{}</td>".format(i + 1)
+        row5 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em> ≤ <em>cpd<sub>i</sub></em> is {}.</p>".format(hpd)
+    return outstr
+
+
 def metric_hpd_index() -> Metric:
     m = Metric()
     m.name = "hpd-index"
     m.full_name = "hpd-index"
     m.html_name = "<em>hpd-</em>index"
     m.symbol = "<em>hpd</em>"
+    m.example = write_hpd_index_example
     m.metric_type = INT
     cpd = r"$$cpd_i=\frac{10C_i}{Y-Y_i+1}$$"
     equation = r"$$hpd=\underset{i}{\max}\left(i \leq cpd_i\right)$$"
