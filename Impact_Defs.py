@@ -6400,6 +6400,117 @@ def metric_ddci_index10() -> Metric:
     return m
 
 
+# history h-index (Randic 2009)
+def calculate_history_h_index(metric_set: MetricSet) -> int:
+    h = metric_set.metrics["h-index"].value
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_history_h_index(citations, h)
+
+
+def write_history_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    maxc = max(citations)
+    maxk = 0
+    while maxc > 2**maxk:
+        maxk += 1
+    maxk -= 1
+    hklist = []
+    for k in range(maxk+1):
+        hk = 0
+        for i, c in enumerate(citations):
+            if c >= (i+1) * 2**k:
+                hk = i+1
+        hklist.append(hk)
+    row1 = "<tr class=\"top_row\"><th></th><th>Citations (<em>C<sub>i</sub></em>)</th><th>Rank (<em>i</em>)</th>"
+    for k in range(maxk+2):
+        row1 += "<th>2<sup>{}</sup></th>".format(k)
+    row1 += "</tr>"
+    rows = []
+    for i, c in enumerate(citations):
+        vlist = []
+        for k, hk in enumerate(hklist):
+            if hk == i+1:
+                vlist.append("<em>H</em><sup>{}</sup>&nbsp;=&nbsp;{}".format(k, i+1))
+        if len(vlist) > 0:
+            v = ",&nbsp;".join(vlist)
+        else:
+            v = ""
+        row = "<tr><td>{}</td><td>{}</td><td>{}</td>".format(v, c, i+1)
+        for k in range(maxk+2):
+            if k <= maxk:
+                if i+1 == hklist[k]:
+                    ec = " class=\"box\""
+                else:
+                    ec = ""
+            else:
+                ec = ""
+            row += "<td" + ec + ">{}</td>".format((i+1)*2**k)
+        row += "</tr>"
+        rows.append(row)
+    outstr += row1
+    for row in rows:
+        outstr += row
+    outstr += "</table>"
+    h = metric_set.metrics["history h-index"].value
+    outstr += "<p>The sum of all of the <em>H<sup>k</sup></em> values is {}.</p>".format(h)
+    return outstr
+
+
+def metric_history_h_index() -> Metric:
+    m = Metric()
+    m.name = "history h-index"
+    m.full_name = "history h-index"
+    m.html_name = "history <em>h-</em>index"
+    m.symbol = "<em>H</em>"
+    m.synonyms = ["<em>H</em>"]
+    m.example = write_history_h_index_example
+    m.metric_type = INT
+    hkeq = r"$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$"
+    equation = r"$$H=\sum\limits_{k=0}^{K}{H^k},$$"
+    m.description = "<p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish " \
+                    "among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a " \
+                    "power expansion of the citation counts for publications in the core. This index starts by " \
+                    "creating a vector representing larger power expansions of citation counts. " \
+                    "The <em>k</em><sup>th</sup> " \
+                    "element of the vector is the largest rank (<em>i</em>), for which the number of citations " \
+                    "for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>" + \
+                    hkeq + "<p>By definition, the first (zeroth) entry is <em>h</em> " \
+                    "(since 2<sup>0</sup>&nbsp;=&nbsp;1). The history <em>h-</em>index is simply the sum of the " \
+                    "values in this vector, or</p>" + equation + "<p>where <em>K</em> is the largest power of 2 " \
+                    "for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>."
+    m.references = ["Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. "
+                    "<em>Scientometrics</em> 80(3):809&ndash;818."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_history_h_index
+    return m
+
+
+# quality quotient (Randic 2009)
+def calculate_quality_quotient(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    history_h = metric_set.metrics["history h-index"].value
+    return Impact_Funcs.calculate_quality_quotient(h, history_h)
+
+
+def metric_quality_quotient() -> Metric:
+    m = Metric()
+    m.name = "quality quotient"
+    m.full_name = "quality quotient"
+    m.symbol = "<em>Q</em>"
+    m.synonyms = ["<em>Q</em>"]
+    m.metric_type = FLOAT
+    equation = r"$$Q=\frac{H}{h}.$$"
+    m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
+                    "<em>h-</em>index,</p>" + equation
+    m.references = ["Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. "
+                    "<em>Scientometrics</em> 80(3):809&ndash;818."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_quality_quotient
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -6515,5 +6626,7 @@ def load_all_metrics() -> list:
                    metric_dci_index2(),
                    metric_ddci_index2(),
                    metric_dci_index10(),
-                   metric_ddci_index10()]
+                   metric_ddci_index10(),
+                   metric_history_h_index(),
+                   metric_quality_quotient()]
     return metric_list

@@ -4328,6 +4328,72 @@
         var chart_ddci_index_10 = new google.visualization.LineChart(document.getElementById('chart_ddci_index_10_div'));
         chart_ddci_index_10.draw(data_ddci_index_10, options_ddci_index_10);
 
+        var data_history_h_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>H</em>'],
+           ['1997', 1],
+           ['1998', 4],
+           ['1999', 9],
+           ['2000', 13],
+           ['2001', 18],
+           ['2002', 22],
+           ['2003', 27],
+           ['2004', 34],
+           ['2005', 44],
+           ['2006', 50],
+           ['2007', 56],
+           ['2008', 66],
+           ['2009', 74],
+           ['2010', 78],
+           ['2011', 83],
+           ['2012', 91],
+           ['2013', 98],
+           ['2014', 106],
+           ['2015', 112],
+           ['2016', 117],
+           ['2017', 117],
+		]);
+
+        var options_history_h_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_history_h_index = new google.visualization.LineChart(document.getElementById('chart_history_h_index_div'));
+        chart_history_h_index.draw(data_history_h_index, options_history_h_index);
+
+        var data_quality_quotient = google.visualization.arrayToDataTable([
+           ['Year', '<em>Q</em>'],
+           ['1997', 1.0],
+           ['1998', 2.0],
+           ['1999', 3.0],
+           ['2000', 2.6],
+           ['2001', 3.0],
+           ['2002', 3.142857142857143],
+           ['2003', 3.0],
+           ['2004', 3.090909090909091],
+           ['2005', 3.3846153846153846],
+           ['2006', 3.3333333333333335],
+           ['2007', 3.2941176470588234],
+           ['2008', 3.473684210526316],
+           ['2009', 3.217391304347826],
+           ['2010', 3.25],
+           ['2011', 3.1923076923076925],
+           ['2012', 3.3703703703703702],
+           ['2013', 3.3793103448275863],
+           ['2014', 3.3125],
+           ['2015', 3.2941176470588234],
+           ['2016', 3.342857142857143],
+           ['2017', 3.342857142857143],
+		]);
+
+        var options_quality_quotient = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_quality_quotient = new google.visualization.LineChart(document.getElementById('chart_quality_quotient_div'));
+        chart_quality_quotient.draw(data_quality_quotient, options_quality_quotient);
+
 		}
     </script>
   </head>
@@ -4408,6 +4474,7 @@
         <li><a href="#c_p">generalized impact factor</a></li>
         <li><a href="#gf_paper"><em>g<sub>F</sub></em></a></li>
         <li><a href="#gf_cite"><em>g<sub>f</sub></em></a></li>
+        <li><a href="#history_h_index"><em>H</em></a></li>
         <li><a href="#h2_index"><em>h</em>(2)-index</a></li>
         <li><a href="#h_index"><em>h-</em>index</a></li>
         <li><a href="#h_rate"><em>h-</em>rate</a></li>
@@ -4424,6 +4491,7 @@
         <li><a href="#annual_h_index">hIa</a></li>
         <li><a href="#h_core_cites">Hirsch core citations</a></li>
         <li><a href="#Hirsch_min_const">Hirsch proportionality constant</a></li>
+        <li><a href="#history_h_index">history <em>h-</em>index</a></li>
         <li><a href="#hj_indices"><em>H<sub>j</sub>-</em>indices</a></li>
         <li><a href="#hm_index"><em>h<sub>m</sub>-</em>index</a></li>
         <li><a href="#normalized_h_index"><em>h<sup>n</sup></em></a></li>
@@ -4480,7 +4548,9 @@
         <li><a href="#pure_h_index_frac">pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#pure_h_index_geom">pure <em>h-</em>index (geometric credit)</a></li>
         <li><a href="#pure_h_index_prop">pure <em>h-</em>index (proportional credit)</a></li>
+        <li><a href="#quality_quotient"><em>Q</em></a></li>
         <li><a href="#q2_index"><em>q</em><sup>2</sup>-index</a></li>
+        <li><a href="#quality_quotient">quality quotient</a></li>
         <li><a href="#R_index"><em>R-</em>index</a></li>
         <li><a href="#rational_h_index">rational <em>h-</em>index</a></li>
         <li><a href="#real_h_index">real <em>h-</em>index</a></li>
@@ -8601,6 +8671,80 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="history_h_index" class="metric_container">
+      <h2>history <em>h-</em>index</h2>
+      <p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a power expansion of the citation counts for publications in the core. This index starts by creating a vector representing larger power expansions of citation counts. The <em>k</em><sup>th</sup> element of the vector is the largest rank (<em>i</em>), for which the number of citations for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$<p>By definition, the first (zeroth) entry is <em>h</em> (since 2<sup>0</sup>&nbsp;=&nbsp;1). The history <em>h-</em>index is simply the sum of the values in this vector, or</p>$$H=\sum\limits_{k=0}^{K}{H^k},$$<p>where <em>K</em> is the largest power of 2 for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>.
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th></th><th>Citations (<em>C<sub>i</sub></em>)</th><th>Rank (<em>i</em>)</th><th>2<sup>0</sup></th><th>2<sup>1</sup></th><th>2<sup>2</sup></th><th>2<sup>3</sup></th><th>2<sup>4</sup></th><th>2<sup>5</sup></th><th>2<sup>6</sup></th></tr><tr><td><em>H</em><sup>5</sup>&nbsp;=&nbsp;1</td><td>42</td><td>1</td><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td class="box">32</td><td>64</td></tr><tr><td><em>H</em><sup>3</sup>&nbsp;=&nbsp;2,&nbsp;<em>H</em><sup>4</sup>&nbsp;=&nbsp;2</td><td>36</td><td>2</td><td>2</td><td>4</td><td>8</td><td class="box">16</td><td class="box">32</td><td>64</td><td>128</td></tr><tr><td><em>H</em><sup>2</sup>&nbsp;=&nbsp;3</td><td>14</td><td>3</td><td>3</td><td>6</td><td class="box">12</td><td>24</td><td>48</td><td>96</td><td>192</td></tr><tr><td><em>H</em><sup>1</sup>&nbsp;=&nbsp;4</td><td>11</td><td>4</td><td>4</td><td class="box">8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td></tr><tr><td></td><td>9</td><td>5</td><td>5</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td></tr><tr><td><em>H</em><sup>0</sup>&nbsp;=&nbsp;6</td><td>9</td><td>6</td><td class="box">6</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td></tr><tr><td></td><td>3</td><td>7</td><td>7</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td></tr><tr><td></td><td>2</td><td>8</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td><td>512</td></tr><tr><td></td><td>2</td><td>9</td><td>9</td><td>18</td><td>36</td><td>72</td><td>144</td><td>288</td><td>576</td></tr><tr><td></td><td>2</td><td>10</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td><td>640</td></tr><tr><td></td><td>1</td><td>11</td><td>11</td><td>22</td><td>44</td><td>88</td><td>176</td><td>352</td><td>704</td></tr><tr><td></td><td>1</td><td>12</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td><td>768</td></tr><tr><td></td><td>1</td><td>13</td><td>13</td><td>26</td><td>52</td><td>104</td><td>208</td><td>416</td><td>832</td></tr><tr><td></td><td>0</td><td>14</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td><td>896</td></tr><tr><td></td><td>0</td><td>15</td><td>15</td><td>30</td><td>60</td><td>120</td><td>240</td><td>480</td><td>960</td></tr></table><p>The sum of all of the <em>H<sup>k</sup></em> values is 18.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>H</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">22</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">27</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">34</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">44</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">50</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">56</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">66</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">74</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">78</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">83</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">91</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">98</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">106</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">112</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">117</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">117</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_history_h_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="quality_quotient" class="metric_container">
+      <h2>quality quotient</h2>
+      <p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the <em>h-</em>index,</p>$$Q=\frac{H}{h}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>Q</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.6000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">3.1429</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">3.0909</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">3.3846</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">3.3333</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">3.2941</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">3.4737</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">3.2174</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">3.2500</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">3.1923</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">3.3704</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">3.3793</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">3.3125</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">3.2941</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">3.3429</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">3.3429</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_quality_quotient_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -8650,6 +8794,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>
         <li>Prathap, G. (2010) The 100 most prolific economists using the <em>p-</em>index. <em>Scientometrics</em> 84:167&ndash;172.</li>
         <li>Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. <em>Scientometrics</em> 86:239&ndash;244.</li>
+        <li>Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. <em>Scientometrics</em> 80(3):809&ndash;818.</li>
         <li>Redner, S. (2010) On the meaning of the <em>h-</em>index. <em>Journal of Statistical Mechanics: Theory and Experiment</em> 2010(3):L03005.</li>
         <li>Riikonen, P., and M. Vihinen (2008) National research contributions: A case study on Finnish biomedical research. <em>Scientometrics</em> 77(2):207&ndash;222.</li>
         <li>Rousseau, R. (2006) New developments related to the Hirsch index. <em>Science Focus</em> 1(4):23&ndash;25.</li>

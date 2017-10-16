@@ -1219,3 +1219,25 @@ def calculate_dci_index(total_citations: list, logbase: int) -> list:
 # dDCI-index: dynamic discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
 def calculate_ddci_index(dci: list) -> float:
     return dci[len(dci)-1]
+
+
+# history h-index (Randic 2009)
+def calculate_history_h_index(citations: list, h: int) -> int:
+    tmp_cites = sorted(citations, reverse=True)
+    max_cites = max(tmp_cites)
+    hklist = [h]
+    k = 0
+    while max_cites > 2**k:
+        hk = 0
+        k += 1
+        for i, c in enumerate(tmp_cites):
+            if c >= (i+1) * 2**k:
+                hk = i+1
+        if hk != 0:
+            hklist.append(hk)
+    return sum(hklist)
+
+
+# quality quotient (Randic 2009)
+def calculate_quality_quotient(h: int, history_h: int) -> float:
+    return history_h / h
