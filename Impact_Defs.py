@@ -5817,7 +5817,7 @@ def write_cds_index_example(metric_set: MetricSet) -> str:
             high = 1
         elif i == 1:
             low = 2
-            high =4
+            high = 4
         else:
             low = 2**i + 1
             high = 2**(i+1)
