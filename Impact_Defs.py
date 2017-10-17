@@ -6407,6 +6407,62 @@ def calculate_history_h_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_history_h_index(citations, h)
 
 
+def write_history_h_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["history h-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'threshold lines', {'type': 'string', 'role': 'annotation'}],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    maxc = max(tmp_cites)
+    maxk = 0
+    while maxc > 2**maxk:
+        maxk += 1
+    maxk -= 1
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    # write citation count for ranked publication x
+    for x in range(maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+        outstr += ", {}, null, null],\n".format(v)
+        output.append(outstr)
+    # write slopes
+    for k in range(maxk+1):
+        x = maxv / 2**k
+        output.append("           [{}, null, {}, null],\n".format(0, 0))
+        output.append("           [{}, null, {}, null],\n".format(x, maxv))
+        output.append("           [null, null, null, null],\n")
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [4, 4]}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
 def write_history_h_index_example(metric_set: MetricSet) -> str:
     outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
     outstr += "<table class=\"example_table\">"
@@ -6466,18 +6522,28 @@ def metric_history_h_index() -> Metric:
     m.symbol = "<em>H</em>"
     m.synonyms = ["<em>H</em>"]
     m.example = write_history_h_index_example
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "history_h_index_desc"
+    graph.data = write_history_h_index_desc_data
     m.metric_type = INT
     hkeq = r"$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$"
     equation = r"$$H=\sum\limits_{k=0}^{K}{H^k},$$"
     m.description = "<p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish " \
-                    "among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a " \
+                    "among researchers with identical <em>h-</em> indices. It is based on the idea of exploring a " \
                     "power expansion of the citation counts for publications in the core. This index starts by " \
                     "creating a vector representing larger power expansions of citation counts. " \
                     "The <em>k</em><sup>th</sup> " \
                     "element of the vector is the largest rank (<em>i</em>), for which the number of citations " \
                     "for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>" + \
                     hkeq + "<p>By definition, the first (zeroth) entry is <em>h</em> " \
-                    "(since 2<sup>0</sup>&nbsp;=&nbsp;1). The history <em>h-</em>index is simply the sum of the " \
+                    "(since 2<sup>0</sup>&nbsp;=&nbsp;1). Graphically, this is looking at the intersection " \
+                    "(rounding the rank down to the nearest integer) of the citation curve with a series of lines " \
+                    "with ever increasing slopes of 2<sup><em>k</em></sup>: " \
+                    "1 (=<em>h</em>), 2, 4, 8, etc., with the largest <em>k</em> equal to the line with the largest " \
+                    "slope that actually intersects the citation curve.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
+                    "<p>The history <em>h-</em>index is simply the sum of the " \
                     "values in this vector, or</p>" + equation + "<p>where <em>K</em> is the largest power of 2 " \
                     "for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>."
     m.references = ["Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. "
@@ -6503,7 +6569,13 @@ def metric_quality_quotient() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$Q=\frac{H}{h}.$$"
     m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
-                    "<em>h-</em>index,</p>" + equation
+                    "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
+                    "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
+                    "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
+                    "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
+                    "when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; " \
+                    "when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; " \
+                    "when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>"
     m.references = ["Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. "
                     "<em>Scientometrics</em> 80(3):809&ndash;818."]
     m.graph_type = LINE_CHART

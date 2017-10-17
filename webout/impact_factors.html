@@ -4361,6 +4361,62 @@
         var chart_history_h_index = new google.visualization.LineChart(document.getElementById('chart_history_h_index_div'));
         chart_history_h_index.draw(data_history_h_index, options_history_h_index);
 
+        var data_history_h_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'threshold lines', {'type': 'string', 'role': 'annotation'}],
+           [0, null, null, null],
+           [1, 42, null, null],
+           [2, 36, null, null],
+           [3, 14, null, null],
+           [4, 11, null, null],
+           [5, 9, null, null],
+           [6, 9, null, null],
+           [7, 3, null, null],
+           [8, 2, null, null],
+           [9, 2, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+           [0, null, 0, null],
+           [50.0, null, 50, null],
+           [null, null, null, null],
+           [0, null, 0, null],
+           [25.0, null, 50, null],
+           [null, null, null, null],
+           [0, null, 0, null],
+           [12.5, null, 50, null],
+           [null, null, null, null],
+           [0, null, 0, null],
+           [6.25, null, 50, null],
+           [null, null, null, null],
+           [0, null, 0, null],
+           [3.125, null, 50, null],
+           [null, null, null, null],
+           [0, null, 0, null],
+           [1.5625, null, 50, null],
+           [null, null, null, null],
+		]);
+
+        var options_history_h_index_desc = {
+		     legend: {position: 'top'},
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4]}},
+        };
+
+        var chart_history_h_index_desc = new google.visualization.LineChart(document.getElementById('chart_history_h_index_desc_div'));
+        chart_history_h_index_desc.draw(data_history_h_index_desc, options_history_h_index_desc);
+
         var data_quality_quotient = google.visualization.arrayToDataTable([
            ['Year', '<em>Q</em>'],
            ['1997', 1.0],
@@ -8673,7 +8729,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="history_h_index" class="metric_container">
       <h2>history <em>h-</em>index</h2>
-      <p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a power expansion of the citation counts for publications in the core. This index starts by creating a vector representing larger power expansions of citation counts. The <em>k</em><sup>th</sup> element of the vector is the largest rank (<em>i</em>), for which the number of citations for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$<p>By definition, the first (zeroth) entry is <em>h</em> (since 2<sup>0</sup>&nbsp;=&nbsp;1). The history <em>h-</em>index is simply the sum of the values in this vector, or</p>$$H=\sum\limits_{k=0}^{K}{H^k},$$<p>where <em>K</em> is the largest power of 2 for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>.
+      <p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a power expansion of the citation counts for publications in the core. This index starts by creating a vector representing larger power expansions of citation counts. The <em>k</em><sup>th</sup> element of the vector is the largest rank (<em>i</em>), for which the number of citations for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$<p>By definition, the first (zeroth) entry is <em>h</em> (since 2<sup>0</sup>&nbsp;=&nbsp;1). Graphically, this is looking at the intersection (rounding the rank down to the nearest integer) of the citation curve with a series of lines with ever increasing slopes of 2<sup><em>k</em></sup>: 1 (=<em>h</em>), 2, 4, 8, etc., with the largest <em>k</em> equal to the line with the largest slope that actually intersects the citation curve.</p><div id="chart_history_h_index_desc_div" class="proportional_chart"></div><p>The history <em>h-</em>index is simply the sum of the values in this vector, or</p>$$H=\sum\limits_{k=0}^{K}{H^k},$$<p>where <em>K</em> is the largest power of 2 for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>.
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th></th><th>Citations (<em>C<sub>i</sub></em>)</th><th>Rank (<em>i</em>)</th><th>2<sup>0</sup></th><th>2<sup>1</sup></th><th>2<sup>2</sup></th><th>2<sup>3</sup></th><th>2<sup>4</sup></th><th>2<sup>5</sup></th><th>2<sup>6</sup></th></tr><tr><td><em>H</em><sup>5</sup>&nbsp;=&nbsp;1</td><td>42</td><td>1</td><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td class="box">32</td><td>64</td></tr><tr><td><em>H</em><sup>3</sup>&nbsp;=&nbsp;2,&nbsp;<em>H</em><sup>4</sup>&nbsp;=&nbsp;2</td><td>36</td><td>2</td><td>2</td><td>4</td><td>8</td><td class="box">16</td><td class="box">32</td><td>64</td><td>128</td></tr><tr><td><em>H</em><sup>2</sup>&nbsp;=&nbsp;3</td><td>14</td><td>3</td><td>3</td><td>6</td><td class="box">12</td><td>24</td><td>48</td><td>96</td><td>192</td></tr><tr><td><em>H</em><sup>1</sup>&nbsp;=&nbsp;4</td><td>11</td><td>4</td><td>4</td><td class="box">8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td></tr><tr><td></td><td>9</td><td>5</td><td>5</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td></tr><tr><td><em>H</em><sup>0</sup>&nbsp;=&nbsp;6</td><td>9</td><td>6</td><td class="box">6</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td></tr><tr><td></td><td>3</td><td>7</td><td>7</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td></tr><tr><td></td><td>2</td><td>8</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td><td>512</td></tr><tr><td></td><td>2</td><td>9</td><td>9</td><td>18</td><td>36</td><td>72</td><td>144</td><td>288</td><td>576</td></tr><tr><td></td><td>2</td><td>10</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td><td>640</td></tr><tr><td></td><td>1</td><td>11</td><td>11</td><td>22</td><td>44</td><td>88</td><td>176</td><td>352</td><td>704</td></tr><tr><td></td><td>1</td><td>12</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td><td>768</td></tr><tr><td></td><td>1</td><td>13</td><td>13</td><td>26</td><td>52</td><td>104</td><td>208</td><td>416</td><td>832</td></tr><tr><td></td><td>0</td><td>14</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td><td>896</td></tr><tr><td></td><td>0</td><td>15</td><td>15</td><td>30</td><td>60</td><td>120</td><td>240</td><td>480</td><td>960</td></tr></table><p>The sum of all of the <em>H<sup>k</sup></em> values is 18.</p>
       <h3>History</h3>
@@ -8711,7 +8767,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="quality_quotient" class="metric_container">
       <h2>quality quotient</h2>
-      <p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the <em>h-</em>index,</p>$$Q=\frac{H}{h}.$$
+      <p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the <em>h-</em>index,</p>$$Q=\frac{H}{h}.$$<p>This metric can only really be used to compare individuals with identical <em>h-</em> indices, as the minimum possible value varies with <em>h,</em> in a non-monotonic manner, <em>e.g.,</em> when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1, when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5, when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33, when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
