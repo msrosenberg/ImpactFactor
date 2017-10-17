@@ -16,6 +16,7 @@ FLOATLIST = 5
 LINE_CHART = 1
 MULTILINE_CHART_LEFT = 2
 MULTILINE_CHART_CENTER = 3
+LINE_CHART_COMBINE = 4
 FSTR = "1.4f"  # constant formatting string
 
 
@@ -6583,6 +6584,66 @@ def metric_quality_quotient() -> Metric:
     return m
 
 
+# scientist's level (Mitropoulos 2009)
+def calculate_scientist_level(metric_set: MetricSet) -> list:
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_scientist_level(total_cites, total_pubs)
+
+
+def metric_scientist_level() -> Metric:
+    m = Metric()
+    m.name = "scientist level"
+    m.full_name = "scientist\'s level"
+    m.symbol = "<em>L<sup>v</sup></em> = [<em>v</em>, <em>L</em>]"
+    m.synonyms = ["<em>L<sup>v</sup></em>"]
+    m.metric_type = INTLIST
+    # equation = r"$$Q=\frac{H}{h}.$$"
+    # m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
+    #                 "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
+    #                 "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
+    #                 "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>"
+    m.references = ["Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of "
+                    "Engineering Science and Technology Review</em> 2(1):68&ndash;70."]
+    m.graph_type = LINE_CHART_COMBINE
+    m.calculate = calculate_scientist_level
+    return m
+
+
+# non-integer scientist's level (Todeschini and Baccini 2016)
+def calculate_scientist_level_nonint(metric_set: MetricSet) -> float:
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_scientist_level_nonint(total_cites, total_pubs)
+
+
+def metric_scientist_level_nonint() -> Metric:
+    m = Metric()
+    m.name = "nonint scientist level"
+    m.full_name = "scientists\'s level (non-integer)"
+    m.symbol = "<em>τ</em>"
+    m.synonyms = ["<em>τ</em>"]
+    m.metric_type = FLOAT
+    # equation = r"$$Q=\frac{H}{h}.$$"
+    # m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
+    #                 "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
+    #                 "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
+    #                 "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; " \
+    #                 "when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>"
+    m.references = ["Todeschini, R., and A. Baccini (2016) <em>Handbook of Bibliometric Indicators: Quantitative "
+                    "Tools for Studying and Evaluating Research.</em> Weinheim, Germany: Wiley."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_scientist_level_nonint
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -6700,5 +6761,7 @@ def load_all_metrics() -> list:
                    metric_dci_index10(),
                    metric_ddci_index10(),
                    metric_history_h_index(),
-                   metric_quality_quotient()]
+                   metric_quality_quotient(),
+                   metric_scientist_level(),
+                   metric_scientist_level_nonint()]
     return metric_list

@@ -4450,6 +4450,72 @@
         var chart_quality_quotient = new google.visualization.LineChart(document.getElementById('chart_quality_quotient_div'));
         chart_quality_quotient.draw(data_quality_quotient, options_quality_quotient);
 
+        var data_scientist_level = google.visualization.arrayToDataTable([
+           ['Year', '<em>L<sup>v</sup></em> = [<em>v</em>, <em>L</em>]'],
+           ['1997', 0.7],
+           ['1998', 1.1],
+           ['1999', 1.4],
+           ['2000', 1.7],
+           ['2001', 2.1],
+           ['2002', 2.2],
+           ['2003', 2.3],
+           ['2004', 2.6],
+           ['2005', 2.8],
+           ['2006', 3.1],
+           ['2007', 3.1],
+           ['2008', 3.1],
+           ['2009', 3.2],
+           ['2010', 3.2],
+           ['2011', 3.3],
+           ['2012', 3.3],
+           ['2013', 3.4],
+           ['2014', 3.4],
+           ['2015', 3.4],
+           ['2016', 3.5],
+           ['2017', 3.5],
+		]);
+
+        var options_scientist_level = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_scientist_level = new google.visualization.LineChart(document.getElementById('chart_scientist_level_div'));
+        chart_scientist_level.draw(data_scientist_level, options_scientist_level);
+
+        var data_nonint_scientist_level = google.visualization.arrayToDataTable([
+           ['Year', '<em>τ</em>'],
+           ['1997', 1.8585163970018264],
+           ['1998', 2.2623411892079712],
+           ['1999', 2.5649493574615367],
+           ['2000', 2.9541471114304314],
+           ['2001', 3.278372755820785],
+           ['2002', 3.5407254817658678],
+           ['2003', 3.7414065335165074],
+           ['2004', 3.9157515108030423],
+           ['2005', 4.095491965494748],
+           ['2006', 4.19408214476478],
+           ['2007', 4.301979801563117],
+           ['2008', 4.375431562900157],
+           ['2009', 4.467222735717109],
+           ['2010', 4.582746369767978],
+           ['2011', 4.66061406983824],
+           ['2012', 4.700480365792417],
+           ['2013', 4.784023981441169],
+           ['2014', 4.828194313884062],
+           ['2015', 4.860310390597208],
+           ['2016', 4.8898337675278905],
+           ['2017', 4.909107823594328],
+		]);
+
+        var options_nonint_scientist_level = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_nonint_scientist_level = new google.visualization.LineChart(document.getElementById('chart_nonint_scientist_level_div'));
+        chart_nonint_scientist_level.draw(data_nonint_scientist_level, options_nonint_scientist_level);
+
 		}
     </script>
   </head>
@@ -4571,6 +4637,7 @@
         <li><a href="#k_index"><em>k-</em>index</a></li>
         <li><a href="#ls_h_rate">least squares <em>h-</em>rate</a></li>
         <li><a href="#Levene_j_index">Levene <em>j-</em>index</a></li>
+        <li><a href="#scientist_level"><em>L<sup>v</sup></em></a></li>
         <li><a href="#m_index"><em>m-</em>index</a></li>
         <li><a href="#h_rate"><em>m-</em>quotient</a></li>
         <li><a href="#h_rate"><em>m-</em>ratio index</a></li>
@@ -4613,6 +4680,8 @@
         <li><a href="#Redner_index">Redner index</a></li>
         <li><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="#S_index_h_mixed"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
+        <li><a href="#scientist_level">scientist's level</a></li>
+        <li><a href="#nonint_scientist_level">scientists's level (non-integer)</a></li>
         <li><a href="#sharpened_h_index_coauthor">sharpened <em>h-</em>index (self &amp; coauthor)</a></li>
         <li><a href="#sharpened_h_index_self">sharpened <em>h-</em>index (self)</a></li>
         <li><a href="#specific_impact_s_index">specific impact <em>s-</em>index</a></li>
@@ -4647,6 +4716,7 @@
         <li><a href="#prop_weight_cite_h_cut"><em>ξ<sub>p</sub></em></a></li>
         <li><a href="#pi_rate"><em>π-</em>core citation rate</a></li>
         <li><a href="#pi_index"><em>π-</em>index</a></li>
+        <li><a href="#nonint_scientist_level"><em>τ</em></a></li>
         <li><a href="#frac_weight_cite_agg"><em>ψ<sub>e</sub></em></a></li>
         <li><a href="#prop_weight_cite_agg"><em>ψ<sub>p</sub></em></a></li>
       </ul>
@@ -8729,7 +8799,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="history_h_index" class="metric_container">
       <h2>history <em>h-</em>index</h2>
-      <p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish among researchers with similar <em>h-</em> indices. It is based on the idea of exploring a power expansion of the citation counts for publications in the core. This index starts by creating a vector representing larger power expansions of citation counts. The <em>k</em><sup>th</sup> element of the vector is the largest rank (<em>i</em>), for which the number of citations for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$<p>By definition, the first (zeroth) entry is <em>h</em> (since 2<sup>0</sup>&nbsp;=&nbsp;1). Graphically, this is looking at the intersection (rounding the rank down to the nearest integer) of the citation curve with a series of lines with ever increasing slopes of 2<sup><em>k</em></sup>: 1 (=<em>h</em>), 2, 4, 8, etc., with the largest <em>k</em> equal to the line with the largest slope that actually intersects the citation curve.</p><div id="chart_history_h_index_desc_div" class="proportional_chart"></div><p>The history <em>h-</em>index is simply the sum of the values in this vector, or</p>$$H=\sum\limits_{k=0}^{K}{H^k},$$<p>where <em>K</em> is the largest power of 2 for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>.
+      <p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish among researchers with identical <em>h-</em> indices. It is based on the idea of exploring a power expansion of the citation counts for publications in the core. This index starts by creating a vector representing larger power expansions of citation counts. The <em>k</em><sup>th</sup> element of the vector is the largest rank (<em>i</em>), for which the number of citations for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$<p>By definition, the first (zeroth) entry is <em>h</em> (since 2<sup>0</sup>&nbsp;=&nbsp;1). Graphically, this is looking at the intersection (rounding the rank down to the nearest integer) of the citation curve with a series of lines with ever increasing slopes of 2<sup><em>k</em></sup>: 1 (=<em>h</em>), 2, 4, 8, etc., with the largest <em>k</em> equal to the line with the largest slope that actually intersects the citation curve.</p><div id="chart_history_h_index_desc_div" class="proportional_chart"></div><p>The history <em>h-</em>index is simply the sum of the values in this vector, or</p>$$H=\sum\limits_{k=0}^{K}{H^k},$$<p>where <em>K</em> is the largest power of 2 for which <em>C</em><sub>max</sub> >= 2<sup><em>K</em></sup>.
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th></th><th>Citations (<em>C<sub>i</sub></em>)</th><th>Rank (<em>i</em>)</th><th>2<sup>0</sup></th><th>2<sup>1</sup></th><th>2<sup>2</sup></th><th>2<sup>3</sup></th><th>2<sup>4</sup></th><th>2<sup>5</sup></th><th>2<sup>6</sup></th></tr><tr><td><em>H</em><sup>5</sup>&nbsp;=&nbsp;1</td><td>42</td><td>1</td><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td class="box">32</td><td>64</td></tr><tr><td><em>H</em><sup>3</sup>&nbsp;=&nbsp;2,&nbsp;<em>H</em><sup>4</sup>&nbsp;=&nbsp;2</td><td>36</td><td>2</td><td>2</td><td>4</td><td>8</td><td class="box">16</td><td class="box">32</td><td>64</td><td>128</td></tr><tr><td><em>H</em><sup>2</sup>&nbsp;=&nbsp;3</td><td>14</td><td>3</td><td>3</td><td>6</td><td class="box">12</td><td>24</td><td>48</td><td>96</td><td>192</td></tr><tr><td><em>H</em><sup>1</sup>&nbsp;=&nbsp;4</td><td>11</td><td>4</td><td>4</td><td class="box">8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td></tr><tr><td></td><td>9</td><td>5</td><td>5</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td></tr><tr><td><em>H</em><sup>0</sup>&nbsp;=&nbsp;6</td><td>9</td><td>6</td><td class="box">6</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td></tr><tr><td></td><td>3</td><td>7</td><td>7</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td></tr><tr><td></td><td>2</td><td>8</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td><td>512</td></tr><tr><td></td><td>2</td><td>9</td><td>9</td><td>18</td><td>36</td><td>72</td><td>144</td><td>288</td><td>576</td></tr><tr><td></td><td>2</td><td>10</td><td>10</td><td>20</td><td>40</td><td>80</td><td>160</td><td>320</td><td>640</td></tr><tr><td></td><td>1</td><td>11</td><td>11</td><td>22</td><td>44</td><td>88</td><td>176</td><td>352</td><td>704</td></tr><tr><td></td><td>1</td><td>12</td><td>12</td><td>24</td><td>48</td><td>96</td><td>192</td><td>384</td><td>768</td></tr><tr><td></td><td>1</td><td>13</td><td>13</td><td>26</td><td>52</td><td>104</td><td>208</td><td>416</td><td>832</td></tr><tr><td></td><td>0</td><td>14</td><td>14</td><td>28</td><td>56</td><td>112</td><td>224</td><td>448</td><td>896</td></tr><tr><td></td><td>0</td><td>15</td><td>15</td><td>30</td><td>60</td><td>120</td><td>240</td><td>480</td><td>960</td></tr></table><p>The sum of all of the <em>H<sup>k</sup></em> values is 18.</p>
       <h3>History</h3>
@@ -8767,7 +8837,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="quality_quotient" class="metric_container">
       <h2>quality quotient</h2>
-      <p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the <em>h-</em>index,</p>$$Q=\frac{H}{h}.$$<p>This metric can only really be used to compare individuals with identical <em>h-</em> indices, as the minimum possible value varies with <em>h,</em> in a non-monotonic manner, <em>e.g.,</em> when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1, when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5, when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33, when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>
+      <p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the <em>h-</em>index,</p>$$Q=\frac{H}{h}.$$<p>This metric can only really be used to compare individuals with identical <em>h-</em>indices, as the minimum possible value varies with <em>h</em> in a non-monotonic manner, <em>e.g.,</em> when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -8798,6 +8868,78 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
         <div class="graph_container">
           <div id="chart_quality_quotient_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="scientist_level" class="metric_container">
+      <h2>scientist's level</h2>
+      
+      <h3>History</h3>
+    <div id="scientist_level" class="metric_data_container_wide">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>L<sup>v</sup></em> = [<em>v</em>, <em>L</em>]</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">[0, 7]</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">[1, 1]</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">[1, 4]</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">[1, 7]</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">[2, 1]</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">[2, 2]</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">[2, 3]</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">[2, 6]</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">[2, 8]</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">[3, 1]</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">[3, 1]</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">[3, 1]</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">[3, 2]</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">[3, 2]</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">[3, 3]</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">[3, 3]</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">[3, 4]</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">[3, 4]</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">[3, 4]</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">[3, 5]</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">[3, 5]</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_scientist_level_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="nonint_scientist_level" class="metric_container">
+      <h2>scientists's level (non-integer)</h2>
+      
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>τ</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.8585</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.2623</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.5649</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.9541</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.2784</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">3.5407</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">3.7414</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">3.9158</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">4.0955</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">4.1941</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">4.3020</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">4.3754</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">4.4672</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">4.5827</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">4.6606</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">4.7005</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">4.7840</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">4.8282</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">4.8603</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">4.8898</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">4.9091</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_nonint_scientist_level_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -8845,6 +8987,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
+        <li>Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of Engineering Science and Technology Review</em> 2(1):68&ndash;70.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>
         <li>Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. <em>ArXiv:physics</em>:0508113v1.</li>
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>

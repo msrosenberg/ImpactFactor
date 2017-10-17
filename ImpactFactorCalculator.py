@@ -344,6 +344,18 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
                     outfile.write("        var options_{} = {{\n".format(enc_name))
                     outfile.write("		     hAxis: {slantedText: true},\n")
                     outfile.write("        };\n")
+                elif metric.graph_type == Impact_Defs.LINE_CHART_COMBINE:
+                    outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
+                    for metric_set in yearly_metrics_list:
+                        t = metric_set.metrics[name].value
+                        v = t[0] + t[1]/10
+                        outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
+                    outfile.write("		]);\n")
+                    outfile.write("\n")
+                    outfile.write("        var options_{} = {{\n".format(enc_name))
+                    outfile.write("		     legend: {position: 'none'},\n")
+                    outfile.write("		     hAxis: {slantedText: true},\n")
+                    outfile.write("        };\n")
                 outfile.write("\n")
                 outfile.write("        var chart_{} = new google.visualization."
                               "LineChart(document.getElementById('chart_{}_div'));\n".format(enc_name, enc_name))

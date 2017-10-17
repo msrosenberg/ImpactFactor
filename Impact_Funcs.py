@@ -1241,3 +1241,16 @@ def calculate_history_h_index(citations: list, h: int) -> int:
 # quality quotient (Randic 2009)
 def calculate_quality_quotient(h: int, history_h: int) -> float:
     return history_h / h
+
+
+# scientist's level (Mitropoulos 2009)
+def calculate_scientist_level(total_cites: int, total_pubs: int) -> list:
+    n = total_cites + total_pubs
+    v = math.floor(math.log10(n))
+    level = math.floor(n / 10**v)
+    return [v, level]
+
+
+# non-integer scientist's level (Todeschini and Baccini 2016)
+def calculate_scientist_level_nonint(total_cites: int, total_pubs: int) -> float:
+    return math.log(math.sqrt(total_cites) + total_pubs)
