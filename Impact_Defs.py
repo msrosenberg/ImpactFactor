@@ -6598,15 +6598,26 @@ def metric_scientist_level() -> Metric:
     m.symbol = "<em>L<sup>v</sup></em> = [<em>v</em>, <em>L</em>]"
     m.synonyms = ["<em>L<sup>v</sup></em>"]
     m.metric_type = INTLIST
-    # equation = r"$$Q=\frac{H}{h}.$$"
-    # m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
-    #                 "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
-    #                 "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
-    #                 "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>"
+    eq1 = r"$$v=\text{floor}\left[\log\left(C^P + P\right)\right]$$"
+    eq2 = r"$$L^v=\text{floor}\left(\frac{C^P + P}{10^v}\right)$$"
+    eq3 = r"$$\text{level}=v.L=v + \frac{L}{10}.$$"
+    m.description = "<p>The scientist\'s level (Mitropoulos 2009) is an attempt to quantitatively break " \
+                    "scientist\'s into broad categories of advancement based on a combination of their total " \
+                    "citations and publications. It is expressed as <em>L<sup>v</sup>,</em> where <em>v</em> " \
+                    "represent the overall level and <em>L</em> the progress within <em>v</em>. Functionally, " \
+                    "these values are logarithmic decompositions of the sum of citations and publications, such " \
+                    "that <em>v</em> represents the integer value of the (base 10) logarithm of the sum " \
+                    "(<em>i.e.,</em> <em>v</em>&nbsp;=&nbsp;0 when the sum is less than 10, <em>v</em>&nbsp;=&nbsp;1 " \
+                    "when the sum is between 10 and 99, <em>v</em>&nbsp;=&nbsp;2 when the sum is between 100 and " \
+                    "999, etc.), and <em>L</em> is the integer value of the sum divided by " \
+                    "10<sup><em>v</em></sup> (<em>i.e.,</em> if <em>v</em>&nbsp;=&nbsp;2, <em>L</em>&nbsp;=&nbsp;1 if " \
+                    "the sum is between 100 and 199, <em>L</em>&nbsp;=&nbsp;2 if the sum is between 200 and 299, " \
+                    "etc.).</p> " + eq1 + eq2 + \
+                    "<p><em>L</em> can be any integer from 1 to 9, while <em>v</em> will generally be an integer " \
+                    "between 0 and 5 (a <em>v</em> of 6 would require > 1 million combined citations and " \
+                    "publications).</p>" \
+                    "<p>Because of this structure and the limited possible values of these measures, one could " \
+                    "readily combine these into a single value as,</p>" + eq3
     m.references = ["Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of "
                     "Engineering Science and Technology Review</em> 2(1):68&ndash;70."]
     m.graph_type = LINE_CHART_COMBINE
@@ -6628,15 +6639,11 @@ def metric_scientist_level_nonint() -> Metric:
     m.symbol = "<em>τ</em>"
     m.synonyms = ["<em>τ</em>"]
     m.metric_type = FLOAT
-    # equation = r"$$Q=\frac{H}{h}.$$"
-    # m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
-    #                 "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
-    #                 "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
-    #                 "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; " \
-    #                 "when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>"
+    equation = r"$$\tau=\ln{\left(\sqrt{C^P}+P\right)}.$$"
+    m.description = "<p>The non-integer scientist\'s level (Todeschini and Baccini 2016) is a logarithmic " \
+                    "approach to scaling the total number of citations and publications of an author into a single " \
+                    "measure without the degeneracy of the integer measure. It is calculated as</p>" + \
+                    equation
     m.references = ["Todeschini, R., and A. Baccini (2016) <em>Handbook of Bibliometric Indicators: Quantitative "
                     "Tools for Studying and Evaluating Research.</em> Weinheim, Germany: Wiley."]
     m.graph_type = LINE_CHART
