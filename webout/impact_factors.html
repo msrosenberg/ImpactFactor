@@ -4516,6 +4516,39 @@
         var chart_nonint_scientist_level = new google.visualization.LineChart(document.getElementById('chart_nonint_scientist_level_div'));
         chart_nonint_scientist_level.draw(data_nonint_scientist_level, options_nonint_scientist_level);
 
+        var data_q_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>Q</em>'],
+           ['1997', 0.4],
+           ['1998', 0.05555555555555555],
+           ['1999', 0.11904761904761904],
+           ['2000', 0.2727272727272727],
+           ['2001', 0.12777777777777777],
+           ['2002', 0.1518796992481203],
+           ['2003', 0.29782608695652174],
+           ['2004', 0.171474358974359],
+           ['2005', 0.21365847414234512],
+           ['2006', 0.27122113997113995],
+           ['2007', 0.2263265306122449],
+           ['2008', 0.19452260702260704],
+           ['2009', 0.18866688866688866],
+           ['2010', 0.12477954144620812],
+           ['2011', 0.1804267161410018],
+           ['2012', 0.09821428571428571],
+           ['2013', 0.06578798185941043],
+           ['2014', 0.059549071618037144],
+           ['2015', 0.04118931915542085],
+           ['2016', 0.1493386243386243],
+           ['2017', 0.14552432995055942],
+		]);
+
+        var options_q_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_q_index = new google.visualization.LineChart(document.getElementById('chart_q_index_div'));
+        chart_q_index.draw(data_q_index, options_q_index);
+
 		}
     </script>
   </head>
@@ -4671,7 +4704,8 @@
         <li><a href="#pure_h_index_frac">pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#pure_h_index_geom">pure <em>h-</em>index (geometric credit)</a></li>
         <li><a href="#pure_h_index_prop">pure <em>h-</em>index (proportional credit)</a></li>
-        <li><a href="#quality_quotient"><em>Q</em></a></li>
+        <li><a href="#q_index"><em>Q</em></a></li>
+        <li><a href="#q_index"><em>q-</em>index</a></li>
         <li><a href="#q2_index"><em>q</em><sup>2</sup>-index</a></li>
         <li><a href="#quality_quotient">quality quotient</a></li>
         <li><a href="#R_index"><em>R-</em>index</a></li>
@@ -4977,7 +5011,7 @@
       <h2><em>h-</em>index</h2>
       <p>The <span class="metric_name"><em>h-</em>index</span> (Hirsch 2005) is the most important personal impact factor one needs to be familiar with, not because it is necessarily the best, but because (1) it was the first major index of its type and most of the other indices are based on it in some way, and (2) it is the single factor with which most other people (<em>e.g.</em>, administrators) are likely to be somewhat familiar. You may find another index which you prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> citations. Note that <em>h</em> is measured in publications. In formal notation, one might write</p>$$h=\underset{i}{\max}\left(i\leq C_i\right).$$<p>These top <em>h</em> publications are often referred to as the &ldquo;Hirsch core.&rdquo;</p><div id="chart_h_index_desc_div" class="proportional_chart"></div><p>One way to graphically visualize <em>h</em> is to imagine a plot of citation count versus rank for all publications (often called the citation curve). By definition, this plot will generally trend from upper left (highest ranked publications with most citations, to lower right (lowest ranked publications with fewest citations), depending on the precise citation distribution of the author. If one were to add a (threshold) line with a slope of one to this plot, the point where the threshold line crosses the citation curve (truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the size (length of sides) of the largest square that one can fit under the citation curve.</p>
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td class="box">9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where <em>i</em> ≤ <em>C<sub>i</sub></em> is 6.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td class="box">9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is 6.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -8943,6 +8977,42 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="q_index" class="metric_container">
+      <h2><em>q-</em>index</h2>
+      <p>The <em>q-</em>index (Bartneck and Kokkelmans 2011) is an attempt to measure whether an author is manipulating their own <em>h-</em>index through self-citation. It calculates a potential cost of a self-citation for each publication whose citation count is equal or less than <em>h,</em> sums these costs for all self-citations, then normalizes by the total number of publications. Essentially, publications with a citation count equal to <em>h</em> generate a cost of 1 per self-citation, with each subsequent publication in rank order generating costs of 1/2, 1/3, 1/4, etc., with ties generating equal values. The potential costs are calculated as:</p>$$q_i=\left|\begin{matrix} 0 & \text{if }C_i > h \text{ or } i < h \\ \frac{1}{i+1-a_i-h} & \text{if }C_i \leq h \text{ and } i \geq h \end{matrix}\right.,$$<p>where</p>$$a_i=\left|\begin{matrix} 0 & \text{if }i \leq h \\ a_{i-1} & \text{if }i>h \text{ and } C_i \neq C_{i-1}\\ 1+a_{i-1} & \text{if }i>h \text{ and } C_i = C_{i-1} \end{matrix}\right. .$$<p>The total self-citations for any publication where <em>C<sub>i</sub></em>&nbsp;≤&nbsp;<em>h</em> are multiplied by the associated cost and these values are summed and averaged for all publications.</p>$$Q=\frac{1}{P}\sum\limits_{i=1}^{P}{c_i q_i}.$$<p>where <em>c<sub>i</sub></em> is the number of self-citations to the <em>i</em><sup>th</sup> publication.</p><p>Simulations indicate that selective citing to boost <em>h</em> may lead to a <em>q</em>-index, greater than one, while lower values are found when self-citation is random or fair.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>Q</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.4000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.0556</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.1190</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.2727</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.1278</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.1519</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.2978</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.1715</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.2137</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.2712</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.2263</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.1945</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.1887</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.1248</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.1804</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.0982</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.0658</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.0595</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.0412</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.1493</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.1455</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_q_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -8952,6 +9022,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new index to characterize the scientific outpuf of researchers based on the <em>h-</em> and <em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400.</li>
         <li>Anderson, T.R., R.K.S. Hankin, and P.D. Killworth (2008) Beyond the Durfee square: Enhancing the <em>h-</em>index to score total publication output. <em>Scientometrics</em> 76(3):577&ndash;588.</li>
         <li>Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors profit from co-authors. <em>PLoS ONE</em> 8(4):e59814.</li>
+        <li>Bartneck, C., and S. Kokkelmans (2011) Detecting <em>h-</em>index manipulation through self-citation analysis. <em>Scientometrics</em> 87(1):85&ndash;98.</li>
         <li>Batista, P.D., M.G. Campiteli, O. Kinouchi, and A.S. Martinez (2006) Is it possible to compare researchers with different scientific interests? <em>Scientometrics</em> 68(1):179&ndash;189.</li>
         <li>Bihari, A., and S. Tripathi (2017) EM-index: A new measure to evaluate the scientific impact of scientists. <em>Scientometrics</em> 112(1):659&ndash;677.</li>
         <li>Bornmann, L., R. Mutz, and H.-D. Daniel (2008) Are there better indices for evaluation purposes than the <em>h</em> index? A comparison of nine different variants of the <em>h</em> index using data from biomedicine. <em>Journal of the American Society for Information Science and Technology</em> 59(5):830&ndash;837.</li>

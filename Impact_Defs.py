@@ -452,7 +452,7 @@ def write_h_index_example(metric_set: MetricSet) -> str:
     row2 += "</tr>"
     row3 += "</tr>"
     outstr += row1 + row2 + row3 + "</table>"
-    outstr += "<p>The largest rank where <em>i</em> ≤ <em>C<sub>i</sub></em> is {}.</p>".format(h)
+    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {}.</p>".format(h)
     return outstr
 
 
@@ -4619,8 +4619,7 @@ def metric_gf_cite_index() -> Metric:
 def calculate_hm_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_hm_index(citations, rank_order, n_authors)
+    return Impact_Funcs.calculate_hm_index(citations, n_authors)
 
 
 def write_hm_index_example(metric_set: MetricSet) -> str:
@@ -6610,8 +6609,8 @@ def metric_scientist_level() -> Metric:
                     "(<em>i.e.,</em> <em>v</em>&nbsp;=&nbsp;0 when the sum is less than 10, <em>v</em>&nbsp;=&nbsp;1 " \
                     "when the sum is between 10 and 99, <em>v</em>&nbsp;=&nbsp;2 when the sum is between 100 and " \
                     "999, etc.), and <em>L</em> is the integer value of the sum divided by " \
-                    "10<sup><em>v</em></sup> (<em>i.e.,</em> if <em>v</em>&nbsp;=&nbsp;2, <em>L</em>&nbsp;=&nbsp;1 if " \
-                    "the sum is between 100 and 199, <em>L</em>&nbsp;=&nbsp;2 if the sum is between 200 and 299, " \
+                    "10<sup><em>v</em></sup> (<em>i.e.,</em> if <em>v</em>&nbsp;=&nbsp;2, <em>L</em>&nbsp;=&nbsp;1 " \
+                    "if the sum is between 100 and 199, <em>L</em>&nbsp;=&nbsp;2 if the sum is between 200 and 299, " \
                     "etc.).</p> " + eq1 + eq2 + \
                     "<p><em>L</em> can be any integer from 1 to 9, while <em>v</em> will generally be an integer " \
                     "between 0 and 5 (a <em>v</em> of 6 would require > 1 million combined citations and " \
@@ -6648,6 +6647,48 @@ def metric_scientist_level_nonint() -> Metric:
                     "Tools for Studying and Evaluating Research.</em> Weinheim, Germany: Wiley."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_scientist_level_nonint
+    return m
+
+
+# q-index (Bartneck and Kokkelmans 2011)
+def calculate_q_index(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    cites = metric_set.citations
+    self_cites = metric_set.self_citations
+    return Impact_Funcs.calculate_q_index(cites, self_cites, h)
+
+
+def metric_q_index() -> Metric:
+    m = Metric()
+    m.name = "q-index"
+    m.full_name = "q-index"
+    m.html_name = "<em>q-</em>index"
+    m.symbol = "<em>Q</em>"
+    m.synonyms = ["<em>Q</em>"]
+    m.metric_type = FLOAT
+    qieq = r"$$q_i=\left|\begin{matrix} 0 & \text{if }C_i > h \text{ or } i < h \\ \frac{1}{i+1-a_i-h} & " \
+           r"\text{if }C_i \leq h \text{ and } i \geq h \end{matrix}\right.,$$"
+    aieq = r"$$a_i=\left|\begin{matrix} 0 & \text{if }i \leq h \\ a_{i-1} & \text{if }i>h \text{ and } C_i " \
+           r"\neq C_{i-1}\\ 1+a_{i-1} & \text{if }i>h \text{ and } C_i = C_{i-1} \end{matrix}\right. .$$"
+    equation = r"$$Q=\frac{1}{P}\sum\limits_{i=1}^{P}{c_i q_i}.$$"
+    m.description = "<p>The <em>q-</em>index (Bartneck and Kokkelmans 2011) is an attempt to measure whether an " \
+                    "author is manipulating their own <em>h-</em>index through self-citation. It calculates a " \
+                    "potential cost of a self-citation for each publication whose citation count is equal or less " \
+                    "than <em>h,</em> sums these costs for all self-citations, then normalizes by the total " \
+                    "number of publications. Essentially, publications with a citation count equal to <em>h</em> " \
+                    "generate a cost of 1 per self-citation, with each subsequent publication in rank order " \
+                    "generating costs of 1/2, 1/3, 1/4, etc., with ties generating equal values. The potential costs " \
+                    "are calculated as:</p>" + qieq + "<p>where</p>" + aieq + "<p>The total self-citations for any " \
+                    "publication where <em>C<sub>i</sub></em>&nbsp;≤&nbsp;<em>h</em> are multiplied by the " \
+                    "associated cost and these values are summed and averaged for all publications.</p>" + equation + \
+                    "<p>where <em>c<sub>i</sub></em> is the number of self-citations to the <em>i</em><sup>th</sup> " \
+                    "publication.</p><p>Simulations indicate that selective citing to boost <em>h</em> may lead to a " \
+                    "<em>q</em>-index, greater than one, while lower values are found when self-citation is random " \
+                    "or fair.</p>"
+    m.references = ["Bartneck, C., and S. Kokkelmans (2011) Detecting <em>h-</em>index manipulation through "
+                    "self-citation analysis. <em>Scientometrics</em> 87(1):85&ndash;98."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_q_index
     return m
 
 
@@ -6770,5 +6811,6 @@ def load_all_metrics() -> list:
                    metric_history_h_index(),
                    metric_quality_quotient(),
                    metric_scientist_level(),
-                   metric_scientist_level_nonint()]
+                   metric_scientist_level_nonint(),
+                   metric_q_index()]
     return metric_list

@@ -585,7 +585,7 @@ def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: i
 
 
 # hm-index/hF-index (Schreiber 2008)
-def calculate_hm_index(citations: list, rank_order: list, n_authors: list) -> float:
+def calculate_hm_index(citations: list, n_authors: list) -> float:
     hm_index = 0
     cumulative_rank = 0
     data = []
@@ -1254,3 +1254,43 @@ def calculate_scientist_level(total_cites: int, total_pubs: int) -> list:
 # non-integer scientist's level (Todeschini and Baccini 2016)
 def calculate_scientist_level_nonint(total_cites: int, total_pubs: int) -> float:
     return math.log(math.sqrt(total_cites) + total_pubs)
+
+
+# q-index (Bartneck and Kokkelmans 2011)
+def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
+    data = []
+    for i in range(len(citations)):
+        data.append([citations[i], self_citations[i]])
+    data.sort(reverse=True)
+    # qlist = []
+    # alist = []
+    prev_a = 0
+    q_index = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        s = d[1]
+        if c <= h:
+            if i + 1 <= h:
+                a = 0
+            elif c == data[i-1][0]:
+                a = prev_a + 1
+            else:
+                a = prev_a
+            if i + 1 < h:
+                q = 0
+            else:
+                q = 1 / ((i+1) + 1 - a - h)
+            prev_a = a
+        else:
+            # a = 0
+            q = 0
+        # alist.append(a)
+        # qlist.append(q)
+        q_index += q*s
+    # print(h)
+    # print(data)
+    # print(alist)
+    # print(qlist)
+    # print(q_index / len(citations))
+    # print()
+    return q_index / len(citations)
