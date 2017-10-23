@@ -1262,8 +1262,6 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
     for i in range(len(citations)):
         data.append([citations[i], self_citations[i]])
     data.sort(reverse=True)
-    # qlist = []
-    # alist = []
     prev_a = 0
     q_index = 0
     for i, d in enumerate(data):
@@ -1282,15 +1280,6 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
                 q = 1 / ((i+1) + 1 - a - h)
             prev_a = a
         else:
-            # a = 0
             q = 0
-        # alist.append(a)
-        # qlist.append(q)
         q_index += q*s
-    # print(h)
-    # print(data)
-    # print(alist)
-    # print(qlist)
-    # print(q_index / len(citations))
-    # print()
     return q_index / len(citations)

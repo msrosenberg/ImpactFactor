@@ -6658,6 +6658,77 @@ def calculate_q_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_q_index(cites, self_cites, h)
 
 
+def write_q_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    h = metric_set.metrics["h-index"].value
+    q_index = metric_set.metrics["q-index"].value
+    tmp_cites = metric_set.citations
+    tmp_self = metric_set.self_citations
+    data = []
+    for i in range(len(tmp_cites)):
+        data.append([tmp_cites[i], tmp_self[i], 0, 0])
+    data.sort(reverse=True)
+    prev_a = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        s = d[1]
+        if c <= h:
+            if i + 1 <= h:
+                a = 0
+            elif c == data[i-1][0]:
+                a = prev_a + 1
+            else:
+                a = prev_a
+            if i + 1 < h:
+                q = 0
+            else:
+                q = 1 / ((i+1) + 1 - a - h)
+            prev_a = a
+        else:
+            a = 0
+            q = 0
+        d[2] = a
+        d[3] = q
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Self Citations (<em>c<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    row5 = "<tr><th><em>a<sub>i</sub></em></th>"
+    row6 = "<tr><th><em>q<sub>i</sub></em></th>"
+    row7 = "<tr><th><em>c<sub>i</sub>q<sub>i</sub></em></th>"
+    sq = 0
+    for i, d in enumerate(data):
+        c = d[0]
+        s = d[1]
+        a = d[2]
+        q = d[3]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td>{}</td>".format(s)
+        row3 += "<td" + ec + ">{}</td>".format(i+1)
+        row4 += "<td>{}</td>".format(v)
+        row5 += "<td>{}</td>".format(a)
+        row6 += "<td>{:0.3f}</td>".format(q)
+        row7 += "<td>{:0.3f}</td>".format(q*s)
+        sq += q*s
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + row7 + "</table>"
+    outstr += "<p>The sum of <em>c<sub>i</sub>q<sub>i</sub></em> is {:1.4f}, thus Q is {:1.4f}.</p>".format(sq, q_index)
+    return outstr
+
+
 def metric_q_index() -> Metric:
     m = Metric()
     m.name = "q-index"
@@ -6665,6 +6736,7 @@ def metric_q_index() -> Metric:
     m.html_name = "<em>q-</em>index"
     m.symbol = "<em>Q</em>"
     m.synonyms = ["<em>Q</em>"]
+    m.example = write_q_index_example
     m.metric_type = FLOAT
     qieq = r"$$q_i=\left|\begin{matrix} 0 & \text{if }C_i > h \text{ or } i < h \\ \frac{1}{i+1-a_i-h} & " \
            r"\text{if }C_i \leq h \text{ and } i \geq h \end{matrix}\right.,$$"
