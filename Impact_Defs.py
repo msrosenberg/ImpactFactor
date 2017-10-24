@@ -6683,7 +6683,7 @@ def write_q_index_example(metric_set: MetricSet) -> str:
             if i + 1 < h:
                 q = 0
             else:
-                q = 1 / ((i+1) + 1 - a - h)
+                q = (i+1) + 1 - a - h
             prev_a = a
         else:
             a = 0
@@ -6714,9 +6714,14 @@ def write_q_index_example(metric_set: MetricSet) -> str:
         row3 += "<td" + ec + ">{}</td>".format(i+1)
         row4 += "<td>{}</td>".format(v)
         row5 += "<td>{}</td>".format(a)
-        row6 += "<td>{:0.3f}</td>".format(q)
-        row7 += "<td>{:0.3f}</td>".format(q*s)
-        sq += q*s
+        if q == 0:
+            row6 += "<td>0</td>"
+            tsq = 0
+        else:
+            row6 += "<td>1/{}</td>".format(q)
+            tsq = s/q
+        row7 += "<td>{:0.3f}</td>".format(tsq)
+        sq += tsq
     row1 += "</tr>"
     row2 += "</tr>"
     row3 += "</tr>"
