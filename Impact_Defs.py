@@ -773,8 +773,8 @@ def metric_g_index() -> Metric:
                     "<div id=\"chart_" + graph2.name + "_div\" class=\"proportional_chart2\"></div>" \
                     "</div><div class=\"clear_float\">" \
                     "<p>Although not usually " \
-                    "formulated this way, the above also shows an alternative interpretation of the <em>g-</em> " \
-                    "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em> " \
+                    "formulated this way, the above also shows an alternative interpretation of the <em>g-</em>" \
+                    "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em>" \
                     "index is the largest value for which the top <em>g</em> publications average <em>g</em> " \
                     "citations, while <em>h</em> is the largest value for which the top <em>h</em> publications " \
                     "have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number " \
