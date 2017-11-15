@@ -221,24 +221,76 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
 # -----------------------------------------------------
 # Output results as set of webpages
 # -----------------------------------------------------
-def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
-    def encode_name(tname: str) -> str:
-        tname = tname.replace(" ", "_")
-        tname = tname.replace("-", "_")
-        tname = tname.replace("/", "_")
-        tname = tname.replace("(", "")
-        tname = tname.replace(")", "")
-        tname = tname.replace(".", "_")
-        tname = tname.replace("%", "")
-        return tname
+def encode_name(name: str) -> str:
+    name = name.replace(" ", "_")
+    name = name.replace("-", "_")
+    name = name.replace("/", "_")
+    name = name.replace("(", "")
+    name = name.replace(")", "")
+    name = name.replace(".", "_")
+    name = name.replace("%", "")
+    return name
 
-    def strip_html(html_str: str) -> str:
-        """
-        remove any stray html tags from string
-        """
-        regex = r"<.+?>"
-        return re.sub(regex, "", html_str)
 
+def strip_html(html_str: str) -> str:
+    """
+    remove any stray html tags from string
+    """
+    regex = r"<.+?>"
+    return re.sub(regex, "", html_str)
+
+
+def html_output_introduction(outfile):
+    outfile.write("   <h2>Publication and Citation-based Impact</h2>")
+    outfile.write("   <p>I have been collecting data on citations of my own work for a number of years and once "
+                  "wrote a <a href=\"https://peerj.com/preprints/477/\">guide to the concepts for "
+                  "biologists</a> (rather than for those better versed in bibliometrics and scientometrics) "
+                  "(put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics "
+                  "beyond those described in the paper and have now created a separate webpage "
+                  "for every metric, including a basic explanation, a worked example (in many cases), and a "
+                  "year-by-year history of that metric based on my own publication record.</p>\n")
+    outfile.write("   <p>The code for calculating all of these metrics can be found on "
+                  "<a href=\"https://github.com/msrosenberg/ImpactFactor\"><span class=\"fab fa-github\">"
+                  "</span> Github</a>.</p>\n")
+    outfile.write("      <h3>Common Symbols and Definitions</h3>\n")
+    outfile.write("        <ul>\n")
+    outfile.write("          <li><em>P</em> &mdash; The total number of publications of an author. Unless "
+                  "otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having "
+                  "the most citations and <em>P</em> the fewest.</li>\n")
+    outfile.write("          <li><em>C<sub>i</sub></em> &mdash; The number of citations for the "
+                  "<em>i</em><sup>th</sup> publication.</li>\n")
+    outfile.write("          <li><em>C<sup>x</sup></em> &mdash; The sum of citations for the top <em>x</em> "
+                  "publications, " + r"\(C^x=\sum\limits_{i=1}^{x}{C_i}\)" + ".</li>\n")
+    outfile.write("          <li><em>A<sub>i</sub></em> &mdash; The number of authors of the "
+                  "<em>i</em><sup>th</sup> publication.</li>\n")
+    outfile.write("          <li><em>a<sub>i</sub></em> &mdash; The ordered position of the focal author among "
+                  "the full author list of the <em>i</em><sup>th</sup> publication, it\'s value can range from "
+                  "1 to <em>A<sub>i</sub>.</em></li>\n")
+    outfile.write("          <li><em>Y<sub>i</sub></em> &mdash; The year of the "
+                  "<em>i</em><sup>th</sup> publication.</li>\n")
+    outfile.write("          <li><em>Y</em><sub>0</sub></em> &mdash; The year of the "
+                  "author\'s first publication, " + r"\(Y_0=\min\left(Y_i\right)\)" + ".</li>\n")
+    outfile.write(
+        "          <li>academic age &mdash; The number of years since an author\'s first publication. "
+        "If <em>Y</em> is the current year (or year of interest), the academic age of the author is " +
+        r"\(Y-Y_0+1\)" + ".</li>\n")
+    outfile.write("        </ul>\n")
+
+
+def create_name_links(metric_names, metric_base_data, inc_self):
+    name_links = {}
+    for name in metric_names:
+        metric = metric_base_data.metrics[name]
+        if metric.is_self and not inc_self:
+            pass  # skip self-citation metrics
+        else:
+            name_links[metric.full_name] = [metric.html_name, encode_name(name)]
+            for n in metric.synonyms:
+                name_links[strip_html(n)] = [n, encode_name(name)]
+    return name_links
+
+
+def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
         outfile.write("<!DOCTYPE HTML>\n")
         outfile.write("<html lang=\"en\">\n")
@@ -258,8 +310,6 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
         outfile.write("      google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});\n")
         outfile.write("      google.setOnLoadCallback(drawChart);\n")
         outfile.write("      function drawChart() {\n")
-        # metric_base_data = yearly_metrics_list[0]
-        # metric_base_data = yearly_metrics_list[len(yearly_metrics_list)-1]
         metric_base_data = yearly_metrics_list[4]  # use data from the 5th year for examples
         metric_names = metric_base_data.metric_names
         for name in metric_names:
@@ -370,50 +420,17 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
 
         outfile.write("  </head>\n")
         outfile.write("  <body>\n")
-        # metric_base_data = yearly_metrics_list[0]
         metric_names = metric_base_data.metric_names
+        outfile.write("    <div>\n")
+        html_output_introduction(outfile)
+
         # output index of names
-        name_links = {}
-        for name in metric_names:
-            metric = metric_base_data.metrics[name]
-            if metric.is_self and not inc_self:
-                pass  # skip self-citation metrics
-            else:
-                name_links[metric.full_name] = [metric.html_name, encode_name(name)]
-                for n in metric.synonyms:
-                    name_links[strip_html(n)] = [n, encode_name(name)]
+        name_links = create_name_links(metric_names, metric_base_data, inc_self)
+        outfile.write("      <h2>Index</h2>\n")
+        outfile.write("      <ul class=\"index_list\">\n")
         # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
         index_list = [[i.lower(), i] for i in list(name_links.keys())]
         index_list.sort()
-        outfile.write("    <div>\n")
-        outfile.write("      <h1>Metric Values and Descriptions</h1>\n")
-        outfile.write("      <h2>Inroduction</h2>\n")
-
-        outfile.write("      <h3>Common Symbols and Definitions</h3>\n")
-        outfile.write("        <ul>\n")
-        outfile.write("          <li><em>P</em> &mdash; The total number of publications of an author. Unless "
-                      "otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having "
-                      "the most citations and <em>P</em> the fewest.</li>\n")
-        outfile.write("          <li><em>C<sub>i</sub></em> &mdash; The number of citations for the "
-                      "<em>i</em><sup>th</sup> publication.</li>\n")
-        outfile.write("          <li><em>C<sup>x</sup></em> &mdash; The sum of citations for the top <em>x</em> "
-                      "publications, " + r"\(C^x=\sum\limits_{i=1}^{x}{C_i}\)" + ".</li>\n")
-        outfile.write("          <li><em>A<sub>i</sub></em> &mdash; The number of authors of the "
-                      "<em>i</em><sup>th</sup> publication.</li>\n")
-        outfile.write("          <li><em>a<sub>i</sub></em> &mdash; The ordered position of the focal author among "
-                      "the full author list of the <em>i</em><sup>th</sup> publication, it\'s value can range from "
-                      "1 to <em>A<sub>i</sub>.</em></li>\n")
-        outfile.write("          <li><em>Y<sub>i</sub></em> &mdash; The year of the "
-                      "<em>i</em><sup>th</sup> publication.</li>\n")
-        outfile.write("          <li><em>Y</em><sub>0</sub></em> &mdash; The year of the "
-                      "author\'s first publication, " + r"\(Y_0=\min\left(Y_i\right)\)" + ".</li>\n")
-        outfile.write("          <li>academic age &mdash; The number of years since an author\'s first publication. "
-                      "If <em>Y</em> is the current year (or year of interest), the academic age of the author is " +
-                      r"\(Y-Y_0+1\)" + ".</li>\n")
-        outfile.write("        </ul>\n")
-
-        outfile.write("      <h2>Index</h2>\n")
-        outfile.write("      <ul class=\"index_list\">\n")
         for i in index_list:
             name = name_links[i[1]]
             outfile.write("        <li><a href=\"#" + name[1] + "\">" + name[0] + "</a></li>\n")
@@ -469,6 +486,175 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
 
         outfile.write("  </body>\n")
         outfile.write("</html>\n")
+
+
+def create_set_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
+    with open("webout/impact_pages_html.txt", "w", encoding="utf-8") as outfile:
+        # introduction and index
+        html_output_introduction(outfile)
+        metric_base_data = yearly_metrics_list[4]  # use data from the 5th year for examples
+        metric_names = metric_base_data.metric_names
+        name_links = create_name_links(metric_names, metric_base_data, inc_self)
+        # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
+        outfile.write("      <h3>Index</h3>\n")
+        outfile.write("      <ul class=\"index_list\">\n")
+        index_list = [[i.lower(), i] for i in list(name_links.keys())]
+        index_list.sort()
+        for i in index_list:
+            name = name_links[i[1]]
+            outfile.write("        <li><a href=\"impact_" + name[1] + ".html\">" + name[0] + "</a></li>\n")
+        outfile.write("      </ul>\n")
+
+        # output a page for every metric
+        for name in metric_names:
+            outfile.write("@@@@\n")
+            metric = metric_base_data.metrics[name]
+            link = name_links[metric.full_name]
+            outfile.write("impact_" + link[1] + ".html\n")
+
+            if metric.is_self and not inc_self:
+                pass  # skip self-citation metrics
+            else:
+                # output header info for graphs and plots
+                if metric.graph_type is not None:
+                    enc_name = encode_name(name)
+                    outfile.write("        var data_{} = google.visualization.arrayToDataTable([\n".format(enc_name))
+                    if metric.graph_type == Impact_Defs.LINE_CHART:
+                        outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
+                        for metric_set in yearly_metrics_list:
+                            if metric_set.metrics[name].value == "n/a":
+                                v = "null"
+                            else:
+                                v = metric_set.metrics[name].value
+                            outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
+                        outfile.write("		]);\n")
+                        outfile.write("\n")
+                        outfile.write("        var options_{} = {{\n".format(enc_name))
+                        outfile.write("		     legend: {position: 'none'},\n")
+                        outfile.write("		     hAxis: {slantedText: true},\n")
+                        outfile.write("        };\n")
+                    elif metric.graph_type == Impact_Defs.MULTILINE_CHART_LEFT:
+                        # figure out how many values will be on the x-axis
+                        maxx = 0
+                        for metric_set in yearly_metrics_list:
+                            maxx = max(maxx, len(metric_set.metrics[name].value))
+                        # write header
+                        outstr = "           [\'i\'"
+                        for metric_set in yearly_metrics_list:
+                            outstr += ", \'{}\'".format(metric_set.year())
+                        outstr += "],\n"
+                        outfile.write(outstr)
+                        for x in range(maxx):
+                            outstr = "           [\'{}\'".format(x + 1)
+                            for metric_set in yearly_metrics_list:
+                                vlist = metric_set.metrics[name].value
+                                if x >= len(vlist):
+                                    v = "null"
+                                else:
+                                    v = vlist[x]
+                                outstr += ", {}".format(v)
+                            outstr += "],\n"
+                            outfile.write(outstr)
+                        outfile.write("		]);\n")
+                        outfile.write("\n")
+                        outfile.write("        var options_{} = {{\n".format(enc_name))
+                        outfile.write("		     hAxis: {slantedText: true},\n")
+                        outfile.write("        };\n")
+                    elif metric.graph_type == Impact_Defs.MULTILINE_CHART_CENTER:
+                        # figure out how many values will be on the x-axis
+                        maxx = 0
+                        for metric_set in yearly_metrics_list:
+                            maxx = max(maxx, len(metric_set.metrics[name].value))
+                        # write header
+                        outstr = "           [\'i\'"
+                        for metric_set in yearly_metrics_list:
+                            outstr += ", \'{}\'".format(metric_set.year())
+                        outstr += "],\n"
+                        outfile.write(outstr)
+                        d = maxx // 2
+                        for x in range(-d, d + 1):
+                            outstr = "           [\'{}\'".format(x)
+                            for metric_set in yearly_metrics_list:
+                                vlist = metric_set.metrics[name].value
+                                vl = len(vlist)
+                                if (x + vl // 2 < 0) or (x + vl // 2 >= vl):
+                                    v = "null"
+                                else:
+                                    v = vlist[x + vl // 2]
+                                outstr += ", {}".format(v)
+                            outstr += "],\n"
+                            outfile.write(outstr)
+                        outfile.write("		]);\n")
+                        outfile.write("\n")
+                        outfile.write("        var options_{} = {{\n".format(enc_name))
+                        outfile.write("		     hAxis: {slantedText: true},\n")
+                        outfile.write("        };\n")
+                    elif metric.graph_type == Impact_Defs.LINE_CHART_COMBINE:
+                        outfile.write("           [\'Year\', \'{}\'],\n".format(metric.symbol))
+                        for metric_set in yearly_metrics_list:
+                            t = metric_set.metrics[name].value
+                            v = t[0] + t[1] / 10
+                            outfile.write("           [\'{}\', {}],\n".format(metric_set.year(), v))
+                        outfile.write("		]);\n")
+                        outfile.write("\n")
+                        outfile.write("        var options_{} = {{\n".format(enc_name))
+                        outfile.write("		     legend: {position: 'none'},\n")
+                        outfile.write("		     hAxis: {slantedText: true},\n")
+                        outfile.write("        };\n")
+                    outfile.write("\n")
+                    outfile.write("        var chart_{} = new google.visualization."
+                                  "LineChart(document.getElementById('chart_{}_div'));\n".format(enc_name, enc_name))
+                    outfile.write("        chart_{}.draw(data_{}, options_{});\n".format(enc_name, enc_name, enc_name))
+                    outfile.write("\n")
+                # plots for descriptions
+                for graph in metric.description_graphs:
+                    for outline in graph.data(metric_base_data):
+                        outfile.write(outline)
+                outfile.write("@@\n")
+                # output page info
+                outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
+                outfile.write("      <h2>" + metric.html_name + "</h2>\n")
+                outfile.write("      " + metric.description + "\n")
+                if metric.example is not None:
+                    outfile.write("      <h3>Example</h3>\n")
+                    outfile.write("      " + metric.example(metric_base_data) + "\n")
+                outfile.write("      <h3>History</h3>\n")
+                if metric.metric_type == Impact_Defs.INTLIST:
+                    outfile.write(
+                        "    <div id=\"" + encode_name(name) + "\" class=\"metric_data_container_wide\">\n")
+                else:
+                    outfile.write("      <div class=\"metric_data_container\">\n")
+                outfile.write("        <div class=\"table_container\">\n")
+                outfile.write("          <table class=\"impact_table\">\n")
+                outfile.write("            <tr>")
+                outfile.write("<th>Year</th>")
+                outfile.write("<th>" + metric.symbol + "</th>")
+                outfile.write("</tr>\n")
+                for metric_set in yearly_metrics_list:
+                    outfile.write("            <tr>")
+                    outfile.write("<td class=\"cell_year\">{:4d}</td>".format(metric_set.year()))
+                    outfile.write("<td class=\"cell_value\">{}</td>".format(str(metric_set.metrics[name])))
+                    outfile.write("</tr>\n")
+                outfile.write("          </table>\n")
+                outfile.write("        </div>\n")
+                if metric.graph_type is not None:
+                    outfile.write("        <div class=\"graph_container\">\n")
+                    outfile.write("          <div id=\"chart_{}_div\" "
+                                  "class=\"impact_chart\"></div>\n".format(encode_name(name)))
+                outfile.write("        </div>\n")
+                outfile.write("      </div>\n")
+                outfile.write("    </div>\n")
+
+                # references
+                reflist = sorted(metric.references)
+                if len(reflist) > 0:
+                    outfile.write("    <div id=\"references\">\n")
+                    outfile.write("      <h2>References</h2>\n")
+                    outfile.write("      <ul>\n")
+                    for r in reflist:
+                        outfile.write("        <li>" + r + "</li>\n")
+                    outfile.write("      </ul>\n")
+                    outfile.write("    </div>\n")
 
 
 # -----------------------------------------------------
@@ -740,7 +926,8 @@ def main():
     # output
     write_output(out_name, date_list, yearly_metrics_list, inc_self)
     if do_web:
-        create_html_output(yearly_metrics_list, inc_self)
+        create_single_html_output(yearly_metrics_list, inc_self)
+        create_set_html_output(yearly_metrics_list, inc_self)
 
     print("Finished")
 
