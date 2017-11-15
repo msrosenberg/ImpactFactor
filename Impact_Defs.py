@@ -6530,7 +6530,7 @@ def metric_history_h_index() -> Metric:
     hkeq = r"$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$"
     equation = r"$$H=\sum\limits_{k=0}^{K}{H^k},$$"
     m.description = "<p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish " \
-                    "among researchers with identical <em>h-</em> indices. It is based on the idea of exploring a " \
+                    "among researchers with identical <em>h-</em>indices. It is based on the idea of exploring a " \
                     "power expansion of the citation counts for publications in the core. This index starts by " \
                     "creating a vector representing larger power expansions of citation counts. " \
                     "The <em>k</em><sup>th</sup> " \
