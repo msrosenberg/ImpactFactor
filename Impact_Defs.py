@@ -6672,7 +6672,6 @@ def write_q_index_example(metric_set: MetricSet) -> str:
     prev_a = 0
     for i, d in enumerate(data):
         c = d[0]
-        s = d[1]
         if c <= h:
             if i + 1 <= h:
                 a = 0
