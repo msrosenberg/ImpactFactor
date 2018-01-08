@@ -4568,8 +4568,8 @@
         var chart_q_index = new google.visualization.LineChart(document.getElementById('chart_q_index_div'));
         chart_q_index.draw(data_q_index, options_q_index);
 
-        var data_career_years_h_index = google.visualization.arrayToDataTable([
-           ['Year', 'career years <em>h</em>'],
+        var data_career_years_h_index_by_pub = google.visualization.arrayToDataTable([
+           ['Year', 'career years <em>h</em> by pub'],
            ['1997', 1],
            ['1998', 1],
            ['1999', 1],
@@ -4593,13 +4593,13 @@
            ['2017', 5],
 		]);
 
-        var options_career_years_h_index = {
+        var options_career_years_h_index_by_pub = {
 		     legend: {position: 'none'},
 		     hAxis: {slantedText: true},
         };
 
-        var chart_career_years_h_index = new google.visualization.LineChart(document.getElementById('chart_career_years_h_index_div'));
-        chart_career_years_h_index.draw(data_career_years_h_index, options_career_years_h_index);
+        var chart_career_years_h_index_by_pub = new google.visualization.LineChart(document.getElementById('chart_career_years_h_index_by_pub_div'));
+        chart_career_years_h_index_by_pub.draw(data_career_years_h_index_by_pub, options_career_years_h_index_by_pub);
 
 		}
     </script>
@@ -4635,7 +4635,7 @@
         <li><a href="#b_index_mean_self"><em>b-</em>index (mean self-citation rate)</a></li>
         <li><a href="#c_p"><em>C/P</em> index</a></li>
         <li><a href="#h_rate">Carbon <em>h-</em>factor</a></li>
-        <li><a href="#career_years_h_index">career years <em>h-</em>index</a></li>
+        <li><a href="#career_years_h_index_by_pub">career years <em>h-</em>index by publication</a></li>
         <li><a href="#CDR_index">CDR-index</a></li>
         <li><a href="#CDS_index">CDS-index</a></li>
         <li><a href="#h_core_cites"><em>C<sup>H</sup></em></a></li>
@@ -9069,16 +9069,16 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
-    <div id="career_years_h_index" class="metric_container">
-      <h2>career years <em>h-</em>index</h2>
-      <p>The career years <em>h-</em>index (Mahbuba and Rousseau 2013) is a measure of publication intensity or distribution, rather than citation intensity as captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by publication count. This listed is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index is the largest value <em>h</em> for which at least <em>h</em>  years have <em>h</em> publications.</p>$$\text{career years }h=\underset{i}{\max}\left(i\leq P_i\right).$$
+    <div id="career_years_h_index_by_pub" class="metric_container">
+      <h2>career years <em>h-</em>index by publication</h2>
+      <p>The career years <em>h-</em>index by publications (Mahbuba and Rousseau 2013) is a measure of publication intensity or distribution, rather than citation intensity as captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by publication count. This listed is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by publication is the largest value <em>h</em> for which at least <em>h</em> years have <em>h</em> publications.</p>$$\text{career years }h\text{ by publication}=\underset{i}{\max}\left(i\leq P_i\right).$$
       <h3>Example</h3>
-      <p>Years are ordered by number of publications, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1999</td><td>1998</td></tr><tr class="top_row"><th>Publications (<em>P<sub>i</sub></em>)</th><td>5</td><td>5</td><td class="box">4</td><td>1</td><td>1</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>P<sub>i</sub></em> is 3.</p>
+      <p>Years are ordered by number of publications, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1999</td><td>1998</td></tr><tr class="top_row"><th>Publications (<em>P<sub>i</sub></em>)</th><td>5</td><td>5</td><td class="box">4</td><td>1</td><td>1</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>P<sub>i</sub></em> is 3.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th>career years <em>h</em></th></tr>
+            <tr><th>Year</th><th>career years <em>h</em> by pub</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">1</td></tr>
@@ -9103,7 +9103,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
           </table>
         </div>
         <div class="graph_container">
-          <div id="chart_career_years_h_index_div" class="impact_chart"></div>
+          <div id="chart_career_years_h_index_by_pub_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
