@@ -1283,3 +1283,20 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
             q = 0
         q_index += q*s
     return q_index / len(citations)
+
+
+# career years h-index (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index(pub_years: list) -> int:
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
+    data = []
+    for y in year_cnts:
+        data.append([year_cnts[y], y])
+    data.sort(reverse=True)
+    h = 0
+    for i in range(len(data)):
+        cnt = data[i][0]
+        if cnt >= i + 1:
+            h += 1
+    return h

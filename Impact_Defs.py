@@ -6769,6 +6769,69 @@ def metric_q_index() -> Metric:
     return m
 
 
+# career years h-index (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index(metric_set: MetricSet) -> int:
+    pub_years = metric_set.publication_years()
+    return Impact_Funcs.calculate_career_years_h_index(pub_years)
+
+
+def write_career_years_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Years are ordered by number of publications, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    h = metric_set.metrics["career years h-index"].value
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy + 1)}
+    data = []
+    for y in year_cnts:
+        data.append([year_cnts[y], y])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Publications (<em>P<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    for i, d in enumerate(data):
+        c = d[0]
+        y = d[1]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(y)
+        row2 += "<td" + ec + ">{}</td>".format(c)
+        row3 += "<td" + ec + ">{}</td>".format(i+1)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>P<sub>i</sub></em> is {}.</p>".format(h)
+    return outstr
+
+
+def metric_career_years_h_index() -> Metric:
+    m = Metric()
+    m.name = "career years h-index"
+    m.full_name = "career years h-index"
+    m.html_name = "career years <em>h-</em>index"
+    m.symbol = "career years <em>h</em>"
+    m.example = write_career_years_h_index_example
+    m.metric_type = INT
+    equation = r"$$\text{career years }h=\underset{i}{\max}\left(i\leq P_i\right).$$"
+    m.description = "<p>The career years <em>h-</em>index (Mahbuba and Rousseau 2013) is a measure of publication " \
+                    "intensity or distribution, rather than citation intensity as captured by most <em>h-</em>type " \
+                    "indices. Rather than create a list of publications ranked by citation count, one creates a list " \
+                    "of years ranked by publication count. This listed is then processed in the same manner as a " \
+                    "typical <em>h-</em>type index, namely the career years <em>h-</em>index is the largest value " \
+                    "<em>h</em> for which at least <em>h</em>  years have <em>h</em> publications.</p>" + equation
+    m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
+                    "<em>Scientometrics</em> 96(3):785&ndash;797."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_career_years_h_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -6889,5 +6952,6 @@ def load_all_metrics() -> list:
                    metric_quality_quotient(),
                    metric_scientist_level(),
                    metric_scientist_level_nonint(),
-                   metric_q_index()]
+                   metric_q_index(),
+                   metric_career_years_h_index()]
     return metric_list
