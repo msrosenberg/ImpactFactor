@@ -65,7 +65,7 @@ def publication_ages(year: int, pub_years: list) -> list:
 
 def citations_per_year(citations: list, pub_ages: list) -> list:
     """
-    returns a list containing the citations per year for each publications
+    returns a list containing the citations per year for each publication
     """
     return [citations[i]/pub_ages[i] for i in range(len(citations))]
 
@@ -88,6 +88,23 @@ def author_effort(measure: str, n_authors: int, author_pos: int=1) -> float:
         return (1 + abs(n_authors + 1 - 2*author_pos)) / ((n_authors**2)/2 + n_authors*(1 - d))
     else:
         return 1
+
+
+def citations_per_pub_per_year(pub_list: list) -> list:
+    def convert_none(x) -> int:
+        if x is None:
+            return 0
+        else:
+            return x
+
+    # take total citations for each pub at each year and convert to yearly only totals
+    pub_cites = []
+    for p in pub_list:
+        cites = [convert_none(p[0])]
+        for i in range(1, len(p)):
+            cites.append(convert_none(p[i]) - convert_none(p[i-1]))
+        pub_cites.append(cites)
+    return pub_cites
 
 
 # --- Metric Calculations ---
@@ -1142,20 +1159,22 @@ def calculate_dynamic_h_type_index(rational_h_list: list, date_list: list, r: fl
 
 # trend h-index
 def calculate_trend_h_index(pub_list: list) -> int:
-    def convert_none(x) -> int:
-        if x is None:
-            return 0
-        else:
-            return x
+    pub_cites = citations_per_pub_per_year(pub_list)
 
+    # def convert_none(x) -> int:
+    #     if x is None:
+    #         return 0
+    #     else:
+    #         return x
+    #
     ny = len(pub_list[0])
-    # take total citations for each pub at each year and convert to yearly only totals
-    pub_cites = []
-    for p in pub_list:
-        cites = [convert_none(p[0])]
-        for i in range(1, len(p)):
-            cites.append(convert_none(p[i]) - convert_none(p[i-1]))
-        pub_cites.append(cites)
+    # # take total citations for each pub at each year and convert to yearly only totals
+    # pub_cites = []
+    # for p in pub_list:
+    #     cites = [convert_none(p[0])]
+    #     for i in range(1, len(p)):
+    #         cites.append(convert_none(p[i]) - convert_none(p[i-1]))
+    #     pub_cites.append(cites)
 
     sc = [0 for _ in pub_list]
     for i, p in enumerate(pub_cites):
@@ -1331,6 +1350,34 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
     data = []
     for y in year_cnts:
         data.append([year_cnts[y], y])
+    data.sort(reverse=True)
+    h = 0
+    for i in range(len(data)):
+        avg = data[i][0]
+        if avg >= i + 1:
+            h += 1
+    if (h > 0) and (h < len(data)):
+        ch = data[h-1][0]
+        chp1 = data[h][0]
+        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
+    else:
+        hint = h
+    return hint
+
+
+# career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_year: int) -> float:
+    # print(pub_years)
+    # print(cites)
+    # print(cur_year)
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    cite_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        cite_cnts[pub_years[i]] += c
+    data = []
+    for y in cite_cnts:
+        data.append([cite_cnts[y]/(cur_year - y + 1), y])
     data.sort(reverse=True)
     h = 0
     for i in range(len(data)):

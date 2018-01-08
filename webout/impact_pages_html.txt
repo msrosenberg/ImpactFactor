@@ -29,6 +29,7 @@
         <li><a href="impact_h_rate.html">Carbon <em>h-</em>factor</a></li>
         <li><a href="impact_career_years_h_index_by_avg_cite.html">career years <em>h-</em>index by average citations per year</a></li>
         <li><a href="impact_career_years_h_index_by_cite.html">career years <em>h-</em>index by citations</a></li>
+        <li><a href="impact_career_years_h_index_by_diff_speed.html">career years <em>h-</em>index by diffusion speed</a></li>
         <li><a href="impact_career_years_h_index_by_pub.html">career years <em>h-</em>index by publications</a></li>
         <li><a href="impact_CDR_index.html">CDR-index</a></li>
         <li><a href="impact_CDS_index.html">CDS-index</a></li>
@@ -10138,7 +10139,7 @@ impact_career_years_h_index_by_cite.html
 @@@@
 impact_career_years_h_index_by_avg_cite.html
         var data_career_years_h_index_by_avg_cite = google.visualization.arrayToDataTable([
-           ['Year', 'Career years <em>h<sub>int</sub> by avg cites</em>'],
+           ['Year', 'Career years <em>h<sub>int</sub></em> by avg cites'],
            ['1997', 1],
            ['1998', 2],
            ['1999', 2.4],
@@ -10180,7 +10181,7 @@ impact_career_years_h_index_by_avg_cite.html
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th>Career years <em>h<sub>int</sub> by avg cites</em></th></tr>
+            <tr><th>Year</th><th>Career years <em>h<sub>int</sub></em> by avg cites</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">2.4000</td></tr>
@@ -10206,6 +10207,86 @@ impact_career_years_h_index_by_avg_cite.html
         </div>
         <div class="graph_container">
           <div id="chart_career_years_h_index_by_avg_cite_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
+      </ul>
+    </div>
+@@@@
+impact_career_years_h_index_by_diff_speed.html
+        var data_career_years_h_index_by_diff_speed = google.visualization.arrayToDataTable([
+           ['Year', 'Career years <em>h<sub>int</sub></em> by diffusion speed'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 2.0],
+           ['2000', 2.9000000000000004],
+           ['2001', 3.0],
+           ['2002', 4.75],
+           ['2003', 5.0],
+           ['2004', 5.731903485254692],
+           ['2005', 6.313725490196078],
+           ['2006', 6.747899159663865],
+           ['2007', 7.0],
+           ['2008', 8.166666666666666],
+           ['2009', 8.445544554455445],
+           ['2010', 9.375],
+           ['2011', 10.232558139534882],
+           ['2012', 10.191037735849056],
+           ['2013', 10.225806451612904],
+           ['2014', 10.181818181818176],
+           ['2015', 10.701107011070112],
+           ['2016', 10.687500000000004],
+           ['2017', 10.50174216027875],
+		]);
+
+        var options_career_years_h_index_by_diff_speed = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_career_years_h_index_by_diff_speed = new google.visualization.LineChart(document.getElementById('chart_career_years_h_index_by_diff_speed_div'));
+        chart_career_years_h_index_by_diff_speed.draw(data_career_years_h_index_by_diff_speed, options_career_years_h_index_by_diff_speed);
+
+@@
+    <div id="career_years_h_index_by_diff_speed" class="metric_container">
+      <h2>career years <em>h-</em>index by diffusion speed</h2>
+      <p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) is similar to the other career years <em>h-</em>indices, but rescales the citation counts per year for the time ellapsed since the year of publication. One could also calculate it for a fixed time window, but here we are using career lenght at the time of calcuation. One creates a list of years ranked by diffusion speed estimated for all citations for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by diffusion speed is the largest value <em>h</em> for which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>$$\text{career years }h\text{ by diffusion speed}=\underset{i}{\max}\left(i\leq \frac{C_i}{A_i}\right).$$<p>Because the diffusion speed will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$
+      <h3>Example</h3>
+      <p>Years are ordered by diffusion speed per year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1998</td><td>1999</td></tr><tr><th>Age (<em>A<sub>i</sub></em>)</th><td>2</td><td>5</td><td>1</td><td>4</td><td>3</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>40</td><td>77</td><td>3</td><td>11</td><td>2</td></tr><tr class="top_row"><th>Diffusion Speed (<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th><td>20.00</td><td>15.40</td><td class="box">3.00</td><td>2.75</td><td>0.67</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is 3. The interpolated rank betweeen this and the next largest value is 3.00.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>Career years <em>h<sub>int</sub></em> by diffusion speed</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.9000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">4.7500</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">5.0000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">5.7319</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">6.3137</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">6.7479</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">7.0000</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">8.1667</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">8.4455</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">9.3750</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">10.2326</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">10.1910</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">10.2258</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">10.1818</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">10.7011</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">10.6875</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">10.5017</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_career_years_h_index_by_diff_speed_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
