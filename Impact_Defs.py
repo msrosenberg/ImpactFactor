@@ -6831,7 +6831,9 @@ def metric_career_years_h_index_pub() -> Metric:
                     "<em>h</em> publications.</p>" + equation + "<p>This metric helps indicate whether the " \
                     "publication output of a researcher is confined to a limited number of years (smaller value) or " \
                     "is spread more evenly across their career (larger values); it is most useful for comparing " \
-                    "among researchers with similar publication counts and career lenghts.</p>"
+                    "among established/older researchers with similar publication counts and career lengths; " \
+                    "this metric is limiting for young researchers with short careers because the maximum value is " \
+                    "the length of the career.</p>"
     m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
@@ -6854,8 +6856,6 @@ def write_career_years_h_index_cite_example(metric_set: MetricSet) -> str:
     cites = metric_set.citations
     miny = min(pub_years)
     maxy = max(pub_years)
-    year_cnts = {y: 0 for y in range(miny, maxy + 1)}
-
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
     for i, c in enumerate(cites):
         year_cnts[pub_years[i]] += c
@@ -6907,8 +6907,9 @@ def metric_career_years_h_index_cite() -> Metric:
                     "which at least <em>h</em> years have publication with <em>h</em> citations.</p>" + equation + \
                     "<p>This metric helps indicate whether the citation impact of a researcher is confined to a " \
                     "limited number of years (smaller value) or is spread more evenly across their career " \
-                    "(larger values); it is most useful for comparing among researchers with similar career lengths " \
-                    "and citation counts/<em>h-</em>indices.</p>"
+                    "(larger values); it is most useful for comparing among established/older researchers with " \
+                    "similar career lengths and citation counts/<em>h-</em>indices; this metric is limiting for " \
+                    "young researchers with short careers because the maximum value is the length of the career.</p>"
     m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
