@@ -27,7 +27,8 @@
         <li><a href="impact_b_index_mean_self.html"><em>b-</em>index (mean self-citation rate)</a></li>
         <li><a href="impact_c_p.html"><em>C/P</em> index</a></li>
         <li><a href="impact_h_rate.html">Carbon <em>h-</em>factor</a></li>
-        <li><a href="impact_career_years_h_index_by_pub.html">career years <em>h-</em>index by publication</a></li>
+        <li><a href="impact_career_years_h_index_by_cite.html">career years <em>h-</em>index by citations</a></li>
+        <li><a href="impact_career_years_h_index_by_pub.html">career years <em>h-</em>index by publications</a></li>
         <li><a href="impact_CDR_index.html">CDR-index</a></li>
         <li><a href="impact_CDS_index.html">CDS-index</a></li>
         <li><a href="impact_h_core_cites.html"><em>C<sup>H</sup></em></a></li>
@@ -9976,7 +9977,7 @@ impact_q_index.html
 @@@@
 impact_career_years_h_index_by_pub.html
         var data_career_years_h_index_by_pub = google.visualization.arrayToDataTable([
-           ['Year', 'career years <em>h</em> by pub'],
+           ['Year', 'career years <em>h</em> by pubs'],
            ['1997', 1],
            ['1998', 1],
            ['1999', 1],
@@ -10010,15 +10011,15 @@ impact_career_years_h_index_by_pub.html
 
 @@
     <div id="career_years_h_index_by_pub" class="metric_container">
-      <h2>career years <em>h-</em>index by publication</h2>
-      <p>The career years <em>h-</em>index by publications (Mahbuba and Rousseau 2013) is a measure of publication intensity or distribution, rather than citation intensity as captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by publication count. This listed is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by publication is the largest value <em>h</em> for which at least <em>h</em> years have <em>h</em> publications.</p>$$\text{career years }h\text{ by publication}=\underset{i}{\max}\left(i\leq P_i\right).$$
+      <h2>career years <em>h-</em>index by publications</h2>
+      <p>The career years <em>h-</em>index by publications (Mahbuba and Rousseau 2013) is a measure of publication intensity or distribution, rather than citation intensity as captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by publication count. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by publications is the largest value <em>h</em> for which at least <em>h</em> years have <em>h</em> publications.</p>$$\text{career years }h\text{ by publications}=\underset{i}{\max}\left(i\leq P_i\right).$$<p>This metric helps indicate whether the publication output of a researcher is confined to a limited number of years (smaller value) or is spread more evenly across their career (larger values); it is most useful for comparing among researchers with similar publication counts and career lenghts.</p>
       <h3>Example</h3>
       <p>Years are ordered by number of publications, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1999</td><td>1998</td></tr><tr class="top_row"><th>Publications (<em>P<sub>i</sub></em>)</th><td>5</td><td>5</td><td class="box">4</td><td>1</td><td>1</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>P<sub>i</sub></em> is 3.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th>career years <em>h</em> by pub</th></tr>
+            <tr><th>Year</th><th>career years <em>h</em> by pubs</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">1</td></tr>
@@ -10044,6 +10045,86 @@ impact_career_years_h_index_by_pub.html
         </div>
         <div class="graph_container">
           <div id="chart_career_years_h_index_by_pub_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
+      </ul>
+    </div>
+@@@@
+impact_career_years_h_index_by_cite.html
+        var data_career_years_h_index_by_cite = google.visualization.arrayToDataTable([
+           ['Year', 'career years <em>h</em> by cites'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 2],
+           ['2000', 3],
+           ['2001', 3],
+           ['2002', 5],
+           ['2003', 5],
+           ['2004', 6],
+           ['2005', 7],
+           ['2006', 8],
+           ['2007', 10],
+           ['2008', 11],
+           ['2009', 11],
+           ['2010', 12],
+           ['2011', 13],
+           ['2012', 14],
+           ['2013', 14],
+           ['2014', 15],
+           ['2015', 15],
+           ['2016', 15],
+           ['2017', 15],
+		]);
+
+        var options_career_years_h_index_by_cite = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_career_years_h_index_by_cite = new google.visualization.LineChart(document.getElementById('chart_career_years_h_index_by_cite_div'));
+        chart_career_years_h_index_by_cite.draw(data_career_years_h_index_by_cite, options_career_years_h_index_by_cite);
+
+@@
+    <div id="career_years_h_index_by_cite" class="metric_container">
+      <h2>career years <em>h-</em>index by citations</h2>
+      <p>The career years <em>h-</em>index by citations (Mahbuba and Rousseau 2013) is a measure of citation intensity or distribution by publication year, rather than by publication as captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by citation count for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by citations is the largest value <em>h</em> for which at least <em>h</em> years have publication with <em>h</em> citations.</p>$$\text{career years }h\text{ by citations}=\underset{i}{\max}\left(i\leq P_i\right).$$<p>This metric helps indicate whether the citation impact of a researcher is confined to a limited number of years (smaller value) or is spread more evenly across their career (larger values); it is most useful for comparing among researchers with similar career lengths and citation counts/<em>h-</em>indices.</p>
+      <h3>Example</h3>
+      <p>Years are ordered by number of citations for publications from that year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>2000</td><td>1998</td><td>2001</td><td>1999</td></tr><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>77</td><td>40</td><td class="box">11</td><td>3</td><td>2</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is 3.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>career years <em>h</em> by cites</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">11</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">11</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">15</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_career_years_h_index_by_cite_div" class="impact_chart"></div>
         </div>
       </div>
     </div>

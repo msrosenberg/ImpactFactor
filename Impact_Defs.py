@@ -6769,7 +6769,7 @@ def metric_q_index() -> Metric:
     return m
 
 
-# career years h-index (Mahbuba and Rousseau 2013)
+# career years h-index by publications (Mahbuba and Rousseau 2013)
 def calculate_career_years_h_index_pub(metric_set: MetricSet) -> int:
     pub_years = metric_set.publication_years()
     return Impact_Funcs.calculate_career_years_h_index_pub(pub_years)
@@ -6825,14 +6825,94 @@ def metric_career_years_h_index_pub() -> Metric:
     m.description = "<p>The career years <em>h-</em>index by publications (Mahbuba and Rousseau 2013) is a measure " \
                     "of publication intensity or distribution, rather than citation intensity as captured by " \
                     "most <em>h-</em>type indices. Rather than create a list of publications ranked by citation " \
-                    "count, one creates a list of years ranked by publication count. This listed is then processed " \
+                    "count, one creates a list of years ranked by publication count. This list is then processed " \
                     "in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index " \
-                    "by publication is the largest value <em>h</em> for which at least <em>h</em> years have " \
-                    "<em>h</em> publications.</p>" + equation
+                    "by publications is the largest value <em>h</em> for which at least <em>h</em> years have " \
+                    "<em>h</em> publications.</p>" + equation + "<p>This metric helps indicate whether the " \
+                    "publication output of a researcher is confined to a limited number of years (smaller value) or " \
+                    "is spread more evenly across their career (larger values); it is most useful for comparing " \
+                    "among researchers with similar publication counts and career lenghts.</p>"
     m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_pub
+    return m
+
+
+# career years h-index by citations (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index_cite(metric_set: MetricSet) -> int:
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    return Impact_Funcs.calculate_career_years_h_index_cite(pub_years, cites)
+
+
+def write_career_years_h_index_cite_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Years are ordered by number of citations for publications from that year, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    h = metric_set.metrics["career years h-index by cite"].value
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    year_cnts = {y: 0 for y in range(miny, maxy + 1)}
+
+    year_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        year_cnts[pub_years[i]] += c
+    data = []
+    for y in year_cnts:
+        data.append([year_cnts[y], y])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Rank (<em>i</em>)</th>"
+    row4 = "<tr><th></th>"
+    for i, d in enumerate(data):
+        c = d[0]
+        y = d[1]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(y)
+        row2 += "<td" + ec + ">{}</td>".format(c)
+        row3 += "<td" + ec + ">{}</td>".format(i+1)
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {}.</p>".format(h)
+    return outstr
+
+
+def metric_career_years_h_index_cite() -> Metric:
+    m = Metric()
+    m.name = "career years h-index by cite"
+    m.full_name = "career years h-index by citations"
+    m.html_name = "career years <em>h-</em>index by citations"
+    m.symbol = "career years <em>h</em> by cites"
+    m.example = write_career_years_h_index_cite_example
+    m.metric_type = INT
+    equation = r"$$\text{career years }h\text{ by citations}=\underset{i}{\max}\left(i\leq P_i\right).$$"
+    m.description = "<p>The career years <em>h-</em>index by citations (Mahbuba and Rousseau 2013) is a measure " \
+                    "of citation intensity or distribution by publication year, rather than by publication as " \
+                    "captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by " \
+                    "citation count, one creates a list of years ranked by citation count for all publications from " \
+                    "that year. This list is then processed in the same manner as a typical <em>h-</em>type index, " \
+                    "namely the career years <em>h-</em>index by citations is the largest value <em>h</em> for " \
+                    "which at least <em>h</em> years have publication with <em>h</em> citations.</p>" + equation + \
+                    "<p>This metric helps indicate whether the citation impact of a researcher is confined to a " \
+                    "limited number of years (smaller value) or is spread more evenly across their career " \
+                    "(larger values); it is most useful for comparing among researchers with similar career lengths " \
+                    "and citation counts/<em>h-</em>indices.</p>"
+    m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
+                    "<em>Scientometrics</em> 96(3):785&ndash;797."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_career_years_h_index_cite
     return m
 
 
@@ -6957,5 +7037,6 @@ def load_all_metrics() -> list:
                    metric_scientist_level(),
                    metric_scientist_level_nonint(),
                    metric_q_index(),
-                   metric_career_years_h_index_pub()]
+                   metric_career_years_h_index_pub(),
+                   metric_career_years_h_index_cite()]
     return metric_list
