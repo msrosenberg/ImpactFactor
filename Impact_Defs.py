@@ -3217,7 +3217,7 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
         return cnt
 
     outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
-             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
              "publications and all publications are re-ranked by this adjusted citation count for the next step.</p>"
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
@@ -3304,7 +3304,7 @@ def metric_emp_index() -> Metric:
                     "recalculating <em>h</em> from these new citation counts, reranking all publications by these " \
                     "new citation counts as necessary (<em>i.e.</em>, some of the publications previously in the " \
                     "tail of the " \
-                    "citation distribution may advance beyond publications in the core as citaions representing " \
+                    "citation distribution may advance beyond publications in the core as citations representing " \
                     "earlier calculations of <em>h</em> are &ldquo;used up&rdquo;). This process continues until " \
                     "one runs out of citations, all of the remaining publications have only a single remaining " \
                     "citation, or there is only a single publication left to be considered. From this vector, " \
