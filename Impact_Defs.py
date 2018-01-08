@@ -6904,7 +6904,8 @@ def metric_career_years_h_index_cite() -> Metric:
                     "citation count, one creates a list of years ranked by citation count for all publications from " \
                     "that year. This list is then processed in the same manner as a typical <em>h-</em>type index, " \
                     "namely the career years <em>h-</em>index by citations is the largest value <em>h</em> for " \
-                    "which at least <em>h</em> years have publication with <em>h</em> citations.</p>" + equation + \
+                    "which at least <em>h</em> years have publications with <em>h</em> total citations.</p>" + \
+                    equation + \
                     "<p>This metric helps indicate whether the citation impact of a researcher is confined to a " \
                     "limited number of years (smaller value) or is spread more evenly across their career " \
                     "(larger values); it is most useful for comparing among established/older researchers with " \
@@ -6914,6 +6915,97 @@ def metric_career_years_h_index_cite() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_cite
+    return m
+
+
+# career years h-index by avg citations/year (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index_avgcite(metric_set: MetricSet) -> float:
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    return Impact_Funcs.calculate_career_years_h_index_avgcite(pub_years, cites)
+
+
+def write_career_years_h_index_avgcite_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Years are ordered by average number of citations per publication from that year, from highest to " \
+             "lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    hint = metric_set.metrics["career years h-index by avg cite"].value
+    h = math.trunc(hint)
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    pub_cnts = {y: pub_years.count(y) for y in range(miny, maxy + 1)}
+    cite_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        cite_cnts[pub_years[i]] += c
+    data = []
+    for y in pub_cnts:
+        data.append([cite_cnts[y]/pub_cnts[y], y, pub_cnts[y], cite_cnts[y]])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Publications (<em>P<sub>i</sub></em>)</th>"
+    row3 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row4 = "<tr class=\"top_row\"><th>Average Citations per " \
+           "Publication(<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em>)</th>"
+    row5 = "<tr><th>Rank (<em>i</em>)</th>"
+    row6 = "<tr><th></th>"
+    for i, d in enumerate(data):
+        a = d[0]
+        y = d[1]
+        p = d[2]
+        c = d[3]
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(y)
+        row2 += "<td>{}</td>".format(p)
+        row3 += "<td>{}</td>".format(c)
+        row4 += "<td" + ec + ">{:0.2f}</td>".format(a)
+        row5 += "<td" + ec + ">{}</td>".format(i+1)
+        row6 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + row6 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em> is " \
+              "{}. The interpolated rank betweeen this and the next largest value is {:0.2f}.</p>".format(h, hint)
+    return outstr
+
+
+def metric_career_years_h_index_avgcite() -> Metric:
+    m = Metric()
+    m.name = "career years h-index by avg cite"
+    m.full_name = "career years h-index by average citations per year"
+    m.html_name = "career years <em>h-</em>index by average citations per year"
+    m.symbol = "Career years <em>h<sub>int</sub> by avg cites</em>"
+    m.example = write_career_years_h_index_avgcite_example
+    m.metric_type = FLOAT
+    equation = r"$$\text{career years }h\text{ by average citations per year}=" \
+               r"\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$"
+    equation2 = r"$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}" \
+                r"{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$"
+    m.description = "<p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) " \
+                    "is similar to the other two career years <em>h-</em>indices, but is based on the average " \
+                    "number of citations generated per publication per year, rather than on the total publications " \
+                    "or total citations for each year. One creates a list of years ranked by average citation count " \
+                    "per publication for all publications from that year. This list is then processed in the same " \
+                    "manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by " \
+                    "average citations per year is the largest value <em>h</em> for " \
+                    "which at least <em>h</em> years have publications with an average of <em>h</em> citations.</p>" + \
+                    equation + "<p>Because the average number of citations will often not be an integer, the " \
+                    "authors recommend interpolating between this and the next largest value, as with the real " \
+                    "<em>h-</em>index, in order to more accurately estimate the metric." + equation2
+    m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
+                    "<em>Scientometrics</em> 96(3):785&ndash;797."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_career_years_h_index_avgcite
     return m
 
 
@@ -7039,5 +7131,6 @@ def load_all_metrics() -> list:
                    metric_scientist_level_nonint(),
                    metric_q_index(),
                    metric_career_years_h_index_pub(),
-                   metric_career_years_h_index_cite()]
+                   metric_career_years_h_index_cite(),
+                   metric_career_years_h_index_avgcite()]
     return metric_list

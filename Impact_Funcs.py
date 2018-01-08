@@ -1319,3 +1319,28 @@ def calculate_career_years_h_index_cite(pub_years: list, cites: list) -> int:
         if cnt >= i + 1:
             h += 1
     return h
+
+
+# career years h-index by avg citations/year (Mahbuba and Rousseau 2013)
+def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> float:
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    year_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        year_cnts[pub_years[i]] += c
+    data = []
+    for y in year_cnts:
+        data.append([year_cnts[y], y])
+    data.sort(reverse=True)
+    h = 0
+    for i in range(len(data)):
+        avg = data[i][0]
+        if avg >= i + 1:
+            h += 1
+    if (h > 0) and (h < len(data)):
+        ch = data[h-1][0]
+        chp1 = data[h][0]
+        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
+    else:
+        hint = h
+    return hint
