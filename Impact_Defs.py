@@ -1620,7 +1620,8 @@ def metric_real_h_index() -> Metric:
     graph.name = "real_h_index_desc"
     graph.data = write_real_h_index_desc_data
     equation = r"$$h_r=\frac{\left(h+1\right)C_h-hC_{h+1}}{1-C_{h+1}+C_h}.$$"
-    m.description = "<p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009) as the point at which " \
+    m.description = "<p>One can calculate the real <em>h-</em>index (Guns and Rousseau 2009), also known as the " \
+                    "<span class=\"metric_name\">interpolated <em>h-</em>index</span>, as the point at which " \
                     "the linear interpolation between the citation counts associated with publications <em>h</em> " \
                     "and <em>h</em> + 1 crosses a line with slope one,</p>" + equation + "<div id=\"chart_" + \
                     graph.name + "_div\" class=\"proportional_chart\"></div>"\
@@ -1630,7 +1631,7 @@ def metric_real_h_index() -> Metric:
     m.references = ["Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the "
                     "<em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71."]
     m.symbol = "<em>h<sub>r</sub></em>"
-    m.synonyms = ["<em>h<sub>r</sub></em>"]
+    m.synonyms = ["<em>h<sub>r</sub></em>", "interpolated <em>h-</em>index"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_real_h_index
     return m
