@@ -131,7 +131,6 @@
         <li><a href="impact_h_rate.html"><em>m-</em>ratio index</a></li>
         <li><a href="impact_max_cites.html">maximum citations</a></li>
         <li><a href="impact_maxprod_index.html">maxprod-index</a></li>
-        <li><a href="impact_revised_collaborative_coefficient.html">MCC</a></li>
         <li><a href="impact_c_p.html"><em>MCR</em></a></li>
         <li><a href="impact_c_p.html">mean citation rate</a></li>
         <li><a href="impact_c_p.html">mean citations per publication</a></li>
@@ -141,7 +140,6 @@
         <li><a href="impact_median_cites_per_pub.html">median citations per publication</a></li>
         <li><a href="impact_p_index.html">mock <em>h<sub>m</sub>-</em>index</a></li>
         <li><a href="impact_c_p.html"><em>MOCR</em></a></li>
-        <li><a href="impact_revised_collaborative_coefficient.html">modified collaborative coefficient</a></li>
         <li><a href="impact_multidim_h_index.html">multidimensional <em>h-</em>index</a></li>
         <li><a href="impact_normalized_h_index.html">normalized <em>h-</em>index</a></li>
         <li><a href="impact_normal_hi_index.html">normalized <em>h<sub>i</sub>-</em>index</a></li>
@@ -167,10 +165,8 @@
         <li><a href="impact_quality_quotient.html">quality quotient</a></li>
         <li><a href="impact_R_index.html"><em>R-</em>index</a></li>
         <li><a href="impact_rational_h_index.html">rational <em>h-</em>index</a></li>
-        <li><a href="impact_revised_collaborative_coefficient.html">RCC</a></li>
         <li><a href="impact_real_h_index.html">real <em>h-</em>index</a></li>
         <li><a href="impact_Redner_index.html">Redner index</a></li>
-        <li><a href="impact_revised_collaborative_coefficient.html">revised collaborative coefficient</a></li>
         <li><a href="impact_rm_index.html"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="impact_S_index_h_mixed.html"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="impact_scientist_level.html">scientist's level</a></li>
@@ -10542,86 +10538,5 @@ impact_collaborative_coefficient.html
       <h2>References</h2>
       <ul>
         <li>Ajiferuke, I., Q.L. Burrell, and J. Tague (1988) Collaborative coefficient: A single measure of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433.</li>
-      </ul>
-    </div>
-@@@@
-impact_revised_collaborative_coefficient.html
-        var data_revised_collaborative_coefficient = google.visualization.arrayToDataTable([
-           ['Year', 'RCC'],
-           ['1997', 0.6071428571428571],
-           ['1998', 0.5902777777777778],
-           ['1999', 0.6125],
-           ['2000', 0.5366161616161615],
-           ['2001', 0.4647435897435897],
-           ['2002', 0.49939516129032263],
-           ['2003', 0.5233411120129869],
-           ['2004', 0.5207911106787512],
-           ['2005', 0.46011183730910304],
-           ['2006', 0.4613813057690609],
-           ['2007', 0.4693852737503531],
-           ['2008', 0.4833218404014865],
-           ['2009', 0.46704544744686427],
-           ['2010', 0.500636180608607],
-           ['2011', 0.508692588872147],
-           ['2012', 0.5116968828386999],
-           ['2013', 0.5306911055847225],
-           ['2014', 0.5132730430821321],
-           ['2015', 0.5216054526981744],
-           ['2016', 0.5267125799547675],
-           ['2017', 0.5368280401160282],
-		]);
-
-        var options_revised_collaborative_coefficient = {
-		     legend: {position: 'none'},
-		     hAxis: {slantedText: true},
-        };
-
-        var chart_revised_collaborative_coefficient = new google.visualization.LineChart(document.getElementById('chart_revised_collaborative_coefficient_div'));
-        chart_revised_collaborative_coefficient.draw(data_revised_collaborative_coefficient, options_revised_collaborative_coefficient);
-
-@@
-    <div id="revised_collaborative_coefficient" class="metric_container">
-      <h2>revised collaborative coefficient</h2>
-      <p>The revised collaborative coefficient (Egghe 1991, Lioa and Yen 2012), also known as the <span class="metric_name">modified collaborative coefficient (MCC)</span>, is a rescaled version of the collaborative coefficient (CC) that forces the metric to have a maximum possible value of one. It is calculated as:</p>$$\text{RCC}=\frac{A}{A-1}\text{CC}=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, <em>a</em><sub>max</sub> is the largest number of authors for any publication, and <em>A</em> is the total number of authors across all publications,</p>$$A=\sum\limits_{a=1}^{a_\max}{af_a}$$
-      <h3>Example</h3>
-      <table class="example_table"><tr><th># of Authors (<em>a</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr class="top_row"><th># of Publications (<em>f<sub>a</sub></em>)</th><td>5</td><td>3</td><td>3</td><td>5</td></tr><tr><th>Quotient (<em>f<sub>a</sub></em>/<em>a</em>)</th><td>5.00</td><td>1.50</td><td>1.00</td><td>1.25</td></tr></table><p>The sum of the quotients is 8.75, which yields a collaborative index of 0.4531.</p>
-      <h3>History</h3>
-      <div class="metric_data_container">
-        <div class="table_container">
-          <table class="impact_table">
-            <tr><th>Year</th><th>RCC</th></tr>
-            <tr><td class="cell_year">1997</td><td class="cell_value">0.6071</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">0.5903</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">0.6125</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">0.5366</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">0.4647</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">0.4994</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">0.5233</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">0.5208</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">0.4601</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">0.4614</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">0.4694</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">0.4833</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">0.4670</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">0.5006</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">0.5087</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">0.5117</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">0.5307</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">0.5133</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">0.5216</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">0.5267</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">0.5368</td></tr>
-          </table>
-        </div>
-        <div class="graph_container">
-          <div id="chart_revised_collaborative_coefficient_div" class="impact_chart"></div>
-        </div>
-      </div>
-    </div>
-    <div id="references">
-      <h2>References</h2>
-      <ul>
-        <li>Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information Processing and Management</em> 27(2&ndash;3):177&ndash;202.</li>
-        <li>Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33.</li>
       </ul>
     </div>

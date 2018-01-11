@@ -7227,35 +7227,35 @@ def metric_collaborative_coefficient() -> Metric:
 
 
 # revised collaborative coefficient (Egghe 1991, Liao and Yen 2012)
-def calculate_revised_collaborative_coefficient(metric_set: MetricSet) -> float:
-    author_cnts = metric_set.author_counts()
-    return Impact_Funcs.calculate_revised_collaborative_coefficient(author_cnts)
-
-
-def metric_revised_collaborative_coefficient() -> Metric:
-    m = Metric()
-    m.name = "revised collaborative coefficient"
-    m.full_name = "revised collaborative coefficient"
-    m.symbol = "RCC"
-    m.synonyms = ["RCC", "MCC", "modified collaborative coefficient"]
-    m.metric_type = FLOAT
-    equation = r"$$\text{RCC}=\frac{A}{A-1}\text{CC}" \
-               r"=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$"
-    aeq = r"$$A=\sum\limits_{a=1}^{a_\max}{af_a}.$$"
-    m.description = "<p>The revised collaborative coefficient (Egghe 1991, Liao and Yen 2012), also known as the " \
-                    "<span class=\"metric_name\">modified collaborative coefficient (MCC)</span>, is a rescaled " \
-                    "version of the collaborative coefficient (CC) that forces the metric to have a maximum possible " \
-                    "value of one. It is calculated as:</p>" + equation + \
-                    "<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, " \
-                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication, and " \
-                    "<em>A</em> is the total number of authors across all publications,</p>" + aeq
-    m.references = ["Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information "
-                    "Processing and Management</em> 27(2&ndash;3):177&ndash;202.",
-                    "Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A "
-                    "comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33."]
-    m.graph_type = LINE_CHART
-    m.calculate = calculate_revised_collaborative_coefficient
-    return m
+# def calculate_revised_collaborative_coefficient(metric_set: MetricSet) -> float:
+#     author_cnts = metric_set.author_counts()
+#     return Impact_Funcs.calculate_revised_collaborative_coefficient(author_cnts)
+#
+#
+# def metric_revised_collaborative_coefficient() -> Metric:
+#     m = Metric()
+#     m.name = "revised collaborative coefficient"
+#     m.full_name = "revised collaborative coefficient"
+#     m.symbol = "RCC"
+#     m.synonyms = ["RCC", "MCC", "modified collaborative coefficient"]
+#     m.metric_type = FLOAT
+#     equation = r"$$\text{RCC}=\frac{A}{A-1}\text{CC}" \
+#                r"=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$"
+#     aeq = r"$$A=\sum\limits_{a=1}^{a_\max}{af_a}.$$"
+#     m.description = "<p>The revised collaborative coefficient (Egghe 1991, Liao and Yen 2012), also known as the " \
+#                     "<span class=\"metric_name\">modified collaborative coefficient (MCC)</span>, is a rescaled " \
+#                     "version of the collaborative coefficient (CC) that forces the metric to have a maximum possible " \
+#                     "value of one. It is calculated as:</p>" + equation + \
+#                     "<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, " \
+#                     "<em>a</em><sub>max</sub> is the largest number of authors for any publication, and " \
+#                     "<em>A</em> is the total number of authors across all publications,</p>" + aeq
+#     m.references = ["Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information "
+#                     "Processing and Management</em> 27(2&ndash;3):177&ndash;202.",
+#                     "Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A "
+#                     "comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33."]
+#     m.graph_type = LINE_CHART
+#     m.calculate = calculate_revised_collaborative_coefficient
+#     return m
 
 
 # --- main initialization loop ---
@@ -7385,6 +7385,5 @@ def load_all_metrics() -> list:
                    metric_career_years_h_index_diffspeed(),
                    metric_collaborative_index(),
                    metric_degree_of_collaboration(),
-                   metric_collaborative_coefficient(),
-                   metric_revised_collaborative_coefficient()]
+                   metric_collaborative_coefficient()]
     return metric_list
