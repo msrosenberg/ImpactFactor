@@ -35,6 +35,7 @@
         <li><a href="impact_CDS_index.html">CDS-index</a></li>
         <li><a href="impact_h_core_cites.html"><em>C<sup>H</sup></em></a></li>
         <li><a href="impact_th_index.html">characteristic time scale of scientific activity</a></li>
+        <li><a href="impact_collaborative_index.html">CI</a></li>
         <li><a href="impact_circ_cite_area_radius.html">circular citation area radius</a></li>
         <li><a href="impact_citation_acceleration.html">citation acceleration</a></li>
         <li><a href="impact_total_cites.html">citation count</a></li>
@@ -44,6 +45,7 @@
         <li><a href="impact_c_p.html">citations per publication</a></li>
         <li><a href="impact_citations_per_year.html">citations per year</a></li>
         <li><a href="impact_max_cites.html"><em>C</em><sub>max</sub></a></li>
+        <li><a href="impact_collaborative_index.html">collaborative index</a></li>
         <li><a href="impact_contemporary_h_index.html">contemporary <em>h-</em>index</a></li>
         <li><a href="impact_cq_index.html">corrected quality ratio</a></li>
         <li><a href="impact_total_cites.html"><em>C<sup>P</sup></em></a></li>
@@ -53,10 +55,12 @@
         <li><a href="impact_total_cites.html"><em>C<sub>T</sub></em></a></li>
         <li><a href="impact_citations_per_year.html"><em>C<sup>TS</sup></em></a></li>
         <li><a href="impact_indifference.html">D</a></li>
+        <li><a href="impact_degree_of_collaboration.html">DC</a></li>
         <li><a href="impact_dci_index_10.html">DCI index (mild decay)</a></li>
         <li><a href="impact_dci_index_2.html">DCI index (sharp decay)</a></li>
         <li><a href="impact_ddci_index_10.html">dDCI index (mild decay)</a></li>
         <li><a href="impact_ddci_index_2.html">dDCI index (sharp decay)</a></li>
+        <li><a href="impact_degree_of_collaboration.html">degree of collaboration</a></li>
         <li><a href="impact_dci_index_10.html">discounted cumulated impact (mild decay)</a></li>
         <li><a href="impact_dci_index_2.html">discounted cumulated impact (sharp decay)</a></li>
         <li><a href="impact_ddci_index_10.html">dynamic discounted cumulated impact (mild decay)</a></li>
@@ -10254,7 +10258,7 @@ impact_career_years_h_index_by_diff_speed.html
 @@
     <div id="career_years_h_index_by_diff_speed" class="metric_container">
       <h2>career years <em>h-</em>index by diffusion speed</h2>
-      <p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) is similar to the other career years <em>h-</em>indices, but rescales the citation counts per year for the time ellapsed since the year of publication. One could also calculate it for a fixed time window, but here we are using career lenght at the time of calcuation. One creates a list of years ranked by diffusion speed estimated for all citations for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by diffusion speed is the largest value <em>h</em> for which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>$$\text{career years }h\text{ by diffusion speed}=\underset{i}{\max}\left(i\leq \frac{C_i}{A_i}\right).$$<p>Because the diffusion speed will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$
+      <p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) is similar to the other career years <em>h-</em>indices, but rescales the citation counts per year for the time ellapsed since the year of publication. One could also calculate it for a fixed time window, but here we are using career length at the time of calcuation. One creates a list of years ranked by diffusion speed estimated for all citations for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by diffusion speed is the largest value <em>h</em> for which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>$$\text{career years }h\text{ by diffusion speed}=\underset{i}{\max}\left(i\leq \frac{C_i}{A_i}\right).$$<p>Because the diffusion speed will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$
       <h3>Example</h3>
       <p>Years are ordered by diffusion speed per year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1998</td><td>1999</td></tr><tr><th>Age (<em>A<sub>i</sub></em>)</th><td>2</td><td>5</td><td>1</td><td>4</td><td>3</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>40</td><td>77</td><td>3</td><td>11</td><td>2</td></tr><tr class="top_row"><th>Diffusion Speed (<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th><td>20.00</td><td>15.40</td><td class="box">3.00</td><td>2.75</td><td>0.67</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is 3. The interpolated rank betweeen this and the next largest value is 3.00.</p>
       <h3>History</h3>
@@ -10294,5 +10298,163 @@ impact_career_years_h_index_by_diff_speed.html
       <h2>References</h2>
       <ul>
         <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
+      </ul>
+    </div>
+@@@@
+impact_collaborative_index.html
+        var data_collaborative_index = google.visualization.arrayToDataTable([
+           ['Year', 'CI'],
+           ['1997', 3.0],
+           ['1998', 2.8333333333333335],
+           ['1999', 3.0],
+           ['2000', 2.8333333333333335],
+           ['2001', 2.5],
+           ['2002', 3.15],
+           ['2003', 3.375],
+           ['2004', 3.3333333333333335],
+           ['2005', 3.03125],
+           ['2006', 3.0],
+           ['2007', 2.9444444444444446],
+           ['2008', 3.0],
+           ['2009', 2.9047619047619047],
+           ['2010', 3.5625],
+           ['2011', 3.5],
+           ['2012', 3.490566037735849],
+           ['2013', 4.0],
+           ['2014', 3.901639344262295],
+           ['2015', 3.9206349206349205],
+           ['2016', 3.953846153846154],
+           ['2017', 4.059701492537314],
+		]);
+
+        var options_collaborative_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_collaborative_index = new google.visualization.LineChart(document.getElementById('chart_collaborative_index_div'));
+        chart_collaborative_index.draw(data_collaborative_index, options_collaborative_index);
+
+@@
+    <div id="collaborative_index" class="metric_container">
+      <h2>collaborative index</h2>
+      <p>The Collaborative Index (Lawani 1980) is a basic measurement of the degree of collaboration within a set of publications. It is calculated as:</p>$$\text{CI}=\frac{\sum\limits_{a=1}^{a_\max}{af_a}}{P},$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and <em>a</em><sub>max</sub> is the largest number of authors for any publication.
+      <h3>Example</h3>
+      <table class="example_table"><tr><th># of Authors (<em>a</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr class="top_row"><th># of Publications (<em>f<sub>a</sub></em>)</th><td>5</td><td>3</td><td>3</td><td>5</td></tr><tr><th>Product (<em>a&times;f<sub>a</sub></em>)</th><td>5</td><td>6</td><td>9</td><td>20</td></tr></table><p>The sum of the products is 40, which yields a collaborative index of 2.5 when divided by the total number of publications (16).</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>CI</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.8333</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.8333</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">2.5000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">3.1500</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">3.3750</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">3.3333</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">3.0312</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">2.9444</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">2.9048</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">3.5625</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">3.5000</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">3.4906</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">4.0000</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">3.9016</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">3.9206</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">3.9538</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">4.0597</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_collaborative_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, Florida.</li>
+      </ul>
+    </div>
+@@@@
+impact_degree_of_collaboration.html
+        var data_degree_of_collaboration = google.visualization.arrayToDataTable([
+           ['Year', 'DC'],
+           ['1997', 0.8],
+           ['1998', 0.8333333333333334],
+           ['1999', 0.8571428571428572],
+           ['2000', 0.75],
+           ['2001', 0.6875],
+           ['2002', 0.7],
+           ['2003', 0.75],
+           ['2004', 0.7407407407407407],
+           ['2005', 0.65625],
+           ['2006', 0.6666666666666667],
+           ['2007', 0.6944444444444444],
+           ['2008', 0.7105263157894737],
+           ['2009', 0.6904761904761905],
+           ['2010', 0.7083333333333333],
+           ['2011', 0.7307692307692308],
+           ['2012', 0.7358490566037736],
+           ['2013', 0.7457627118644068],
+           ['2014', 0.7213114754098361],
+           ['2015', 0.7301587301587302],
+           ['2016', 0.7384615384615385],
+           ['2017', 0.7462686567164178],
+		]);
+
+        var options_degree_of_collaboration = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_degree_of_collaboration = new google.visualization.LineChart(document.getElementById('chart_degree_of_collaboration_div'));
+        chart_degree_of_collaboration.draw(data_degree_of_collaboration, options_degree_of_collaboration);
+
+@@
+    <div id="degree_of_collaboration" class="metric_container">
+      <h2>degree of collaboration</h2>
+      <p>The Degree of Collaboration index (Subramanyam 1983) is simply the proportion of a researcher's publications which are coauthored,</p>$$\text{DC}=1-\frac{f_1}{P},$$<p>where <em>f</em><sub>1</sub> is the number of single-authored publications.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>DC</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.8000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.8333</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.8571</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.7500</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.6875</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.7000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.7500</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.7407</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.6562</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.6667</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.6944</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.7105</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.6905</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.7083</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.7308</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.7358</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.7458</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.7213</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.7302</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.7385</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.7463</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_degree_of_collaboration_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Subramanyam, K. (1983) Bibliometric studies of research collaboration: A review. <em>Journal of Information Science</em> 6(1):33&ndash;38.</li>
       </ul>
     </div>

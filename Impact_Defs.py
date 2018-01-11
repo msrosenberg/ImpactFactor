@@ -7011,9 +7011,6 @@ def metric_career_years_h_index_avgcite() -> Metric:
 
 # career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
 def calculate_career_years_h_index_diffspeed(metric_set: MetricSet) -> float:
-    # metric_list = metric_set.parent_list
-    # metric_pos = metric_list.index(metric_set)
-    # pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
     pub_years = metric_set.publication_years()
     cites = metric_set.citations
     cur_year = metric_set.year()
@@ -7101,6 +7098,84 @@ def metric_career_years_h_index_diffspeed() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_diffspeed
+    return m
+
+
+# collaborative index (Lawani 1980)
+def calculate_collaborative_index(metric_set: MetricSet) -> float:
+    author_cnts = metric_set.author_counts()
+    return Impact_Funcs.calculate_collaborative_index(author_cnts)
+
+
+def write_collaborative_index_example(metric_set: MetricSet) -> str:
+    # outstr = "<p>Years are ordered by diffusion speed per year, from highest to " \
+    #          "lowest.</p>"
+    outstr = "<table class=\"example_table\">"
+    author_cnts = metric_set.author_counts()
+    max_a = max(author_cnts)
+    cnts = {a: author_cnts.count(a) for a in range(1, max_a+1)}
+    ci = metric_set.metrics["collaborative index"].value
+    row1 = "<tr><th># of Authors (<em>a</em>)</th>"
+    row2 = "<tr class=\"top_row\"><th># of Publications (<em>f<sub>a</sub></em>)</th>"
+    row3 = "<tr><th>Product (<em>a&times;f<sub>a</sub></em>)</th>"
+    s = 0
+    for a in range(1, max_a+1):
+        row1 += "<td>{}</td>".format(a)
+        row2 += "<td>{}</td>".format(cnts[a])
+        row3 += "<td>{}</td>".format(a*cnts[a])
+        s += a*cnts[a]
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The sum of the products is {}, which yields a collaborative index of {} when divided by the " \
+              "total number of publications ({}).</p>".format(s, ci, len(author_cnts))
+    return outstr
+
+
+def metric_collaborative_index() -> Metric:
+    m = Metric()
+    m.name = "collaborative index"
+    m.full_name = "collaborative index"
+    # m.html_name = "career years <em>h-</em>index by diffusion speed"
+    m.symbol = "CI"
+    m.synonyms = ["CI"]
+    m.example = write_collaborative_index_example
+    m.metric_type = FLOAT
+    equation = r"$$\text{CI}=\frac{\sum\limits_{a=1}^{a_\max}{af_a}}{P},$$"
+    m.description = "<p>The Collaborative Index (Lawani 1980) is a basic measurement of the degree of collaboration " \
+                    "within a set of publications. It is calculated as:</p>" + equation + "<p>where " \
+                    "<em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and " \
+                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication."
+    m.references = ["Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: "
+                    "A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, "
+                    "Florida."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_collaborative_index
+    return m
+
+
+# degree of collaboration (Subramanyam 1983)
+def calculate_degree_of_collaboration(metric_set: MetricSet) -> float:
+    author_cnts = metric_set.author_counts()
+    return Impact_Funcs.calculate_degree_of_collaboration(author_cnts)
+
+
+def metric_degree_of_collaboration() -> Metric:
+    m = Metric()
+    m.name = "degree of collaboration"
+    m.full_name = "degree of collaboration"
+    m.symbol = "DC"
+    m.synonyms = ["DC"]
+    m.metric_type = FLOAT
+    equation = r"$$\text{DC}=1-\frac{f_1}{P},$$"
+    m.description = "<p>The Degree of Collaboration index (Subramanyam 1983) is simply the proportion of " \
+                    "a researcher\'s publications which are coauthored,</p>" + equation + "<p>where " \
+                    "<em>f</em><sub>1</sub> is the number of single-authored publications."
+    m.references = ["Subramanyam, K. (1983) Bibliometric studies of research collaboration: A review. "
+                    "<em>Journal of Information Science</em> 6(1):33&ndash;38."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_degree_of_collaboration
     return m
 
 
@@ -7228,5 +7303,7 @@ def load_all_metrics() -> list:
                    metric_career_years_h_index_pub(),
                    metric_career_years_h_index_cite(),
                    metric_career_years_h_index_avgcite(),
-                   metric_career_years_h_index_diffspeed()]
+                   metric_career_years_h_index_diffspeed(),
+                   metric_collaborative_index(),
+                   metric_degree_of_collaboration()]
     return metric_list

@@ -1391,3 +1391,17 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
     else:
         hint = h
     return hint
+
+
+# collaborative index (Lawani 1980)
+def calculate_collaborative_index(author_cnts: list) -> float:
+    maxa = max(author_cnts)
+    ci = 0
+    for a in range(1, maxa+1):
+        ci += a * author_cnts.count(a)
+    return ci / len(author_cnts)
+
+
+# degree of collaboration (Subramanyam 1983)
+def calculate_degree_of_collaboration(author_cnts: list) -> float:
+    return 1 - author_cnts.count(1)/len(author_cnts)
