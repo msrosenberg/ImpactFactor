@@ -7001,7 +7001,7 @@ def metric_career_years_h_index_avgcite() -> Metric:
                     "which at least <em>h</em> years have publications with an average of <em>h</em> citations.</p>" + \
                     equation + "<p>Because the average number of citations will often not be an integer, the " \
                     "authors recommend interpolating between this and the next largest value, as with the real " \
-                    "<em>h-</em>index, in order to more accurately estimate the metric." + equation2
+                    "<em>h-</em>index, in order to more accurately estimate the metric.</p>" + equation2
     m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
@@ -7093,7 +7093,7 @@ def metric_career_years_h_index_diffspeed() -> Metric:
                     "which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>" + \
                     equation + "<p>Because the diffusion speed will often not be an integer, the " \
                     "authors recommend interpolating between this and the next largest value, as with the real " \
-                    "<em>h-</em>index, in order to more accurately estimate the metric." + equation2
+                    "<em>h-</em>index, in order to more accurately estimate the metric.</p>" + equation2
     m.references = ["Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. "
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
@@ -7108,8 +7108,6 @@ def calculate_collaborative_index(metric_set: MetricSet) -> float:
 
 
 def write_collaborative_index_example(metric_set: MetricSet) -> str:
-    # outstr = "<p>Years are ordered by diffusion speed per year, from highest to " \
-    #          "lowest.</p>"
     outstr = "<table class=\"example_table\">"
     author_cnts = metric_set.author_counts()
     max_a = max(author_cnts)
@@ -7146,7 +7144,7 @@ def metric_collaborative_index() -> Metric:
     m.description = "<p>The Collaborative Index (Lawani 1980) is a basic measurement of the degree of collaboration " \
                     "within a set of publications. It is calculated as:</p>" + equation + "<p>where " \
                     "<em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and " \
-                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication."
+                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication.</p>"
     m.references = ["Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: "
                     "A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, "
                     "Florida."]
@@ -7176,6 +7174,87 @@ def metric_degree_of_collaboration() -> Metric:
                     "<em>Journal of Information Science</em> 6(1):33&ndash;38."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_degree_of_collaboration
+    return m
+
+
+# collaborative coefficient (Ajiferuke et al 1988)
+def calculate_collaborative_coefficient(metric_set: MetricSet) -> float:
+    author_cnts = metric_set.author_counts()
+    return Impact_Funcs.calculate_collaborative_coefficient(author_cnts)
+
+
+def write_collaborative_coefficient_example(metric_set: MetricSet) -> str:
+    outstr = "<table class=\"example_table\">"
+    author_cnts = metric_set.author_counts()
+    max_a = max(author_cnts)
+    cnts = {a: author_cnts.count(a) for a in range(1, max_a+1)}
+    cc = metric_set.metrics["collaborative coefficient"].value
+    row1 = "<tr><th># of Authors (<em>a</em>)</th>"
+    row2 = "<tr class=\"top_row\"><th># of Publications (<em>f<sub>a</sub></em>)</th>"
+    row3 = "<tr><th>Quotient (<em>f<sub>a</sub></em>/<em>a</em>)</th>"
+    s = 0
+    for a in range(1, max_a+1):
+        row1 += "<td>{}</td>".format(a)
+        row2 += "<td>{}</td>".format(cnts[a])
+        row3 += "<td>{:0.2f}</td>".format(cnts[a]/a)
+        s += cnts[a]/a
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The sum of the quotients is {:0.2f}, which yields a collaborative index of {:0.4f}.</p>".format(s, cc)
+    return outstr
+
+
+def metric_collaborative_coefficient() -> Metric:
+    m = Metric()
+    m.name = "collaborative coefficient"
+    m.full_name = "collaborative coefficient"
+    m.symbol = "CC"
+    m.synonyms = ["CC"]
+    m.example = write_collaborative_coefficient_example
+    m.metric_type = FLOAT
+    equation = r"$$\text{CC}=1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P},$$"
+    m.description = "<p>The Collaborative Coefficient (Ajiferuke <em>et al.</em> 1988) is another measure of the " \
+                    "degree of collaboration within a set of publications. It is calculated as:</p>" + equation + \
+                    "<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and " \
+                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication.</p>"
+    m.references = ["Ajiferuke, I., Q.L. Burrell, and J. Tague (1988) Collaborative coefficient: A single measure "
+                    "of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_collaborative_coefficient
+    return m
+
+
+# revised collaborative coefficient (Egghe 1991, Liao and Yen 2012)
+def calculate_revised_collaborative_coefficient(metric_set: MetricSet) -> float:
+    author_cnts = metric_set.author_counts()
+    return Impact_Funcs.calculate_revised_collaborative_coefficient(author_cnts)
+
+
+def metric_revised_collaborative_coefficient() -> Metric:
+    m = Metric()
+    m.name = "revised collaborative coefficient"
+    m.full_name = "revised collaborative coefficient"
+    m.symbol = "RCC"
+    m.synonyms = ["RCC", "MCC", "modified collaborative coefficient"]
+    m.metric_type = FLOAT
+    equation = r"$$\text{RCC}=\frac{A}{A-1}\text{CC}" \
+               r"=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$"
+    aeq = r"$$A=\sum\limits_{a=1}^{a_\max}{af_a}.$$"
+    m.description = "<p>The revised collaborative coefficient (Egghe 1991, Liao and Yen 2012), also known as the " \
+                    "<span class=\"metric_name\">modified collaborative coefficient (MCC)</span>, is a rescaled " \
+                    "version of the collaborative coefficient (CC) that forces the metric to have a maximum possible " \
+                    "value of one. It is calculated as:</p>" + equation + \
+                    "<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, " \
+                    "<em>a</em><sub>max</sub> is the largest number of authors for any publication, and " \
+                    "<em>A</em> is the total number of authors across all publications,</p>" + aeq
+    m.references = ["Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information "
+                    "Processing and Management</em> 27(2&ndash;3):177&ndash;202.",
+                    "Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A "
+                    "comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_revised_collaborative_coefficient
     return m
 
 
@@ -7305,5 +7384,7 @@ def load_all_metrics() -> list:
                    metric_career_years_h_index_avgcite(),
                    metric_career_years_h_index_diffspeed(),
                    metric_collaborative_index(),
-                   metric_degree_of_collaboration()]
+                   metric_degree_of_collaboration(),
+                   metric_collaborative_coefficient(),
+                   metric_revised_collaborative_coefficient()]
     return metric_list

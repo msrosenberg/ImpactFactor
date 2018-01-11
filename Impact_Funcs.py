@@ -1405,3 +1405,22 @@ def calculate_collaborative_index(author_cnts: list) -> float:
 # degree of collaboration (Subramanyam 1983)
 def calculate_degree_of_collaboration(author_cnts: list) -> float:
     return 1 - author_cnts.count(1)/len(author_cnts)
+
+
+# collaborative coefficient (Ajiferuke et al 1988)
+def calculate_collaborative_coefficient(author_cnts: list) -> float:
+    maxa = max(author_cnts)
+    cc = 0
+    for a in range(1, maxa+1):
+        cc += author_cnts.count(a) / a
+    return 1 - cc / len(author_cnts)
+
+
+# revised collaborative coefficient (Ajiferuke et al 1988)
+def calculate_revised_collaborative_coefficient(author_cnts: list) -> float:
+    maxa = max(author_cnts)
+    totala = sum(author_cnts)
+    cc = 0
+    for a in range(1, maxa+1):
+        cc += author_cnts.count(a) / a
+    return (totala / (totala-1))*(1 - cc/len(author_cnts))

@@ -4766,6 +4766,72 @@
         var chart_degree_of_collaboration = new google.visualization.LineChart(document.getElementById('chart_degree_of_collaboration_div'));
         chart_degree_of_collaboration.draw(data_degree_of_collaboration, options_degree_of_collaboration);
 
+        var data_collaborative_coefficient = google.visualization.arrayToDataTable([
+           ['Year', 'CC'],
+           ['1997', 0.5666666666666667],
+           ['1998', 0.5555555555555556],
+           ['1999', 0.5833333333333334],
+           ['2000', 0.5208333333333333],
+           ['2001', 0.453125],
+           ['2002', 0.491468253968254],
+           ['2003', 0.5168801106301106],
+           ['2004', 0.5150045427823206],
+           ['2005', 0.4553684163059164],
+           ['2006', 0.45672088853907045],
+           ['2007', 0.4649571107904441],
+           ['2008', 0.4790821751348068],
+           ['2009', 0.463217206074349],
+           ['2010', 0.49770848364598363],
+           ['2011', 0.5058975746475747],
+           ['2012', 0.5089309537422745],
+           ['2013', 0.5284424144593636],
+           ['2014', 0.5111164336574172],
+           ['2015', 0.519493689731785],
+           ['2016', 0.5246631146631147],
+           ['2017', 0.5348544076156017],
+		]);
+
+        var options_collaborative_coefficient = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_collaborative_coefficient = new google.visualization.LineChart(document.getElementById('chart_collaborative_coefficient_div'));
+        chart_collaborative_coefficient.draw(data_collaborative_coefficient, options_collaborative_coefficient);
+
+        var data_revised_collaborative_coefficient = google.visualization.arrayToDataTable([
+           ['Year', 'RCC'],
+           ['1997', 0.6071428571428571],
+           ['1998', 0.5902777777777778],
+           ['1999', 0.6125],
+           ['2000', 0.5366161616161615],
+           ['2001', 0.4647435897435897],
+           ['2002', 0.49939516129032263],
+           ['2003', 0.5233411120129869],
+           ['2004', 0.5207911106787512],
+           ['2005', 0.46011183730910304],
+           ['2006', 0.4613813057690609],
+           ['2007', 0.4693852737503531],
+           ['2008', 0.4833218404014865],
+           ['2009', 0.46704544744686427],
+           ['2010', 0.500636180608607],
+           ['2011', 0.508692588872147],
+           ['2012', 0.5116968828386999],
+           ['2013', 0.5306911055847225],
+           ['2014', 0.5132730430821321],
+           ['2015', 0.5216054526981744],
+           ['2016', 0.5267125799547675],
+           ['2017', 0.5368280401160282],
+		]);
+
+        var options_revised_collaborative_coefficient = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_revised_collaborative_coefficient = new google.visualization.LineChart(document.getElementById('chart_revised_collaborative_coefficient_div'));
+        chart_revised_collaborative_coefficient.draw(data_revised_collaborative_coefficient, options_revised_collaborative_coefficient);
+
 		}
     </script>
   </head>
@@ -4804,6 +4870,7 @@
         <li><a href="#career_years_h_index_by_cite">career years <em>h-</em>index by citations</a></li>
         <li><a href="#career_years_h_index_by_diff_speed">career years <em>h-</em>index by diffusion speed</a></li>
         <li><a href="#career_years_h_index_by_pub">career years <em>h-</em>index by publications</a></li>
+        <li><a href="#collaborative_coefficient">CC</a></li>
         <li><a href="#CDR_index">CDR-index</a></li>
         <li><a href="#CDS_index">CDS-index</a></li>
         <li><a href="#h_core_cites"><em>C<sup>H</sup></em></a></li>
@@ -4818,6 +4885,7 @@
         <li><a href="#c_p">citations per publication</a></li>
         <li><a href="#citations_per_year">citations per year</a></li>
         <li><a href="#max_cites"><em>C</em><sub>max</sub></a></li>
+        <li><a href="#collaborative_coefficient">collaborative coefficient</a></li>
         <li><a href="#collaborative_index">collaborative index</a></li>
         <li><a href="#contemporary_h_index">contemporary <em>h-</em>index</a></li>
         <li><a href="#cq_index">corrected quality ratio</a></li>
@@ -4902,6 +4970,7 @@
         <li><a href="#h_rate"><em>m-</em>ratio index</a></li>
         <li><a href="#max_cites">maximum citations</a></li>
         <li><a href="#maxprod_index">maxprod-index</a></li>
+        <li><a href="#revised_collaborative_coefficient">MCC</a></li>
         <li><a href="#c_p"><em>MCR</em></a></li>
         <li><a href="#c_p">mean citation rate</a></li>
         <li><a href="#c_p">mean citations per publication</a></li>
@@ -4911,6 +4980,7 @@
         <li><a href="#median_cites_per_pub">median citations per publication</a></li>
         <li><a href="#p_index">mock <em>h<sub>m</sub>-</em>index</a></li>
         <li><a href="#c_p"><em>MOCR</em></a></li>
+        <li><a href="#revised_collaborative_coefficient">modified collaborative coefficient</a></li>
         <li><a href="#multidim_h_index">multidimensional <em>h-</em>index</a></li>
         <li><a href="#normalized_h_index">normalized <em>h-</em>index</a></li>
         <li><a href="#normal_hi_index">normalized <em>h<sub>i</sub>-</em>index</a></li>
@@ -4936,8 +5006,10 @@
         <li><a href="#quality_quotient">quality quotient</a></li>
         <li><a href="#R_index"><em>R-</em>index</a></li>
         <li><a href="#rational_h_index">rational <em>h-</em>index</a></li>
+        <li><a href="#revised_collaborative_coefficient">RCC</a></li>
         <li><a href="#real_h_index">real <em>h-</em>index</a></li>
         <li><a href="#Redner_index">Redner index</a></li>
+        <li><a href="#revised_collaborative_coefficient">revised collaborative coefficient</a></li>
         <li><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="#S_index_h_mixed"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="#scientist_level">scientist's level</a></li>
@@ -9319,7 +9391,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="career_years_h_index_by_avg_cite" class="metric_container">
       <h2>career years <em>h-</em>index by average citations per year</h2>
-      <p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) is similar to the other two career years <em>h-</em>indices, but is based on the average number of citations generated per publication per year, rather than on the total publications or total citations for each year. One creates a list of years ranked by average citation count per publication for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by average citations per year is the largest value <em>h</em> for which at least <em>h</em> years have publications with an average of <em>h</em> citations.</p>$$\text{career years }h\text{ by average citations per year}=\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$<p>Because the average number of citations will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$
+      <p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) is similar to the other two career years <em>h-</em>indices, but is based on the average number of citations generated per publication per year, rather than on the total publications or total citations for each year. One creates a list of years ranked by average citation count per publication for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by average citations per year is the largest value <em>h</em> for which at least <em>h</em> years have publications with an average of <em>h</em> citations.</p>$$\text{career years }h\text{ by average citations per year}=\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$<p>Because the average number of citations will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.</p>$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$
       <h3>Example</h3>
       <p>Years are ordered by average number of citations per publication from that year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>1998</td><td>2000</td><td>1999</td><td>2001</td></tr><tr><th>Publications (<em>P<sub>i</sub></em>)</th><td>5</td><td>1</td><td>5</td><td>1</td><td>4</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>77</td><td>11</td><td>40</td><td>2</td><td>3</td></tr><tr class="top_row"><th>Average Citations per Publication(<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em>)</th><td>15.40</td><td>11.00</td><td class="box">8.00</td><td>2.00</td><td>0.75</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em> is 3. The interpolated rank betweeen this and the next largest value is 3.89.</p>
       <h3>History</h3>
@@ -9357,7 +9429,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="career_years_h_index_by_diff_speed" class="metric_container">
       <h2>career years <em>h-</em>index by diffusion speed</h2>
-      <p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) is similar to the other career years <em>h-</em>indices, but rescales the citation counts per year for the time ellapsed since the year of publication. One could also calculate it for a fixed time window, but here we are using career length at the time of calcuation. One creates a list of years ranked by diffusion speed estimated for all citations for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by diffusion speed is the largest value <em>h</em> for which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>$$\text{career years }h\text{ by diffusion speed}=\underset{i}{\max}\left(i\leq \frac{C_i}{A_i}\right).$$<p>Because the diffusion speed will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$
+      <p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) is similar to the other career years <em>h-</em>indices, but rescales the citation counts per year for the time ellapsed since the year of publication. One could also calculate it for a fixed time window, but here we are using career length at the time of calcuation. One creates a list of years ranked by diffusion speed estimated for all citations for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by diffusion speed is the largest value <em>h</em> for which at least <em>h</em> years have a diffusion speed of <em>h</em>.</p>$$\text{career years }h\text{ by diffusion speed}=\underset{i}{\max}\left(i\leq \frac{C_i}{A_i}\right).$$<p>Because the diffusion speed will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.</p>$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$
       <h3>Example</h3>
       <p>Years are ordered by diffusion speed per year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2000</td><td>1997</td><td>2001</td><td>1998</td><td>1999</td></tr><tr><th>Age (<em>A<sub>i</sub></em>)</th><td>2</td><td>5</td><td>1</td><td>4</td><td>3</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>40</td><td>77</td><td>3</td><td>11</td><td>2</td></tr><tr class="top_row"><th>Diffusion Speed (<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em>)</th><td>20.00</td><td>15.40</td><td class="box">3.00</td><td>2.75</td><td>0.67</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is 3. The interpolated rank betweeen this and the next largest value is 3.00.</p>
       <h3>History</h3>
@@ -9395,7 +9467,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="collaborative_index" class="metric_container">
       <h2>collaborative index</h2>
-      <p>The Collaborative Index (Lawani 1980) is a basic measurement of the degree of collaboration within a set of publications. It is calculated as:</p>$$\text{CI}=\frac{\sum\limits_{a=1}^{a_\max}{af_a}}{P},$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and <em>a</em><sub>max</sub> is the largest number of authors for any publication.
+      <p>The Collaborative Index (Lawani 1980) is a basic measurement of the degree of collaboration within a set of publications. It is calculated as:</p>$$\text{CI}=\frac{\sum\limits_{a=1}^{a_\max}{af_a}}{P},$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and <em>a</em><sub>max</sub> is the largest number of authors for any publication.</p>
       <h3>Example</h3>
       <table class="example_table"><tr><th># of Authors (<em>a</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr class="top_row"><th># of Publications (<em>f<sub>a</sub></em>)</th><td>5</td><td>3</td><td>3</td><td>5</td></tr><tr><th>Product (<em>a&times;f<sub>a</sub></em>)</th><td>5</td><td>6</td><td>9</td><td>20</td></tr></table><p>The sum of the products is 40, which yields a collaborative index of 2.5 when divided by the total number of publications (16).</p>
       <h3>History</h3>
@@ -9467,12 +9539,89 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="collaborative_coefficient" class="metric_container">
+      <h2>collaborative coefficient</h2>
+      <p>The Collaborative Coefficient (Ajiferuke <em>et al.</em> 1988) is another measure of the degree of collaboration within a set of publications. It is calculated as:</p>$$\text{CC}=1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P},$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors and <em>a</em><sub>max</sub> is the largest number of authors for any publication.</p>
+      <h3>Example</h3>
+      <table class="example_table"><tr><th># of Authors (<em>a</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr class="top_row"><th># of Publications (<em>f<sub>a</sub></em>)</th><td>5</td><td>3</td><td>3</td><td>5</td></tr><tr><th>Quotient (<em>f<sub>a</sub></em>/<em>a</em>)</th><td>5.00</td><td>1.50</td><td>1.00</td><td>1.25</td></tr></table><p>The sum of the quotients is 8.75, which yields a collaborative index of 0.4531.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>CC</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.5667</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.5556</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.5833</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.5208</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.4531</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.4915</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.5169</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.5150</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.4554</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.4567</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.4650</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.4791</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.4632</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.4977</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.5059</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.5089</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.5284</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.5111</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.5195</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.5247</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.5349</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_collaborative_coefficient_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="revised_collaborative_coefficient" class="metric_container">
+      <h2>revised collaborative coefficient</h2>
+      <p>The revised collaborative coefficient (Egghe 1991, Lioa and Yen 2012), also known as the <span class="metric_name">modified collaborative coefficient (MCC)</span>, is a rescaled version of the collaborative coefficient (CC) that forces the metric to have a maximum possible value of one. It is calculated as:</p>$$\text{RCC}=\frac{A}{A-1}\text{CC}=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, <em>a</em><sub>max</sub> is the largest number of authors for any publication, and <em>A</em> is the total number of authors across all publications,</p>$$A=\sum\limits_{a=1}^{a_\max}{af_a}$$
+      <h3>Example</h3>
+      <table class="example_table"><tr><th># of Authors (<em>a</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr class="top_row"><th># of Publications (<em>f<sub>a</sub></em>)</th><td>5</td><td>3</td><td>3</td><td>5</td></tr><tr><th>Quotient (<em>f<sub>a</sub></em>/<em>a</em>)</th><td>5.00</td><td>1.50</td><td>1.00</td><td>1.25</td></tr></table><p>The sum of the quotients is 8.75, which yields a collaborative index of 0.4531.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>RCC</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.6071</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.5903</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.6125</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.5366</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.4647</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.4994</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.5233</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.5208</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.4601</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.4614</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.4694</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.4833</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.4670</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.5006</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.5087</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.5117</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.5307</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.5133</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.5216</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.5267</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.5368</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_revised_collaborative_coefficient_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
         <li>Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple authorship. <em>Scientometrics</em> 88:107&ndash;131.</li>
         <li>Abt, H.A. (2012) A publication index that is independent of age. <em>Scientometrics</em> 91:863&ndash;868.</li>
         <li>Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the DCI-index. <em>Journal of the American Society for Information Science and Technology</em> 67:1424&ndash;1439.</li>
+        <li>Ajiferuke, I., Q.L. Burrell, and J. Tague (1988) Collaborative coefficient: A single measure of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433.</li>
         <li>Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new index to characterize the scientific outpuf of researchers based on the <em>h-</em> and <em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400.</li>
         <li>Anderson, T.R., R.K.S. Hankin, and P.D. Killworth (2008) Beyond the Durfee square: Enhancing the <em>h-</em>index to score total publication output. <em>Scientometrics</em> 76(3):577&ndash;588.</li>
         <li>Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors profit from co-authors. <em>PLoS ONE</em> 8(4):e59814.</li>
@@ -9488,6 +9637,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Chai, J.-c., P.-h. Hua, R. Rousseau, and J.-k. Wan (2008) The adapted pure <em>h-</em>index. <em>Fourth International Conference on Webometrics, Informetrics and Scientometrics & Ninth COLLNET Meeting,</em> H. Kretschmer and F. Havemann, eds. Humboldt-Universität zu Berlin: Institute for Library and Information Science.</li>
         <li>De Visscher, A. (2010) An index to measures a scientist's specific impact. <em>Journal of the American Society for Information Science and Technology</em> 61(2):319&ndash;328.</li>
         <li>Dorta-González, P., and M.I. Dorta-González (2010) Indicador bibliométrico basado en el índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245.</li>
+        <li>Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information Processing and Management</em> 27(2&ndash;3):177&ndash;202.</li>
         <li>Egghe, L. (2006) An improvement of the <em>h-</em>index: The <em>g-</em>index. <em>ISSI Newsletter</em> 2(1):8&ndash;9.</li>
         <li>Egghe, L. (2006) How to improve the <em>h-</em>index: Letter. <em>The Scientist</em> 20(3):14.</li>
         <li>Egghe, L. (2006) Theory and practice of the <em>g-</em>index. <em>Scientometrics</em> 69(1):131&ndash;152.</li>
@@ -9511,6 +9661,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
         <li>Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, Florida.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>
+        <li>Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33.</li>
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
