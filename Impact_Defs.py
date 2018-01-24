@@ -7231,6 +7231,7 @@ def metric_collaborative_coefficient() -> Metric:
 #     author_cnts = metric_set.author_counts()
 #     return Impact_Funcs.calculate_revised_collaborative_coefficient(author_cnts)
 #
+# NOTE: THIS APPEARS TO REQUIRE THE NUMBER OF UNIQUE AUTHORS, NOT THE TOTAL NUMBER OF AUTHORS
 #
 # def metric_revised_collaborative_coefficient() -> Metric:
 #     m = Metric()
