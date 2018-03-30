@@ -2660,8 +2660,8 @@ def calculate_prathap_p_index(metric_set: MetricSet) -> float:
 def metric_prathap_p_index() -> Metric:
     m = Metric()
     m.name = "p-index"
-    m.full_name = "p-index"
-    m.html_name = "<em>p-</em>index"
+    m.full_name = "p-index (Prathap)"
+    m.html_name = "<em>p-</em>index (Prathap)"
     m.symbol = "<em>p</em>"
     m.metric_type = FLOAT
     equation = r"$$p=\sqrt[3]{\frac{\left(C^P\right)^2}{P}}.$$"
@@ -7226,37 +7226,103 @@ def metric_collaborative_coefficient() -> Metric:
     return m
 
 
-# revised collaborative coefficient (Egghe 1991, Liao and Yen 2012)
-# def calculate_revised_collaborative_coefficient(metric_set: MetricSet) -> float:
-#     author_cnts = metric_set.author_counts()
-#     return Impact_Funcs.calculate_revised_collaborative_coefficient(author_cnts)
-#
-# NOTE: THIS APPEARS TO REQUIRE THE NUMBER OF UNIQUE AUTHORS, NOT THE TOTAL NUMBER OF AUTHORS
-#
-# def metric_revised_collaborative_coefficient() -> Metric:
-#     m = Metric()
-#     m.name = "revised collaborative coefficient"
-#     m.full_name = "revised collaborative coefficient"
-#     m.symbol = "RCC"
-#     m.synonyms = ["RCC", "MCC", "modified collaborative coefficient"]
-#     m.metric_type = FLOAT
-#     equation = r"$$\text{RCC}=\frac{A}{A-1}\text{CC}" \
-#                r"=\frac{A}{A-1}\left(1-\frac{\sum\limits_{a=1}^{a_\max}{\frac{f_a}{a}}}{P}\right),$$"
-#     aeq = r"$$A=\sum\limits_{a=1}^{a_\max}{af_a}.$$"
-#     m.description = "<p>The revised collaborative coefficient (Egghe 1991, Liao and Yen 2012), also known as the " \
-#                     "<span class=\"metric_name\">modified collaborative coefficient (MCC)</span>, is a rescaled " \
-#                     "version of the collaborative coefficient (CC) that forces the metric to have a maximum possible " \
-#                     "value of one. It is calculated as:</p>" + equation + \
-#                     "<p>where <em>f<sub>a</sub></em> is the number of publications having <em>a</em> authors, " \
-#                     "<em>a</em><sub>max</sub> is the largest number of authors for any publication, and " \
-#                     "<em>A</em> is the total number of authors across all publications,</p>" + aeq
-#     m.references = ["Egghe, L. (1991) Theory of collaboration and collaborative measures. <em>Information "
-#                     "Processing and Management</em> 27(2&ndash;3):177&ndash;202.",
-#                     "Liao, C.H., and H.R. Yen (2012) Quantifying the degree of research collaboration: A "
-#                     "comparative study of collaborative measures. <em>Journal of Informetrics</em> 6(1):27&ndash;33."]
-#     m.graph_type = LINE_CHART
-#     m.calculate = calculate_revised_collaborative_coefficient
-#     return m
+# i10 index (Google Scholar)
+def calculate_i10_index(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_i10_index(metric_set.citations)
+
+
+def metric_i10_index() -> Metric:
+    m = Metric()
+    m.name = "i10"
+    m.full_name = "i10 index"
+    m.html_name = "<em>i10</em> index"
+    m.symbol = "i10"
+    m.metric_type = INT
+    m.description = "<p>The <em>i10</em> index (Google Scholar) is simply the number of publications which " \
+                    "have received at least 10 citations.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_i10_index
+    return m
+
+
+# p1 index (van Eck and Waltman 2008)
+def calculate_p1_index(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_p1_index(metric_set.citations)
+
+
+def metric_p1_index() -> Metric:
+    m = Metric()
+    m.name = "P1"
+    m.full_name = "P1"
+    m.html_name = "<em>P</em><sub>1</sub>"
+    m.symbol = "P1"
+    m.synonyms = ["<em>p-</em>index (<em>P</em><sub>1</sub>)"]
+    m.metric_type = INT
+    m.description = "<p><em>P</em><sub>1</sub> (van Eck and Waltman 2008), also known as the <em>p-</em>index, is " \
+                    "simply the number of publications which have received at least one citation.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_p1_index
+    return m
+
+
+# PC%
+def calculate_cited_paper_percent(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_cited_paper_percent(metric_set.citations)
+
+
+def metric_cited_paper_percent() -> Metric:
+    m = Metric()
+    m.name = "cited paper percent"
+    m.full_name = "cited paper percent"
+    m.html_name = "<em>P</em><sub>C</sub>%"
+    m.symbol = "Pc%"
+    m.metric_type = FLOAT
+    m.description = "The cited paper percent is simply the percent of publications which have received at least " \
+                    "one citation.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_cited_paper_percent
+    return m
+
+
+# uncitedness factor
+def calculate_uncitedness_factor(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_uncitedness_factor(metric_set.citations)
+
+
+def metric_uncitedness_factor() -> Metric:
+    m = Metric()
+    m.name = "uncitedness factor"
+    m.full_name = "uncitedness factor"
+    m.symbol = "Pu"
+    m.synonyms = ["<em>UF</em>", "<em>P<sub>U</sub></em>"]
+    m.metric_type = INT
+    equation = r"$$P_U = P - P_1,$$"
+    m.description = "The uncitedness factor is simply the number of uncited publications, or</p>" + equation + \
+                    "<p>where <em>P</em><sub>1</sub> is the number of publications with at least one citation.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_uncitedness_factor
+    return m
+
+
+# UF%
+def calculate_uncited_paper_percent(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_uncited_paper_percent(metric_set.citations)
+
+
+def metric_uncited_paper_percent() -> Metric:
+    m = Metric()
+    m.name = "uncited paper percent"
+    m.full_name = "uncited paper percent"
+    m.html_name = "<em>P</em><sub>U</sub>%"
+    m.symbol = "Pu%"
+    m.metric_type = FLOAT
+    equation = r"$$P_U\% = 100 - P_C\%,$$"
+    m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+                    "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
+                    "publications with at least one citation.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_uncited_paper_percent
+    return m
 
 
 # --- main initialization loop ---
@@ -7386,5 +7452,10 @@ def load_all_metrics() -> list:
                    metric_career_years_h_index_diffspeed(),
                    metric_collaborative_index(),
                    metric_degree_of_collaboration(),
-                   metric_collaborative_coefficient()]
+                   metric_collaborative_coefficient(),
+                   metric_i10_index(),
+                   metric_p1_index(),
+                   metric_cited_paper_percent(),
+                   metric_uncitedness_factor(),
+                   metric_uncited_paper_percent()]
     return metric_list

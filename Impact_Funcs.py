@@ -1416,11 +1416,34 @@ def calculate_collaborative_coefficient(author_cnts: list) -> float:
     return 1 - cc / len(author_cnts)
 
 
-# revised collaborative coefficient (Ajiferuke et al 1988)
-# def calculate_revised_collaborative_coefficient(author_cnts: list) -> float:
-#     maxa = max(author_cnts)
-#     totala = sum(author_cnts)
-#     cc = 0
-#     for a in range(1, maxa+1):
-#         cc += author_cnts.count(a) / a
-#     return (totala / (totala-1))*(1 - cc/len(author_cnts))
+# i10 index (Google Scholar)
+def calculate_i10_index(citations: list) -> int:
+    cnt = 0
+    for c in citations:
+        if c >= 10:
+            cnt += 1
+    return cnt
+
+
+# P1 index (van Eck and Waltman 2008)
+def calculate_p1_index(citations: list) -> int:
+    cnt = 0
+    for c in citations:
+        if c > 0:
+            cnt += 1
+    return cnt
+
+
+# cited paper percent
+def calculate_cited_paper_percent(citations: list) -> float:
+    return 100 * calculate_p1_index(citations) / len(citations)
+
+
+# uncitedness factor
+def calculate_uncitedness_factor(citations: list) -> int:
+    return len(citations) - calculate_p1_index(citations)
+
+
+# uncited paper percent
+def calculate_uncited_paper_percent(citations: list) -> float:
+    return 100 - calculate_cited_paper_percent(citations)

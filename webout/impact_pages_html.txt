@@ -45,6 +45,7 @@
         <li><a href="impact_citation_entropy.html">citation entropy (<em>s-</em>index)</a></li>
         <li><a href="impact_c_p.html">citations per publication</a></li>
         <li><a href="impact_citations_per_year.html">citations per year</a></li>
+        <li><a href="impact_cited_paper_percent.html"><em>P</em><sub>C</sub>%</a></li>
         <li><a href="impact_max_cites.html"><em>C</em><sub>max</sub></a></li>
         <li><a href="impact_collaborative_coefficient.html">collaborative coefficient</a></li>
         <li><a href="impact_collaborative_index.html">collaborative index</a></li>
@@ -113,6 +114,7 @@
         <li><a href="impact_time_scaled_h_index.html"><em>h<sup>TS</sup></em></a></li>
         <li><a href="impact_weighted_h_index.html"><em>h<sub>w</sub></em></a></li>
         <li><a href="impact_rational_h_index.html">h<sup>Δ</sup></a></li>
+        <li><a href="impact_i10.html"><em>i10</em> index</a></li>
         <li><a href="impact_c_p.html"><em>I<sub>f</sub></em></a></li>
         <li><a href="impact_impact_vitality.html">impact vitality</a></li>
         <li><a href="impact_indifference.html">indifference</a></li>
@@ -146,7 +148,9 @@
         <li><a href="impact_c_p.html">observed citation rate</a></li>
         <li><a href="impact_c_p.html"><em>OCR</em></a></li>
         <li><a href="impact_total_pubs.html"><em>P</em></a></li>
-        <li><a href="impact_p_index.html"><em>p-</em>index</a></li>
+        <li><a href="impact_P1.html"><em>p-</em>index (<em>P</em><sub>1</sub>)</a></li>
+        <li><a href="impact_p_index.html"><em>p-</em>index (Prathap)</a></li>
+        <li><a href="impact_P1.html"><em>P</em><sub>1</sub></a></li>
         <li><a href="impact_fractional_p_index.html"><em>p<sub>f</sub></em></a></li>
         <li><a href="impact_harmonic_p_index.html"><em>p<sub>h</sub></em></a></li>
         <li><a href="impact_ph_ratio.html"><em>ph-</em>ratio</a></li>
@@ -155,6 +159,7 @@
         <li><a href="impact_profit_h_index.html">profit <em>h-</em>index</a></li>
         <li><a href="impact_profit_p_index.html">profit <em>p-</em>index</a></li>
         <li><a href="impact_pubs_per_year.html"><em>P<sup>TS</sup></em></a></li>
+        <li><a href="impact_uncitedness_factor.html"><em>P<sub>U</sub></em></a></li>
         <li><a href="impact_pubs_per_year.html">publications per year</a></li>
         <li><a href="impact_pure_h_index_frac.html">pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="impact_pure_h_index_geom.html">pure <em>h-</em>index (geometric credit)</a></li>
@@ -189,6 +194,9 @@
         <li><a href="impact_total_self_cite_rate.html">total self-citation rate</a></li>
         <li><a href="impact_trend_h_index.html">trend <em>h-</em>index</a></li>
         <li><a href="impact_two_sided_h_index.html">two-sided <em>h-</em>index</a></li>
+        <li><a href="impact_uncitedness_factor.html"><em>UF</em></a></li>
+        <li><a href="impact_uncited_paper_percent.html"><em>P</em><sub>U</sub>%</a></li>
+        <li><a href="impact_uncitedness_factor.html">uncitedness factor</a></li>
         <li><a href="impact_v_index.html"><em>v-</em>index</a></li>
         <li><a href="impact_Wu_wq.html"><em>w</em>(<em>q</em>) (Wu)</a></li>
         <li><a href="impact_Woeginger_w_index.html"><em>w-</em>index (Woeginger)</a></li>
@@ -3912,7 +3920,7 @@ impact_p_index.html
 
 @@
     <div id="p_index" class="metric_container">
-      <h2><em>p-</em>index</h2>
+      <h2><em>p-</em>index (Prathap)</h2>
       <p>Also called the <span class="metric_name">mock <em>h<sub>m</sub>-</em>index</span> (Prathap 2010b), the <em>p-</em>index (Prathap 2010a) is derived from mathematical modeling of the relationship of increasing numbers of publications and citations. It is a function of the total number of citations and the average citations per paper,</p>$$p=\sqrt[3]{\frac{\left(C^P\right)^2}{P}}.$$
       <h3>History</h3>
       <div class="metric_data_container">
@@ -10539,4 +10547,364 @@ impact_collaborative_coefficient.html
       <ul>
         <li>Ajiferuke, I., Q.L. Burrell, and J. Tague (1988) Collaborative coefficient: A single measure of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433.</li>
       </ul>
+    </div>
+@@@@
+impact_i10.html
+        var data_i10 = google.visualization.arrayToDataTable([
+           ['Year', 'i10'],
+           ['1997', 0],
+           ['1998', 0],
+           ['1999', 1],
+           ['2000', 2],
+           ['2001', 4],
+           ['2002', 6],
+           ['2003', 8],
+           ['2004', 13],
+           ['2005', 18],
+           ['2006', 22],
+           ['2007', 26],
+           ['2008', 29],
+           ['2009', 31],
+           ['2010', 34],
+           ['2011', 36],
+           ['2012', 37],
+           ['2013', 37],
+           ['2014', 38],
+           ['2015', 38],
+           ['2016', 40],
+           ['2017', 40],
+		]);
+
+        var options_i10 = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_i10 = new google.visualization.LineChart(document.getElementById('chart_i10_div'));
+        chart_i10.draw(data_i10, options_i10);
+
+@@
+    <div id="i10" class="metric_container">
+      <h2><em>i10</em> index</h2>
+      <p>The <em>i10</em> index (Google Scholar) is simply the number of publications which have received at least 10 citations.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>i10</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">22</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">29</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">31</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">34</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">36</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">37</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">37</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">38</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">38</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">40</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">40</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_i10_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+@@@@
+impact_P1.html
+        var data_P1 = google.visualization.arrayToDataTable([
+           ['Year', 'P1'],
+           ['1997', 2],
+           ['1998', 5],
+           ['1999', 6],
+           ['2000', 8],
+           ['2001', 13],
+           ['2002', 18],
+           ['2003', 21],
+           ['2004', 24],
+           ['2005', 29],
+           ['2006', 31],
+           ['2007', 32],
+           ['2008', 35],
+           ['2009', 36],
+           ['2010', 42],
+           ['2011', 45],
+           ['2012', 48],
+           ['2013', 50],
+           ['2014', 56],
+           ['2015', 58],
+           ['2016', 59],
+           ['2017', 60],
+		]);
+
+        var options_P1 = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_P1 = new google.visualization.LineChart(document.getElementById('chart_P1_div'));
+        chart_P1.draw(data_P1, options_P1);
+
+@@
+    <div id="P1" class="metric_container">
+      <h2><em>P</em><sub>1</sub></h2>
+      <p><em>P</em><sub>1</sub> (van Eck and Waltman 2008), also known as the <em>p-</em>index, is simply the number of publications which have received at least one citation.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>P1</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">21</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">24</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">29</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">31</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">32</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">35</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">36</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">42</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">45</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">48</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">50</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">56</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">58</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">59</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">60</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_P1_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+@@@@
+impact_cited_paper_percent.html
+        var data_cited_paper_percent = google.visualization.arrayToDataTable([
+           ['Year', 'Pc%'],
+           ['1997', 40.0],
+           ['1998', 83.33333333333333],
+           ['1999', 85.71428571428571],
+           ['2000', 66.66666666666667],
+           ['2001', 81.25],
+           ['2002', 90.0],
+           ['2003', 87.5],
+           ['2004', 88.88888888888889],
+           ['2005', 90.625],
+           ['2006', 93.93939393939394],
+           ['2007', 88.88888888888889],
+           ['2008', 92.10526315789474],
+           ['2009', 85.71428571428571],
+           ['2010', 87.5],
+           ['2011', 86.53846153846153],
+           ['2012', 90.56603773584905],
+           ['2013', 84.7457627118644],
+           ['2014', 91.80327868852459],
+           ['2015', 92.06349206349206],
+           ['2016', 90.76923076923077],
+           ['2017', 89.55223880597015],
+		]);
+
+        var options_cited_paper_percent = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_cited_paper_percent = new google.visualization.LineChart(document.getElementById('chart_cited_paper_percent_div'));
+        chart_cited_paper_percent.draw(data_cited_paper_percent, options_cited_paper_percent);
+
+@@
+    <div id="cited_paper_percent" class="metric_container">
+      <h2><em>P</em><sub>C</sub>%</h2>
+      The cited paper percent is simply the percent of publications which have received at least one citation.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>Pc%</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">40.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">83.3333</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">85.7143</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">66.6667</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">81.2500</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">90.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">87.5000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">88.8889</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">90.6250</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">93.9394</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">88.8889</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">92.1053</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">85.7143</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">87.5000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">86.5385</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">90.5660</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">84.7458</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">91.8033</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">92.0635</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">90.7692</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">89.5522</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_cited_paper_percent_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+@@@@
+impact_uncitedness_factor.html
+        var data_uncitedness_factor = google.visualization.arrayToDataTable([
+           ['Year', 'Pu'],
+           ['1997', 3],
+           ['1998', 1],
+           ['1999', 1],
+           ['2000', 4],
+           ['2001', 3],
+           ['2002', 2],
+           ['2003', 3],
+           ['2004', 3],
+           ['2005', 3],
+           ['2006', 2],
+           ['2007', 4],
+           ['2008', 3],
+           ['2009', 6],
+           ['2010', 6],
+           ['2011', 7],
+           ['2012', 5],
+           ['2013', 9],
+           ['2014', 5],
+           ['2015', 5],
+           ['2016', 6],
+           ['2017', 7],
+		]);
+
+        var options_uncitedness_factor = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_uncitedness_factor = new google.visualization.LineChart(document.getElementById('chart_uncitedness_factor_div'));
+        chart_uncitedness_factor.draw(data_uncitedness_factor, options_uncitedness_factor);
+
+@@
+    <div id="uncitedness_factor" class="metric_container">
+      <h2>uncitedness factor</h2>
+      The uncitedness factor is simply the number of uncited publications, or</p>$$P_U = P - P_1,$$<p>where <em>P</em><sub>1</sub> is the number of publications with at least one citation.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>Pu</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">7</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_uncitedness_factor_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+@@@@
+impact_uncited_paper_percent.html
+        var data_uncited_paper_percent = google.visualization.arrayToDataTable([
+           ['Year', 'Pu%'],
+           ['1997', 60.0],
+           ['1998', 16.66666666666667],
+           ['1999', 14.285714285714292],
+           ['2000', 33.33333333333333],
+           ['2001', 18.75],
+           ['2002', 10.0],
+           ['2003', 12.5],
+           ['2004', 11.111111111111114],
+           ['2005', 9.375],
+           ['2006', 6.060606060606062],
+           ['2007', 11.111111111111114],
+           ['2008', 7.89473684210526],
+           ['2009', 14.285714285714292],
+           ['2010', 12.5],
+           ['2011', 13.461538461538467],
+           ['2012', 9.43396226415095],
+           ['2013', 15.254237288135599],
+           ['2014', 8.196721311475414],
+           ['2015', 7.936507936507937],
+           ['2016', 9.230769230769226],
+           ['2017', 10.447761194029852],
+		]);
+
+        var options_uncited_paper_percent = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_uncited_paper_percent = new google.visualization.LineChart(document.getElementById('chart_uncited_paper_percent_div'));
+        chart_uncited_paper_percent.draw(data_uncited_paper_percent, options_uncited_paper_percent);
+
+@@
+    <div id="uncited_paper_percent" class="metric_container">
+      <h2><em>P</em><sub>U</sub>%</h2>
+      The uncited paper percent is simply the percent of publications which have not received anycitations, or</p>$$P_U\% = 100 - P_C\%,$$<p>where <em>P</em><sub>C</sub>% is the percent of publications with at least one citation.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>Pu%</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">60.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">16.6667</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">14.2857</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">33.3333</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">18.7500</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">10.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">12.5000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">11.1111</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">9.3750</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">6.0606</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">11.1111</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">7.8947</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">14.2857</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">12.5000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">13.4615</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">9.4340</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">15.2542</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">8.1967</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">7.9365</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">9.2308</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">10.4478</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_uncited_paper_percent_div" class="impact_chart"></div>
+        </div>
+      </div>
     </div>
