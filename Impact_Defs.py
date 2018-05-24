@@ -1447,7 +1447,7 @@ def metric_indifference() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$D=\frac{P}{C^P}$$"
     m.description = "<p>This metric is simply the total number of publications divided by the number of total " \
-                    "number of citations (Egghe and Rousseau 1996); it was originally proposed to evaluate journals" \
+                    "number of citations (Egghe and Rousseau 1996); it was originally proposed to evaluate journals " \
                     "but can be applied to individuals as well. The larger this value, the more indifferent the " \
                     "community is to the author\'s work. This metric is also just the inverse of the mean number of " \
                     "citations per publication (<em>C/P</em>).</p>" + equation
