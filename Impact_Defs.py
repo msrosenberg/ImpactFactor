@@ -6635,7 +6635,7 @@ def calculate_scientist_level_nonint(metric_set: MetricSet) -> float:
 def metric_scientist_level_nonint() -> Metric:
     m = Metric()
     m.name = "nonint scientist level"
-    m.full_name = "scientists\'s level (non-integer)"
+    m.full_name = "scientist\'s level (non-integer)"
     m.symbol = "<em>τ</em>"
     m.synonyms = ["<em>τ</em>"]
     m.metric_type = FLOAT
