@@ -1447,3 +1447,51 @@ def calculate_uncitedness_factor(citations: list) -> int:
 # uncited paper percent
 def calculate_uncited_paper_percent(citations: list) -> float:
     return 100 - calculate_cited_paper_percent(citations)
+
+
+# beauty coefficient (Ke et al 2015)
+def calculate_beauty_coefficient(pub_list: list) -> list:
+    blist = []
+    for p in pub_list:
+        yearly_cites = []
+        for i, n in enumerate(p):
+            if n is not None:
+                if len(yearly_cites) == 0:
+                    yearly_cites.append(n)
+                else:
+                    yearly_cites.append(n - p[i-1])
+        maxc = max(yearly_cites)
+        tm = yearly_cites.index(maxc)
+        c0 = yearly_cites[0]
+        b = 0
+        if tm != 0:
+            for t in range(tm+1):
+                b += (((maxc - c0)/tm)*t + c0 - yearly_cites[t]) / max(1, yearly_cites[t])
+        blist.append(b)
+    return blist
+
+
+# awakening_time (Ke et al 2015)
+def calculate_awakening_time(pub_list: list) -> list:
+    ta_list = []
+    for p in pub_list:
+        yearly_cites = []
+        for i, n in enumerate(p):
+            if n is not None:
+                if len(yearly_cites) == 0:
+                    yearly_cites.append(n)
+                else:
+                    yearly_cites.append(n - p[i-1])
+        maxc = max(yearly_cites)
+        tm = yearly_cites.index(maxc)
+        c0 = yearly_cites[0]
+        ta = 0
+        maxdt = 0
+        if tm != 0:
+            for t in range(tm+1):
+                dt = abs((maxc-c0)*t - tm*yearly_cites[t] + tm*c0) / math.sqrt((maxc-c0)**2 + tm**2)
+                if dt > maxdt:
+                    ta = t
+                    maxdt = dt
+        ta_list.append(ta)
+    return ta_list

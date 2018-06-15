@@ -7325,6 +7325,54 @@ def metric_uncited_paper_percent() -> Metric:
     return m
 
 
+# beauty coefficient (Ke et al 2015)
+def calculate_beauty_coefficient(metric_set: MetricSet) -> list:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    return Impact_Funcs.calculate_beauty_coefficient(pub_data)
+
+
+def metric_beauty_coefficient() -> Metric:
+    m = Metric()
+    m.name = "beauty coefficient"
+    m.full_name = "beauty coefficient"
+    m.html_name = "beauty coefficient"
+    m.symbol = "B"
+    m.metric_type = FLOATLIST
+    # equation = r"$$P_U\% = 100 - P_C\%,$$"
+    # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+    #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
+    #                 "publications with at least one citation.</p>"
+    m.graph_type = MULTILINE_CHART_LEFT
+    m.calculate = calculate_beauty_coefficient
+    return m
+
+
+# awakening time (Ke et al 2015)
+def calculate_awakening_time(metric_set: MetricSet) -> list:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    return Impact_Funcs.calculate_awakening_time(pub_data)
+
+
+def metric_awakening_time() -> Metric:
+    m = Metric()
+    m.name = "awakening time"
+    m.full_name = "awakening time"
+    m.html_name = "awakening time"
+    m.symbol = "ta"
+    m.metric_type = INTLIST
+    # equation = r"$$P_U\% = 100 - P_C\%,$$"
+    # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+    #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
+    #                 "publications with at least one citation.</p>"
+    m.graph_type = MULTILINE_CHART_LEFT
+    m.calculate = calculate_awakening_time
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -7457,5 +7505,7 @@ def load_all_metrics() -> list:
                    metric_p1_index(),
                    metric_cited_paper_percent(),
                    metric_uncitedness_factor(),
-                   metric_uncited_paper_percent()]
+                   metric_uncited_paper_percent(),
+                   metric_beauty_coefficient(),
+                   metric_awakening_time()]
     return metric_list
