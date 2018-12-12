@@ -7277,7 +7277,7 @@ def metric_cited_paper_percent() -> Metric:
     m.html_name = "<em>P</em><sub>C</sub>%"
     m.symbol = "Pc%"
     m.metric_type = FLOAT
-    m.description = "The cited paper percent is simply the percent of publications which have received at least " \
+    m.description = "<p>The cited paper percent is simply the percent of publications which have received at least " \
                     "one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_cited_paper_percent
@@ -7297,7 +7297,7 @@ def metric_uncitedness_factor() -> Metric:
     m.synonyms = ["<em>UF</em>", "<em>P<sub>U</sub></em>"]
     m.metric_type = INT
     equation = r"$$P_U = P - P_1,$$"
-    m.description = "The uncitedness factor is simply the number of uncited publications, or</p>" + equation + \
+    m.description = "<p>The uncitedness factor is simply the number of uncited publications, or</p>" + equation + \
                     "<p>where <em>P</em><sub>1</sub> is the number of publications with at least one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_uncitedness_factor
@@ -7317,7 +7317,7 @@ def metric_uncited_paper_percent() -> Metric:
     m.symbol = "Pu%"
     m.metric_type = FLOAT
     equation = r"$$P_U\% = 100 - P_C\%,$$"
-    m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+    m.description = "<p>The uncited paper percent is simply the percent of publications which have not received any " \
                     "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
                     "publications with at least one citation.</p>"
     m.graph_type = LINE_CHART
@@ -7340,10 +7340,29 @@ def metric_beauty_coefficient() -> Metric:
     m.html_name = "beauty coefficient"
     m.symbol = "B"
     m.metric_type = FLOATLIST
-    # equation = r"$$P_U\% = 100 - P_C\%,$$"
-    # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
-    #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
-    #                 "publications with at least one citation.</p>"
+    line_equation = r"$$x_t = \frac{c_{\max}-c_0}{t_{\max}}t+c_{0}.$$"
+    b_equation = r"$$B=\sum^{t_\max}_{t=0}{\frac{\frac{c_\max-c_0}{t_\max}t+c_0-c_t}{\max{\left(1, c_t\right)}}}.$$"
+    m.description = "<p>The Beauty Coefficient attempts to measure the citation trajectory of individual " \
+                    "publications to better understand when they reach peak impact. It is related to the concept of " \
+                    "awakening time, which means to measure when a previously unnoticed publication suddenly begins " \
+                    "to accumulate citations. Let <em>c<sub>t</sub></em> be " \
+                    "the number of citations received by the publication in it's <em>t</em><sup>th</sup> year since " \
+                    "publication. The year with the maximum number of citations (<em>c</em><sub>max</sub>) is " \
+                    "<em>t</em><sub>max</sub>. In a plot of citations by year, one could add a straight line " \
+                    "(<em>x</em>) connecting the number of citations in the first year (0, " \
+                    "<em>c</em><sub>0</sub>) to the maximum number of citations (<em>t</em><sub>max</sub>, " \
+                    "<em>c</em><sub>max</sub>). This line is described by the equation</p>" + line_equation + \
+                    "<p>The Beauty coefficient is the sum of the ratios between " \
+                    "<em>x<sub>t</sub></em>&minus;<em>c<sub>t</sub></em> and max(1, <em>c<sub>t</sub></em>) for all " \
+                    "<em>t</em> up through <em>t</em><sub>max</sub>.</p>" + b_equation + \
+                    "<p>Publications whose citation rate grows linearly with time will have a <em>B</em> equal to " \
+                    "zero (there is no difference between the observed citation curve and <em>x</em>). A value of " \
+                    "zero is also found when a publication is cited very quickly and then forgotten. Large " \
+                    "positive values indicate publications whose citation recognition was delayed after publication, " \
+                    "while negative values indicate concave publication trajectories.</p>"
+    m.references = ["Ke, Q., E. Ferrara, F. Radicchi, and A. Flammini (2015) Defining and identifying Sleeping "
+                    "Beauties in science. <em>Proceedings of the National Academy of Sciences USA</em> "
+                    "112(24):7426&ndash;7431."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_beauty_coefficient
     return m
@@ -7364,10 +7383,12 @@ def metric_awakening_time() -> Metric:
     m.html_name = "awakening time"
     m.symbol = "ta"
     m.metric_type = INTLIST
-    # equation = r"$$P_U\% = 100 - P_C\%,$$"
     # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
     #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
     #                 "publications with at least one citation.</p>"
+    m.references = ["Ke, Q., E. Ferrara, F. Radicchi, and A. Flammini (2015) Defining and identifying Sleeping "
+                    "Beauties in science. <em>Proceedings of the National Academy of Sciences USA</em> "
+                    "112(24):7426&ndash;7431."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_awakening_time
     return m
@@ -7506,6 +7527,7 @@ def load_all_metrics() -> list:
                    metric_cited_paper_percent(),
                    metric_uncitedness_factor(),
                    metric_uncited_paper_percent(),
-                   metric_beauty_coefficient(),
-                   metric_awakening_time()]
+                   # metric_beauty_coefficient(),
+                   # metric_awakening_time()
+                   ]
     return metric_list
