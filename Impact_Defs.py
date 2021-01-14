@@ -7394,6 +7394,210 @@ def metric_awakening_time() -> Metric:
     return m
 
 
+# h-index for principal investigators (Steinbruchel 2019)
+def calculate_principal_h(metric_set: MetricSet) -> list:
+    # metric_list = metric_set.parent_list
+    # metric_pos = metric_list.index(metric_set)
+    # pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    # return Impact_Funcs.calculate_awakening_time(pub_data)
+    pass
+
+
+def metric_principal_h() -> Metric:
+    m = Metric()
+    # m.name = "awakening time"
+    # m.full_name = "awakening time"
+    # m.html_name = "awakening time"
+    # m.symbol = "ta"
+    # m.metric_type = INTLIST
+    # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+    #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
+    #                 "publications with at least one citation.</p>"
+    m.references = ["Steinbrüchel, C. (2019) A citation index for principal investigators. <em>Scientometrics</em> "
+                    "118(1):305-320."]
+    # m.graph_type = MULTILINE_CHART_LEFT
+    # m.calculate = calculate_awakening_time
+    return m
+
+
+# apparent h-index (Mohammed et al 2020)
+def calculate_apparent_h_index(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_apparent_h_index(citations, h)
+
+
+def write_apparent_h_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    ha = metric_set.metrics["apparent h-index"].value
+    non_zero_cnt = 0
+    for i, c in enumerate(citations):
+        if c > 0:
+            non_zero_cnt += 1
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i+1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The <em>h-</em>index is {0}. Of the {2} publications, {1} have at least one citation. The apparent " \
+              "<em>h-</em>index is therefore {0}&times;{1}/{2} = {3}</p>".format(h, non_zero_cnt, len(citations), ha)
+    return outstr
+
+
+def metric_apparent_h_index() -> Metric:
+    m = Metric()
+    m.name = "apparent h-index"
+    m.full_name = "apparent h-index"
+    m.html_name = "apparent <em>h-</em>index"
+    m.metric_type = FLOAT
+    m.example = write_apparent_h_index_example
+    equation = r"$$h_A=h \frac{P_{\textrm{non-zero cites}}}{P}.$$"
+    m.description = "<p>The apparent <em>h-</em>index (Mohammed <em>et al.</em> 2020) is simply the <em>h-</em>index " \
+                    "times the proportion of publications that have at least one citation; it is similar to the " \
+                    "normalized <em>h-</em>index.</p>" + equation
+    m.symbol = "<em>h<sub>A</sub></em>"
+    m.synonyms = ["<em>h<sub>A</sub></em>"]
+    m.references = ["Mohammed, S., A. Morgan, and E. Nyantakyi (2020) On the influence of uncited publications on a "
+                    "researcher's <em>h</em>‑index. <em>Scientometrics</em>."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_apparent_h_index
+    return m
+
+
+# chi index (Fenner et al 2018)
+def calculate_chi_index(metric_set: MetricSet) -> float:
+    sorted_citations = sorted(metric_set.citations, reverse=True)
+    return Impact_Funcs.calculate_chi_index(sorted_citations)
+
+
+def write_chi_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["chi-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'chi-square'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    # citation curve
+    for x in range(maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+            if v > maxv:
+                v = "null"
+        outstr += ", {}, null],\n".format(v)
+        output.append(outstr)
+    # chi-square
+    chisq = 0
+    chir = -1
+    for i, c in enumerate(tmp_cites):
+        p = (i + 1)*c
+        if p > chisq:
+            chisq = p
+            chir = i
+    # write chi-square
+    output.append("           [{}, null, {}],\n".format(0, tmp_cites[chir]))
+    output.append("           [{}, null, {}],\n".format(chir+1, tmp_cites[chir]))
+    output.append("           [{}, null, {}],\n".format(chir+1, 0))
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [2, 2],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+    return output
+
+
+def write_chi_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th>"
+    chi = metric_set.metrics["chi-index"].value
+    chisq = 0
+    for i, c in enumerate(citations):
+        p = (i + 1)*c
+        if p > chisq:
+            chisq = p
+        if math.sqrt(p) == chi:
+            ec = " class=\"box\""
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i+1)
+        row3 += "<td" + ec + ">{}</td>".format(p)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The largest rectangle which can fit under the citation curve has an area of {}, the square-root " \
+              "of which is <em>χ</em> = {:0.3f}.</p>".format(chisq, chi)
+    return outstr
+
+
+def metric_chi_index() -> Metric:
+    m = Metric()
+    m.name = "chi-index"
+    m.full_name = "χ-index"
+    m.html_name = "<em>χ-</em>index"
+    m.symbol = "<em>χ</em>"
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "chi_index_desc"
+    graph.data = write_chi_index_desc_data
+    m.example = write_chi_index_example
+    m.synonyms = ["<em>χ-</em>index"]
+    m.metric_type = FLOAT
+    # equation = r"$$\alpha = \frac{h}{Y_D},$$"
+    # yd = r"$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$"
+    m.description = "<p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the " \
+                    "largest rectangle which can " \
+                    "fit under the citation curve; similar to how <em>h</em> is the size of the largest square.</p>" \
+                    "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
+    m.references = ["Fenner, T., M. Harris, M. Levene, and J. Bar-Ilan (2018) A novel bibliometric index with a "
+                    "simple geometric interpretation. <em>PLoS ONE</em> 13(7):e0200098."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_chi_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -7527,6 +7731,8 @@ def load_all_metrics() -> list:
                    metric_cited_paper_percent(),
                    metric_uncitedness_factor(),
                    metric_uncited_paper_percent(),
+                   metric_apparent_h_index(),
+                   metric_chi_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

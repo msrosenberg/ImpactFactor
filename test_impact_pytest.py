@@ -1,79 +1,86 @@
+import Impact_Funcs
+
+# common data for conducting tests
+test_citations = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0]
+test_years = [1997, 1997, 1997, 1997, 1998, 1999, 2000, 2000, 2001, 2001, 2001, 1997, 2000, 2001, 2000, 2000]
+test_author_cnt = [1, 3, 4, 4, 2, 4, 4, 1, 1, 2, 2, 3, 3, 1, 1, 4]
+test_author_order = [1, 3, 3, 3, 2, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 3]
+
+
+def test_rank():
+    indices = [8, 10, 15, 6, 9, 14, 5, 7, 13, 2, 0, 3, 4, 1, 12, 11]
+    ranks = [10, 13, 9, 11, 12, 6, 3, 7, 0, 4, 1, 15, 14, 8, 5, 2]
+    assert Impact_Funcs.rank(16, indices) == ranks
+
+
+def test_sort_and_rank():
+    # this is the index of the citations in ith order, i.e.i, the 0th entry lists the index of the smallest value,
+    # the 1st entry lists the index of the second smallest value, etc.
+    indices = [8, 10, 15, 6, 9, 14, 5, 7, 13, 2, 0, 3, 4, 1, 12, 11]
+    # rank_order is the rank of the ith entry (starting at 1, not 0), from high to low
+    rank_order = [6, 3, 7, 5, 4, 10, 13, 9, 16, 12, 15, 1, 2, 8, 11, 14]
+    assert Impact_Funcs.sort_and_rank(test_citations, len(test_citations)) == (indices, rank_order)
+
+
+def test_calculate_ranks():
+    rank_order = [6, 3, 7, 5, 4, 10, 13, 9, 16, 12, 15, 1, 2, 8, 11, 14]
+    # the cumulative citation count, when pubs are ranked from most to fewest cites
+    cumulative_cnt = [42, 78, 92, 103, 112, 121, 124, 126, 128, 130, 131, 132, 133, 133, 133, 133]
+    assert Impact_Funcs.calculate_ranks(test_citations) == (rank_order, cumulative_cnt)
+
+
+def test_calculate_median_odd():
+    # test when there are an odd number of values
+    assert Impact_Funcs.calculate_median([1, 12, 3, 10, 4]) == 4
+
+
+def test_calculate_median_even():
+    # test when there are an even number of values
+    assert Impact_Funcs.calculate_median([1, 10, 3, 4]) == 3.5
+
+
+def test_publication_ages():
+    year = 2018
+    answer = [22, 22, 22, 22, 21, 20, 19, 19, 18, 18, 18, 22, 19, 18, 19, 19]
+    assert Impact_Funcs.publication_ages(year, test_years) == answer
+
+
+def test_citations_per_year():
+    answer = [9/22, 14/22, 3/22, 9/22, 11/21, 2/20, 1/19, 2/19, 0/18, 1/18, 0/18, 42/22, 36/19, 2/18, 1/19, 0/19]
+    ages = Impact_Funcs.publication_ages(2018, test_years)
+    assert Impact_Funcs.citations_per_year(test_citations, ages) == answer
+
+
+def test_calculate_total_pubs():
+    assert Impact_Funcs.calculate_total_pubs(test_citations) == 16
+
+
+def test_calculate_total_cites():
+    assert Impact_Funcs.calculate_total_cites(test_citations) == 133
+
+
+def test_max_cites():
+    assert Impact_Funcs.calculate_max_cites(test_citations) == 42
+
+
+def test_calculate_mean_cites():
+    p = Impact_Funcs.calculate_total_pubs(test_citations)
+    c = Impact_Funcs.calculate_total_cites(test_citations)
+    assert Impact_Funcs.calculate_mean_cites(c, p) == 133/16
+
+
+def test_calculate_h_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(test_citations)
+    is_core = [True, True, False, True, True, False, False, False, False, False, False, True, True, False, False, False]
+    assert Impact_Funcs.calculate_h_index(test_citations, rank_order) == (6, is_core)
+
+
 """
-Impact Factor Functions
 
-This module is designed to provide the functions necessary to calculate the various impact factors
-from generic data, without the reliance on the special class structure of the greater program
-"""
-
-import math
-import datetime
-from typing import Tuple, Union
-
-Number = Union[int, float]
-
-
-# --- General Support Functions ---
-def rank(n: int, indx: list) -> list:
-    irank = [0 for _ in range(n)]
-    for j in range(n):
-        irank[indx[j]] = j
-    return irank
-
-
-def sort_and_rank(sort_list: list, n: int) -> Tuple[list, list]:
-    tmpindex = sorted(range(n), key=lambda k: sort_list[k])
-    tmprank = rank(n, tmpindex)
-    # reverse so #1 is largest
-    # NOTE: the ranks in rank_order go from 1 to n, rather than 0 to n-1
-    rank_order = []
-    for i in range(n):
-        rank_order.append(n - tmprank[i])
-    return tmpindex, rank_order
-
-
-def calculate_median(values: list) -> Number:
-    sort_values = [v for v in values]  # make sorted copy of input list
-    sort_values.sort(reverse=True)
-    n = len(values)
-    j = n // 2
-    if n % 2 == 0:  # odd number of values in list
-        return (sort_values[j] + sort_values[j - 1]) / 2
-    else:  # even number of values in list
-        return sort_values[j]
-
-
-def calculate_ranks(citations: list) -> Tuple[list, list]:
-    n = len(citations)
-    cumulative_citations = [0 for _ in range(n)]
-
-    # sort by number of citations
-    tmp_index, rank_order = sort_and_rank(citations, n)
-    for i in range(n):
-        if i > 0:
-            cumulative_citations[i] = cumulative_citations[i-1] + citations[tmp_index[n-i-1]]
-        else:
-            cumulative_citations[i] = citations[tmp_index[n-i-1]]
-    return rank_order, cumulative_citations
-
-
-def publication_ages(year: int, pub_years: list) -> list:
-    """
-    returns a list containing the age of each publication
-    """
-    return [year - p + 1 for p in pub_years]
-
-
-def citations_per_year(citations: list, pub_ages: list) -> list:
-    """
-    returns a list containing the citations per year for each publication
-    """
-    return [citations[i]/pub_ages[i] for i in range(len(citations))]
-
-
-def author_effort(measure: str, n_authors: int, author_pos: int = 1) -> float:
-    """
+def author_effort(measure: str, n_authors: int, author_pos: int=1) -> float:
+    '''
     returns the estimated effort of an author for a publication
-    """
+    '''
     if measure == "fractional":
         return 1 / n_authors
     elif measure == "proportional":
@@ -108,45 +115,6 @@ def citations_per_pub_per_year(pub_list: list) -> list:
 
 
 # --- Metric Calculations ---
-
-# Total Publications
-def calculate_total_pubs(citations: list) -> int:
-    return len(citations)
-
-
-# Total Citations
-def calculate_total_cites(citations: list) -> int:
-    return sum(citations)
-
-
-# Maximum Citations
-def calculate_max_cites(citations) -> int:
-    return max(citations)
-
-
-# Mean Citations
-def calculate_mean_cites(total_cites: int, total_pubs: int) -> float:
-    return total_cites / total_pubs
-
-
-# Median Citations
-def calculate_median_cites(citations: list) -> Number:
-    return calculate_median(citations)
-
-
-# h-index (Hirsch )
-def calculate_h_index(citations: list, rank_order: list) -> Tuple[int, list]:
-    """
-    This function calculates both the h-index and returns a boolean list of
-    whether a particular publication is part of the core
-    """
-    h = 0
-    is_core = [False for _ in rank_order]
-    for i in range(len(citations)):
-        if rank_order[i] <= citations[i]:
-            h += 1
-            is_core[i] = True
-    return h, is_core
 
 
 # Hirsch core citations (Hirsch )
@@ -318,23 +286,6 @@ def calculate_weighted_h_index(citations: list, cumulative_citations: list, rank
 # normalized h-index (Sidiropoulos et al 2007)
 def calculate_normalized_h_index(h: int, total_pubs: int) -> float:
     return h / total_pubs
-
-
-# apparent h-index (Mohammed et al 2020)
-def calculate_apparent_h_index(citations: list, h: int) -> float:
-    non_zero_cnt = 0
-    for i in range(len(citations)):
-        if citations[i] > 0:
-            non_zero_cnt += 1
-    return h * non_zero_cnt / len(citations)
-
-
-# chi-index (Fenner et al 2018)
-def calculate_chi_index(sorted_citations: list) -> float:
-    chisq = 0
-    for i, c in enumerate(sorted_citations):
-        chisq = max(chisq, (i+1)*c)
-    return math.sqrt(chisq)
 
 
 # v-index (Riikonen and Vihinen 2008)
@@ -828,9 +779,9 @@ def calculate_todeschini_j_index(citations: list, h: int) -> float:
 
 # (general) adapted pure h-index (Chai et al 2008)
 def calculate_adapt_pure_h_index(sc: list) -> float:
-    """
+    '''
     this is used to calculate the adapted pure h-index once the weighted citations (sc) are determined
-    """
+    '''
     n = len(sc)
     _, tmporder = sort_and_rank(sc, n)
     j = 0
@@ -1512,3 +1463,4 @@ def calculate_awakening_time(pub_list: list) -> list:
                     maxdt = dt
         ta_list.append(ta)
     return ta_list
+"""

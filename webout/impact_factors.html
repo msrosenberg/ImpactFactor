@@ -5091,6 +5091,117 @@
         var chart_uncited_paper_percent = new google.visualization.LineChart(document.getElementById('chart_uncited_paper_percent_div'));
         chart_uncited_paper_percent.draw(data_uncited_paper_percent, options_uncited_paper_percent);
 
+        var data_apparent_h_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>h<sub>A</sub></em>'],
+           ['1997', 0.4],
+           ['1998', 1.6666666666666667],
+           ['1999', 2.5714285714285716],
+           ['2000', 3.3333333333333335],
+           ['2001', 4.875],
+           ['2002', 6.3],
+           ['2003', 7.875],
+           ['2004', 9.777777777777779],
+           ['2005', 11.78125],
+           ['2006', 14.090909090909092],
+           ['2007', 15.11111111111111],
+           ['2008', 17.5],
+           ['2009', 19.714285714285715],
+           ['2010', 21.0],
+           ['2011', 22.5],
+           ['2012', 24.452830188679247],
+           ['2013', 24.576271186440678],
+           ['2014', 29.37704918032787],
+           ['2015', 31.3015873015873],
+           ['2016', 31.76923076923077],
+           ['2017', 31.818181818181817],
+           ['2018', 31.0],
+		]);
+
+        var options_apparent_h_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_apparent_h_index = new google.visualization.LineChart(document.getElementById('chart_apparent_h_index_div'));
+        chart_apparent_h_index.draw(data_apparent_h_index, options_apparent_h_index);
+
+        var data_chi_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>χ</em>'],
+           ['1997', 1.4142135623730951],
+           ['1998', 2.449489742783178],
+           ['1999', 4.358898943540674],
+           ['2000', 5.656854249492381],
+           ['2001', 8.48528137423857],
+           ['2002', 9.695359714832659],
+           ['2003', 11.916375287812984],
+           ['2004', 14.730919862656235],
+           ['2005', 17.549928774784245],
+           ['2006', 21.166010488516726],
+           ['2007', 23.065125189341593],
+           ['2008', 24.79919353527449],
+           ['2009', 27.349588662354687],
+           ['2010', 29.698484809834994],
+           ['2011', 31.921779399024736],
+           ['2012', 32.90896534380867],
+           ['2013', 33.94112549695428],
+           ['2014', 38.88444419044716],
+           ['2015', 40.0],
+           ['2016', 40.792156108742276],
+           ['2017', 42.661458015403085],
+           ['2018', 45.232731511594565],
+		]);
+
+        var options_chi_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_chi_index = new google.visualization.LineChart(document.getElementById('chart_chi_index_div'));
+        chart_chi_index.draw(data_chi_index, options_chi_index);
+
+        var data_chi_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'chi-square'],
+           [0, null, null],
+           [1, 42, null],
+           [2, 36, null],
+           [3, 14, null],
+           [4, 11, null],
+           [5, 9, null],
+           [6, 9, null],
+           [7, 3, null],
+           [8, 2, null],
+           [9, 2, null],
+           [10, 2, null],
+           [11, 1, null],
+           [12, 1, null],
+           [13, 1, null],
+           [14, 0, null],
+           [15, 0, null],
+           [16, 0, null],
+           [0, null, 36],
+           [2, null, 36],
+           [2, null, 0],
+		]);
+
+        var options_chi_index_desc = {
+		     legend: {position: 'top'},
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_chi_index_desc = new google.visualization.LineChart(document.getElementById('chart_chi_index_desc_div'));
+        chart_chi_index_desc.draw(data_chi_index_desc, options_chi_index_desc);
+
 		}
     </script>
   </head>
@@ -5117,6 +5228,7 @@
         <li><a href="#adapt_pure_h_index_prop">adapted pure <em>h-</em>index (proportional credit)</a></li>
         <li><a href="#h_rate">age-normalized <em>h-</em>index</a></li>
         <li><a href="#annual_h_index">annual <em>h</em>-index</a></li>
+        <li><a href="#apparent_h_index">apparent <em>h-</em>index</a></li>
         <li><a href="#ar_index"><em>ar-</em>index</a></li>
         <li><a href="#mean_at_index"><em>a<sub>t</sub></em></a></li>
         <li><a href="#mean_at_index">average scientific activity</a></li>
@@ -5189,6 +5301,7 @@
         <li><a href="#h2_center_index"><em>h</em><sup>2</sup>-center index</a></li>
         <li><a href="#h2_tail_index"><em>h</em><sup>2</sup>-tail index</a></li>
         <li><a href="#h2_upper_index"><em>h</em><sup>2</sup>-upper index</a></li>
+        <li><a href="#apparent_h_index"><em>h<sub>A</sub></em></a></li>
         <li><a href="#harmonic_p_index">harmonic <em>p-</em>index</a></li>
         <li><a href="#contemporary_h_index"><em>h<sup>C</sup></em></a></li>
         <li><a href="#normal_hi_index"><em>h<sub>e</sub></em></a></li>
@@ -5312,6 +5425,7 @@
         <li><a href="#pi_rate"><em>π-</em>core citation rate</a></li>
         <li><a href="#pi_index"><em>π-</em>index</a></li>
         <li><a href="#nonint_scientist_level"><em>τ</em></a></li>
+        <li><a href="#chi_index"><em>χ-</em>index</a></li>
         <li><a href="#frac_weight_cite_agg"><em>ψ<sub>e</sub></em></a></li>
         <li><a href="#prop_weight_cite_agg"><em>ψ<sub>p</sub></em></a></li>
       </ul>
@@ -10148,6 +10262,84 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="apparent_h_index" class="metric_container">
+      <h2>apparent <em>h-</em>index</h2>
+      <p>The apparent <em>h-</em>index (Mohammed et al. 2020) is simply the <em>h-</em>index times the proportion of publications that have at least one citation; it is similar to the normalized <em>h-</em>index.</p>$$h_A=h \frac{P_{\textrm{non-zero cites}}}{P}.$$
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td class="box">9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The <em>h-</em>index is 6. Of the 16 publications, 13 have at least one citation. The apparent <em>h-</em>index is therefore 6&times;13/16 = 4.875</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h<sub>A</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.4000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.6667</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.5714</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3.3333</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4.8750</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6.3000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">7.8750</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">9.7778</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">11.7812</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">14.0909</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">15.1111</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">17.5000</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">19.7143</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">21.0000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">22.5000</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">24.4528</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">24.5763</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">29.3770</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">31.3016</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">31.7692</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">31.8182</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">31.0000</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_apparent_h_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="chi_index" class="metric_container">
+      <h2><em>χ-</em>index</h2>
+      <p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the largest rectangle which can fit under the citation curve; similar to how <em>h</em> is the size of the largest square.</p><div id="chart_chi_index_desc_div" class="proportional_chart"></div>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>42</td><td class="box">72</td><td>42</td><td>44</td><td>45</td><td>54</td><td>21</td><td>16</td><td>18</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td></tr></table><p>The largest rectangle which can fit under the citation curve has an area of 72, the square-root of which is <em>χ</em> = 8.485.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>χ</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.4142</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.3589</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.6569</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">8.4853</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">9.6954</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">11.9164</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">14.7309</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">17.5499</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">21.1660</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">23.0651</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">24.7992</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">27.3496</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">29.6985</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">31.9218</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">32.9090</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">33.9411</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">38.8844</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">40.0000</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">40.7922</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">42.6615</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">45.2327</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_chi_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -10176,6 +10368,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Egghe, L. (2008) Mathematical theory of the <em>h-</em> and <em>g-</em>index in case of fractional counting of authorship. <em>Journal of the American Society for Information Science and Technology</em> 59(10):1608&ndash;1616.</li>
         <li>Egghe, L., and R. Rousseau (1996) Average and global impact of a set of journals. <em>Scientometrics</em> 36:97&ndash;107.</li>
         <li>Egghe, L., and R. Rousseau (2008) An <em>h-</em>index weighted by citation impact. <em>Information Processing and Management</em> 44:770&ndash;780.</li>
+        <li>Fenner, T., M. Harris, M. Levene, and J. Bar-Ilan (2018) A novel bibliometric index with a simple geometric interpretation. <em>PLoS ONE</em> 13(7):e0200098.</li>
         <li>Franceschini, F., and D.A. Maisano (2010) Analysis of the Hirsch index's operational properties. <em>European Journal of Operational Research</em> 203:494&ndash;504.</li>
         <li>García-Pérez, M.A. (2009) A multidimensional extension to Hirsch's <em>h-</em>index. <em>Scientometrics</em> 81(3):779&ndash;785.</li>
         <li>García-Pérez, M.A. (2012) An extension of the <em>h</em> index that covers the tail and the top of the citation curve and allows ranking researchers with similar <em>h.</em> <em>Journal of Informetrics</em> 6:689&ndash;699.</li>
@@ -10197,6 +10390,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
         <li>Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of Engineering Science and Technology Review</em> 2(1):68&ndash;70.</li>
+        <li>Mohammed, S., A. Morgan, and E. Nyantakyi (2020) On the influence of uncited publications on a researcher's <em>h</em>‑index. <em>Scientometrics</em>.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>
         <li>Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. <em>ArXiv:physics</em>:0508113v1.</li>
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>
