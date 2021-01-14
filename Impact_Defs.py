@@ -7478,10 +7478,127 @@ def metric_apparent_h_index() -> Metric:
     return m
 
 
+# rec index (Levene et al 2019)
+def calculate_rec_index(metric_set: MetricSet) -> float:
+    sorted_citations = sorted(metric_set.citations, reverse=True)
+    return Impact_Funcs.calculate_rec_index(sorted_citations)
+
+
+def write_rec_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["rec-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'rec-square'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    # citation curve
+    for x in range(maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+            if v > maxv:
+                v = "null"
+        outstr += ", {}, null],\n".format(v)
+        output.append(outstr)
+    # chi-square
+    chisq = 0
+    chir = -1
+    for i, c in enumerate(tmp_cites):
+        p = (i + 1)*c
+        if p > chisq:
+            chisq = p
+            chir = i
+    # write chi-square
+    output.append("           [{}, null, {}],\n".format(0, tmp_cites[chir]))
+    output.append("           [{}, null, {}],\n".format(chir+1, tmp_cites[chir]))
+    output.append("           [{}, null, {}],\n".format(chir+1, 0))
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [2, 2],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+    return output
+
+
+def write_rec_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th>"
+    rec = metric_set.metrics["rec-index"].value
+    chisq = 0
+    for i, c in enumerate(citations):
+        p = (i + 1)*c
+        if p > chisq:
+            chisq = p
+        if p == rec:
+            ec = " class=\"box\""
+        else:
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i+1)
+        row3 += "<td" + ec + ">{}</td>".format(p)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The largest rectangle which can fit under the citation curve has an area of {}.</p>".format(rec)
+    return outstr
+
+
+def metric_rec_index() -> Metric:
+    m = Metric()
+    m.name = "rec-index"
+    m.full_name = "rec-index"
+    m.html_name = "<em>rec-</em>index"
+    m.symbol = "<em>rec</em>"
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "rec_index_desc"
+    graph.data = write_rec_index_desc_data
+    m.example = write_rec_index_example
+    m.synonyms = ["<em>rec-</em>index"]
+    m.metric_type = INT
+    m.description = "<p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle " \
+                    "which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of " \
+                    "the largest square.</p><div id=\"chart_" + graph.name + "_div\" " \
+                    "class=\"proportional_chart\"></div>"
+    m.references = ["Levene, M., T. Fenner, and J. Bar-Ilan (2019) Characterisation of the <em>χ</em>-index and the "
+                    "<em>rec-index</em>. <em>Scientometrics</em> 120:885-896."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_rec_index
+    return m
+
+
 # chi index (Fenner et al 2018)
 def calculate_chi_index(metric_set: MetricSet) -> float:
-    sorted_citations = sorted(metric_set.citations, reverse=True)
-    return Impact_Funcs.calculate_chi_index(sorted_citations)
+    rec = metric_set.metrics["rec-index"].value
+    return Impact_Funcs.calculate_chi_index(rec)
 
 
 def write_chi_index_desc_data(metric_set: MetricSet) -> list:
@@ -7585,11 +7702,10 @@ def metric_chi_index() -> Metric:
     m.example = write_chi_index_example
     m.synonyms = ["<em>χ-</em>index"]
     m.metric_type = FLOAT
-    # equation = r"$$\alpha = \frac{h}{Y_D},$$"
-    # yd = r"$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$"
     m.description = "<p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the " \
                     "largest rectangle which can " \
-                    "fit under the citation curve; similar to how <em>h</em> is the size of the largest square.</p>" \
+                    "fit under the citation curve; similar to how <em>h</em> is the size of the largest square. It " \
+                    "is the square-root of the <em>rec-</em>index.</p>" \
                     "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
     m.references = ["Fenner, T., M. Harris, M. Levene, and J. Bar-Ilan (2018) A novel bibliometric index with a "
                     "simple geometric interpretation. <em>PLoS ONE</em> 13(7):e0200098."]
@@ -7732,6 +7848,7 @@ def load_all_metrics() -> list:
                    metric_uncitedness_factor(),
                    metric_uncited_paper_percent(),
                    metric_apparent_h_index(),
+                   metric_rec_index(),
                    metric_chi_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()

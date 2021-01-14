@@ -5125,6 +5125,83 @@
         var chart_apparent_h_index = new google.visualization.LineChart(document.getElementById('chart_apparent_h_index_div'));
         chart_apparent_h_index.draw(data_apparent_h_index, options_apparent_h_index);
 
+        var data_rec_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>rec</em>'],
+           ['1997', 2],
+           ['1998', 6],
+           ['1999', 19],
+           ['2000', 32],
+           ['2001', 72],
+           ['2002', 94],
+           ['2003', 142],
+           ['2004', 217],
+           ['2005', 308],
+           ['2006', 448],
+           ['2007', 532],
+           ['2008', 615],
+           ['2009', 748],
+           ['2010', 882],
+           ['2011', 1019],
+           ['2012', 1083],
+           ['2013', 1152],
+           ['2014', 1512],
+           ['2015', 1600],
+           ['2016', 1664],
+           ['2017', 1820],
+           ['2018', 2046],
+		]);
+
+        var options_rec_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_rec_index = new google.visualization.LineChart(document.getElementById('chart_rec_index_div'));
+        chart_rec_index.draw(data_rec_index, options_rec_index);
+
+        var data_rec_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'rec-square'],
+           [0, null, null],
+           [1, 42, null],
+           [2, 36, null],
+           [3, 14, null],
+           [4, 11, null],
+           [5, 9, null],
+           [6, 9, null],
+           [7, 3, null],
+           [8, 2, null],
+           [9, 2, null],
+           [10, 2, null],
+           [11, 1, null],
+           [12, 1, null],
+           [13, 1, null],
+           [14, 0, null],
+           [15, 0, null],
+           [16, 0, null],
+           [0, null, 36],
+           [2, null, 36],
+           [2, null, 0],
+		]);
+
+        var options_rec_index_desc = {
+		     legend: {position: 'top'},
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [2, 2],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_rec_index_desc = new google.visualization.LineChart(document.getElementById('chart_rec_index_desc_div'));
+        chart_rec_index_desc.draw(data_rec_index_desc, options_rec_index_desc);
+
         var data_chi_index = google.visualization.arrayToDataTable([
            ['Year', '<em>χ</em>'],
            ['1997', 1.4142135623730951],
@@ -5382,6 +5459,7 @@
         <li><a href="#R_index"><em>R-</em>index</a></li>
         <li><a href="#rational_h_index">rational <em>h-</em>index</a></li>
         <li><a href="#real_h_index">real <em>h-</em>index</a></li>
+        <li><a href="#rec_index"><em>rec-</em>index</a></li>
         <li><a href="#Redner_index">Redner index</a></li>
         <li><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="#S_index_h_mixed"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
@@ -10264,7 +10342,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
     </div>
     <div id="apparent_h_index" class="metric_container">
       <h2>apparent <em>h-</em>index</h2>
-      <p>The apparent <em>h-</em>index (Mohammed et al. 2020) is simply the <em>h-</em>index times the proportion of publications that have at least one citation; it is similar to the normalized <em>h-</em>index.</p>$$h_A=h \frac{P_{\textrm{non-zero cites}}}{P}.$$
+      <p>The apparent <em>h-</em>index (Mohammed <em>et al.</em> 2020) is simply the <em>h-</em>index times the proportion of publications that have at least one citation; it is similar to the normalized <em>h-</em>index.</p>$$h_A=h \frac{P_{\textrm{non-zero cites}}}{P}.$$
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td class="box">9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The <em>h-</em>index is 6. Of the 16 publications, 13 have at least one citation. The apparent <em>h-</em>index is therefore 6&times;13/16 = 4.875</p>
       <h3>History</h3>
@@ -10301,9 +10379,48 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="rec_index" class="metric_container">
+      <h2><em>rec-</em>index</h2>
+      <p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of the largest square.</p><div id="chart_rec_index_desc_div" class="proportional_chart"></div>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>42</td><td class="box">72</td><td>42</td><td>44</td><td>45</td><td>54</td><td>21</td><td>16</td><td>18</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td></tr></table><p>The largest rectangle which can fit under the citation curve has an area of 72.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>rec</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">32</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">72</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">94</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">142</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">217</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">308</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">448</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">532</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">615</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">748</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">882</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">1019</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">1083</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">1152</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">1512</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">1600</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">1664</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">1820</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">2046</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_rec_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="chi_index" class="metric_container">
       <h2><em>χ-</em>index</h2>
-      <p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the largest rectangle which can fit under the citation curve; similar to how <em>h</em> is the size of the largest square.</p><div id="chart_chi_index_desc_div" class="proportional_chart"></div>
+      <p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the largest rectangle which can fit under the citation curve; similar to how <em>h</em> is the size of the largest square. It is the square-root of the <em>rec-</em>index.</p><div id="chart_chi_index_desc_div" class="proportional_chart"></div>
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>42</td><td class="box">72</td><td>42</td><td>44</td><td>45</td><td>54</td><td>21</td><td>16</td><td>18</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td></tr></table><p>The largest rectangle which can fit under the citation curve has an area of 72, the square-root of which is <em>χ</em> = 8.485.</p>
       <h3>History</h3>
@@ -10386,6 +10503,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
         <li>Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, Florida.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>
+        <li>Levene, M., T. Fenner, and J. Bar-Ilan (2019) Characterisation of the <em>χ</em>-index and the <em>rec-index</em>. <em>Scientometrics</em> 120:885-896.</li>
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>

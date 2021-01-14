@@ -330,11 +330,16 @@ def calculate_apparent_h_index(citations: list, h: int) -> float:
 
 
 # chi-index (Fenner et al 2018)
-def calculate_chi_index(sorted_citations: list) -> float:
-    chisq = 0
+def calculate_chi_index(rec: int) -> float:
+    return math.sqrt(rec)
+
+
+# rec-index (Levene et al 2019)
+def calculate_rec_index(sorted_citations: list) -> float:
+    rec = 0
     for i, c in enumerate(sorted_citations):
-        chisq = max(chisq, (i+1)*c)
-    return math.sqrt(chisq)
+        rec = max(rec, (i+1)*c)
+    return rec
 
 
 # v-index (Riikonen and Vihinen 2008)
