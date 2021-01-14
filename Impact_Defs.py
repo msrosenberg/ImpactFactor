@@ -3,7 +3,7 @@
 import Impact_Funcs
 import datetime
 import math
-from typing import Union
+from typing import Union, Tuple
 
 # --- Internal Constants ---
 INT = 0
@@ -17,6 +17,7 @@ LINE_CHART = 1
 MULTILINE_CHART_LEFT = 2
 MULTILINE_CHART_CENTER = 3
 LINE_CHART_COMBINE = 4
+TWO_LINE_CHART = 5
 FSTR = "1.4f"  # constant formatting string
 
 
@@ -7714,6 +7715,97 @@ def metric_chi_index() -> Metric:
     return m
 
 
+# rec index (Levene et al 2020)
+def calculate_reci_recp(metric_set: MetricSet) -> list:
+    h = metric_set.metrics["h-index"].value
+    sorted_citations = sorted(metric_set.citations, reverse=True)
+    return Impact_Funcs.calculate_reci_recp(sorted_citations, h)
+
+
+def write_reci_recp_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
+    row25 = "<tr><th></th>"
+    row3 = "<tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th>"
+    row4 = "<tr class=\"top_row\"><th></th>"
+    row5 = "<tr><th>min(<em>h</em>, <em>C<sub>i</sub></em>)</th>"
+    row6 = "<tr><th>min(<em>h</em>, <em>C<sub>i</sub></em>)&times;<em>i</em></th>"
+    row7 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    recip = metric_set.metrics["reci-recp"].value
+    reci = recip[0]
+    recp = recip[1]
+    for i, c in enumerate(citations):
+        iarea = (i + 1)*c
+        iv = ""
+        iec = ""
+        if i + 1 <= h:
+            if iarea == reci:
+                iec = " class=\"box\""
+                iv = "<em>rec<sub>I</sub></em>"
+
+        pec = ""
+        pv = ""
+        parea = min(h, c) * (i + 1)
+        if i + 1 >= h:
+            if parea == recp:
+                pec = " class=\"box\""
+                pv = " <em>rec<sub>P</sub></em>"
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i+1)
+        if i + 1 == h:
+            row25 += "<td><em>h</em>&nbsp;=&nbsp;{}</td>".format(h)
+        else:
+            row25 += "<td></td>"
+        if i+1 <= h:
+            row3 += "<td" + iec + ">{}</td>".format(iarea)
+        else:
+            row3 += "<td></td>"
+        row4 += "<td>{}</td>".format(iv)
+        if i+1 >= h:
+            row5 += "<td>{}</td>".format(min(h, c))
+            row6 += "<td" + pec + ">{}</td>".format(parea)
+        else:
+            row5 += "<td></td>"
+            row6 += "<td></td>"
+        row7 += "<td>{}</td>".format(pv)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row25 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    row6 += "</tr>"
+    row7 += "</tr>"
+    outstr += row1 + row2 + row25 + row3 + row4 + row5 + row6 + row7 + "</table>"
+    return outstr
+
+
+def metric_reci_recp() -> Metric:
+    m = Metric()
+    m.name = "reci-recp"
+    m.full_name = "reci-recp"
+    m.html_name = "<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"
+    m.symbol = "[<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>]"
+    m.example = write_reci_recp_example
+    m.synonyms = ["<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"]
+    m.metric_type = INTLIST
+    m.description = "<p>The [<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>] metrics (Levene <em>et al.</em> " \
+                    "2020) are a two-dimensional expansion of the <em>rec</em>-index, where <em>rec<sub>I</sub></em> " \
+                    "is the largest vertical (influential) rectangle that can fit under the citation " \
+                    "curve and <em>rec<sub>P</sub></em> is the largest horizontal (prolific) rectangle " \
+                    "that can fit under the citation curve. The minimum size of both is the area of the " \
+                    "<em>h-</em>square; the larger of the two is equal to the <em>rec</em>-index.</p>"
+    m.references = ["Levene, M., M. Harris, and T. Fenner (2020) A two‑dimensional bibliometric index reflecting both "
+                    "quality and quantity. <em>Scientometrics</em>."]
+    m.graph_type = TWO_LINE_CHART
+    m.calculate = calculate_reci_recp
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -7849,7 +7941,8 @@ def load_all_metrics() -> list:
                    metric_uncited_paper_percent(),
                    metric_apparent_h_index(),
                    metric_rec_index(),
-                   metric_chi_index()
+                   metric_chi_index(),
+                   metric_reci_recp()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

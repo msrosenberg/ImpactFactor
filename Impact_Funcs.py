@@ -342,6 +342,17 @@ def calculate_rec_index(sorted_citations: list) -> float:
     return rec
 
 
+# reci-recp (Levene et al 2020)
+def calculate_reci_recp(sorted_citations: list, h: int) -> list:
+    reci, recp = h**2, h**2
+    for i, c in enumerate(sorted_citations):
+        if i + 1 <= h:
+            reci = max(reci, (i + 1)*c)
+        if i + 1 >= h:
+            recp = max(recp, (i + 1)*min(c, h))
+    return [reci, recp]
+
+
 # v-index (Riikonen and Vihinen 2008)
 def calculate_v_index(h: int, total_pubs: int) -> float:
     return 100 * h / total_pubs

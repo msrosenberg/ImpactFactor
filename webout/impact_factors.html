@@ -5279,6 +5279,39 @@
         var chart_chi_index_desc = new google.visualization.LineChart(document.getElementById('chart_chi_index_desc_div'));
         chart_chi_index_desc.draw(data_chi_index_desc, options_chi_index_desc);
 
+        var data_reci_recp = google.visualization.arrayToDataTable([
+           ['Year', 'recI', 'recP'],
+           ['1997', 1, 2],
+           ['1998', 6, 6],
+           ['1999', 19, 10],
+           ['2000', 32, 30],
+           ['2001', 72, 36],
+           ['2002', 94, 49],
+           ['2003', 142, 90],
+           ['2004', 217, 143],
+           ['2005', 308, 187],
+           ['2006', 448, 240],
+           ['2007', 532, 325],
+           ['2008', 615, 396],
+           ['2009', 748, 529],
+           ['2010', 882, 576],
+           ['2011', 1019, 676],
+           ['2012', 1083, 783],
+           ['2013', 1152, 918],
+           ['2014', 1512, 1056],
+           ['2015', 1600, 1156],
+           ['2016', 1664, 1225],
+           ['2017', 1820, 1225],
+           ['2018', 2046, 1260],
+		]);
+
+        var options_reci_recp = {
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_reci_recp = new google.visualization.LineChart(document.getElementById('chart_reci_recp_div'));
+        chart_reci_recp.draw(data_reci_recp, options_reci_recp);
+
 		}
     </script>
   </head>
@@ -5460,6 +5493,8 @@
         <li><a href="#rational_h_index">rational <em>h-</em>index</a></li>
         <li><a href="#real_h_index">real <em>h-</em>index</a></li>
         <li><a href="#rec_index"><em>rec-</em>index</a></li>
+        <li><a href="#reci_recp"><em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em></a></li>
+        <li><a href="#reci_recp"><em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em></a></li>
         <li><a href="#Redner_index">Redner index</a></li>
         <li><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="#S_index_h_mixed"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
@@ -10457,6 +10492,45 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="reci_recp" class="metric_container">
+      <h2><em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em></h2>
+      <p>The [<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>] measuers (Levene <em>et al.</em> 2020) are a bivariate expansion of the <em>rec</em>-index, where <em>rec<sub>I</sub></em> is the largest vertical (influential) rectangle that can fit under the citation curve and <em>rec<sub>P</sub></em> is the largest horizontal (prolific) rectangle that can fit uner the citation curve. The minimum size of both is the area of the <em>h-</em> square.</p>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td>9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>42</td><td class="box">72</td><td>42</td><td>44</td><td>45</td><td>54</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th></th><td></td><td><em>rec<sub>I</sub></em></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>min(<em>h</em>, <em>C<sub>i</sub></em>)</th><td></td><td></td><td></td><td></td><td></td><td>6</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><th>min(<em>h</em>, <em>C<sub>i</sub></em>)&times;<em>i</em></th><td></td><td></td><td></td><td></td><td></td><td class="box">36</td><td>21</td><td>16</td><td>18</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td> <em>rec<sub>P</sub></em></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+      <h3>History</h3>
+    <div id="reci_recp" class="metric_data_container_wide">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>[<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>]</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">[1, 2]</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">[6, 6]</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">[19, 10]</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">[32, 30]</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">[72, 36]</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">[94, 49]</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">[142, 90]</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">[217, 143]</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">[308, 187]</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">[448, 240]</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">[532, 325]</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">[615, 396]</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">[748, 529]</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">[882, 576]</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">[1019, 676]</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">[1083, 783]</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">[1152, 918]</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">[1512, 1056]</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">[1600, 1156]</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">[1664, 1225]</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">[1820, 1225]</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">[2046, 1260]</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_reci_recp_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -10502,6 +10576,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
         <li>Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, Florida.</li>
+        <li>Levene, M., M. Harris, and T. Fenner (2020) A two‑dimensional bibliometric index reflecting both quality and quantity. <em>Scientometrics</em>.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2019) Characterisation of the <em>χ</em>-index and the <em>rec-index</em>. <em>Scientometrics</em> 120:885-896.</li>
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>

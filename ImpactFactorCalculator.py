@@ -338,6 +338,32 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None
                     #     for opt in chart_options:
                     #         outfile.write(opt)
                     outfile.write("        };\n")
+                if metric.graph_type == Impact_Defs.TWO_LINE_CHART:
+                    # t_symbol = metric.symbol
+                    # s1, s2 = t_symbol.split(", ")
+                    # s1 = s1.replace("[", "")
+                    # s2 = s2.replace("]", "")
+                    s1 = "recI"
+                    s2 = "recP"
+                    outfile.write("           [\'Year\', \'{}\', \'{}\'],\n".format(s1, s2))
+                    for metric_set in yearly_metrics_list:
+                        if metric_set.metrics[name].value == "n/a":
+                            v = "null"
+                        else:
+                            v = metric_set.metrics[name].value
+                            v1 = v[0]
+                            v2 = v[1]
+                        outfile.write("           [\'{}\', {}, {}],\n".format(metric_set.year(), v1, v2))
+                    outfile.write("		]);\n")
+                    outfile.write("\n")
+                    outfile.write("        var options_{} = {{\n".format(enc_name))
+                    # outfile.write("		     legend: {position: 'none'},\n")
+                    # outfile.write("		     vAxis: {title: '" + vaxis_title + "'},\n")
+                    outfile.write("		     hAxis: {slantedText: true},\n")
+                    # if chart_options is not None:
+                    #     for opt in chart_options:
+                    #         outfile.write(opt)
+                    outfile.write("        };\n")
                 elif metric.graph_type == Impact_Defs.MULTILINE_CHART_LEFT:
                     # figure out how many values will be on the x-axis
                     maxx = 0
