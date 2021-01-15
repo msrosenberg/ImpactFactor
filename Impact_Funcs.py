@@ -1528,3 +1528,14 @@ def calculate_awakening_time(pub_list: list) -> list:
                     maxdt = dt
         ta_list.append(ta)
     return ta_list
+
+
+# academic trace (Ye and Leydesdorff 2014)
+def calculate_academic_trace(citations: list, total_cites: int, core_cites: int, h: int) -> float:
+    # count pubs with zero citations
+    pz = 0
+    for c in citations:
+        if c == 0:
+            pz += 1
+    t = (h**4 + (core_cites - h**2)**2) / total_cites + ((len(citations) - h - pz)**2 - pz**2) / len(citations)
+    return t

@@ -5312,6 +5312,40 @@
         var chart_reci_recp = new google.visualization.LineChart(document.getElementById('chart_reci_recp_div'));
         chart_reci_recp.draw(data_reci_recp, options_reci_recp);
 
+        var data_academic_trace = google.visualization.arrayToDataTable([
+           ['Year', '<em>tr</em>(V)'],
+           ['1997', -1.1],
+           ['1998', 4.487179487179487],
+           ['1999', 16.83730158730159],
+           ['2000', 24.998756218905474],
+           ['2001', 66.56766917293233],
+           ['2002', 118.55833333333332],
+           ['2003', 170.1617847411444],
+           ['2004', 285.64729344729346],
+           ['2005', 438.2536612426035],
+           ['2006', 625.2460575139146],
+           ['2007', 817.0348464766954],
+           ['2008', 1059.842328042328],
+           ['2009', 1299.5142487046633],
+           ['2010', 1589.1273771080014],
+           ['2011', 1819.719925396332],
+           ['2012', 2059.084693572966],
+           ['2013', 2334.143454243151],
+           ['2014', 2622.0225441776083],
+           ['2015', 2878.057323709409],
+           ['2016', 3200.1957282560165],
+           ['2017', 3502.476405718032],
+           ['2018', 3802.1519463526333],
+		]);
+
+        var options_academic_trace = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_academic_trace = new google.visualization.LineChart(document.getElementById('chart_academic_trace_div'));
+        chart_academic_trace.draw(data_academic_trace, options_academic_trace);
+
 		}
     </script>
   </head>
@@ -5333,6 +5367,7 @@
       <h2>Index</h2>
       <ul class="index_list">
         <li><a href="#alpha_index"><em>a-</em>index</a></li>
+        <li><a href="#academic_trace">academic trace</a></li>
         <li><a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a></li>
         <li><a href="#adapt_pure_h_index_geom">adapted pure <em>h-</em>index (geometric credit)</a></li>
         <li><a href="#adapt_pure_h_index_prop">adapted pure <em>h-</em>index (proportional credit)</a></li>
@@ -5516,6 +5551,7 @@
         <li><a href="#total_coauthor_cite_rate">total self &amp; coauthor-citation rate</a></li>
         <li><a href="#total_self_cites">total self citations</a></li>
         <li><a href="#total_self_cite_rate">total self-citation rate</a></li>
+        <li><a href="#academic_trace">tr(V)</a></li>
         <li><a href="#trend_h_index">trend <em>h-</em>index</a></li>
         <li><a href="#two_sided_h_index">two-sided <em>h-</em>index</a></li>
         <li><a href="#uncitedness_factor"><em>UF</em></a></li>
@@ -10531,6 +10567,45 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="academic_trace" class="metric_container">
+      <h2>academic trace</h2>
+      <p>The Academic Trace (Ye and Leydesdorff 2014; Ye <em>et al.</em> 2017) starts by taking the concept of the citation curve and describing it as three vectors of information. The first vector (<strong>X</strong>) separates publications into those in the core (X<sub>1</sub>), those in the tail with at least one citation (X<sub>2</sub>), and those with zero citations (X<sub>3</sub>). These three values are each calculated as the square of the count of publications in each category, divided by the total number of publications. The second vector (<strong>Y</strong>) separates citations into those in the core block (Y<sub>1</sub>), those in the tail (Y<sub>2</sub>), and the excess citations in the core above the core block (Y<sub>3</sub>). These values are calculated as the square of the count of citations within each category, divided by the total citation. The third vector (<strong>Z</strong>) contrasts particularly highly cited publications and those with zero citations, and is simply the difference of the corresponding values of the first two vectors, X<sub>1</sub> - Y<sub>1</sub>, X<sub>2</sub> - Y<sub>2</sub>, and X<sub>3</sub> - Y<sub>3</sub>. These vectors form a 3D matrix, the trace of which is a measure of academic performance. The trace can be determined as X<sub>1</sub> + Y<sub>2</sub> + Z<sub>3</sub>; a "shortcut" formula (Ding <em>et al.</em> 2020) is as follows:</p><p>$$tr\left(V\right)=\frac{h^4+\left(C^h-h^2\right)^2}{C^P} + \frac{\left( P-h-P_z\right)^2-P_z^2}{P}.$$</p><p>where <em>P<sub>z</sub></em> is the number of publications with zero citations and the rest of the values have been defined earlier.</p>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>36</td><td>14</td><td>11</td><td>9</td><td class="box">9</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The <em>h</em>-index is 6; the total number of citations (<em>C<sup>P</sup></em>) is 133; the number of citations in the top <em>h</em> publications (<em>C<sup>h</sup></em>) is 121; the total number of publications (P) is 16; and the number of publications with zero citations (<em>P<sub>z</sub></em>) is 3. Entered in the above formula, the academic trace is 66.5677.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>tr</em>(V)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">-1.1000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.4872</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">16.8373</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">24.9988</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">66.5677</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">118.5583</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">170.1618</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">285.6473</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">438.2537</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">625.2461</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">817.0348</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">1059.8423</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">1299.5142</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">1589.1274</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">1819.7199</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">2059.0847</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">2334.1435</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">2622.0225</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">2878.0573</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">3200.1957</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">3502.4764</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">3802.1519</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_academic_trace_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -10552,6 +10627,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Cabrerizo, F.J., S. Alonso, E. Herrera-Viedma, and F. Herrera (2010) <em>q</em><sup>2</sup>-index: quantiative and qualitative evaluation based on the number and impact of papers in the Hirsch core. <em>Journal of Informetrics</em> 4:23&ndash;28.</li>
         <li>Chai, J.-c., P.-h. Hua, R. Rousseau, and J.-k. Wan (2008) The adapted pure <em>h-</em>index. <em>Fourth International Conference on Webometrics, Informetrics and Scientometrics & Ninth COLLNET Meeting,</em> H. Kretschmer and F. Havemann, eds. Humboldt-Universität zu Berlin: Institute for Library and Information Science.</li>
         <li>De Visscher, A. (2010) An index to measures a scientist's specific impact. <em>Journal of the American Society for Information Science and Technology</em> 61(2):319&ndash;328.</li>
+        <li>Ding, J., C. Liu, and G.A. Kandonga (2020) Exploring the limitations of the <em>h‑</em>index and <em>h</em>‑type indexes in measuring the research performance of authors. <em>Scientometrics.</em></li>
         <li>Dorta-González, P., and M.I. Dorta-González (2010) Indicador bibliométrico basado en el índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245.</li>
         <li>Egghe, L. (2006) An improvement of the <em>h-</em>index: The <em>g-</em>index. <em>ISSI Newsletter</em> 2(1):8&ndash;9.</li>
         <li>Egghe, L. (2006) How to improve the <em>h-</em>index: Letter. <em>The Scientist</em> 20(3):14.</li>
@@ -10613,6 +10689,8 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Wohlin, C. (2009) A new index for the citation curve of researchers. <em>Scientometrics</em> 81(2):521&ndash;533.</li>
         <li>Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely cited papers. <em>Journal of the American Society for Information Science and Technology</em> 61(3):609&ndash;614.</li>
         <li>Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. <em>Journal of Library and Information Studies</em> 8:1&ndash;9.</li>
+        <li>Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: Multidimensional indicators of publication and citation scores. <em>Collnet Journal of Scientometrics and Information Management</em> 11(1):153-171.</li>
+        <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742-750.</li>
         <li>Ye, F.Y., and R. Rousseau (2010) Probing the <em>h-</em>core: An investigation of the tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439.</li>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
       </ul>

@@ -3,7 +3,7 @@
 import Impact_Funcs
 import datetime
 import math
-from typing import Union, Tuple
+from typing import Union
 
 # --- Internal Constants ---
 INT = 0
@@ -7806,6 +7806,96 @@ def metric_reci_recp() -> Metric:
     return m
 
 
+# academic trace (Ye and Leydesdorff 2014)
+def calculate_academic_trace(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    total_cites = metric_set.metrics["total cites"].value
+    core_cites = metric_set.metrics["h-core cites"].value
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_academic_trace(citations, total_cites, core_cites, h)
+
+
+def write_academic_trace_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th></th>"
+    h = metric_set.metrics["h-index"].value
+    total_cites = metric_set.metrics["total cites"].value
+    core_cites = metric_set.metrics["h-core cites"].value
+    t = metric_set.metrics["academic trace"].value
+    pz = 0
+    for i, c in enumerate(citations):
+        if c == 0:
+            pz += 1
+        if i + 1 == h:
+            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i+1)
+        row3 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    outstr += row1 + row2 + row3 + "</table>"
+    outstr += "<p>The <em>h</em>-index is {0}; the total number of citations (<em>C<sup>P</sup></em>) is {1}; the " \
+              "number of citations in the top <em>h</em> publications (<em>C<sup>h</sup></em>) is {2}; the total " \
+              "number of publications (P) is {3}; and the number of publications " \
+              "with zero citations (<em>P<sub>z</sub></em>) is {4}. Entered in the above formula, the academic trace " \
+              "is {5:0.4f}.</p>".format(h, total_cites, core_cites, len(citations), pz, t)
+    return outstr
+
+
+def metric_academic_trace() -> Metric:
+    m = Metric()
+    m.name = "academic trace"
+    m.full_name = "academic trace"
+    m.html_name = "academic trace"
+    m.symbol = "<em>tr</em>(V)"
+    m.example = write_academic_trace_example
+    m.synonyms = ["tr(V)", "academic trace"]
+    equation = r"$$tr\left(V\right)=\frac{h^4+\left(C^h-h^2\right)^2}{C^P} + \frac{\left( P-h-P_z\right)^2-P_z^2}{P}.$$"
+
+    m.metric_type = FLOAT
+    m.description = "<p>The Academic Trace (Ye and Leydesdorff 2014; Ye <em>et al.</em> 2017) starts by taking " \
+                    "the concept of the citation curve and describing it as three vectors of information. The " \
+                    "first vector (<strong>X</strong>) separates publications into those in the core " \
+                    "(X<sub>1</sub>), those in the tail with at least one citation (X<sub>2</sub>), and those with " \
+                    "zero citations (X<sub>3</sub>). These three values are each calculated as the square of the " \
+                    "count of publications in each category, divided by the total number of publications. The second " \
+                    "vector (<strong>Y</strong>) separates citations into those in the core block (Y<sub>1</sub>), " \
+                    "those in the tail (Y<sub>2</sub>), and the excess citations in the core above the core block " \
+                    "(Y<sub>3</sub>). These values are calculated as the square of the count of citations within " \
+                    "each category, divided by the total citation. The third vector (<strong>Z</strong>) " \
+                    "contrasts particularly highly cited " \
+                    "publications and those with zero citations, and is simply the difference of the corresponding " \
+                    "values of the first two vectors, X<sub>1</sub> - Y<sub>1</sub>, X<sub>2</sub> - Y<sub>2</sub>, " \
+                    "and X<sub>3</sub> - Y<sub>3</sub>. These vectors form a 3D matrix, the trace of which " \
+                    "is a measure of academic performance. The trace can be determined as X<sub>1</sub> + " \
+                    "Y<sub>2</sub> + Z<sub>3</sub>; a \"shortcut\" formula (Ding " \
+                    "<em>et al.</em> 2020) is as follows:</p><p>" + equation + "</p><p>where <em>P<sub>z</sub></em> " \
+                    "is the number of publications with zero citations and the rest of the values have been " \
+                    "defined earlier.</p>"
+    m.references = ["Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A "
+                    "Mathematical Synthesis of the "
+                    "<em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for "
+                    "Information Science and Technology</em> 65(4):742-750.",
+                    "Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: "
+                    "Multidimensional indicators of publication and citation scores. <em>Collnet Journal of "
+                    "Scientometrics and Information Management</em> 11(1):153-171.",
+                    "Ding, J., C. Liu, and G.A. Kandonga (2020) Exploring the limitations of the <em>h‑</em>index and "
+                    "<em>h</em>‑type indexes in measuring the research performance of authors. "
+                    "<em>Scientometrics.</em>"]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_academic_trace
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -7942,7 +8032,8 @@ def load_all_metrics() -> list:
                    metric_apparent_h_index(),
                    metric_rec_index(),
                    metric_chi_index(),
-                   metric_reci_recp()
+                   metric_reci_recp(),
+                   metric_academic_trace()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
