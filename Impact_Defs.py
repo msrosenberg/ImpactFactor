@@ -34,6 +34,7 @@ class Metric:
         self.symbol = ""
         self.__html_name = None
         self.is_self = False
+        self.is_coauthor = False
         self.metric_type = FLOAT
         self.description = ""
         self.synonyms = []
@@ -3465,7 +3466,7 @@ def metric_total_coauthor_cites() -> Metric:
     m.html_name = "total self &amp; coauthor citations"
     m.symbol = "S"
     m.metric_type = INT
-    m.is_self = True
+    m.is_coauthor = True
     equation = r"$$S = \sum\limits_{i=1}^{P}{s_i}.$$"
     m.description = "<p>The total number of self- and coauthor-citations is simply the number of citations to all " \
                     "of an author\'s publications made by other publications from the same author and coauthors. If " \
@@ -3490,7 +3491,7 @@ def metric_total_coauthor_cite_rate() -> Metric:
     m.html_name = "total self &amp; coauthor-citation rate"
     m.symbol = "<em>S<sub>r</sub></em>"
     m.metric_type = FLOAT
-    m.is_self = True
+    m.is_coauthor = True
     equation = r"$$S_r=\frac{S}{C^P}=\frac{\sum\limits_{i=1}^{P}{s_i}}{\sum\limits_{i=1}^{P}{C_i}}.$$"
     m.description = "<p>The total self- and coauthor-citation rate is the ratio bewtween the number of citations " \
                     "to all of an author\'s publications made by other publications from the same author and " \
@@ -3515,7 +3516,7 @@ def metric_mean_coauthor_cite_rate() -> Metric:
     m.html_name = "mean self &amp; coauthor-citation rate"
     m.symbol = r"\(\bar{S_r}\)"
     m.metric_type = FLOAT
-    m.is_self = True
+    m.is_coauthor = True
     equation = r"$$\bar{S_r}=\frac{1}{P}\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}$$"
     m.description = "<p>The mean self and coauthor-citation rate is the average rate of self and coauthor-citation " \
                     "for an author across all of their publications. It differs from the total self " \
@@ -3540,7 +3541,7 @@ def metric_sharpened_h_index_coauthor() -> Metric:
     m.html_name = "sharpened <em>h-</em>index (self &amp; coauthor)"
     m.symbol = "<em>h</em><sub>sharp.coauth</sub>"
     m.metric_type = INT
-    m.is_self = True
+    m.is_coauthor = True
     m.description = "<p>A simple way of accounting for self-citations with respect to impact is to simply remove " \
                     "them from each publication\'s citation counts prior to calculating a metric. For the base " \
                     "calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p>" \
@@ -3568,7 +3569,7 @@ def metric_b_index_mean_coauthor() -> Metric:
     m.html_name = "<em>b-</em>index (mean self &amp; coauthor-citation rate)"
     m.symbol = "<em>b</em><sub>mean.coauth</sub>"
     m.metric_type = FLOAT
-    m.is_self = True
+    m.is_coauthor = True
     equation = r"$$b=hk^{\frac{3}{4}},$$"
     req = r"$$k=1-\bar{S_r}=1-\frac{\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}}{P}$$"
     m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct <em>h</em> for self-citations, " \
@@ -6742,6 +6743,7 @@ def metric_q_index() -> Metric:
     m.html_name = "<em>q-</em>index"
     m.symbol = "<em>Q</em>"
     m.synonyms = ["<em>Q</em>"]
+    m.is_self = True
     m.example = write_q_index_example
     m.metric_type = FLOAT
     qieq = r"$$q_i=\left|\begin{matrix} 0 & \text{if }C_i > h \text{ or } i < h \\ \frac{1}{i+1-a_i-h} & " \

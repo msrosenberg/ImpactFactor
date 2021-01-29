@@ -154,13 +154,15 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
                             article.self_cites.append(n)
 
     read_self_citation_file(sname, False)
-    read_self_citation_file(cname, True)
+    if cname != "":
+        read_self_citation_file(cname, True)
 
 
 # -----------------------------------------------------
 # Main Calculation Loop
 # -----------------------------------------------------
-def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: bool) -> Impact_Defs.MetricSet:
+def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: bool,
+                      inc_coauth: bool) -> Impact_Defs.MetricSet:
     """
     function to calculate impact factor metrics for data for a given date 
     """
@@ -178,9 +180,8 @@ def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: boo
     # construct sub-lists for active articles only
     n = len(metrics.publications)
     metrics.citations = [0 for _ in range(n)]
-    if inc_self:
-        metrics.self_citations = [0 for _ in range(n)]
-        metrics.coauthor_citations = [0 for _ in range(n)]
+    metrics.self_citations = [0 for _ in range(n)]
+    metrics.coauthor_citations = [0 for _ in range(n)]
 
     i = -1
     for article in metrics.publications:
@@ -188,6 +189,7 @@ def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: boo
         metrics.citations[i] = article.citations[y]
         if inc_self:
             metrics.self_citations[i] = article.self_cites[y]
+        if inc_coauth:
             metrics.coauthor_citations[i] = article.coauthor_cites[y]
 
     metrics.calculate_ranks()
@@ -197,7 +199,7 @@ def calculate_metrics(y: int, date_list: list, article_list: list, inc_self: boo
 # -----------------------------------------------------
 # output a table of all results
 # -----------------------------------------------------
-def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_self: bool) -> None:
+def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:
     with open(fname, "w", encoding="utf-8") as outfile:
         # write header of dates
         outfile.write("Date")
@@ -211,6 +213,8 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
             tmp_metric = base_metric_list.metrics[m]
             if tmp_metric.is_self and not inc_self:
                 pass  # skip self-citation metrics
+            elif tmp_metric.is_coauthor and not inc_coauth:
+                pass  # skip coauthor-citation metrics
             else:
                 outfile.write(tmp_metric.full_name)  # name of metric
                 for metric_list in yearly_metrics_list:
@@ -240,7 +244,7 @@ def strip_html(html_str: str) -> str:
     return re.sub(regex, "", html_str)
 
 
-def html_output_introduction(outfile):
+def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = True):
     outfile.write("   <h2>Publication and Citation-based Impact</h2>")
     outfile.write("   <p>I have been collecting data on citations of my own work for a number of years and once "
                   "wrote a <a href=\"https://peerj.com/preprints/477/\">guide to the concepts for "
@@ -252,6 +256,15 @@ def html_output_introduction(outfile):
     outfile.write("   <p>The code for calculating all of these metrics can be found on "
                   "<a href=\"https://github.com/msrosenberg/ImpactFactor\"><span class=\"fab fa-github\">"
                   "</span> Github</a>.</p>\n")
+    if not inc_self:
+        outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
+                      "self- and coauthor-citation are not currently included in the descriptions below because the "
+                      "current data source makes it difficult to track these accurately.</p>")
+    # elif not inc_coauth:
+    #     outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
+    #                   "coauthor-citation are not currently included in the descriptions below because the "
+    #                   "current data source makes it difficult to track these accurately.</p>")
+
     outfile.write("      <h3>Common Symbols and Definitions</h3>\n")
     outfile.write("        <ul>\n")
     outfile.write("          <li><em>P</em> &mdash; The total number of publications of an author. Unless "
@@ -277,11 +290,13 @@ def html_output_introduction(outfile):
     outfile.write("        </ul>\n")
 
 
-def create_name_links(metric_names, metric_base_data, inc_self):
+def create_name_links(metric_names, metric_base_data, inc_self, inc_coauth):
     name_links = {}
     for name in metric_names:
         metric = metric_base_data.metrics[name]
         if metric.is_self and not inc_self:
+            pass  # skip self-citation metrics
+        elif metric.is_coauthor and not inc_coauth:
             pass  # skip self-citation metrics
         else:
             name_links[metric.full_name] = [metric.html_name, encode_name(name)]
@@ -290,7 +305,7 @@ def create_name_links(metric_names, metric_base_data, inc_self):
     return name_links
 
 
-def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
+def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
         outfile.write("<!DOCTYPE HTML>\n")
         outfile.write("<html lang=\"en\">\n")
@@ -315,6 +330,8 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None
         for name in metric_names:
             metric = metric_base_data.metrics[name]
             if metric.is_self and not inc_self:
+                pass  # skip self-citation metrics
+            elif metric.is_coauthor and not inc_coauth:
                 pass  # skip self-citation metrics
             elif metric.graph_type is not None:
                 enc_name = encode_name(name)
@@ -448,10 +465,10 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None
         outfile.write("  <body>\n")
         metric_names = metric_base_data.metric_names
         outfile.write("    <div>\n")
-        html_output_introduction(outfile)
+        html_output_introduction(outfile, inc_self, inc_coauth)
 
         # output index of names
-        name_links = create_name_links(metric_names, metric_base_data, inc_self)
+        name_links = create_name_links(metric_names, metric_base_data, inc_self, inc_coauth)
         outfile.write("      <h2>Index</h2>\n")
         outfile.write("      <ul class=\"index_list\">\n")
         # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
@@ -467,6 +484,8 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None
         for name in metric_names:
             metric = metric_base_data.metrics[name]
             if metric.is_self and not inc_self:
+                pass  # skip self-citation metrics
+            elif metric.is_coauthor and not inc_coauth:
                 pass  # skip self-citation metrics
             else:
                 outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
@@ -514,13 +533,13 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool) -> None
         outfile.write("</html>\n")
 
 
-def create_set_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
+def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:
     with open("webout/impact_pages_html.txt", "w", encoding="utf-8") as outfile:
         # introduction and index
-        html_output_introduction(outfile)
+        html_output_introduction(outfile, inc_self, inc_coauth)
         metric_base_data = yearly_metrics_list[4]  # use data from the 5th year for examples
         metric_names = metric_base_data.metric_names
-        name_links = create_name_links(metric_names, metric_base_data, inc_self)
+        name_links = create_name_links(metric_names, metric_base_data, inc_self, inc_coauth)
         # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
         outfile.write("      <h3>Index</h3>\n")
         outfile.write("      <ul class=\"index_list\">\n")
@@ -530,17 +549,19 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool) -> None:
             name = name_links[i[1]]
             outfile.write("        <li><a href=\"impact_" + name[1] + ".html\">" + name[0] + "</a></li>\n")
         outfile.write("      </ul>\n")
-
         # output a page for every metric
         for name in metric_names:
-            outfile.write("@@@@\n")
             metric = metric_base_data.metrics[name]
-            link = name_links[metric.full_name]
-            outfile.write("impact_" + link[1] + ".html\n")
 
             if metric.is_self and not inc_self:
                 pass  # skip self-citation metrics
+            elif metric.is_coauthor and not inc_coauth:
+                pass  # skip self-citation metrics
             else:
+                outfile.write("@@@@\n")
+                link = name_links[metric.full_name]
+                outfile.write("impact_" + link[1] + ".html\n")
+
                 # output header info for graphs and plots
                 if metric.graph_type is not None:
                     enc_name = encode_name(name)
@@ -870,13 +891,16 @@ def prompt_file_name(prompt: str, default: str) -> str:
     return file_name
     
 
-def get_data_from_files(inc_self: bool) -> Tuple[list, list]:
+def get_data_from_files(inc_self: bool, inc_coauth: bool) -> Tuple[list, list]:
     # user input
     in_name = prompt_file_name("citation file", "Citations.txt")
     date_list, article_list = read_data_file(in_name)
     if inc_self:
         self_name = prompt_file_name("self-citation file", "Citations-Self.txt")
-        coauth_name = prompt_file_name("coauthor-citation file", "Citations-Coauthor.txt")
+        if inc_coauth:
+            coauth_name = prompt_file_name("coauthor-citation file", "Citations-Coauthor.txt")
+        else:
+            coauth_name = ""
         read_self_citation_files(article_list, self_name, coauth_name)
     return date_list, article_list
 
@@ -923,11 +947,18 @@ def main():
     self_str = input("Include self-citation measures? (y/n) (default = y) ")
     if (self_str.strip() == "") or (self_str.strip().lower() == "y"):
         inc_self = True
+        self_str = input("Include coauthor-citation measures? (y/n) (default = y) ")
+        if (self_str.strip() == "") or (self_str.strip().lower() == "y"):
+            inc_coauth = True
+        else:
+            inc_coauth = False
+        print()
     else:
         inc_self = False
+        inc_coauth = False
     print()
 
-    date_list, article_list = get_data_from_files(inc_self)
+    date_list, article_list = get_data_from_files(inc_self, inc_coauth)
 
     out_name = input("Name of output file (default = \"impactfactors.txt\"): ")
     if out_name.strip() == "":
@@ -945,15 +976,15 @@ def main():
     # calculate metrics for every year
     yearly_metrics_list = []
     for y in range(len(date_list)):
-        m = calculate_metrics(y, date_list, article_list, inc_self)
+        m = calculate_metrics(y, date_list, article_list, inc_self, inc_coauth)
         yearly_metrics_list.append(m)
         m.parent_list = yearly_metrics_list
 
     # output
-    write_output(out_name, date_list, yearly_metrics_list, inc_self)
+    write_output(out_name, date_list, yearly_metrics_list, inc_self, inc_coauth)
     if do_web:
-        create_single_html_output(yearly_metrics_list, inc_self)
-        create_set_html_output(yearly_metrics_list, inc_self)
+        create_single_html_output(yearly_metrics_list, inc_self, inc_coauth)
+        create_set_html_output(yearly_metrics_list, inc_self, inc_coauth)
 
     print("Finished")
 
