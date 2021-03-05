@@ -1539,3 +1539,14 @@ def calculate_academic_trace(citations: list, total_cites: int, core_cites: int,
             pz += 1
     t = (h**4 + (core_cites - h**2)**2) / total_cites + ((len(citations) - h - pz)**2 - pz**2) / len(citations)
     return t
+
+
+# scientific quality index (Pluskiewicz1 et al 2019)
+def calculate_scientific_quality_index(citations, self_citations) -> float:
+    cnt = 0
+    sharp_citations = [citations[i] - self_citations[i] for i in range(len(self_citations))]
+    total_cites = sum(sharp_citations)
+    for c in sharp_citations:
+        if c >= 10:
+            cnt += 1
+    return total_cites/len(sharp_citations) + 100*cnt/len(sharp_citations)

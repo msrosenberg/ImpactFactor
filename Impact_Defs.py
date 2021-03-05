@@ -7898,6 +7898,65 @@ def metric_academic_trace() -> Metric:
     return m
 
 
+# scientific quality index (Pluskiewicz1 et al 2019)
+def calculate_scientific_quality_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    self_citations = metric_set.self_citations
+    return Impact_Funcs.calculate_scientific_quality_index(citations, self_citations)
+
+
+def write_scientific_quality_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of non-self citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    all_citations = metric_set.citations
+    self_citations = metric_set.self_citations
+    citations = [all_citations[i] - self_citations[i] for i in range(len(self_citations))]
+    citations = sorted(citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Non-self Citations</th>"
+    row2 = "<tr><th>Rank</th>"
+    cnt = 0
+    sum_cites = 0
+    for i, c in enumerate(citations):
+        sum_cites += c
+        if c >= 10:
+            ec = " class=\"box\""
+            cnt += 1
+        else:
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td" + ec + ">{}</td>".format(i+1)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    outstr += row1 + row2 + "</table>"
+    n = len(citations)
+    outstr += "<p>Of the {0} publications, {1} have 10 or more non-self citations, {1}/{0} = {2:0.1%}. " \
+              "The total non-self citations is {3}, thus the mean non-self citations per publication is {4:0.1f}. " \
+              "The SQI is the sum of these values, or {5:0.1f}.</p>".format(n, cnt, cnt/n, sum_cites, sum_cites/n,
+                                                                            (100*cnt/n) + (sum_cites/n))
+    return outstr
+
+
+def metric_scientific_quality_index() -> Metric:
+    m = Metric()
+    m.name = "scientific quality index"
+    m.full_name = "scientific quality index"
+    m.html_name = "scientific quality index"
+    m.symbol = "SQI"
+    m.example = write_scientific_quality_index_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Scientific Quality Index (Pluskiewicz <em>et al.</em> 2019) is a slightly odd metric " \
+                    "which is simply the sum of the mean " \
+                    "citations per publication and the percent of publications with 10 or more citations (both " \
+                    "adjusted for self- and co-author citations, in a perfect world). The authors considered it to " \
+                    "be a slightly better judge of quality than metrics such as <em>h</em>.</p>"
+    m.references = ["Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A "
+                    "composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. "
+                    "<em>Scientometrics</em> 119:1009-1016."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_scientific_quality_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -8035,7 +8094,8 @@ def load_all_metrics() -> list:
                    metric_rec_index(),
                    metric_chi_index(),
                    metric_reci_recp(),
-                   metric_academic_trace()
+                   metric_academic_trace(),
+                   metric_scientific_quality_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

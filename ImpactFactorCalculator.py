@@ -947,8 +947,10 @@ def main():
     self_str = input("Include self-citation measures? (y/n) (default = y) ")
     if (self_str.strip() == "") or (self_str.strip().lower() == "y"):
         inc_self = True
-        self_str = input("Include coauthor-citation measures? (y/n) (default = y) ")
-        if (self_str.strip() == "") or (self_str.strip().lower() == "y"):
+        # self_str = input("Include coauthor-citation measures? (y/n) (default = y) ")
+        # if (self_str.strip() == "") or (self_str.strip().lower() == "y"):
+        self_str = input("Include coauthor-citation measures? (y/n) (default = n) ")
+        if self_str.strip().lower() == "y":
             inc_coauth = True
         else:
             inc_coauth = False
