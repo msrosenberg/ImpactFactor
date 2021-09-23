@@ -7789,7 +7789,7 @@ def write_reci_recp_example(metric_set: MetricSet) -> str:
 def metric_reci_recp() -> Metric:
     m = Metric()
     m.name = "reci-recp"
-    m.full_name = "reci-recp"
+    m.full_name = "recI, recP"
     m.html_name = "<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"
     m.symbol = "[<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>]"
     m.example = write_reci_recp_example
