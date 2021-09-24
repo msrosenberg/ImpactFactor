@@ -1650,3 +1650,8 @@ def calculate_first_author_h_index(h: int, author_pos: list, is_core: list) -> i
 # o-index (Dorogovtsev and Mendes 2015)
 def calculate_o_index(h: int, max_cites: int) -> float:
     return math.sqrt(h * max_cites)
+
+
+# discounted h-index (Ferrara and Romero 2013)
+def calculate_discounted_h_index(h: int, total_cites: int, total_self: int) -> float:
+    return h * math.sqrt((total_cites - total_self)/total_cites)

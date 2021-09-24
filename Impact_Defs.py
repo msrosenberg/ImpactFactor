@@ -8292,6 +8292,37 @@ def metric_o_index() -> Metric:
     return m
 
 
+# discounted h-index (Ferrara and Romero 2013)
+def calculate_discounted_h_index(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    total_self = metric_set.metrics["total self cites"].value
+    total_cites = metric_set.metrics["total cites"].value
+    return Impact_Funcs.calculate_discounted_h_index(h, total_cites, total_self)
+
+
+def metric_discounted_h_index() -> Metric:
+    m = Metric()
+    m.name = "discounted h-index"
+    m.full_name = "discounted h-index"
+    m.html_name = "discounted <em>h-</em>index"
+    m.is_self = True
+    m.metric_type = FLOAT
+    equation = r"$$dh=h \sqrt{\frac{C^P-S^P}{C^P}},$$"
+    m.description = "<p>The discounted <em>h-</em>index (Ferrara and Romero 2013) was designed to adjust the " \
+                    "<em>h-</em>index for self-citations by multiplying it by square-root of the percentage of total " \
+                    "citations that were not self-citations. It is readily calculated " \
+                    "as:</p>" + equation + "<p>where <em>S<sup>P</sup></em> is the sum of self-citations for all " \
+                    "publications."
+    m.symbol = "<em>dh</em>"
+    m.synonyms = ["<em>dh</em>"]
+    m.references = ["Ferrara, E., and A.E. Romero (2013) Scientific impact evaluation and the effect of "
+                    "self-citations: Mitigating the bias by discounting the h-index. <em>Journal of the American "
+                    "Society for Information Science and Technology</em> 64(11):2332&ndash;2339."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_discounted_h_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -8436,7 +8467,8 @@ def load_all_metrics() -> list:
                    metric_first_author_h_index(),
                    metric_iterative_weighted_em_index(),
                    metric_iterative_weighted_emp_index(),
-                   metric_o_index()
+                   metric_o_index(),
+                   metric_discounted_h_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

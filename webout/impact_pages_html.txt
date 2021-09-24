@@ -65,8 +65,10 @@
         <li><a href="impact_ddci_index_10.html">dDCI index (mild decay)</a></li>
         <li><a href="impact_ddci_index_2.html">dDCI index (sharp decay)</a></li>
         <li><a href="impact_degree_of_collaboration.html">degree of collaboration</a></li>
+        <li><a href="impact_discounted_h_index.html"><em>dh</em></a></li>
         <li><a href="impact_dci_index_10.html">discounted cumulated impact (mild decay)</a></li>
         <li><a href="impact_dci_index_2.html">discounted cumulated impact (sharp decay)</a></li>
+        <li><a href="impact_discounted_h_index.html">discounted <em>h-</em>index</a></li>
         <li><a href="impact_ddci_index_10.html">dynamic discounted cumulated impact (mild decay)</a></li>
         <li><a href="impact_ddci_index_2.html">dynamic discounted cumulated impact (sharp decay)</a></li>
         <li><a href="impact_dynamic_h_type_index.html">dynamic <em>h-</em>type-index</a></li>
@@ -12622,5 +12624,91 @@ impact_o_index.html
       <h2>References</h2>
       <ul>
         <li>Dorogovtsev, S.N., and J.F. Mendes (2015) Ranking scientists. <em>Nature Physics</em> 11(11):882&ndash;883.</li>
+      </ul>
+    </div>
+@@@@
+impact_discounted_h_index.html
+        var data_discounted_h_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>dh</em>'],
+           ['1997', 0.0],
+           ['1998', 1.8618986725025255],
+           ['1999', 2.8982753492378874],
+           ['2000', 4.68119431843131],
+           ['2001', 5.6467436886859215],
+           ['2002', 6.591308225955956],
+           ['2003', 10.478647649161124],
+           ['2004', 11.549961038895326],
+           ['2005', 13.54162271854922],
+           ['2006', 16.58147426358101],
+           ['2007', 18.581397918990195],
+           ['2008', 21.613111888494615],
+           ['2009', 24.592080387075754],
+           ['2010', 25.621475847426236],
+           ['2011', 28.629614428682505],
+           ['2012', 31.644239627181506],
+           ['2013', 31.676517340004114],
+           ['2014', 33.68985171583036],
+           ['2015', 33.72194909012293],
+           ['2016', 34.73147190644841],
+           ['2017', 35.743308254997025],
+           ['2018', 35.74978874811994],
+           ['2019', 35.761050779876726],
+           ['2020', 36.762723003564844],
+           ['2021', 38.75714665413499],
+		]);
+
+        var options_discounted_h_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_discounted_h_index = new google.visualization.LineChart(document.getElementById('chart_discounted_h_index_div'));
+        chart_discounted_h_index.draw(data_discounted_h_index, options_discounted_h_index);
+
+@@
+    <div id="discounted_h_index" class="metric_container">
+      <h2>discounted <em>h-</em>index</h2>
+      <p>The discounted <em>h-</em>index (Ferrara and Romero 2013) was designed to adjust the <em>h-</em>index for self-citations by multiplying it by square-root of the percentage of total citations that were not self-citations. It is readily calculated as:</p>$$dh=h \sqrt{\frac{C^P-S^P}{C^P}},$$<p>where <em>S<sup>P</sup></em> is the sum of self-citations for all publications.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>dh</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.8619</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.8983</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4.6812</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">5.6467</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6.5913</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10.4786</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">11.5500</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">13.5416</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">16.5815</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">18.5814</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">21.6131</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">24.5921</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">25.6215</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.6296</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">31.6442</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">31.6765</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">33.6899</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">33.7219</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">34.7315</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">35.7433</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">35.7498</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">35.7611</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">36.7627</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">38.7571</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_discounted_h_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Ferrara, E., and A.E. Romero (2013) Scientific impact evaluation and the effect of self-citations: Mitigating the bias by discounting the h-index. <em>Journal of the American Society for Information Science and Technology</em> 64(11):2332&ndash;2339.</li>
       </ul>
     </div>
