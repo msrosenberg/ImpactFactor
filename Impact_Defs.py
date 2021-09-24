@@ -8323,6 +8323,124 @@ def metric_discounted_h_index() -> Metric:
     return m
 
 
+# j-index (Mikhailov 2014)
+def calculate_mikhailov_j_index(metric_set: MetricSet) -> int:
+    citations = metric_set.citations
+    rank_order = metric_set.rank_order
+    return Impact_Funcs.calculate_mikhailov_j_index(citations, rank_order)
+
+
+def write_mikhailov_j_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["Mikhailov j-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Citations', 'y=floor(x^3/2)', {'type': 'string', 'role': 'annotation'}],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    j = metric_set.metrics["Mikhailov j-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        # write citation count for ranked publication x
+        if x == 0:
+            v = "null"
+        else:
+            v = tmp_cites[x - 1]
+        outstr += ", {}".format(v)
+        # write y for y=x^2
+        v = math.floor(x**(3/2))
+        if v > maxv:
+            v = "null"
+        if x == j:
+            a = "\'j\'"
+        else:
+            a = "null"
+        outstr += ", {}, {}".format(v, a)
+        outstr += "],\n"
+        output.append(outstr)
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    # output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("		     series: { 0: {},\n")
+    output.append("		               1: {lineDashStyle: [4, 4],\n")
+    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
+def write_mikhailov_j_index_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    citations = sorted(metric_set.citations, reverse=True)
+    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Rank (<em>i</em>)</th>"
+    row3 = "<tr><th>floor(<em>i</em><sup>3/2</sup>)</th>"
+    row4 = "<tr><th></th>"
+    j = metric_set.metrics["Mikhailov j-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == j:
+            v = "<em>j</em>&nbsp;=&nbsp;{}".format(j)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td" + ec + ">{}</td>".format(c)
+        row2 += "<td>{}</td>".format(i+1)
+        row3 += "<td" + ec + ">{}</td>".format(math.trunc((i+1)**(3/2)))
+        row4 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + "</table>"
+    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {}.</p>".format(j)
+    return outstr
+
+
+def metric_mikhailov_j_index() -> Metric:
+    m = Metric()
+    m.name = "Mikhailov j-index"
+    m.full_name = "j-index (Mikhailov)"
+    m.html_name = "<em>j-</em>index (Mikhailov)"
+    m.symbol = "<em>j</em>"
+    m.metric_type = INT
+    m.example = write_mikhailov_j_index_example
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "mikhailov_j_index_desc"
+    graph.data = write_mikhailov_j_index_desc_data
+    equation = r"$$j=\underset{i}{\max}\left(\text{floor}\left(i^{3/2}\right) \leq C_i\right).$$"
+    m.description = "<p>Mikhailov\'s <em>j</em>-index (Mikhailov 2014) falls bewteen the <em>h</em>-index and the " \
+                    "<em>h</em>(2)-index. Rather than requiring each publication in the core to have <em>h</em> or " \
+                    "<em>h</em><sup>2</sup> publications, respectively, it requires them to have " \
+                    "<em>j</em><sup>3/2</sup>:</p>" + \
+                    equation + "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
+    m.references = ["Mikhailov, O.V.e. (2014) A new version of the Hirsh index: The <em>j-</em>index. <em>Herald of "
+                    "the Russian Academy of Sciences</em> 84(3):217&ndash;220."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_mikhailov_j_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -8468,7 +8586,8 @@ def load_all_metrics() -> list:
                    metric_iterative_weighted_em_index(),
                    metric_iterative_weighted_emp_index(),
                    metric_o_index(),
-                   metric_discounted_h_index()
+                   metric_discounted_h_index(),
+                   metric_mikhailov_j_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

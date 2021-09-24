@@ -5844,6 +5844,83 @@
         var chart_discounted_h_index = new google.visualization.LineChart(document.getElementById('chart_discounted_h_index_div'));
         chart_discounted_h_index.draw(data_discounted_h_index, options_discounted_h_index);
 
+        var data_Mikhailov_j_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>j</em>'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 2],
+           ['2000', 4],
+           ['2001', 5],
+           ['2002', 5],
+           ['2003', 6],
+           ['2004', 8],
+           ['2005', 10],
+           ['2006', 10],
+           ['2007', 11],
+           ['2008', 12],
+           ['2009', 14],
+           ['2010', 15],
+           ['2011', 15],
+           ['2012', 17],
+           ['2013', 19],
+           ['2014', 19],
+           ['2015', 19],
+           ['2016', 19],
+           ['2017', 19],
+           ['2018', 19],
+           ['2019', 20],
+           ['2020', 21],
+           ['2021', 22],
+		]);
+
+        var options_Mikhailov_j_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_Mikhailov_j_index = new google.visualization.LineChart(document.getElementById('chart_Mikhailov_j_index_div'));
+        chart_Mikhailov_j_index.draw(data_Mikhailov_j_index, options_Mikhailov_j_index);
+
+        var data_mikhailov_j_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Citations', 'y=floor(x^3/2)', {'type': 'string', 'role': 'annotation'}],
+           [0, null, 0, null],
+           [1, 48, 1, null],
+           [2, 25, 2, null],
+           [3, 17, 5, null],
+           [4, 15, 8, null],
+           [5, 11, 11, 'j'],
+           [6, 10, 14, null],
+           [7, 4, 18, null],
+           [8, 3, 22, null],
+           [9, 3, 27, null],
+           [10, 1, 31, null],
+           [11, 1, 36, null],
+           [12, 1, 41, null],
+           [13, 1, 46, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+           [16, 0, null, null],
+		]);
+
+        var options_mikhailov_j_index_desc = {
+		     legend: {position: 'top'},
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+		     series: { 0: {},
+		               1: {lineDashStyle: [4, 4],
+		                   annotations:{textStyle:{color: 'black', italic: true, bold: true}}}}
+        };
+
+        var chart_mikhailov_j_index_desc = new google.visualization.LineChart(document.getElementById('chart_mikhailov_j_index_desc_div'));
+        chart_mikhailov_j_index_desc.draw(data_mikhailov_j_index_desc, options_mikhailov_j_index_desc);
+
 		}
     </script>
   </head>
@@ -5984,6 +6061,7 @@
         <li><a href="#iter_weighted_h_index"><em>iw</em>(<em>h</em>)-index</a></li>
         <li><a href="#iterative_weighted_EM_index"><em>iw<sub>EM</sub></em></a></li>
         <li><a href="#iterative_weighted_EMp_index"><em>iw<sub>EM&prime;</sub></em></a></li>
+        <li><a href="#Mikhailov_j_index"><em>j-</em>index (Mikhailov)</a></li>
         <li><a href="#Todeschini_j_index"><em>j-</em>index (Todeschini)</a></li>
         <li><a href="#c_p">journal paper citedness</a></li>
         <li><a href="#c_p"><em>JPC</em></a></li>
@@ -11636,6 +11714,48 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="Mikhailov_j_index" class="metric_container">
+      <h2><em>j-</em>index (Mikhailov)</h2>
+      <p>Mikhailov's <em>j</em>-index (Mikhailov 2014) falls bewteen the <em>h</em>-index and the <em>h</em>(2)-index. Rather than requiring each publication in the core to have <em>h</em> or <em>h</em><sup>2</sup> publications, respectively, it requires them to have <em>j</em><sup>3/2</sup>:</p>$$j=\underset{i}{\max}\left(\text{floor}\left(i^{3/2}\right) \leq C_i\right).$$<div id="chart_mikhailov_j_index_desc_div" class="proportional_chart"></div>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>25</td><td>17</td><td>15</td><td class="box">11</td><td>10</td><td>4</td><td>3</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td></tr><tr><th>floor(<em>i</em><sup>3/2</sup>)</th><td>1</td><td>2</td><td>5</td><td>8</td><td class="box">11</td><td>14</td><td>18</td><td>22</td><td>27</td><td>31</td><td>36</td><td>41</td><td>46</td><td>52</td><td>58</td><td>64</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td><em>j</em>&nbsp;=&nbsp;5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is 5.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>j</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">11</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">17</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">20</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">21</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">22</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_Mikhailov_j_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -11692,6 +11812,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354.</li>
         <li>Mahbuba, D., and R. Rousseau (2013) Year-based <em>h-</em>type indicators. <em>Scientometrics</em> 96(3):785&ndash;797.</li>
         <li>Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal of Informetrics</em> 7:176&ndash;182.</li>
+        <li>Mikhailov, O.V.e. (2014) A new version of the Hirsh index: The <em>j-</em>index. <em>Herald of the Russian Academy of Sciences</em> 84(3):217&ndash;220.</li>
         <li>Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of Engineering Science and Technology Review</em> 2(1):68&ndash;70.</li>
         <li>Mohammed, S., A. Morgan, and E. Nyantakyi (2020) On the influence of uncited publications on a researcher's <em>h</em>‑index. <em>Scientometrics</em>.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>

@@ -1655,3 +1655,12 @@ def calculate_o_index(h: int, max_cites: int) -> float:
 # discounted h-index (Ferrara and Romero 2013)
 def calculate_discounted_h_index(h: int, total_cites: int, total_self: int) -> float:
     return h * math.sqrt((total_cites - total_self)/total_cites)
+
+
+# j-index (Mikhailov 2014)
+def calculate_mikhailov_j_index(citations: list, rank_order: list) -> int:
+    j = 0
+    for i in range(len(citations)):
+        if math.trunc(rank_order[i]**(3/2)) <= citations[i]:
+            j += 1
+    return j
