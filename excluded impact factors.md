@@ -19,3 +19,27 @@ reason for exclusion.
 * PageRank
   * Chen, P., H. Xie, S. Maslov, and S. Render (2007) Finding scientific gems with Googles PageRank algorithm. 
     Journal of Informetrics 1(1):8-15.
+
+
+## Requires evalution of focal author's time devoted to researcher
+* *v*-index
+  * Vaidya, J.S. (2005) V-index: A fairer index to quantify an individual's research output capacity. BMJ 331:1339.
+
+
+## Requires evaluation of journal quality in some manner
+* Mikhailov, O.V. (2012) A new citation index for researchers. Herald of the Russian Academy of Sciences 82(5):403-405.
+
+
+## Requires evaluation and comparison of coauthors
+* *h<sub>bar</sub>
+  * Hirsch, J.E. (2010) An index to quantify an individual's scientific output that takes into account the effect 
+    of multiple coauthorship. Scientometrics 85:741-754.
+
+* *h<sub>&alpha;</sub>*
+  * Hirsch, J.E. (2019) hα: An index to quantify an individual’s scientific leadership. Scientometrics 118:673-686.
+
+
+## Requires comparison to a set of publications beyond the focal author
+* Gh
+  * Xu, F., W.B. Liu, and J. Mingers (2015) New journal classification methods based on the global h-index. 
+  * Information Processing and Management 51(2):50-61.
