@@ -133,13 +133,13 @@
         <li><a href="impact_iter_weighted_h_index.html"><em>iw</em>(<em>h</em>)-index</a></li>
         <li><a href="impact_iterative_weighted_EM_index.html"><em>iw<sub>EM</sub></em></a></li>
         <li><a href="impact_iterative_weighted_EMp_index.html"><em>iw<sub>EM&prime;</sub></em></a></li>
+        <li><a href="impact_Levene_j_index.html"><em>j-</em>index (Levene)</a></li>
         <li><a href="impact_Mikhailov_j_index.html"><em>j-</em>index (Mikhailov)</a></li>
         <li><a href="impact_Todeschini_j_index.html"><em>j-</em>index (Todeschini)</a></li>
         <li><a href="impact_c_p.html">journal paper citedness</a></li>
         <li><a href="impact_c_p.html"><em>JPC</em></a></li>
         <li><a href="impact_k_index.html"><em>k-</em>index</a></li>
         <li><a href="impact_ls_h_rate.html">least squares <em>h-</em>rate</a></li>
-        <li><a href="impact_Levene_j_index.html">Levene <em>j-</em>index</a></li>
         <li><a href="impact_scientist_level.html"><em>L<sup>v</sup></em></a></li>
         <li><a href="impact_m_index.html"><em>m-</em>index</a></li>
         <li><a href="impact_h_rate.html"><em>m-</em>quotient</a></li>
@@ -193,7 +193,7 @@
         <li><a href="impact_scientific_quality_index.html">scientific quality index</a></li>
         <li><a href="impact_scientist_level.html">scientist's level</a></li>
         <li><a href="impact_nonint_scientist_level.html">scientist's level (non-integer)</a></li>
-        <li><a href="impact_sharpened_h_index_self.html">sharpened <em>h-</em>index (self)</a></li>
+        <li><a href="impact_sharpened_h_index_narrow.html">sharpened <em>h-</em>index (narrow)</a></li>
         <li><a href="impact_specific_impact_s_index.html">specific impact <em>s-</em>index</a></li>
         <li><a href="impact_T_index_h_mixed.html"><em>T-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="impact_Tol_t_index.html"><em>t-</em>index (Tol)</a></li>
@@ -7038,8 +7038,8 @@ impact_mean_self_cite_rate.html
       </div>
     </div>
 @@@@
-impact_sharpened_h_index_self.html
-        var data_sharpened_h_index_self = google.visualization.arrayToDataTable([
+impact_sharpened_h_index_narrow.html
+        var data_sharpened_h_index_narrow = google.visualization.arrayToDataTable([
            ['Year', '<em>h</em><sub>sharp.self</sub>'],
            ['1997', 0],
            ['1998', 2],
@@ -7068,18 +7068,18 @@ impact_sharpened_h_index_self.html
            ['2021', 38],
 		]);
 
-        var options_sharpened_h_index_self = {
+        var options_sharpened_h_index_narrow = {
 		     legend: {position: 'none'},
 		     hAxis: {slantedText: true},
         };
 
-        var chart_sharpened_h_index_self = new google.visualization.LineChart(document.getElementById('chart_sharpened_h_index_self_div'));
-        chart_sharpened_h_index_self.draw(data_sharpened_h_index_self, options_sharpened_h_index_self);
+        var chart_sharpened_h_index_narrow = new google.visualization.LineChart(document.getElementById('chart_sharpened_h_index_narrow_div'));
+        chart_sharpened_h_index_narrow.draw(data_sharpened_h_index_narrow, options_sharpened_h_index_narrow);
 
 @@
-    <div id="sharpened_h_index_self" class="metric_container">
-      <h2>sharpened <em>h-</em>index (self)</h2>
-      <p>A simple way of accounting for self-citations with respect to impact is to simply remove them from each publication's citation counts prior to calculating a metric. For the base calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p><p>One complication is that there may be multiple methods for defining self-citations. In this case we remove any citations by the target author to their own publications.</p>
+    <div id="sharpened_h_index_narrow" class="metric_container">
+      <h2>sharpened <em>h-</em>index (narrow)</h2>
+      <p>A simple way of accounting for self-citations with respect to impact is to simply remove them from each publication's citation counts prior to calculating a metric. For the base calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p><p>One complication is that there may be multiple methods for defining self-citations. In this case we use a narrow definition and only remove citations by the focal author to their own publications.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -7113,7 +7113,7 @@ impact_sharpened_h_index_self.html
           </table>
         </div>
         <div class="graph_container">
-          <div id="chart_sharpened_h_index_self_div" class="impact_chart"></div>
+          <div id="chart_sharpened_h_index_narrow_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -8937,7 +8937,7 @@ impact_Levene_j_index.html
 
 @@
     <div id="Levene_j_index" class="metric_container">
-      <h2>Levene <em>j-</em>index</h2>
+      <h2><em>j-</em>index (Levene)</h2>
       <p>The Levene <em>j-</em>index (Levene <em>et al.</em> 2012) is the sum of the square-root of citation counts for all publications, similar to the Redner index which is the square-root of the sum.</p>$$j=\sum\limits_{i=1}^{P}{\sqrt{C_i}}$$
       <h3>History</h3>
       <div class="metric_data_container">

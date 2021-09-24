@@ -3627,9 +3627,9 @@ def calculate_sharpened_h_index_self(metric_set: MetricSet) -> float:
 
 def metric_sharpened_h_index_self() -> Metric:
     m = Metric()
-    m.name = "sharpened h-index (self)"
-    m.full_name = "sharpened h-index (self)"
-    m.html_name = "sharpened <em>h-</em>index (self)"
+    m.name = "sharpened h-index (narrow)"
+    m.full_name = "sharpened h-index (narrow)"
+    m.html_name = "sharpened <em>h-</em>index (narrow)"
     m.symbol = "<em>h</em><sub>sharp.self</sub>"
     m.metric_type = INT
     m.is_self = True
@@ -3637,7 +3637,8 @@ def metric_sharpened_h_index_self() -> Metric:
                     "them from each publication\'s citation counts prior to calculating a metric. For the base " \
                     "calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p>" \
                     "<p>One complication is that there may be multiple methods for defining self-citations. In this " \
-                    "case we remove any citations by the target author to their own publications.</p>"
+                    "case we use a narrow definition and only remove citations by the focal author to their own " \
+                    "publications.</p>"
     m.references = ["Schreiber, M. (2007) Self-citation corrections for the Hirsch index. <em>Europhysics "
                     "Letters</em> 78:30002-1&ndash;6."]
     m.graph_type = LINE_CHART
@@ -6218,8 +6219,8 @@ def calculate_levene_j_index(metric_set: MetricSet) -> float:
 def metric_levene_j_index() -> Metric:
     m = Metric()
     m.name = "Levene j-index"
-    m.full_name = "Levene j-index"
-    m.html_name = "Levene <em>j-</em>index"
+    m.full_name = "j-index (Levene)"
+    m.html_name = "<em>j-</em>index (Levene)"
     m.symbol = "<em>j</em>"
     m.metric_type = FLOAT
     equation = r"$$j=\sum\limits_{i=1}^{P}{\sqrt{C_i}}$$"
