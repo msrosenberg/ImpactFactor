@@ -154,6 +154,8 @@
         <li><a href="impact_multidim_h_index.html">multidimensional <em>h-</em>index</a></li>
         <li><a href="impact_normalized_h_index.html">normalized <em>h-</em>index</a></li>
         <li><a href="impact_normal_hi_index.html">normalized <em>h<sub>i</sub>-</em>index</a></li>
+        <li><a href="impact_o_index.html"><em>o</em></a></li>
+        <li><a href="impact_o_index.html"><em>o-</em>index</a></li>
         <li><a href="impact_c_p.html">observed citation rate</a></li>
         <li><a href="impact_c_p.html"><em>OCR</em></a></li>
         <li><a href="impact_total_pubs.html"><em>P</em></a></li>
@@ -12010,8 +12012,8 @@ impact_academic_trace.html
       <h2>References</h2>
       <ul>
         <li>Ding, J., C. Liu, and G.A. Kandonga (2020) Exploring the limitations of the <em>h‑</em>index and <em>h</em>‑type indexes in measuring the research performance of authors. <em>Scientometrics.</em></li>
-        <li>Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: Multidimensional indicators of publication and citation scores. <em>Collnet Journal of Scientometrics and Information Management</em> 11(1):153-171.</li>
-        <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742-750.</li>
+        <li>Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: Multidimensional indicators of publication and citation scores. <em>Collnet Journal of Scientometrics and Information Management</em> 11(1):153&ndash;171.</li>
+        <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742&ndash;750.</li>
       </ul>
     </div>
 @@@@
@@ -12099,7 +12101,7 @@ impact_scientific_quality_index.html
     <div id="references">
       <h2>References</h2>
       <ul>
-        <li>Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. <em>Scientometrics</em> 119:1009-1016.</li>
+        <li>Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. <em>Scientometrics</em> 119:1009&ndash;1016.</li>
       </ul>
     </div>
 @@@@
@@ -12357,7 +12359,7 @@ impact_first_author_h_index.html
     <div id="references">
       <h2>References</h2>
       <ul>
-        <li>Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field for small and large institute medical and science scholars. <em>Australasian Physical and Engineering Sciences in Medicine</em> 33:299-300.</li>
+        <li>Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field for small and large institute medical and science scholars. <em>Australasian Physical and Engineering Sciences in Medicine</em> 33:299&ndash;300.</li>
       </ul>
     </div>
 @@@@
@@ -12534,5 +12536,91 @@ impact_iterative_weighted_EMp_index.html
       <h2>References</h2>
       <ul>
         <li>Bihari, A., S. Tripathi, and A. Deepak (2021) Iterative weighted EM and iterative weighted EM′-index for scientific assessment of scholars. <em>Scientometrics</em> 126:5551&ndash;5568.</li>
+      </ul>
+    </div>
+@@@@
+impact_o_index.html
+        var data_o_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>o</em>'],
+           ['1997', 1.0],
+           ['1998', 3.7416573867739413],
+           ['1999', 7.937253933193772],
+           ['2000', 12.649110640673518],
+           ['2001', 16.97056274847714],
+           ['2002', 19.621416870348583],
+           ['2003', 29.664793948382652],
+           ['2004', 39.03844259188627],
+           ['2005', 49.63869458396343],
+           ['2006', 61.155539405682624],
+           ['2007', 75.24626236564843],
+           ['2008', 89.61026726887941],
+           ['2009', 105.23782589924595],
+           ['2010', 118.6001686339442],
+           ['2011', 136.02205703487945],
+           ['2012', 154.0908822740658],
+           ['2013', 163.3646228532971],
+           ['2014', 179.34324631833783],
+           ['2015', 188.403821617291],
+           ['2016', 202.0148509392317],
+           ['2017', 214.99767440602702],
+           ['2018', 222.40503591420767],
+           ['2019', 229.49509798686333],
+           ['2020', 237.695182954977],
+           ['2021', 248.93975174728524],
+		]);
+
+        var options_o_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_o_index = new google.visualization.LineChart(document.getElementById('chart_o_index_div'));
+        chart_o_index.draw(data_o_index, options_o_index);
+
+@@
+    <div id="o_index" class="metric_container">
+      <h2><em>o-</em>index</h2>
+      <p>The <em>o-</em>index (Dorogovtsev and Mendses 2015) was designed to balance a researcher's most-cited work with their diligence in regular publication, and is simply the geometric mean of their <em>h-</em>index and the count of citations to their most cited work. It is calculated as:</p>$$o=\sqrt{hC_{max}}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>o</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.7417</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">7.9373</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">12.6491</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">16.9706</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">19.6214</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">29.6648</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">39.0384</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">49.6387</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">61.1555</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">75.2463</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">89.6103</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">105.2378</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">118.6002</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">136.0221</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">154.0909</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">163.3646</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">179.3432</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">188.4038</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">202.0149</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">214.9977</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">222.4050</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">229.4951</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">237.6952</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">248.9398</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_o_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Dorogovtsev, S.N., and J.F. Mendes (2015) Ranking scientists. <em>Nature Physics</em> 11(11):882&ndash;883.</li>
       </ul>
     </div>

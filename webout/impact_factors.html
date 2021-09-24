@@ -5770,6 +5770,43 @@
         var chart_iterative_weighted_EMp_index = new google.visualization.LineChart(document.getElementById('chart_iterative_weighted_EMp_index_div'));
         chart_iterative_weighted_EMp_index.draw(data_iterative_weighted_EMp_index, options_iterative_weighted_EMp_index);
 
+        var data_o_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>o</em>'],
+           ['1997', 1.0],
+           ['1998', 3.7416573867739413],
+           ['1999', 7.937253933193772],
+           ['2000', 12.649110640673518],
+           ['2001', 16.97056274847714],
+           ['2002', 19.621416870348583],
+           ['2003', 29.664793948382652],
+           ['2004', 39.03844259188627],
+           ['2005', 49.63869458396343],
+           ['2006', 61.155539405682624],
+           ['2007', 75.24626236564843],
+           ['2008', 89.61026726887941],
+           ['2009', 105.23782589924595],
+           ['2010', 118.6001686339442],
+           ['2011', 136.02205703487945],
+           ['2012', 154.0908822740658],
+           ['2013', 163.3646228532971],
+           ['2014', 179.34324631833783],
+           ['2015', 188.403821617291],
+           ['2016', 202.0148509392317],
+           ['2017', 214.99767440602702],
+           ['2018', 222.40503591420767],
+           ['2019', 229.49509798686333],
+           ['2020', 237.695182954977],
+           ['2021', 248.93975174728524],
+		]);
+
+        var options_o_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_o_index = new google.visualization.LineChart(document.getElementById('chart_o_index_div'));
+        chart_o_index.draw(data_o_index, options_o_index);
+
 		}
     </script>
   </head>
@@ -5931,6 +5968,8 @@
         <li><a href="#multidim_h_index">multidimensional <em>h-</em>index</a></li>
         <li><a href="#normalized_h_index">normalized <em>h-</em>index</a></li>
         <li><a href="#normal_hi_index">normalized <em>h<sub>i</sub>-</em>index</a></li>
+        <li><a href="#o_index"><em>o</em></a></li>
+        <li><a href="#o_index"><em>o-</em>index</a></li>
         <li><a href="#c_p">observed citation rate</a></li>
         <li><a href="#c_p"><em>OCR</em></a></li>
         <li><a href="#total_pubs"><em>P</em></a></li>
@@ -11478,6 +11517,46 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="o_index" class="metric_container">
+      <h2><em>o-</em>index</h2>
+      <p>The <em>o-</em>index (Dorogovtsev and Mendses 2015) was designed to balance a researcher's most-cited work with their diligence in regular publication, and is simply the geometric mean of their <em>h-</em>index and the count of citations to their most cited work. It is calculated as:</p>$$o=\sqrt{hC_{max}}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>o</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.7417</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">7.9373</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">12.6491</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">16.9706</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">19.6214</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">29.6648</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">39.0384</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">49.6387</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">61.1555</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">75.2463</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">89.6103</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">105.2378</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">118.6002</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">136.0221</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">154.0909</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">163.3646</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">179.3432</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">188.4038</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">202.0149</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">214.9977</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">222.4050</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">229.4951</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">237.6952</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">248.9398</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_o_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -11497,11 +11576,12 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Brown, R.J.C. (2009) A simple method for excluding self-citation from the <em>h-</em>index: the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136.</li>
         <li>Burrell, Q.L. (2007) Hirsch index or Hirsch rate? Some thoughts arising from Liang's data. <em>Scientometrics</em> 73(1):19-28.</li>
         <li>Burrell, Q.L. (2012) Comments on "A publication index that is independent of age" by Abt. <em>Scientometrics</em> 91:1059&ndash;1060.</li>
-        <li>Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field for small and large institute medical and science scholars. <em>Australasian Physical and Engineering Sciences in Medicine</em> 33:299-300.</li>
+        <li>Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field for small and large institute medical and science scholars. <em>Australasian Physical and Engineering Sciences in Medicine</em> 33:299&ndash;300.</li>
         <li>Cabrerizo, F.J., S. Alonso, E. Herrera-Viedma, and F. Herrera (2010) <em>q</em><sup>2</sup>-index: quantiative and qualitative evaluation based on the number and impact of papers in the Hirsch core. <em>Journal of Informetrics</em> 4:23&ndash;28.</li>
         <li>Chai, J.-c., P.-h. Hua, R. Rousseau, and J.-k. Wan (2008) The adapted pure <em>h-</em>index. <em>Fourth International Conference on Webometrics, Informetrics and Scientometrics & Ninth COLLNET Meeting,</em> H. Kretschmer and F. Havemann, eds. Humboldt-Universität zu Berlin: Institute for Library and Information Science.</li>
         <li>De Visscher, A. (2010) An index to measures a scientist's specific impact. <em>Journal of the American Society for Information Science and Technology</em> 61(2):319&ndash;328.</li>
         <li>Ding, J., C. Liu, and G.A. Kandonga (2020) Exploring the limitations of the <em>h‑</em>index and <em>h</em>‑type indexes in measuring the research performance of authors. <em>Scientometrics.</em></li>
+        <li>Dorogovtsev, S.N., and J.F. Mendes (2015) Ranking scientists. <em>Nature Physics</em> 11(11):882&ndash;883.</li>
         <li>Dorta-González, P., and M.I. Dorta-González (2010) Indicador bibliométrico basado en el índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245.</li>
         <li>Egghe, L. (2006) An improvement of the <em>h-</em>index: The <em>g-</em>index. <em>ISSI Newsletter</em> 2(1):8&ndash;9.</li>
         <li>Egghe, L. (2006) How to improve the <em>h-</em>index: Letter. <em>The Scientist</em> 20(3):14.</li>
@@ -11535,7 +11615,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Mitropoulos, A.C. (2009) Is it more difficult to write or to cite a paper? <em>Journal of Engineering Science and Technology Review</em> 2(1):68&ndash;70.</li>
         <li>Mohammed, S., A. Morgan, and E. Nyantakyi (2020) On the influence of uncited publications on a researcher's <em>h</em>‑index. <em>Scientometrics</em>.</li>
         <li>Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact with single indices. <em>Scientometrics</em> 81(3):635&ndash;670.</li>
-        <li>Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. <em>Scientometrics</em> 119:1009-1016.</li>
+        <li>Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. <em>Scientometrics</em> 119:1009&ndash;1016.</li>
         <li>Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. <em>ArXiv:physics</em>:0508113v1.</li>
         <li>Prathap, G. (2010) Is there a place for a mock <em>h-</em>index? <em>Scientometrics</em> 84:153&ndash;165.</li>
         <li>Prathap, G. (2010) The 100 most prolific economists using the <em>p-</em>index. <em>Scientometrics</em> 84:167&ndash;172.</li>
@@ -11565,8 +11645,8 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Wohlin, C. (2009) A new index for the citation curve of researchers. <em>Scientometrics</em> 81(2):521&ndash;533.</li>
         <li>Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely cited papers. <em>Journal of the American Society for Information Science and Technology</em> 61(3):609&ndash;614.</li>
         <li>Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. <em>Journal of Library and Information Studies</em> 8:1&ndash;9.</li>
-        <li>Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: Multidimensional indicators of publication and citation scores. <em>Collnet Journal of Scientometrics and Information Management</em> 11(1):153-171.</li>
-        <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742-750.</li>
+        <li>Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: Multidimensional indicators of publication and citation scores. <em>Collnet Journal of Scientometrics and Information Management</em> 11(1):153&ndash;171.</li>
+        <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742&ndash;750.</li>
         <li>Ye, F.Y., and R. Rousseau (2010) Probing the <em>h-</em>core: An investigation of the tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439.</li>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
       </ul>

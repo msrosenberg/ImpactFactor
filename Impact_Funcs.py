@@ -1646,3 +1646,7 @@ def calculate_first_author_h_index(h: int, author_pos: list, is_core: list) -> i
             cnt += 1
     return h + cnt
 
+
+# o-index (Dorogovtsev and Mendes 2015)
+def calculate_o_index(h: int, max_cites: int) -> float:
+    return math.sqrt(h * max_cites)

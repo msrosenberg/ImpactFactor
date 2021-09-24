@@ -7669,30 +7669,30 @@ def metric_awakening_time() -> Metric:
     return m
 
 
-# h-index for principal investigators (Steinbruchel 2019)
-def calculate_principal_h(metric_set: MetricSet) -> list:
-    # metric_list = metric_set.parent_list
-    # metric_pos = metric_list.index(metric_set)
-    # pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
-    # return Impact_Funcs.calculate_awakening_time(pub_data)
-    pass
-
-
-def metric_principal_h() -> Metric:
-    m = Metric()
-    # m.name = "awakening time"
-    # m.full_name = "awakening time"
-    # m.html_name = "awakening time"
-    # m.symbol = "ta"
-    # m.metric_type = INTLIST
-    # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
-    #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
-    #                 "publications with at least one citation.</p>"
-    m.references = ["Steinbrüchel, C. (2019) A citation index for principal investigators. <em>Scientometrics</em> "
-                    "118(1):305-320."]
-    # m.graph_type = MULTILINE_CHART_LEFT
-    # m.calculate = calculate_awakening_time
-    return m
+# # h-index for principal investigators (Steinbruchel 2019)
+# def calculate_principal_h(metric_set: MetricSet) -> list:
+#     # metric_list = metric_set.parent_list
+#     # metric_pos = metric_list.index(metric_set)
+#     # pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+#     # return Impact_Funcs.calculate_awakening_time(pub_data)
+#     pass
+#
+#
+# def metric_principal_h() -> Metric:
+#     m = Metric()
+#     # m.name = "awakening time"
+#     # m.full_name = "awakening time"
+#     # m.html_name = "awakening time"
+#     # m.symbol = "ta"
+#     # m.metric_type = INTLIST
+#     # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
+#     #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
+#     #                 "publications with at least one citation.</p>"
+#     m.references = ["Steinbrüchel, C. (2019) A citation index for principal investigators. <em>Scientometrics</em> "
+#                     "118(1):305-320."]
+#     # m.graph_type = MULTILINE_CHART_LEFT
+#     # m.calculate = calculate_awakening_time
+#     return m
 
 
 # apparent h-index (Mohammed et al 2020)
@@ -8158,10 +8158,10 @@ def metric_academic_trace() -> Metric:
     m.references = ["Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A "
                     "Mathematical Synthesis of the "
                     "<em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for "
-                    "Information Science and Technology</em> 65(4):742-750.",
+                    "Information Science and Technology</em> 65(4):742&ndash;750.",
                     "Ye, F.Y., L. Bornmann, and L. Leydesdorff (2017) <em>h</em>-based I3-type multivariate vectors: "
                     "Multidimensional indicators of publication and citation scores. <em>Collnet Journal of "
-                    "Scientometrics and Information Management</em> 11(1):153-171.",
+                    "Scientometrics and Information Management</em> 11(1):153&ndash;171.",
                     "Ding, J., C. Liu, and G.A. Kandonga (2020) Exploring the limitations of the <em>h‑</em>index and "
                     "<em>h</em>‑type indexes in measuring the research performance of authors. "
                     "<em>Scientometrics.</em>"]
@@ -8223,7 +8223,7 @@ def metric_scientific_quality_index() -> Metric:
                     "be a slightly better judge of quality than metrics such as <em>h</em>.</p>"
     m.references = ["Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A "
                     "composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. "
-                    "<em>Scientometrics</em> 119:1009-1016."]
+                    "<em>Scientometrics</em> 119:1009&ndash;1016."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_scientific_quality_index
     return m
@@ -8259,9 +8259,36 @@ def metric_first_author_h_index() -> Metric:
     m.synonyms = ["<em>h<sub>fa</sub></em>"]
     m.references = ["Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field "
                     "for small and large institute medical and science scholars. <em>Australasian Physical and "
-                    "Engineering Sciences in Medicine</em> 33:299-300."]
+                    "Engineering Sciences in Medicine</em> 33:299&ndash;300."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_first_author_h_index
+    return m
+
+
+# o-index (Dorogovtsev and Mendes 2015)
+def calculate_o_index(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    max_cites = metric_set.metrics["max cites"].value
+    return Impact_Funcs.calculate_o_index(h, max_cites)
+
+
+def metric_o_index() -> Metric:
+    m = Metric()
+    m.name = "o-index"
+    m.full_name = "o-index"
+    m.html_name = "<em>o-</em>index"
+    m.metric_type = FLOAT
+    equation = r"$$o=\sqrt{hC_{max}}.$$"
+    m.description = "<p>The <em>o-</em>index (Dorogovtsev and Mendses 2015) was designed to balance a researcher\'s " \
+                    "most-cited work with their diligence in regular publication, and is simply the geometric mean " \
+                    "of their <em>h-</em>index and the count of citations to their most cited work. It is calculated " \
+                    "as:</p>" + equation
+    m.symbol = "<em>o</em>"
+    m.synonyms = ["<em>o</em>"]
+    m.references = ["Dorogovtsev, S.N., and J.F. Mendes (2015) Ranking scientists. <em>Nature Physics</em> "
+                    "11(11):882&ndash;883."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_o_index
     return m
 
 
@@ -8408,7 +8435,8 @@ def load_all_metrics() -> list:
                    metric_i1000_index(),
                    metric_first_author_h_index(),
                    metric_iterative_weighted_em_index(),
-                   metric_iterative_weighted_emp_index()
+                   metric_iterative_weighted_emp_index(),
+                   metric_o_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
