@@ -1012,6 +1012,74 @@ def calculate_emp_index(citations: list, rank_order: list) -> float:
     return math.sqrt(sum(em_component))
 
 
+# iterative weighted EM-index (Bihari et al 2021)
+def calculate_iterative_weighted_em_index(citations: list, rank_order: list) -> float:
+    def count_cited_articles(tmpc: list) -> int:
+        cnt = 0
+        for c in tmpc:
+            if c > 0:
+                cnt += 1
+        return cnt
+
+    # EM-index
+    em_component = []
+    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
+    n_cited = count_cited_articles(tmp_cites)
+    while n_cited > 1:
+        if max(tmp_cites) == 1:
+            em_component.append(1)
+            n_cited = 0
+        else:
+            h_index = 0
+            for i in range(len(citations)):
+                if rank_order[i] <= tmp_cites[i]:
+                    h_index += 1
+            em_component.append(h_index)
+            tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
+            n_cited = count_cited_articles(tmp_cites)
+    iwem = 0
+    for i in range(len(em_component)):
+        iwem += em_component[i]/(i+1)
+    return iwem
+
+
+# iterative weighted EM'-index (Bihari et al 2021)
+def calculate_iterative_weighted_emp_index(citations: list, rank_order: list) -> float:
+    def count_cited_articles(tmpc: list) -> int:
+        cnt = 0
+        for c in tmpc:
+            if c > 0:
+                cnt += 1
+        return cnt
+
+    # EM'-index
+    em_component = []
+    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
+    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
+    n_cited = count_cited_articles(tmp_cites)
+    while n_cited > 1:
+        if max(tmp_cites) == 1:
+            em_component.append(1)
+            n_cited = 0
+        else:
+            h_index = 0
+            for i in range(len(citations)):
+                if tmp_ranks[i] <= tmp_cites[i]:
+                    h_index += 1
+            em_component.append(h_index)
+            # subtract h_index only from top h pubs
+            for i in range(len(citations)):
+                if tmp_ranks[i] <= tmp_cites[i]:
+                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
+            n_cited = count_cited_articles(tmp_cites)
+            # rerank counts
+            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
+    iwemp = 0
+    for i in range(len(em_component)):
+        iwemp += em_component[i]/(i+1)
+    return iwemp
+
+
 # alpha-index
 def calculate_alpha_index(h: int, age: int) -> float:
     ndecades = math.ceil(age/10)
@@ -1458,6 +1526,24 @@ def calculate_i10_index(citations: list) -> int:
     return cnt
 
 
+# i100 index (Teixeira da Silva, 2021)
+def calculate_i100_index(citations: list) -> int:
+    cnt = 0
+    for c in citations:
+        if c >= 100:
+            cnt += 1
+    return cnt
+
+
+# i1000 index (Teixeira da Silva, 2021)
+def calculate_i1000_index(citations: list) -> int:
+    cnt = 0
+    for c in citations:
+        if c >= 1000:
+            cnt += 1
+    return cnt
+
+
 # P1 index (van Eck and Waltman 2008)
 def calculate_p1_index(citations: list) -> int:
     cnt = 0
@@ -1550,3 +1636,13 @@ def calculate_scientific_quality_index(citations, self_citations) -> float:
         if c >= 10:
             cnt += 1
     return total_cites/len(sharp_citations) + 100*cnt/len(sharp_citations)
+
+
+# first author h-index (Butson and Yu 2010)
+def calculate_first_author_h_index(h: int, author_pos: list, is_core: list) -> int:
+    cnt = 0
+    for i in range(len(author_pos)):
+        if (author_pos[i] == 1) and is_core[i]:
+            cnt += 1
+    return h + cnt
+

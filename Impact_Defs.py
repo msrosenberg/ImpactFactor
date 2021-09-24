@@ -3294,7 +3294,7 @@ def metric_emp_index() -> Metric:
     m.name = "EMp-index"
     m.full_name = "EM\'-index"
     m.html_name = "<em>EM</em>&prime;-index"
-    m.symbol = "<em>EM</em>&prime;"
+    m.symbol = "<em>EM&prime;</em>"
     m.example = write_emp_index_example
     m.metric_type = FLOAT
     equation = r"$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
@@ -3318,6 +3318,233 @@ def metric_emp_index() -> Metric:
                     "of scientists. <em>Scientometrics</em> 112(1):659&ndash;677."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_emp_index
+    return m
+
+
+# iterative weighted EM-index (Bihari et al. 2021)
+def calculate_iterative_weighted_em_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    rank_order = metric_set.rank_order
+    return Impact_Funcs.calculate_iterative_weighted_em_index(citations, rank_order)
+
+
+def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
+    def count_cited(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    # calculate vector
+    em_components = []
+    n_cited = count_cited(citations)
+    while n_cited > 1:
+        if max(citations) == 1:
+            em_components.append(1)
+            n_cited = 0
+        else:
+            h = 0
+            for i, c in enumerate(citations):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            citations = [max(0, c-h) for c in citations]
+            n_cited = count_cited(citations)
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    outstr += "<table class=\"example_table\">"
+    oldh = len(em_components)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(citations) * "<td></td>" + "</tr>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            if i >= oldh:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 == h:
+                    v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i+1)
+                row3 += "<td>{}</td>".format(v)
+        citations = [max(0, c-h) for c in citations]
+        oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    em = metric_set.metrics["iterative weighted EM-index"].value
+    em_out = ["{}/{}".format(em_components[i], i+1) for i in range(len(em_components))]
+    outstr += "<p><em>iw<sub>EM</sub></em> is the sum of each component of <em>E</em> weighted by it's order, " + \
+              "thus <em>iw<sub>EM</sub></em> = " + " + ".join(em_out) + " = {:0.4f}".format(em)
+    return outstr
+
+
+def metric_iterative_weighted_em_index() -> Metric:
+    m = Metric()
+    m.name = "iterative weighted EM-index"
+    m.full_name = "iterative weighted EM-index"
+    m.html_name = "iterative weighted <em>EM-</em>index"
+    m.symbol = "<em>iw<sub>EM</sub></em>"
+    m.synonyms = ["<em>iw<sub>EM</sub></em>"]
+    m.example = write_iterative_weighted_em_index_example
+    m.metric_type = FLOAT
+    equation = r"$$iw_{EM}=\sum\limits_{i=1}^{n}\frac{E_i}{i},$$"
+    m.description = "<p>The iterative weighted <em>EM-</em>index (Bihari <em>et al.</em> 2021) is a modification of " \
+                    "the <em>EM-</em>index which uses a weighted-sum of each successive element in the vector " \
+                    "rather than the square-root of the sum. The index begins by creating a vector " \
+                    "(<strong><em>E</em></strong>) which is equivalent to " \
+                    "the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values " \
+                    "calculated from the citation curve of just the core publications, stopping when one reaches " \
+                    "only a single remaining publication, no citations remain, or all remaining publications have " \
+                    "only a single citation. From this vector, <em>iw<sub>EM</sub></em> can be calculated as:</p>" + \
+                    equation + "<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> " \
+                    "element and length of <strong><em>E</em></strong>, respectively.</p>"
+    m.references = ["Bihari, A., S. Tripathi, and A. Deepak (2021) Iterative weighted EM and iterative weighted "
+                    "EM′-index for scientific assessment of scholars. <em>Scientometrics</em> 126:5551&ndash;5568."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_iterative_weighted_em_index
+    return m
+
+
+# iterative weighted EM'-index (Bihari et al 2021)
+def calculate_iterative_weighted_emp_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    rank_order = metric_set.rank_order
+    return Impact_Funcs.calculate_iterative_weighted_emp_index(citations, rank_order)
+
+
+def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
+    def count_cited(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "publications and all publications are re-ranked by this adjusted citation count for the next step.</p>"
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    # calculate vector
+    em_components = []
+    n_cited = count_cited(citations)
+    while n_cited > 1:
+        if max(citations) == 1:
+            em_components.append(1)
+            n_cited = 0
+        else:
+            h = 0
+            for i, c in enumerate(citations):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            for i in range(h):
+                citations[i] -= h
+            citations.sort(reverse=True)
+            n_cited = count_cited(citations)
+    # print(em_components)
+    citations = sorted(metric_set.citations, reverse=True)
+    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    outstr += "<table class=\"example_table\">"
+    # oldh = len(em_components)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>New Rank (<em>i</em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(citations) * "<td></td>" + "</tr>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(citations):
+            # if i >= oldh:
+            #     row1 += "<td class=\"light_box\"></td>"
+            #     row2 += "<td class=\"light_box\"></td>"
+            #     row3 += "<td></td>"
+            # else:
+            if i + 1 == h:
+                v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                ec = " class=\"box\""
+            else:
+                v = ""
+                ec = ""
+            row1 += "<td" + ec + ">{}</td>".format(c)
+            row2 += "<td" + ec + ">{}</td>".format(i+1)
+            row3 += "<td>{}</td>".format(v)
+        for i in range(h):
+            citations[i] -= h
+        citations.sort(reverse=True)
+        # oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    emp = metric_set.metrics["iterative weighted EMp-index"].value
+    em_out = ["{}/{}".format(em_components[i], i+1) for i in range(len(em_components))]
+    outstr += "<p><em>iw<sub>EM&prime;</sub></em> is the sum of each component of <em>E</em> weighted by it's " \
+              "order, thus <em>iw<sub>EM&prime;</sub></em> = " + " + ".join(em_out) + " = {:0.4f}".format(emp)
+    return outstr
+
+
+def metric_iterative_weighted_emp_index() -> Metric:
+    m = Metric()
+    m.name = "iterative weighted EMp-index"
+    m.full_name = "iterative weighted EM\'-index"
+    m.html_name = "iterative weighted <em>EM</em>&prime;-index"
+    m.symbol = "<em>iw<sub>EM&prime;</sub></em>"
+    m.synonyms = ["<em>iw<sub>EM&prime;</sub></em>"]
+    m.example = write_iterative_weighted_emp_index_example
+    m.metric_type = FLOAT
+    equation = r"$$iw_{EM^\prime}= \sum\limits_{i=1}^{n}\frac{E_i}{i},$$"
+    m.description = "<p>The iterative weighted <em>EM&prime;-</em>index (Bihari <em>et al.</em> 2021) is a " \
+                    "modification of the <em>EM</em>&prime;-index (Bihari and Tripathi 2017) which uses a " \
+                    "weighted-sum of each successive element in the vector rather than the square-root of the sum. " \
+                    "It is an extension of the iterative weighted " \
+                    "<em>EM-</em>index which includes all publications, rather than just those from the core. " \
+                    "We begin by creating a vector (<strong><em>E</em></strong>) where the " \
+                    "first value is <em>E</em><sub>1</sub> = <em>h.</em> Subsequent values of the vector, " \
+                    "<em>E</em><sub>i+1</sub>, are determined by subtracting <em>E</em><sub>i</sub> from the " \
+                    "citation count for all publications in the core defined by <em>E</em><sub>i</sub>, and " \
+                    "recalculating <em>h</em> from these new citation counts, reranking all publications by these " \
+                    "new citation counts as necessary (<em>i.e.</em>, some of the publications previously in the " \
+                    "tail of the " \
+                    "citation distribution may advance beyond publications in the core as citations representing " \
+                    "earlier calculations of <em>h</em> are &ldquo;used up&rdquo;). This process continues until " \
+                    "one runs out of citations, all of the remaining publications have only a single remaining " \
+                    "citation, or there is only a single publication left to be considered. From this vector, " \
+                    "one calculates the index as:</p>" + equation + "<p>where <em>E<sub>i</sub></em> and <em>n</em> " \
+                    "are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, " \
+                    "respectively.</p>"
+    m.references = ["Bihari, A., S. Tripathi, and A. Deepak (2021) Iterative weighted EM and iterative weighted "
+                    "EM′-index for scientific assessment of scholars. <em>Scientometrics</em> 126:5551&ndash;5568."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_iterative_weighted_emp_index
     return m
 
 
@@ -5303,7 +5530,7 @@ def metric_alpha_index() -> Metric:
     m.full_name = "α-index"
     m.html_name = "<em>α-</em>index"
     m.symbol = "<em>α</em>"
-    m.synonyms = ["<em>a-</em>index"]
+    m.synonyms = ["<em>α-</em>index"]
     m.metric_type = FLOAT
     equation = r"$$\alpha = \frac{h}{Y_D},$$"
     yd = r"$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$"
@@ -7248,6 +7475,51 @@ def metric_i10_index() -> Metric:
     return m
 
 
+# i100 index (Teixeira da Silva, 2021)
+def calculate_i100_index(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_i100_index(metric_set.citations)
+
+
+def metric_i100_index() -> Metric:
+    m = Metric()
+    m.name = "i100"
+    m.full_name = "i100 index"
+    m.html_name = "<em>i100</em> index"
+    m.symbol = "i100"
+    m.metric_type = INT
+    m.description = "<p>The <em>i100</em> index (Teixeira da Silva 2021) is an exapansion of Google Scholar's " \
+                    "i10 index and is simply the number of publications which have received at least 100 citations.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_i100_index
+    m.references = ["Teixeira da Silva, J.A. (2021) The i100-index, i1000-index and i10,000-index: expansion and "
+                    "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
+                    "classification. <em>Scientometrics</em> 126:3667-3672."]
+    return m
+
+
+# i1000 index (Teixeira da Silva, 2021)
+def calculate_i1000_index(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_i1000_index(metric_set.citations)
+
+
+def metric_i1000_index() -> Metric:
+    m = Metric()
+    m.name = "i1000"
+    m.full_name = "i1000 index"
+    m.html_name = "<em>i1000</em> index"
+    m.symbol = "i1000"
+    m.metric_type = INT
+    m.description = "<p>The <em>i1000</em> index (Teixeira da Silva 2021) is an exapansion of Google Scholar's " \
+                    "i10 index and is simply the number of publications which have received at least 1000 " \
+                    "citations.</p>"
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_i1000_index
+    m.references = ["Teixeira da Silva, J.A. (2021) The i100-index, i1000-index and i10,000-index: expansion and "
+                    "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
+                    "classification. <em>Scientometrics</em> 126:3667-3672."]
+    return m
+
+
 # p1 index (van Eck and Waltman 2008)
 def calculate_p1_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_p1_index(metric_set.citations)
@@ -7957,6 +8229,42 @@ def metric_scientific_quality_index() -> Metric:
     return m
 
 
+# first author h-index (Butson and Yu 2010)
+def calculate_first_author_h_index(metric_set: MetricSet) -> int:
+    h = metric_set.metrics["h-index"].value
+    author_pos = metric_set.author_position()
+    is_core = metric_set.is_core
+    return Impact_Funcs.calculate_first_author_h_index(h, author_pos, is_core)
+
+
+def metric_first_author_h_index() -> Metric:
+    m = Metric()
+    m.name = "first-author h-index"
+    m.full_name = "first-author h-index"
+    m.html_name = "first-author <em>h-</em>index"
+    m.metric_type = INT
+    equation = r"$$h_{fa}=h \frac{P_h + P_{fa}}{P_h}=h + P_{fa}.$$"
+    m.description = "<p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale output" \
+                    "between large and small collaborative research teams under an assumption that larger teams " \
+                    "could produce more output per year just by the nature of being larger. It attempts to rescale " \
+                    "the <em>h-</em>index based on the number of publications in the <em>h-</em>core that were " \
+                    "first-authored (<em>P<sub>fa</sub></em>).</p>" + equation + "<p>The authors did not seem to " \
+                    "realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal " \
+                    "to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of " \
+                    "<em>h</em> and the number of first-authored papers that make up h. This index ranges from equal " \
+                    "to the <em>h-</em>index if the investigator is never a first author of publications in the " \
+                    "<em>h-</em>core to double the <em>h-</em>index if they are the first author of every " \
+                    "publication in the core.</p>"
+    m.symbol = "<em>h<sub>fa</sub></em>"
+    m.synonyms = ["<em>h<sub>fa</sub></em>"]
+    m.references = ["Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field "
+                    "for small and large institute medical and science scholars. <em>Australasian Physical and "
+                    "Engineering Sciences in Medicine</em> 33:299-300."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_first_author_h_index
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -8095,7 +8403,12 @@ def load_all_metrics() -> list:
                    metric_chi_index(),
                    metric_reci_recp(),
                    metric_academic_trace(),
-                   metric_scientific_quality_index()
+                   metric_scientific_quality_index(),
+                   metric_i100_index(),
+                   metric_i1000_index(),
+                   metric_first_author_h_index(),
+                   metric_iterative_weighted_em_index(),
+                   metric_iterative_weighted_emp_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
