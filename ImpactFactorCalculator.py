@@ -305,6 +305,75 @@ def create_name_links(metric_names, metric_base_data, inc_self, inc_coauth):
     return name_links
 
 
+def format_description(instr: str, metric_data: Impact_Defs.MetricSet, single_page: bool = False) -> str:
+    search_str = r"__(?P<xref>.+?)__"
+    # for every xref tagged in the string
+    for match in re.finditer(search_str, instr):
+        name = match.group("xref")
+        metric = metric_data.metrics[name]
+        if single_page:
+            prefix = "#"
+            suffix = ""
+        else:
+            prefix = "impact_"
+            suffix = ".html"
+        replace_str = "<a href=\"" + prefix + encode_name(name) + suffix + "\">" + metric.html_name + "</a>"
+        instr = re.sub(search_str, replace_str, instr, 1)
+    return instr
+
+
+def create_metric_table(outfile, metric_base_data, metric_names, inc_coauth: bool, inc_self: bool,
+                        is_single: bool = True):
+    # new and temp
+    outfile.write("    <hr/>\n")
+    outfile.write("    <div>\n")
+    outfile.write("      <table class=\"property_table\">\n")
+    outfile.write("       <thead>\n")
+    outfile.write("        <tr>\n")
+    outfile.write("          <th class=\"blank toph\"></th>\n")
+    for m_type in Impact_Defs.PROPERTY_TYPES:
+        nc = len(Impact_Defs.PROPERTY_DICT[m_type])
+        outfile.write("          <th class=\"toph\" colspan=\"{}\" style=\"width: {}px\">{}</th>\n".format(nc, nc*40,
+                                                                                                           m_type))
+    outfile.write("        </tr>\n")
+    outfile.write("        <tr>\n")
+    outfile.write("          <th>Metric Name</th>\n")
+    for m_type in Impact_Defs.PROPERTY_TYPES:
+        for p in Impact_Defs.PROPERTY_DICT[m_type]:
+            outfile.write("        <th><div class=\"rot_1\"><div class=\"rot_2\">{}</div></div></th>\n".format(p))
+    outfile.write("        </tr>\n")
+    outfile.write("       </thead>\n")
+    outfile.write("       <tbody>\n")
+    tmp_names = [[metric_base_data.metrics[x].full_name.lower(), x] for x in metric_names]
+    if is_single:
+        prefix = "#"
+        suffix = ""
+    else:
+        prefix = "impact_"
+        suffix = ".html"
+    for full_name, name in sorted(tmp_names):
+        metric = metric_base_data.metrics[name]
+        if metric.is_coauthor and not inc_coauth:
+            pass
+        elif metric.is_self and not inc_self:
+            pass
+        else:
+            outfile.write("        <tr>\n")
+            outfile.write("          <td class=\"first_col\"><a href=\"{}{}{}\">{}</a>"
+                          "</td>\n".format(prefix, encode_name(metric.name), suffix, metric.html_name))
+            for m_type in Impact_Defs.PROPERTY_TYPES:
+                for p in Impact_Defs.PROPERTY_DICT[m_type]:
+                    if metric.properties[p]:
+                        v = "⚫"
+                    else:
+                        v = ""
+                    outfile.write("        <td>{}</td>\n".format(v))
+            outfile.write("        </tr>\n")
+    outfile.write("       </tbody>\n")
+    outfile.write("      </table>\n")
+    outfile.write("    </div>\n")
+
+
 def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
         outfile.write("<!DOCTYPE HTML>\n")
@@ -480,6 +549,36 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
         outfile.write("      </ul>\n")
         outfile.write("    </div>\n")
 
+        create_metric_table(outfile, metric_base_data, metric_names, inc_coauth, inc_self)
+        # # new and temp
+        # outfile.write("    <hr/>\n")
+        # outfile.write("    <div>\n")
+        # outfile.write("      <table>\n")
+        # outfile.write("        <tr>\n")
+        # outfile.write("          <th style=\"border: 1px solid silver\">Metric</th>\n")
+        # for p in Impact_Defs.METRIC_PROPERTIES:
+        #     outfile.write("        <th style=\"border: 1px solid silver; width: 25px\">{}</th>\n".format(p))
+        # outfile.write("        </tr>\n")
+        # tmp_names = [[metric_base_data.metrics[x].full_name.lower(), x] for x in metric_names]
+        # for full_name, name in sorted(tmp_names):
+        #     metric = metric_base_data.metrics[name]
+        #     if metric.is_coauthor and not inc_coauth:
+        #         pass
+        #     elif metric.is_self and not inc_self:
+        #         pass
+        #     else:
+        #         outfile.write("        <tr>\n")
+        #         outfile.write("          <td style=\"border: 1px solid silver\">{}</th>\n".format(metric.html_name))
+        #         for p in Impact_Defs.METRIC_PROPERTIES:
+        #             if metric.properties[p]:
+        #                 v = "X"
+        #             else:
+        #                 v = ""
+        #             outfile.write("        <td style=\"border: 1px solid silver; text-align: center\">{}</td>\n".format(v))
+        #         outfile.write("        </tr>\n")
+        # outfile.write("      </table>\n")
+        # outfile.write("    </div>\n")
+
         # output a section for every metric
         for name in metric_names:
             metric = metric_base_data.metrics[name]
@@ -490,7 +589,18 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
             else:
                 outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
                 outfile.write("      <h2>" + metric.html_name + "</h2>\n")
-                outfile.write("      " + metric.description + "\n")
+                outfile.write("      <h3>Properties</h3>\n")
+                outfile.write("        <ul>\n")
+                for m_type in Impact_Defs.PROPERTY_TYPES:
+                    outlist = []
+                    for p in Impact_Defs.PROPERTY_DICT[m_type]:
+                        if metric.properties[p]:
+                            outlist.append(p)
+                    if len(outlist) > 0:
+                        outfile.write("          <li><strong>{}:</strong> {}</li>\n".format(m_type, ", ".join(outlist)))
+                outfile.write("        </ul>\n")
+                outfile.write("      <h3>Description</h3>\n")
+                outfile.write("      " + format_description(metric.description, metric_base_data, True) + "\n")
                 if metric.example is not None:
                     outfile.write("      <h3>Example</h3>\n")
                     outfile.write("      " + metric.example(metric_base_data) + "\n")
@@ -661,7 +771,7 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth
                 # output page info
                 outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
                 outfile.write("      <h2>" + metric.html_name + "</h2>\n")
-                outfile.write("      " + metric.description + "\n")
+                outfile.write("      " + format_description(metric.description, metric_base_data) + "\n")
                 if metric.example is not None:
                     outfile.write("      <h3>Example</h3>\n")
                     outfile.write("      " + metric.example(metric_base_data) + "\n")

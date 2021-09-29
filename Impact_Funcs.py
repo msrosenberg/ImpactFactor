@@ -239,8 +239,10 @@ def calculate_real_h_index(citations: list, rank_order: list, h: int) -> Number:
 
 
 # a-index (Jin 2006; Rousseau 2006)
-def calculate_a_index(core_cites: int, total_pubs: int) -> float:
-    return core_cites / total_pubs
+# def calculate_a_index(core_cites: int, total_pubs: int) -> float:
+def calculate_a_index(core_cites: int, h: int) -> float:
+    # return core_cites / total_pubs
+    return core_cites / h
 
 
 # r-index (Jin et al 2007)

@@ -164,3 +164,20 @@ a:visited {
 .right_border {border-right: 1px solid black}
 .left_border {border-left: 1px solid black}
 .spacer_row {height: 0.75em}
+
+
+.property_table {border-collapse: collapse}
+
+.property_table td {border: 1px solid silver; text-align: center}
+.property_table th {border: 1px solid silver; text-align: center; 
+	height: 220px;
+	vertical-align: bottom;
+	line-height: 1}
+td.first_col {text-align: left}
+th.blank {border: 0px; height: 10px}
+th.toph {height: 20px}
+
+.rot_1 {width: 40px; }
+.rot_2 {width: 220px; margin-bottom: 5px;
+	transform-origin: bottom left; text-align: left;
+	transform: translateX(30px) rotate(-90deg)}

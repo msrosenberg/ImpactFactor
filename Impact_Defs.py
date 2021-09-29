@@ -20,6 +20,47 @@ LINE_CHART_COMBINE = 4
 TWO_LINE_CHART = 5
 FSTR = "1.4f"  # constant formatting string
 
+# METRIC_PROPERTIES = ("Basic Statistic",
+#                      "Core Metric",
+#                      "Core Property",
+#                      "Alternative Metric",
+#                      "Compound Metric",
+#                      "Multidimensional Metric",
+#                      "Time",
+#                      "Coauthorship",
+#                      "Self-Citation",
+#                      "All Publications",
+#                      "Core Publications",
+#                      "Tail Publications",
+#                      "Uncited Publications",
+#                      "All Citations",
+#                      "Core Citations",
+#                      "Tail Citations")
+
+PROPERTY_TYPES = ("Metric Type",
+                  "Metric Property",
+                  "Considerations and Adjustments",
+                  "Publication Focus",
+                  "Citation Focus")
+
+PROPERTY_DICT = {"Metric Type": ["Basic Statistic",
+                                 "Core Metric",
+                                 "Core Property",
+                                 "Alternative Metric"],
+                 "Metric Property": ["Compound Metric",
+                                     "Multidimensional Metric"],
+                 "Considerations and Adjustments": ["Time",
+                                                    "Coauthorship",
+                                                    "Self-Citation"],
+                 "Publication Focus": ["All Publications",
+                                       "Core Publications",
+                                       "Tail Publications",
+                                       "Uncited Publications"],
+                 "Citation Focus": ["All Citations",
+                                    "Core Citations",
+                                    "Tail Citations"]
+                 }
+
 
 # --- General Class Definitions ---
 
@@ -45,6 +86,11 @@ class Metric:
         self.graph_type = None
         self.description_graphs = []
         self.example = None
+        # self.properties = {x: False for x in METRIC_PROPERTIES}
+        self.properties = {}
+        for y in PROPERTY_TYPES:
+            for x in PROPERTY_DICT[y]:
+                self.properties[x] = False
 
     @property
     def html_name(self):
@@ -205,6 +251,8 @@ def metric_total_pubs() -> Metric:
     m.synonyms = ["<em>P</em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_total_pubs
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -227,6 +275,9 @@ def metric_total_cites() -> Metric:
                   "<em>C<sup>P</sup></em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_total_cites
+    m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -247,6 +298,8 @@ def metric_max_cites() -> Metric:
     m.synonyms = ["<em>C</em><sub>max</sub>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_max_cites
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -287,6 +340,9 @@ def metric_mean_cites() -> Metric:
                   "<em>JPC</em>"]
     m.symbol = "<em>C/P</em>"
     m.calculate = calculate_mean_cites
+    m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -303,10 +359,13 @@ def metric_median_cites() -> Metric:
     m.metric_type = FLOAT
     m.symbol = r"\(\tilde{C}\)"
     m.description = "<p>This metric is the median number of citations per publication. It may be a better " \
-                    "indicator of the average impact of an author\'s publications since it is less prone to " \
-                    "bias under a heavily skewed citation distribution.</p>"
+                    "indicator of the average impact of an author\'s publications than the __c/p__ since it is less " \
+                    "prone to bias under a heavily skewed citation distribution.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_median_cites
+    m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -336,6 +395,9 @@ def metric_pubs_per_year() -> Metric:
                   "<em>P<sup>TS</sup></em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pubs_per_year
+    m.properties["Basic Statistic"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -364,6 +426,10 @@ def metric_cites_per_year() -> Metric:
                   "<em>C<sup>TS</sup></em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cites_per_year
+    m.properties["Basic Statistic"] = True
+    m.properties["Time"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -486,17 +552,23 @@ def metric_h_index() -> Metric:
                     "to as the &ldquo;Hirsch core.&rdquo;</p><div id=\"chart_" + graph.name + \
                     "_div\" class=\"proportional_chart\"></div>" \
                     "<p>One way to graphically visualize <em>h</em> is to imagine a " \
-                    "plot of citation count versus rank for all publications (often called the citation curve). By " \
+                    "plot of citation count versus rank for all publications (often called the citation curve). An " \
+                    "alternative way of thinking of this is a plot of minimum number of citations for a publication " \
+                    "in the top <em>i</em> publications vs. <em>i</em>. By " \
                     "definition, this plot will generally trend from upper left (highest ranked publications with " \
                     "most citations, to lower right (lowest ranked publications with fewest citations), depending on " \
                     "the precise citation distribution of the author. If one were to add a (threshold) line with a " \
                     "slope of one to this plot, the point where the threshold line crosses the citation curve " \
                     "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the " \
-                    "size (length of sides) of the largest square that one can fit under the citation curve.</p>"
+                    "size (length of sides) of the largest (integer) square that one can fit under the citation " \
+                    "curve.</p>"
     m.graph_type = LINE_CHART
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.calculate = calculate_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -544,13 +616,16 @@ def metric_h_core() -> Metric:
     m.example = write_h_core_example
     m.metric_type = INT
     equation = r"$$C^H=\sum\limits_{i=1}^{h}{C_i}.$$"
-    m.description = "<p>This is the sum of the citations for all publications in the Hirsch core,</p>" + \
-                    equation
+    m.description = "<p>This is the sum of the citations for all publications that contribute to the __h-index__, " \
+                    "<em>i.e.</em> the Hirsch core,</p>" + equation
     m.synonyms = ["<em>C<sup>H</sup></em>"]
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h_core
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Property"] = True
     return m
 
 
@@ -568,12 +643,17 @@ def metric_hirsch_min_const() -> Metric:
     m.symbol = "<em>a</em>"
     m.metric_type = FLOAT
     equation = r"$$a=\frac{C^P}{h^2}.$$"
-    m.description = "<p>This metric (Hirsch 2005) describes a relationship between the <em>h-</em>index and the " \
-                    "total number of citations and is defined as</p>" + equation
+    m.description = "<p>This metric (Hirsch 2005) describes a relationship between the __h-index__ and the " \
+                    "__total cites__ and is defined as</p>" + equation
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hirsch_min_const
+    m.properties["All Citations"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Property"] = True
+    m.properties["All Publications"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -763,7 +843,7 @@ def metric_g_index() -> Metric:
     m.example = write_g_index_example
     equation = r"$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=" \
                r"\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$"
-    m.description = "<p>The best known and most widely studied alternative to the <em>h-</em>index is known as the " \
+    m.description = "<p>The best known and most widely studied alternative to the __h-index__ is known as the " \
                     "<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for " \
                     "publications cited in excess of the <em>h</em> threshold. The primary difference between the " \
                     "formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on " \
@@ -795,6 +875,9 @@ def metric_g_index() -> Metric:
                     "69(1):131&ndash;152."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_g_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -904,7 +987,7 @@ def metric_h2_index() -> Metric:
     graph.name = "h2_index_desc"
     graph.data = write_h2_index_desc_data
     equation = r"$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$"
-    m.description = "<p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the <em>h</em>-index, but rather than " \
+    m.description = "<p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the __h-index__, but rather than " \
                     "define the core based on <em>h</em> publications having <em>h</em> citations, this index " \
                     "requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> citations:</p>" + \
                     equation + "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
@@ -914,6 +997,9 @@ def metric_h2_index() -> Metric:
                     "<em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h2_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -962,7 +1048,7 @@ def metric_mu_index() -> Metric:
     m.symbol = "<em>μ</em>"
     m.example = write_mu_index_example
     m.metric_type = INT
-    m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
+    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
                     "equal to <em>x,</em> then the <em>μ-</em>index (Glänzel and Schubert 2010) is the same idea, " \
                     "except based on the median number of citations for the top <em>μ</em> publications.</p>"
@@ -970,6 +1056,9 @@ def metric_mu_index() -> Metric:
                     "The generalized <em>h-</em>index. <em>Journal of Informetrics</em> 4:118&ndash;123."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_mu_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1021,7 +1110,7 @@ def metric_tol_f_index() -> Metric:
     m.metric_type = INT
     equation = r"$$f=\underset{i}{\max}\left(\frac{1}{\frac{1}{i}\sum\limits_{j=1}^{i}{\frac{1}{C_j}}}\geq " \
                r"i\right)=\underset{i}{\max}\left(\frac{i}{\sum\limits_{j=1}^{i}{\frac{1}{C_j}} }\geq i\right)$$"
-    m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
+    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
                     "equal to <em>x,</em> then Tol\'s <em>f-</em>index (Tol 2007) is the same idea, except based on " \
                     "the harmonic mean number of citations for the top <em>f</em> publications.</p>" + equation
@@ -1029,6 +1118,9 @@ def metric_tol_f_index() -> Metric:
                     "most prolific economists (FNU-146). Sustainability and Global Change, Hamburg University."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_tol_f_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1080,7 +1172,7 @@ def metric_tol_t_index() -> Metric:
     m.metric_type = INT
     equation = r"$$t=\underset{i}{\max}\left(\exp\left(\frac{1}{i}\sum\limits_{j=1}^{i}\ln{C_j}\right)\geq " \
                r"i\right)$$"
-    m.description = "<p>If the <em>h-</em> and <em>g-</em>indices are the largest value <em>x</em> for which " \
+    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
                     "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
                     "equal to <em>x,</em> then Tol\'s <em>t-</em>index (Tol 2007) is the same idea, except based on " \
                     "the geometric mean number of citations for the top <em>t</em> publications.</p>" + equation
@@ -1088,6 +1180,9 @@ def metric_tol_t_index() -> Metric:
                     "most prolific economists (FNU-146). Sustainability and Global Change, Hamburg University."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_tol_t_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1197,18 +1292,22 @@ def metric_woeginger_w_index() -> Metric:
     graph.data = write_woeginger_w_index_desc_data
     equation = r"$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$"
     # iltk = r"\(i \leq k\)"
-    m.description = "<p>Woeginger\'s <em>w-</em>index (Woeginger 2008) is somewhat similar to the <em>h-</em>index. " \
+    m.description = "<p>Woeginger\'s <em>w-</em>index (Woeginger 2008) is somewhat similar to the __h-index__. " \
                     "It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> " \
                     "citations:</p>" + equation + "<p>for all <em>i</em> ≤ <em>k</em>. Put another way, the top " \
                     "1…<em>k</em> publications have to have at least <em>k</em>…1 citations, respectively.</p>" \
                     "<p>Graphically, if the " \
                     "<em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation " \
                     "curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of " \
-                    "<em>w</em>.</p><div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
+                    "<em>w</em> which fits under the curve.</p><div id=\"chart_" + graph.name + \
+                    "_div\" class=\"proportional_chart\"></div>"
     m.references = ["Woeginger, G.J. (2008) An axiomatic characterization of the Hirsch-index. <em>Mathematical "
                     "Social Sciences</em> 56(2):224&ndash;242."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_woeginger_w_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1312,7 +1411,7 @@ def metric_wu_w_index() -> Metric:
     graph.name = "wu_w_index_desc"
     graph.data = write_wu_w_index_desc_data
     equation = r"$$w=\underset{i}{\max}\left(i \leq 10C_i\right)$$"
-    m.description = "<p>Wu\'s <em>w-</em>index (Wu 2010) is very similar to the <em>h-</em>index, but defines a " \
+    m.description = "<p>Wu\'s <em>w-</em>index (Wu 2010) is very similar to the __h-index__, but defines a " \
                     "stricter core by requiring that each of the <em>w</em> publications have at least 10<em>w</em> " \
                     "citations.</p>" + equation + "<div id=\"chart_" + graph.name + \
                     "_div\" class=\"proportional_chart\"></div>" \
@@ -1323,6 +1422,9 @@ def metric_wu_w_index() -> Metric:
                     "61(3):609&ndash;614."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wu_w_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1341,13 +1443,14 @@ def metric_wu_wq() -> Metric:
     m.html_name = "<em>w</em>(<em>q</em>) (Wu)"
     m.symbol = "<em>q</em>"
     m.metric_type = INT
-    m.description = "<p>A corollary measure of Wu\'s <em>w-</em>index, <em>q</em> (Wu 2010) is the number of " \
+    m.description = "<p>A corollary measure of the __Wu w-index__, <em>q</em> (Wu 2010) is the number of " \
                     "additional citations needed by an author to raise their <em>w-</em>index by one.</p>"
     m.references = ["Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely "
                     "cited papers. <em>Journal of the American Society for Information Science and Technology</em> "
                     "61(3):609&ndash;614."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wu_wq
+    m.properties["Core Property"] = True
     return m
 
 
@@ -1367,7 +1470,7 @@ def metric_hg_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$hg=\sqrt{h \times g}.$$"
     m.description = "<p>The <em>hg-</em>index (Alonso <em>et al.</em> 2010) is an aggregate index which tries to " \
-                    "keep the advantages of both the <em>h-</em> and <em>g-</em>indices while minimizing their " \
+                    "keep the advantages of both the __h-index__ and __g-index__ while minimizing their " \
                     "disadvantages. The index is simply the geometric mean of <em>h</em> and <em>g,</em> or</p>" + \
                     equation
     m.references = ["Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new "
@@ -1375,14 +1478,19 @@ def metric_hg_index() -> Metric:
                     "<em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hg_index
+    m.properties["Core Property"] = True
+    m.properties["Compound Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
 # a-index (Jin 2006; Rousseau 2006)
 def calculate_a_index(metric_set: MetricSet) -> float:
     core_cites = metric_set.metrics["h-core cites"].value
-    total_pubs = metric_set.metrics["total pubs"].value
-    return Impact_Funcs.calculate_a_index(core_cites, total_pubs)
+    # total_pubs = metric_set.metrics["total pubs"].value
+    h = metric_set.metrics["h-index"].value
+    return Impact_Funcs.calculate_a_index(core_cites, h)
 
 
 def metric_a_index() -> Metric:
@@ -1394,7 +1502,8 @@ def metric_a_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$a=\frac{C^H}{h}=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$"
     m.description = "<p>The <em>a-</em>index (Jin 2006; Rousseau 2006) is used to describe the citations within " \
-                    "the core itself, being simply the average number of citations per core publication, or</p>" + \
+                    "the __h-index__ core itself, being simply the average number of citations per core publication, " \
+                    "or</p>" + \
                     equation + "<p>The minimum value of <em>a</em> is <em>h</em> (since every one of the <em>h</em> " \
                                "publications must have at least <em>h</em> citations).</p>"
     m.references = ["Jin, B. (2006) <em>h-</em>index: An evaluation indicator proposed by scientist. "
@@ -1403,6 +1512,9 @@ def metric_a_index() -> Metric:
                     "1(4):23&ndash;25."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_a_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1420,7 +1532,8 @@ def metric_r_index() -> Metric:
     m.symbol = "<em>R</em>"
     m.metric_type = FLOAT
     equation = r"$$R=\sqrt{C^H}=\sqrt{\sum\limits_{i=1}^{h}{C_i}}.$$"
-    m.description = "<p>The <em>R-</em>index (Jin <em>et al.</em> 2007) is a measure of the quality of the Hirsch " \
+    m.description = "<p>The <em>R-</em>index (Jin <em>et al.</em> 2007) is a measure of the quality of the " \
+                    "__h-index__ " \
                     "core, designed to avoid punishing scientists with larger cores. As a simple arithmetic average, " \
                     "the <em>a-</em>index has the size of the core in the divisor and therefore can lead to smaller " \
                     "values for scientists with much larger cores than those with much smaller cores (this is not an " \
@@ -1431,6 +1544,9 @@ def metric_r_index() -> Metric:
                     "Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_r_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -1451,14 +1567,15 @@ def metric_indifference() -> Metric:
     m.description = "<p>This metric is simply the total number of publications divided by the number of total " \
                     "number of citations (Egghe and Rousseau 1996); it was originally proposed to evaluate journals " \
                     "but can be applied to individuals as well. The larger this value, the more indifferent the " \
-                    "community is to the author\'s work. This metric is also just the inverse of the mean number of " \
-                    "citations per publication (<em>C/P</em>).</p>" + equation
+                    "community is to the author\'s work. This metric is also just the inverse of __c/p__.</p>" + \
+                    equation
     m.graph_type = LINE_CHART
     m.symbol = "<em>D</em>"
     m.synonyms = ["D"]
     m.references = ["Egghe, L., and R. Rousseau (1996) Average and global impact of a set of journals. "
                     "<em>Scientometrics</em> 36:97&ndash;107."]
     m.calculate = calculate_indifference
+    m.properties["Basic Statistic"] = True
     return m
 
 
@@ -1523,7 +1640,7 @@ def metric_rational_h_index() -> Metric:
     remh = r"\(h+1-C_{h+1}\)"
     m.description = "<p>The rational <em>h-</em>index (Ruane and Tol 2008) (<em>h</em><sup>Δ</sup> or " \
                     "<em>h</em><sub>rat</sub>) is a " \
-                    "continuous version of <em>h</em> which not only measures the standard <em>h-</em>index but " \
+                    "continuous version of the __h-index__ which not only measures the standard <em>h-</em>index but " \
                     "includes the fractional progress toward the next higher value of <em>h.</em> It is calculated " \
                     "as</p>" + equation + \
                     "where " + nstr + " is the number of citations necessary to reach the next value of " + hstr + \
@@ -1540,6 +1657,7 @@ def metric_rational_h_index() -> Metric:
     m.symbol = "<em>h</em><sup>Δ</sup>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_rational_h_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -1627,8 +1745,8 @@ def metric_real_h_index() -> Metric:
                     "the linear interpolation between the citation counts associated with publications <em>h</em> " \
                     "and <em>h</em> + 1 crosses a line with slope one,</p>" + equation + "<div id=\"chart_" + \
                     graph.name + "_div\" class=\"proportional_chart\"></div>"\
-                    "The real <em>h-</em>index has the same graphical definition as <em>h,</em> except it is not " \
-                    "restricted to integer values and thus represents the actual point where the citation and " \
+                    "The real <em>h-</em>index has the same graphical definition as the __h-index__, except it is " \
+                    "not restricted to integer values and thus represents the actual point where the citation and " \
                     "threshold curves cross.</p>"
     m.references = ["Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the "
                     "<em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71."]
@@ -1636,6 +1754,7 @@ def metric_real_h_index() -> Metric:
     m.synonyms = ["<em>h<sub>r</sub></em>", "interpolated <em>h-</em>index"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_real_h_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -1672,11 +1791,11 @@ def metric_tapered_h_index() -> Metric:
                     "<tr><td class=\"tc_rb\">5</td><td>1/9</td></tr>" \
                     "<tr><td class=\"tc_rb\">↓</td></tr>" \
                     "</table>"
-    m.description = "<p>While the rational <em>h-</em>index gives a fractional value to those citations necessary " \
+    m.description = "<p>While the __rational h-index__ gives a fractional value to those citations necessary " \
                     "to reach the next value of <em>h,</em> the tapered <em>h-</em>index (Anderson <em>et al.</em> " \
                     "2008) is designed to give every citation for every publication some fractional value. The best " \
                     "way to understand this index is to first consider the contribution of every citation to the " \
-                    "<em>h-</em>index. To have an <em>h-</em>index of 1, an author needs a single paper with a " \
+                    "__h-index__. To have an <em>h-</em>index of 1, an author needs a single paper with a " \
                     "single citation. That citation has a weight (or score) of 1, because it accounts for the " \
                     "entire <em>h</em> value of 1. To move to an <em>h-</em>index of 2, the author needs three " \
                     "additional citations: one additional citation for the original publication and two citations " \
@@ -1707,6 +1826,9 @@ def metric_tapered_h_index() -> Metric:
     m.synonyms = ["<em>h<sub>T</sub></em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_tapered_h_index
+    m.properties["Core Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -1793,7 +1915,7 @@ def metric_todeschini_j_index() -> Metric:
     hxhk = r"\(h \times \Delta h_k\)"
     wk = r"\(w_k\)"
     invk = r"\(1/k\)"
-    m.description = "<p>The <em>j-</em>index (Todeschini 2011) is a modification of the <em>h-</em>index which " \
+    m.description = "<p>The <em>j-</em>index (Todeschini 2011) is a modification of the __h-index__ which " \
                     "allows for over-cited publications in the core to increase the overall value of the index. " \
                     "It uses a set of fixed categorical increases over <em>h:</em></p>" + j_table + equation + \
                     "<p>where " + wk + ", the weight given to each category, is simply " + invk + ", " \
@@ -1807,6 +1929,8 @@ def metric_todeschini_j_index() -> Metric:
                     "comparisons between other common indices. <em>Scientometrics</em> 87:621&ndash;639."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_todeschini_j_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -1890,7 +2014,7 @@ def metric_wohlin_w_index() -> Metric:
     equation = r"$$w=\sum\limits_{c=1}^{c^\prime}{X_c V_c}$$"
     # cprime = r"\(c^\prime\)"
     m.description = "<p>Wohlin\'s <em>w-</em>index (Wohlin 2009) is similar to others that try to address the issue " \
-                    "where not all citations are included in the <em>h-</em>index and that many different " \
+                    "where not all citations are included in the __h-index__ and that many different " \
                     "distributions of citations can have identical <em>h-</em>indices. Unlike the other indices, " \
                     "however, it does not start with <em>h,</em> and instead uses a somewhat complicated procedure " \
                     "of dividing papers into classes based on the number of citations. Rather than give " \
@@ -1918,6 +2042,7 @@ def metric_wohlin_w_index() -> Metric:
                     "81(2):521&ndash;533."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wohlin_w_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -1939,7 +2064,7 @@ def metric_hj_indices() -> Metric:
     equation1 = r"$$H_0=h^2.$$"
     equation2 = r"$$H_j=H_{j-1}+\left( C_{h-j} - C_{h-j+1} \right) \left(h-j\right)+C_{h+j}.$$"
     m.description = "<p>The <em>H<sub>j</sub></em>-indices (Dorta-González and Dorta-González 2010) are essentially " \
-                    "a multivariate cross between <em>h</em><sup>Δ</sup> and <em>w</em>(<em>q</em>). " \
+                    "a multivariate cross between the __rational h-index__ (<em>h</em><sup>Δ</sup>) and __Wu w(q)__. " \
                     "Like <em>h</em><sup>Δ</sup>, they " \
                     "attempt to discriminate amongst researchers with identical <em>h</em> values by comparing the " \
                     "upper and lower parts of the core to measure how close an author is to moving from one " \
@@ -1961,6 +2086,10 @@ def metric_hj_indices() -> Metric:
                     "índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_hj_indices
+    m.properties["Multidimensional Metric"] = True
+    m.properties["Core Property"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -1979,12 +2108,13 @@ def metric_v_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$v=100h^n=100\frac{h}{P}$$"
     m.description = "<p>The v-index (Riikonen and Vihinen 2008) is the percentage of publications reflected in the " \
-                    "<em>h-</em>index:</p>" + equation
+                    "__h-index__:</p>" + equation
     m.references = ["Riikonen, P., and M. Vihinen (2008) National research contributions: A case study on Finnish "
                     "biomedical research. <em>Scientometrics</em> 77(2):207&ndash;222."]
     m.graph_type = LINE_CHART
     m.symbol = "<em>v</em>"
     m.calculate = calculate_v_index
+    m.properties["Core Property"] = True
     return m
 
 
@@ -2002,8 +2132,8 @@ def metric_normalized_h_index() -> Metric:
     m.html_name = "normalized <em>h-</em>index"
     m.metric_type = FLOAT
     equation = r"$$h^n=\frac{h}{P}.$$"
-    m.description = "<p>The normalized <em>h-</em>index (Sidiropoulos et al. 2007) is simply the <em>h-</em>index " \
-                    "divided by the number of publications (or the <em>v-</em>index expressed as a proportion rather " \
+    m.description = "<p>The normalized <em>h-</em>index (Sidiropoulos et al. 2007) is simply the __h-index__ " \
+                    "divided by the number of publications (or the __v-index__ expressed as a proportion rather " \
                     "than a percentage):</p>" + equation
     m.symbol = "<em>h<sup>n</sup></em>"
     m.synonyms = ["<em>h<sup>n</sup></em>"]
@@ -2011,6 +2141,7 @@ def metric_normalized_h_index() -> Metric:
                     "for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_normalized_h_index
+    m.properties["Core Property"] = True
     return m
 
 
@@ -2029,14 +2160,17 @@ def metric_m_index() -> Metric:
     m.html_name = "<em>m-</em>index"
     m.symbol = "<em>m</em>"
     m.metric_type = FLOAT
-    m.description = "<p>Similar to the <em>a-</em>index, the <em>m-</em>index (Bornmann <em>et al.</em> 2008) is " \
-                    "the median number of citations for papers in the Hirsch core.</p>"
+    m.description = "<p>Similar to the __a-index__, the <em>m-</em>index (Bornmann <em>et al.</em> 2008) is " \
+                    "the median number of citations for papers in the __h-index__ core.</p>"
     m.references = ["Bornmann, L., R. Mutz, and H.-D. Daniel (2008) Are there better indices for evaluation purposes "
                     "than the <em>h</em> index? A comparison of nine different variants of the <em>h</em> index using "
                     "data from biomedicine. <em>Journal of the American Society for Information Science and "
                     "Technology</em> 59(5):830&ndash;837."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_m_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2056,12 +2190,15 @@ def metric_rm_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$r_m=\sqrt{\sum\limits_{i=1}^{h}{\sqrt{C_i}}}.$$"
     m.description = "<p>The <em>r<sub>m</sub>-</em>index (Panaretos and Malesios 2009) is a modification of the " \
-                    "<em>r-</em>index, where one sums the square-root of the citations within the core rather than " \
+                    "__R-index__, where one sums the square-root of the citations within the core rather than " \
                     "the total count:</p>" + equation
     m.references = ["Panaretos, J., and C. Malesios (2009) Assessing scientific research performance and impact "
                     "with single indices. <em>Scientometrics</em> 81(3):635&ndash;670."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_rm_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2139,7 +2276,7 @@ def metric_weighted_h_index() -> Metric:
     rwci = r"\(r_w\left(i\right)\leq C_i\)"
     r0 = r"$$r_0=\underset{i}{\max}\left(r_w\left(i\right)\leq C_i\right).$$"
     hweq = r"$$h_w=\sqrt{\sum\limits_{i=1}^{r_0}{C_i}},$$"
-    m.description = "<p>Similar to the <em>R-</em>index, the weighted <em>h-</em>index (Egghe and Rousseau 2008) is " \
+    m.description = "<p>Similar to the __R-index__, the weighted <em>h-</em>index (Egghe and Rousseau 2008) is " \
                     "designed to give more weight to publications within the core as they gain citations. The " \
                     "primary difference is that for this metric the core is defined differently. Publications are " \
                     "still ranked by citation count, but instead of using the raw rank, one uses a weighted rank " \
@@ -2155,6 +2292,9 @@ def metric_weighted_h_index() -> Metric:
                     "<em>Information Processing and Management</em> 44:770&ndash;780."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_weighted_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2212,8 +2352,8 @@ def metric_pi_index() -> Metric:
     ppistr = r"$$P_\pi=\text{floor}\left({\sqrt{P}}\right).$$"
     equation = r"$$\pi=\frac{C^\pi}{100}=\frac{\sum\limits_{i=1}^{P_\pi}{C_i}}{100}.$$"
     m.description = "<p>The <em>π-</em>index (Vinkler 2009) is similar to other measures of the quality of the " \
-                    "Hirsch core, except that it uses its own unique definition of the core. For this index, the " \
-                    "core publication set <em>P<sub>π</sub></em> is defined as the " \
+                    "__h-index__ core, except that it uses its own unique definition of the core. For this index, " \
+                    "the core publication set <em>P<sub>π</sub></em> is defined as the " \
                     "square-root of the total number of publications, truncated down to the nearest integer " \
                     "(<em>e.g.</em>, for 80 publications, the square-root of 80 is 8.944, so <em>P<sub>π</sub></em> " \
                     "would equal 8):</p>" + ppistr + "<p>The <em>π-</em>index is 1/100<sup>th</sup> of the total " \
@@ -2222,6 +2362,9 @@ def metric_pi_index() -> Metric:
                     "<em>Journal of Information Science</em> 35(5):602&ndash;612."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pi_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2246,6 +2389,7 @@ def metric_pi_rate() -> Metric:
     m.symbol = "<em>π-</em>rate"
     m.graph_type = LINE_CHART
     m.calculate = calculate_pi_rate
+    m.properties["Core Property"] = True
     return m
 
 
@@ -2266,12 +2410,14 @@ def metric_q2_index() -> Metric:
     equation = r"$$q^2=\sqrt{h\times m}.$$"
     m.description = "<p>The <em>q</em><sup>2</sup>-index (Cabrerizo <em>et al.</em> 2010) is another metric " \
                     "designed to describe the Hirsch core. It is the geometric mean of both a quantitative " \
-                    "(<em>h-</em>index) and a qualitative (<em>m-</em>index) measure of the core,</p>" + equation
+                    "(__h-index__) and a qualitative (__m-index__) measure of the core,</p>" + equation
     m.references = ["Cabrerizo, F.J., S. Alonso, E. Herrera-Viedma, and F. Herrera (2010) "
                     "<em>q</em><sup>2</sup>-index: quantiative and qualitative evaluation based on the number and "
                     "impact of papers in the Hirsch core. <em>Journal of Informetrics</em> 4:23&ndash;28."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_q2_index
+    m.properties["Core Property"] = True
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -2342,7 +2488,7 @@ def metric_e_index() -> Metric:
     graph.data = write_e_index_desc_data
     equation = r"$$e=\sqrt{C^H-h^2}=\sqrt{\sum\limits_{i=1}^{h}{C_i}-h^2}.$$"
     m.description = "<p>The <em>e-</em>index (Zhang 2009) is simply a measure of the excess citations in the " \
-                    "Hirsch core beyond those necessary to produce the core itself. It is measured as:</p>" + \
+                    "__h-index__ core beyond those necessary to produce the core itself. It is measured as:</p>" + \
                     equation + "<p>Graphically, it is the square-root of the total citations within the upper " \
                     "part of the citation curve.</p>" \
                     "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
@@ -2350,6 +2496,8 @@ def metric_e_index() -> Metric:
                     "citations. <em>PLoS ONE</em> 4(5):e5429."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_e_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -2374,6 +2522,7 @@ def metric_maxprod_index() -> Metric:
                     "Scientometrics, Informetrics and Bibliometrics</em> 11(1):5."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_maxprod_index
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -2445,7 +2594,7 @@ def metric_h2_upper_index() -> Metric:
     graph.data = write_h2_upper_index_desc_data
     equation = r"$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100=" \
                r"\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$"
-    m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
+    m.description = "<p>The __h-index__ describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
                     "percent of all citations found within the section.</p>" \
@@ -2458,6 +2607,9 @@ def metric_h2_upper_index() -> Metric:
                     "4:407&ndash;414."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h2_upper_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2527,7 +2679,7 @@ def metric_h2_center_index() -> Metric:
     graph.name = "h2_center_index_desc"
     graph.data = write_h2_center_index_desc_data
     equation = r"$$h_\text{center}^2=\frac{h^2}{C^P}\times 100$$"
-    m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
+    m.description = "<p>The __h-index__ describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
                     "percent of all citations found within the section.</p>" \
@@ -2539,6 +2691,9 @@ def metric_h2_center_index() -> Metric:
                     "4:407&ndash;414."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h2_center_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2608,7 +2763,7 @@ def metric_h2_tail_index() -> Metric:
     graph.name = "h2_tail_index_desc"
     graph.data = write_h2_tail_index_desc_data
     equation = r"$$h_\text{tail}^2=\frac{C^P - C^H}{C^P}\times 100=\frac{\sum\limits_{i=h+1}^{P}{C_i}}{C^P}\times 100$$"
-    m.description = "<p>The <em>h-</em>index describes an <em>h</em>×<em>h</em> square under the citation curve " \
+    m.description = "<p>The __h-index__ describes an <em>h</em>×<em>h</em> square under the citation curve " \
                     "containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing " \
                     "the citation curve into three sections based on this square and describing each section as the " \
                     "percent of all citations found within the section.</p>" \
@@ -2621,6 +2776,8 @@ def metric_h2_tail_index() -> Metric:
                     "4:407&ndash;414."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_h2_tail_index
+    m.properties["Tail Citations"] = True
+    m.properties["Tail Publications"] = True
     return m
 
 
@@ -2641,7 +2798,7 @@ def metric_k_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$k=\frac{C^PC^h}{P\left(C^P-C^h\right)}.$$"
     m.description = "<p>The <em>k-</em>index (Ye and Rousseau 2010) is a measure of the relative impact of " \
-                    "citations within the Hirsch core to those in the tail. Specifically, it is the ratio of " \
+                    "citations within the __h-index__ core to those in the tail. Specifically, it is the ratio of " \
                     "impact over the tail-core ratio and is calculated as</p>" + equation + \
                     "This metric is specifically meant to be used in a time-series analysis where <em>k</em> is " \
                     "calculated for multiple time points.</p>"
@@ -2649,6 +2806,10 @@ def metric_k_index() -> Metric:
                     "tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_k_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Tail Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -2679,6 +2840,7 @@ def metric_prathap_p_index() -> Metric:
                     "<em>Scientometrics</em> 84:153&ndash;165."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_prathap_p_index
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -2696,11 +2858,12 @@ def metric_ph_ratio() -> Metric:
     m.html_name = "<em>ph-</em>ratio"
     m.symbol = "<em>ph-</em>ratio"
     m.metric_type = FLOAT
-    m.description = "<p>The <em>p-</em>index can be considered a predictor of <em>h.</em> The ratio between " \
+    m.description = "<p>The __p-index__ can be considered a predictor of the __h-index__.</em> The ratio between " \
                     "<em>p</em> and <em>h</em> (the <em>ph-</em>ratio) reflects the sensitivity of the value to the " \
                     "proportion of citations in the upper core and the lower tail.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_ph_ratio
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -2722,13 +2885,17 @@ def metric_p_index_frac() -> Metric:
     eq1 = r"$$C^{\prime}=\sum\limits_{i=1}^{P}{\frac{C_i}{A_i}}$$"
     eq2 = r"$$P^{\prime}=\sum\limits_{i=1}^{P}{\frac{1}{A_i}}$$"
     eq3 = r"$$p_f=\sqrt[3]{\frac{\left.C^{\prime}\right.^2}{P^{\prime}}}$$"
-    m.description = "<p>The fractional <em>p-</em>index (Prathap 2011) is a variant of the <em>p-</em>index " \
+    m.description = "<p>The fractional <em>p-</em>index (Prathap 2011) is a variant of the __p-index__ " \
                     "which attempts to account for multiple-authored publications by adjusting both citation " \
                     "and publication counts by author counts. It is calculated as:</p>" + eq1 + eq2 + eq3
     m.references = ["Prathap, G. (2011) The fractional and harmonic <em>p-</em>indices for multiple authorship. "
                     "<em>Scientometrics</em> 86:239&ndash;244."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_p_index_frac
+    m.properties["Alternative Metric"] = True
+    m.properties["Coauthorship"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -2854,7 +3021,7 @@ def metric_multdim_h_index() -> Metric:
     graph.name = "multidim_h_index_desc"
     graph.data = write_multidim_h_index_desc_data
     m.description = "<p>The multidimensional <em>h-</em>index (García-Pérez 2009) is a simple expansion of the " \
-                    "original <em>h-</em>index used to separate individuals with identical <em>h-</em>indices. The " \
+                    "original __h-index__ used to separate individuals with identical <em>h-</em>indices. The " \
                     "concept is to calculate the <em>h-</em>index from all <em>P</em> publications (this would be " \
                     "the first <em>h-</em>index or <em>h</em><sub>1</sub>). One can then calculate a second " \
                     "<em>h</em>-index, <em>h</em><sub>2</sub>, from the <em>P</em> – <em>h</em><sub>1</sub> " \
@@ -2873,6 +3040,9 @@ def metric_multdim_h_index() -> Metric:
                     "<em>Scientometrics</em> 81(3):779&ndash;785."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_multidimensional_h_index
+    m.properties["Multidimensional Metric"] = True
+    m.properties["Core Metric"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3048,9 +3218,9 @@ def metric_two_sided_h_index() -> Metric:
     graph.data = write_two_sided_h_index_desc_data
     m.example = write_two_sided_h_index_example
     m.metric_type = INTLIST
-    m.description = "<p>The two-sided <em>h-</em>index (García-Pérez 2012) is an extension of the multidimensional " \
-                    "<em>h-</em>index, which recalcultes <em>h</em> not only for the tail of the distribution (as " \
-                    "in the multidimensional version) but also for the excess citations from <em>h-</em>core " \
+    m.description = "<p>The two-sided <em>h-</em>index (García-Pérez 2012) is an extension of the " \
+                    "__multidim h-index__, which recalcultes <em>h</em> not only for the tail of the distribution " \
+                    "(as in the multidimensional version) but also for the excess citations from <em>h-</em>core " \
                     "publications beyond those necessary to reach <em>h,</em> thus providing a multidimensional " \
                     "measure of both the upper and tail parts of the citation distribution.</p><p>The tail half of " \
                     "the two-sided <em>h-</em>index is identical to the multidimensional <em>h-</em>index " \
@@ -3070,6 +3240,10 @@ def metric_two_sided_h_index() -> Metric:
                     "Informetrics</em> 6:689&ndash;699."]
     m.graph_type = MULTILINE_CHART_CENTER
     m.calculate = calculate_two_sided_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Multidimensional Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3088,8 +3262,8 @@ def metric_iter_weighted_h_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$iw\left(h\right)=\sum\limits_{j=1}^{n}{\frac{h_j}{j}}.$$"
     m.description = "<p>The interatively weighted <em>h-</em>index (Todeschini and Baccini 2016) is a method " \
-                    "for producing a single global index from the vector produced by the multidimensional " \
-                    "<em>h-</em>index (<strong><em>H</em></strong>). This index is calculated as:</p>" + equation + \
+                    "for producing a single global index from the vector produced by the __multidim h-index__ " \
+                    "(<strong><em>H</em></strong>). This index is calculated as:</p>" + equation + \
                     "<p>where <em>h<sub>j</sub></em> and <em>n</em> are the <em>j</em><sup>th</sup> value and total " \
                     "length of <strong><em>H</em></strong>, respectively.</p>"
     m.references = ["Todeschini, R., and A. Baccini (2016) <em>Handbook of Bibliometric Indicators: Quantitative "
@@ -3097,6 +3271,9 @@ def metric_iter_weighted_h_index() -> Metric:
     m.synonyms = ["<em>iw</em>(<em>h</em>)-index"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_iter_weighted_h_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3187,9 +3364,9 @@ def metric_em_index() -> Metric:
     m.example = write_em_index_example
     m.metric_type = FLOAT
     equation = r"$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
-    m.description = "<p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the multidimensional " \
-                    "<em>h-</em>index, the two-sided <em>h-</em>index, the iteratively weighted <em>h-</em>index, " \
-                    "and the <em>e-</em>index. The <em>EM-</em>index begins by creating a vector " \
+    m.description = "<p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the " \
+                    "__multidim h-index__, the __two-sided h-index__, the __iter weighted h-index__, " \
+                    "and the __e-index__. The <em>EM-</em>index begins by creating a vector " \
                     "(<strong><em>E</em></strong>) which is equivalent to " \
                     "the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values " \
                     "calculated from the citation curve of just the core publications, stopping when one reaches " \
@@ -3201,6 +3378,9 @@ def metric_em_index() -> Metric:
                     "of scientists. <em>Scientometrics</em> 112(1):659&ndash;677."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_em_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -3299,7 +3479,7 @@ def metric_emp_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
     m.description = "<p>The <em>EM</em>&prime;-index (Bihari and Tripathi 2017) is an extension of the " \
-                    "<em>EM-</em>index which includes all publications, rather than just those from the core. Like " \
+                    "__EM-index__ which includes all publications, rather than just those from the core. Like " \
                     "the <em>EM-</em>index, we begin by creating a vector (<strong><em>E</em></strong>) where the " \
                     "first value is <em>E</em><sub>1</sub> = <em>h.</em> Subsequent values of the vector, " \
                     "<em>E</em><sub>i+1</sub>, are determined by subtracting <em>E</em><sub>i</sub> from the " \
@@ -3318,6 +3498,9 @@ def metric_emp_index() -> Metric:
                     "of scientists. <em>Scientometrics</em> 112(1):659&ndash;677."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_emp_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3402,8 +3585,8 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
 
 def metric_iterative_weighted_em_index() -> Metric:
     m = Metric()
-    m.name = "iterative weighted EM-index"
     m.full_name = "iterative weighted EM-index"
+    m.name = "iterative weighted EM-index"
     m.html_name = "iterative weighted <em>EM-</em>index"
     m.symbol = "<em>iw<sub>EM</sub></em>"
     m.synonyms = ["<em>iw<sub>EM</sub></em>"]
@@ -3411,10 +3594,10 @@ def metric_iterative_weighted_em_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$iw_{EM}=\sum\limits_{i=1}^{n}\frac{E_i}{i},$$"
     m.description = "<p>The iterative weighted <em>EM-</em>index (Bihari <em>et al.</em> 2021) is a modification of " \
-                    "the <em>EM-</em>index which uses a weighted-sum of each successive element in the vector " \
+                    "the __EM-index__ which uses a weighted-sum of each successive element in the vector " \
                     "rather than the square-root of the sum. The index begins by creating a vector " \
                     "(<strong><em>E</em></strong>) which is equivalent to " \
-                    "the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values " \
+                    "the upper/excess half of the __two-sided h-index__, namely a series of __h-index__ values " \
                     "calculated from the citation curve of just the core publications, stopping when one reaches " \
                     "only a single remaining publication, no citations remain, or all remaining publications have " \
                     "only a single citation. From this vector, <em>iw<sub>EM</sub></em> can be calculated as:</p>" + \
@@ -3424,6 +3607,9 @@ def metric_iterative_weighted_em_index() -> Metric:
                     "EM′-index for scientific assessment of scholars. <em>Scientometrics</em> 126:5551&ndash;5568."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_iterative_weighted_em_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -3523,10 +3709,10 @@ def metric_iterative_weighted_emp_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$iw_{EM^\prime}= \sum\limits_{i=1}^{n}\frac{E_i}{i},$$"
     m.description = "<p>The iterative weighted <em>EM&prime;-</em>index (Bihari <em>et al.</em> 2021) is a " \
-                    "modification of the <em>EM</em>&prime;-index (Bihari and Tripathi 2017) which uses a " \
+                    "modification of the __EMp-index__ (Bihari and Tripathi 2017) which uses a " \
                     "weighted-sum of each successive element in the vector rather than the square-root of the sum. " \
-                    "It is an extension of the iterative weighted " \
-                    "<em>EM-</em>index which includes all publications, rather than just those from the core. " \
+                    "It is an extension of the __iterative weighted EM-index__ " \
+                    "which includes all publications, rather than just those from the core. " \
                     "We begin by creating a vector (<strong><em>E</em></strong>) where the " \
                     "first value is <em>E</em><sub>1</sub> = <em>h.</em> Subsequent values of the vector, " \
                     "<em>E</em><sub>i+1</sub>, are determined by subtracting <em>E</em><sub>i</sub> from the " \
@@ -3545,6 +3731,9 @@ def metric_iterative_weighted_emp_index() -> Metric:
                     "EM′-index for scientific assessment of scholars. <em>Scientometrics</em> 126:5551&ndash;5568."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_iterative_weighted_emp_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3568,6 +3757,8 @@ def metric_total_self_cites() -> Metric:
                     "<em>i</em><sup>th</sup> publication then</p>" + equation
     m.graph_type = LINE_CHART
     m.calculate = calculate_total_self_cites
+    m.properties["Basic Statistic"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3591,6 +3782,8 @@ def metric_total_self_cite_rate() -> Metric:
                     "number of citations to all of the author\'s publications or</p>" + equation
     m.graph_type = LINE_CHART
     m.calculate = calculate_total_self_cite_rate
+    m.properties["Basic Statistic"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3610,11 +3803,13 @@ def metric_mean_self_cite_rate() -> Metric:
     m.is_self = True
     equation = r"$$\bar{S_r}=\frac{1}{P}\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}$$"
     m.description = "<p>The mean self-citation rate is the average rate of self-citation for an author across " \
-                    "all of their publications. It differs from the total self-citation rate in that the total " \
+                    "all of their publications. It differs from the __total self cite rate__ in that the total " \
                     "is based on the ratio of the sums while the average is based on the sums of the ratios.</p>" + \
                     equation
     m.graph_type = LINE_CHART
     m.calculate = calculate_mean_self_cite_rate
+    m.properties["Basic Statistic"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3635,7 +3830,8 @@ def metric_sharpened_h_index_self() -> Metric:
     m.is_self = True
     m.description = "<p>A simple way of accounting for self-citations with respect to impact is to simply remove " \
                     "them from each publication\'s citation counts prior to calculating a metric. For the base " \
-                    "calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p>" \
+                    "calculation of the __h-index__ this is known as the sharpened <em>h-</em>index " \
+                    "(Schreiber 2007).</p>" \
                     "<p>One complication is that there may be multiple methods for defining self-citations. In this " \
                     "case we use a narrow definition and only remove citations by the focal author to their own " \
                     "publications.</p>"
@@ -3643,6 +3839,8 @@ def metric_sharpened_h_index_self() -> Metric:
                     "Letters</em> 78:30002-1&ndash;6."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_sharpened_h_index_self
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3663,7 +3861,7 @@ def metric_b_index_mean_self() -> Metric:
     m.is_self = True
     equation = r"$$b=hk^{\frac{3}{4}},$$"
     req = r"$$k=1-\bar{S_r}=1-\frac{\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}}{P}$$"
-    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct <em>h</em> for self-citations, " \
+    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct the __h-index__ for self-citations, " \
                     "without actually having to check the citation records for every publication. It assumes that " \
                     "an author\'s self-citation rate is fairly consistent across publications such that, on average, " \
                     "a fraction <em>k</em> of the citations are from other authors. Assuming that citations follow " \
@@ -3678,6 +3876,8 @@ def metric_b_index_mean_self() -> Metric:
                     "the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_b_index_mean_self
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3772,7 +3972,8 @@ def metric_sharpened_h_index_coauthor() -> Metric:
     m.is_coauthor = True
     m.description = "<p>A simple way of accounting for self-citations with respect to impact is to simply remove " \
                     "them from each publication\'s citation counts prior to calculating a metric. For the base " \
-                    "calculation of <em>h</em> this is known as the sharpened <em>h-</em>index (Schreiber 2007).</p>" \
+                    "calculation of the __h-index__ this is known as the sharpened <em>h-</em>index " \
+                    "(Schreiber 2007).</p>" \
                     "<p>One complication is that there may be multiple methods for defining self-citations. In this " \
                     "case we remove any citations by the target author and any of the coauthors to their own " \
                     "publications.</p>"
@@ -3780,6 +3981,8 @@ def metric_sharpened_h_index_coauthor() -> Metric:
                     "Letters</em> 78:30002-1&ndash;6."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_sharpened_h_index_coauthor
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3800,7 +4003,7 @@ def metric_b_index_mean_coauthor() -> Metric:
     m.is_coauthor = True
     equation = r"$$b=hk^{\frac{3}{4}},$$"
     req = r"$$k=1-\bar{S_r}=1-\frac{\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}}{P}$$"
-    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct <em>h</em> for self-citations, " \
+    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct the __h-index__ for self-citations, " \
                     "without actually having to check the citation records for every publication. It assumes that " \
                     "an author\'s self-citation rate is fairly consistent across publications such that, on average, " \
                     "a fraction <em>k</em> of the citations are from other authors. Assuming that citations follow " \
@@ -3815,6 +4018,8 @@ def metric_b_index_mean_coauthor() -> Metric:
                     "the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_b_index_mean_coauthor
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3833,7 +4038,7 @@ def metric_b_index_10_percent() -> Metric:
     m.metric_type = FLOAT
     m.is_self = True
     equation = r"$$b=hk^{\frac{3}{4}},$$"
-    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct <em>h</em> for self-citations, " \
+    m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct the __h-index__ for self-citations, " \
                     "without actually having to check the citation records for every publication. It assumes that " \
                     "an author\'s self-citation rate is fairly consistent across publications such that, on average, " \
                     "a fraction <em>k</em> of the citations are from other authors. Assuming that citations follow " \
@@ -3846,6 +4051,8 @@ def metric_b_index_10_percent() -> Metric:
                     "the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_b_index_10_percent
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -3909,7 +4116,7 @@ def metric_hi_index() -> Metric:
     m.example = write_hi_index_example
     equation = r"$$h_i=\frac{h}{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}=\frac{h^2}{\sum\limits_{i=1}^{h}{A_i}}.$$"
     m.description = "<p>The <em>h<sub>i</sub>-</em>index (Batista <em>et al.</em> 2006) is a simple correction of " \
-                    "the <em>h-</em>index for multi-authored publications. This index is simply the <em>h-</em>index " \
+                    "the __h-index__ for multi-authored publications. This index is simply the <em>h-</em>index " \
                     "divided by the average number of authors in the core publications, or</p>" + equation + \
                     "If every publication in the core is solo-authored then <em>h<sub>i</sub></em> = <em>h.</em> " \
                     "This can be an extremely harsh correction. A single core publication with a large number of " \
@@ -3920,6 +4127,8 @@ def metric_hi_index() -> Metric:
                     "68(1):179&ndash;189."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hi_index
+    m.properties["Coauthorship"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -3983,11 +4192,11 @@ def metric_pure_h_index_frac() -> Metric:
     m.example = write_pure_h_index_frac_example
     equation = r"$$h_{p.\text{frac}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}}$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
-                    "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
+                    "__hi-index__ in that it attempts to adjust for multiple authors. The index " \
                     "allows for different methods of assigning authorship credit. If one wishes to assign all " \
                     "authors equal credit, or if one does not have information about authorship order, one can " \
                     "assign fractional credit per author, which essentially means this metric is simply the " \
-                    "<em>h-</em>index divided by the square-root of the average number of authors in the core, " \
+                    "__h-index__ divided by the square-root of the average number of authors in the core, " \
                     "thus differing from <em>h<sub>i</sub></em> only by the square-root in the denominator " \
                     "(which makes the fractional version of the pure <em>h-</em>index less harsh than " \
                     "<em>h<sub>i</sub></em> by not punishing co-authorship as severely).</p>" + equation
@@ -3996,6 +4205,8 @@ def metric_pure_h_index_frac() -> Metric:
                     "Scientometrics and Information Management</em> 1(2):1&ndash;5."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pure_h_index_frac
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4077,7 +4288,7 @@ def metric_pure_h_index_prop() -> Metric:
     effort_eq = r"$$E_i=\frac{2\left(A_i + 1 - a_i\right)}{A_i\left(A_i + 1\right)},$$"
     equation = r"$$h_{p.\text{prop}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{w_i}}{h}}}.$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
-                    "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
+                    "__hi-index__ in that it attempts to adjust for multiple authors. The index " \
                     "allows for different methods of assigning authorship credit. If one has information on author " \
                     "order and assumes the order directly correlates with effort, one can use a proportional " \
                     "(artihmetic) assignment of credit for each publication as:</p>" + effort_eq + \
@@ -4091,6 +4302,8 @@ def metric_pure_h_index_prop() -> Metric:
                     "Scientometrics and Information Management</em> 1(2):1&ndash;5."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pure_h_index_prop
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4172,7 +4385,7 @@ def metric_pure_h_index_geom() -> Metric:
     effort_eq = r"$$E_i=\frac{2^{A_i - a_i}}{2^{A_i} - 1},$$"
     equation = r"$$h_{p.\text{geom}}=\frac{h}{\sqrt{\frac{\sum\limits_{i=1}^{h}{w_i}}{h}}}.$$"
     m.description = "<p>The pure <em>h-</em>index (Wan <em>et al.</em> 2007) is similar to the " \
-                    "<em>h<sub>i</sub>-</em>index in that it attempts to adjust for multiple authors. The index " \
+                    "__hi-index__ in that it attempts to adjust for multiple authors. The index " \
                     "allows for different methods of assigning authorship credit. If one has information on author " \
                     "order and assumes the order directly correlates with effort, one can use a geometric " \
                     "assignment of credit for each publication as:</p>" + effort_eq + \
@@ -4186,6 +4399,8 @@ def metric_pure_h_index_geom() -> Metric:
                     "Scientometrics and Information Management</em> 1(2):1&ndash;5."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pure_h_index_geom
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4256,8 +4471,8 @@ def metric_adapt_pure_h_index_frac() -> Metric:
     equation = r"$$h_{ap.\text{frac}}= " \
                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
     m.description = "<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the " \
-                    "pure <em>h-</em>index, except that it estimates its own core rather than relying on the " \
-                    "standard Hirsch core. For a given publication, if one wishes to assign all authors equal " \
+                    "__pure h-index frac__, except that it estimates its own core rather than relying on the " \
+                    "standard __h-index__ core. For a given publication, if one wishes to assign all authors equal " \
                     "credit, or if one does not have information about authorship order, one can calculate an " \
                     "effective citation count as the number of citations divided by the square-root of the " \
                     "number of authors,</p>" + cistr + "<p>Publications are ranked according to these new citation " \
@@ -4271,6 +4486,8 @@ def metric_adapt_pure_h_index_frac() -> Metric:
                     "Institute for Library and Information Science."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_adapt_pure_h_index_frac
+    m.properties["Coauthorship"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -4358,8 +4575,8 @@ def metric_adapt_pure_h_index_prop() -> Metric:
     equation = r"$$h_{ap.\text{prop}}= " \
                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
     m.description = "<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the " \
-                    "pure <em>h-</em>index, except that it estimates its own core rather than relying on the " \
-                    "standard Hirsch core. For a given publication, if one has information on author " \
+                    "__pure h-index prop__, except that it estimates its own core rather than relying on the " \
+                    "standard __h-index__ core. For a given publication, if one has information on author " \
                     "order and assumes the order directly correlates with effort, one can use a proportional " \
                     "(artihmetic) assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
@@ -4378,6 +4595,8 @@ def metric_adapt_pure_h_index_prop() -> Metric:
                     "Institute for Library and Information Science."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_adapt_pure_h_index_prop
+    m.properties["Coauthorship"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -4465,8 +4684,8 @@ def metric_adapt_pure_h_index_geom() -> Metric:
     equation = r"$$h_{ap.\text{geom}}= " \
                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
     m.description = "<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the " \
-                    "pure <em>h-</em>index, except that it estimates its own core rather than relying on the " \
-                    "standard Hirsch core. For a given publication, if one has information on author " \
+                    "__pure h-index geom__, except that it estimates its own core rather than relying on the " \
+                    "standard __h-index__ core. For a given publication, if one has information on author " \
                     "order and assumes the order directly correlates with effort, one can use a geometric " \
                     "assignment of credit for each publication as:</p>" + effort_eq + \
                     "<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author " \
@@ -4485,6 +4704,8 @@ def metric_adapt_pure_h_index_geom() -> Metric:
                     "Institute for Library and Information Science."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_adapt_pure_h_index_geom
+    m.properties["Coauthorship"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -4508,7 +4729,7 @@ def metric_p_index_harm() -> Metric:
     eq1 = r"$$C^{\prime}=\sum\limits_{i=1}^{P}{C_i r_i}$$"
     eq2 = r"$$P^{\prime}=\sum\limits_{i=1}^{P}{r_i}$$"
     eq3 = r"$$p_h=\sqrt[3]{\frac{\left.C^{\prime}\right.^2}{P^{\prime}}}$$"
-    m.description = "<p>The harmonic <em>p-</em>index (Prathap 2011) is a variant of the <em>p-</em>index " \
+    m.description = "<p>The harmonic <em>p-</em>index (Prathap 2011) is a variant of the __p-index__ " \
                     "which attempts to account for multiple-authored publications by adjusting both citation " \
                     "and publication counts by author counts, using a harmonic weighting credit scheme " \
                     "based on the author\'s position within the authorship list for each publication " \
@@ -4519,6 +4740,10 @@ def metric_p_index_harm() -> Metric:
                     "<em>Scientometrics</em> 86:239&ndash;244."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_p_index_harm
+    m.properties["Coauthorship"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -4556,6 +4781,9 @@ def metric_profit_p_index() -> Metric:
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_profit_p_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
+
     return m
 
 
@@ -4652,6 +4880,8 @@ def metric_profit_adj_h_index() -> Metric:
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_profit_adj_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4670,13 +4900,16 @@ def metric_profit_h_index() -> Metric:
     m.symbol = "<em>p<sub>h</sub></em>"
     m.metric_type = FLOAT
     equation = r"$$p_h=1-\frac{h_a}{h}$$"
-    m.description = "<p>The profit <em>h-</em>index is the ratio between the profit adjusted <em>h-</em>index " \
-                    "(<em>h<sub>a</sub></em>) and the regular <em>h-</em>index, subtracted from one, roughly " \
-                    "indicating the relative contribution of collaborators to an individual\'s h-index.</p>" + equation
+    m.description = "<p>The profit <em>h-</em>index is the ratio between the __profit adj h-index__ " \
+                    "(<em>h<sub>a</sub></em>) and the regular __h-index__, subtracted from one, roughly " \
+                    "indicating the relative contribution of collaborators to an individual\'s " \
+                    "<em>h-</em>index.</p>" + equation
     m.references = ["Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors "
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_profit_h_index
+    m.properties["Compound Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4737,8 +4970,8 @@ def metric_normal_hi_index() -> Metric:
     m.example = write_normal_hi_index_example
     m.metric_type = INT
     equation = r"$$h_{i\text{-norm}}=\underset{i}{\max}\left(i \leq \frac{C_i}{A_i}\right).$$"
-    m.description = "<p>Similar to the adapted pure <em>h-</em>index, the normalized <em>h<sub>i</sub>-</em>index " \
-                    "(Wohlin 2009) is designed to adjust the <em>h-</em>index for multiple authors by adjusting the " \
+    m.description = "<p>Similar to the __adapt pure h-index frac__, the normalized <em>h<sub>i</sub>-</em>index " \
+                    "(Wohlin 2009) is designed to adjust the __h-index__ for multiple authors by adjusting the " \
                     "citation count by the number of authors. The primary difference is the new citation value is " \
                     "calculated by dividing by the number of authors (<em>C<sub>i</sub></em> / " \
                     "<em>A<sub>i</sub></em>) " \
@@ -4765,6 +4998,8 @@ def metric_normal_hi_index() -> Metric:
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_normal_hi_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4835,14 +5070,16 @@ def metric_gf_cite_index() -> Metric:
     m.symbol = "<em>g<sub>f</sub></em>"
     equation = r"$$g_f=\underset{i}{\max}\left(i^2 \leq \sum\limits_{j=1}^{i}{\frac{C_j}{A_j}}\right).$$"
     m.description = "<p>The fractional citation <em>g-</em>index (Egghe 2008) is a variant of the " \
-                    "<em>g-</em>index normalized by the number of authors and is the <em>g</em> equivalent of the " \
-                    "normalized <em>h<sub>i</sub>-</em>index. It is calculated as:</p>" + equation
+                    "__g-index__ normalized by the number of authors and is the <em>g</em> equivalent of the " \
+                    "__normal hi-index__. It is calculated as:</p>" + equation
     m.graph_type = LINE_CHART
     m.synonyms = ["<em>g<sub>f</sub></em>"]
     m.references = ["Egghe, L. (2008) Mathematical theory of the <em>h-</em> and <em>g-</em>index in case of "
                     "fractional counting of authorship. <em>Journal of the American Society for Information Science "
                     "and Technology</em> 59(10):1608&ndash;1616."]
     m.calculate = calculate_gf_cite_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -4909,13 +5146,13 @@ def metric_hm_index() -> Metric:
     reeq = r"$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$"
     equation = r"$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) " \
                r"\leq C_i\right).$$"
-    m.description = "<p>While the normalized <em>h<sub>i</sub>-</em>index accounts for the number of authors of " \
+    m.description = "<p>While the __normal hi-index__ accounts for the number of authors of " \
                     "a publication by normalizing the citation count for that publication, <em>h<sub>m</sub></em> " \
                     "(Schreiber 2008), also known as the <span class=\"metric_name\">fractional paper " \
                     "<em>h</em></span> and <span class=\"metric_name\"><em>h<sub>F</sub>-</em>index</span> " \
                     "(Egghe 2008), accounts for author number by normalizing the " \
                     "ranks. For this index, one counts the number of citations and ranks the publications as for " \
-                    "the <em>h-</em>index, but rather than counting the rank of the <em>i</em><sup>th</sup> " \
+                    "the __h-index__, but rather than counting the rank of the <em>i</em><sup>th</sup> " \
                     "publication as <em>i</em>, it is instead calculated as the cumulative sum of " \
                     "1/<em>A<sub>i</sub>.</em> In formal terms, when calculating the <em>h-</em>index the rank of " \
                     "the <em>i</em><sup>th</sup> publication is</p>" + rheq + "<p>For <em>h<sub>m</sub></em> we " \
@@ -4931,6 +5168,8 @@ def metric_hm_index() -> Metric:
                     "and Technology</em> 59(10):1608&ndash;1616."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hm_index
+    m.properties["Coauthorship"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -5006,9 +5245,9 @@ def metric_gf_paper_index() -> Metric:
                r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$"
     m.symbol = "<em>g<sub>F</sub></em>"
     m.synonyms = ["<em>g<sub>F</sub></em>"]
-    m.description = "<p>The fractional <em>g-</em>index (Egghe 2008) is a variant of the " \
-                    "<em>g-</em>index in which ranks are normalized by the number of authors and is the <em>g</em> " \
-                    "equivalent of the <em>h<sub>m</sub>-</em>index. Effective ranks for each publication are " \
+    m.description = "<p>The fractional <em>g-</em>index (Egghe 2008) is a variant of the __g-index__ in which ranks " \
+                    "are normalized by the number of authors and is the <em>g</em> " \
+                    "equivalent of the __hm-index__. Effective ranks for each publication are " \
                     "calculated identically as for <em>h<sub>m</sub></em> and <em>g<sub>F</sub></em> is calculated " \
                     "as:</p>" + equation
     m.references = ["Egghe, L. (2008) Mathematical theory of the <em>h-</em> and <em>g-</em>index in case of "
@@ -5016,6 +5255,8 @@ def metric_gf_paper_index() -> Metric:
                     "and Technology</em> 59(10):1608&ndash;1616."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_gf_paper_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5095,8 +5336,8 @@ def metric_pos_weight_h_index() -> Metric:
     eistr = r"$$E_i=\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)},$$"
     cistr = r"$$C^{*}_i = \frac{C_i}{w_i} = C_i E_i,$$"
     equation = r"$$h_p=\underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
-    m.description = "<p>The position-weighted <em>h-</em>index (Abbas 2011) is similar to the adapted pure " \
-                    "<em>h-</em>index with proportional weighting in that it uses an author\'s position to " \
+    m.description = "<p>The position-weighted <em>h-</em>index (Abbas 2011) is similar to the " \
+                    "__adapt pure h-index prop__ in that it uses an author\'s position to " \
                     "weight citation counts prior to ranking, but differs by dividing the raw citation count " \
                     "directly by the inverse of the effort rather than the square-root of the effort. The effort is " \
                     "calculated as</p>" + eistr + "<p>with weight " \
@@ -5110,6 +5351,8 @@ def metric_pos_weight_h_index() -> Metric:
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_pos_weight_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5131,7 +5374,7 @@ def metric_prop_weight_cite_agg() -> Metric:
     equation = r"$$\psi_p=\sum\limits_{i=i}^{P}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}" \
                r"=\sum\limits_{i=i}^{P}{C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)}}$$"
     m.description = "<p>The proportional weighted citation aggregate (Abbas 2011) is a weighted count of an " \
-                    "author\'s citations (an alternative to <em>C<sup>P</sup></em>), where the weighting is " \
+                    "author\'s citations (an alternative to __total cites__), where the weighting is " \
                     "based on the total number of authors of each publication and their position within the author " \
                     "list (<em>a<sub>i</sub></em>) under an assumption of proportionally decreasing credit with " \
                     "respect to their position.</p>" + equation
@@ -5139,6 +5382,8 @@ def metric_prop_weight_cite_agg() -> Metric:
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_prop_weight_cite_agg
+    m.properties["Alternative Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5221,14 +5466,16 @@ def metric_prop_weight_cite_h_cut() -> Metric:
                r"=\sum\limits_{i=i}^{h_p}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}" \
                r"=\sum\limits_{i=i}^{h_p}{C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)}}.$$"
     m.description = "<p>The proportional weighted citation H-cut is the sum of weighted citations found within " \
-                    "an author\'s core publications, with the core defined by the position-" \
-                    "weighted <em>h-</em>index and the citation weighting using the scheme from the " \
-                    "proportional weighted citation aggregate:</p>" + equation + "<p>Note that for this metric " \
+                    "an author\'s core publications, with the core defined by the __position-weighted h-index__" \
+                    "and the citation weighting using the scheme from the " \
+                    "__prop weight cite agg__:</p>" + equation + "<p>Note that for this metric " \
                     "publication order is by the weighted citation counts rather than the raw citation counts.</p>"
     m.references = ["Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple "
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_prop_weight_cite_h_cut
+    m.properties["Core Property"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5248,13 +5495,15 @@ def metric_frac_weight_cite_agg() -> Metric:
     m.synonyms = ["<em>ψ<sub>e</sub></em>"]
     equation = r"$$\psi_e=\sum\limits_{i=i}^{P}{\frac{C_i}{A_i}}$$"
     m.description = "<p>The fractional weighted citation aggregate (Abbas 2011) is a weighted count of an " \
-                    "author\'s citations (an alternative to <em>C<sup>P</sup></em>), where the weighting is " \
+                    "author\'s citations (an alternative to __total cites__), where the weighting is " \
                     "based on the total number of authors of each publication, with each author receiving " \
                     "equal credit for the publication.</p>" + equation
     m.references = ["Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple "
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_frac_weight_cite_agg
+    m.properties["Alternative Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5319,14 +5568,16 @@ def metric_frac_weight_cite_h_cut() -> Metric:
     m.synonyms = ["<em>ξ<sub>e</sub></em>"]
     equation = r"$$\xi_e=\sum\limits_{i=i}^{h_{i\text{-norm}}}{\frac{C_i}{A_i}}.$$"
     m.description = "<p>The fractional weighted citation H-cut is the sum of weighted citations found within " \
-                    "an author\'s core publications, with the core defined by the normalized " \
-                    "<em>h<sub>i</sub>-</em>index and the citation weighting using the scheme from the " \
-                    "fractional weighted citation aggregate:</p>" + equation + "<p>Note that for this metric " \
+                    "an author\'s core publications, with the core defined by the __normal hi-index__ " \
+                    "and the citation weighting using the scheme from the " \
+                    "__frac weight cite agg__:</p>" + equation + "<p>Note that for this metric " \
                     "publication order is by the weighted citation counts rather than the raw citation counts.</p>"
     m.references = ["Abbas, A.M. (2011) Weighted indices for evaluating the quality of research with multiple "
                     "authorship. <em>Scientometrics</em> 88:107&ndash;131."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_frac_weight_cite_h_cut
+    m.properties["Core Property"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -5402,7 +5653,7 @@ def metric_h_rate() -> Metric:
                     "<span class=\"metric_name\"><em>m-</em>ratio index,</span> " \
                     "<span class=\"metric_name\">age-normalized <em>h-</em>index,</span> and " \
                     "<span class=\"metric_name\">Carbon <em>h-</em>factor.</span> It measures the rate at which the " \
-                    "<em>h-</em>index has increased over the career of a researcher. It is calculated simply as:</p>\n"
+                    "__h-index__ has increased over the career of a researcher. It is calculated simply as:</p>\n"
     m.description += m_equation + "\n"
     m.description += "<p>where " + hstr + " is the <em>h-</em>index in year " + ystr + " and " + y0str + \
                      " is the year of the researcher's first publication (the denominator of this equation is the " \
@@ -5413,6 +5664,8 @@ def metric_h_rate() -> Metric:
                      "<em>h-</em>index.</p>\n"
     m.graph_type = LINE_CHART
     m.calculate = calculate_h_rate
+    m.properties["Core Property"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5478,8 +5731,8 @@ def metric_ls_h_rate() -> Metric:
     graph.name = "ls_h_rate_desc"
     graph.data = write_ls_h_rate_desc_data
     m.metric_type = FLOAT
-    m.description = "<p>Hirsch\'s original estimate of the <em>h-</em>rate was based on a single data point, " \
-                    "the most recently measured value of <em>h</em> and the time since first publication. " \
+    m.description = "<p>Hirsch\'s original estimate of the __h-rate__ was based on a single data point, " \
+                    "the most recently measured value of the __h-index__ and the time since first publication. " \
                     "Burrell (2007) suggested that a more accurate measure could be estimated through least-squares " \
                     "regression of a series of <em>h-</em>indices measured at different time points of an " \
                     "author\'s career, while forcing the intercept through zero at the start of their career (prior " \
@@ -5489,6 +5742,8 @@ def metric_ls_h_rate() -> Metric:
                     "<em>Scientometrics</em> 73(1):19-28."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_ls_h_rate
+    m.properties["Core Property"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5509,12 +5764,16 @@ def metric_time_scaled_h_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_0+1}}.$$"
     m.description = "<p>The time-scaled <em>h-</em>index (Mannella and Rossi 2013) is a variant of the " \
-                    "<em>h-</em>rate calculated over the square-root of the academic age of the researcher:</p>" + \
+                    "__h-rate__ calculated over the square-root of the academic age of the researcher:</p>" + \
                     equation
     m.references = ["Mannella, R., and P. Rossi (2013) On the time dependence of the <em>h-</em>index. <em>Journal "
                     "of Informetrics</em> 7:176&ndash;182."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_time_scaled_h_index
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Tail Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -5536,7 +5795,7 @@ def metric_alpha_index() -> Metric:
     equation = r"$$\alpha = \frac{h}{Y_D},$$"
     yd = r"$$Y_D = \text{ceiling}\left( \frac{Y-Y_0+1}{10}\right).$$"
     m.description = "<p>The <em>α-</em>index (Abt 2012; Burrell 2012; Sangwal 2012) is a variant of the " \
-                    "<em>h-</em>rate where <em>h</em> is divided by number of decades since an author\'s first " \
+                    "__h-rate__ where the __h-index__ is divided by number of decades since an author\'s first " \
                     "publication, or</p>" + equation + "<p>where</p>" + yd
     m.references = ["Abt, H.A. (2012) A publication index that is independent of age. <em>Scientometrics</em> "
                     "91:863&ndash;868.",
@@ -5546,6 +5805,8 @@ def metric_alpha_index() -> Metric:
                     "91:1053&ndash;1058."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_alpha_index
+    m.properties["Core Property"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5567,7 +5828,7 @@ def metric_ar_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$ar=\sqrt{\sum\limits_{i=1}^{h}{\frac{C_i}{Y-Y_i+1}}},$$"
     m.description = "<p>The <em>ar-</em>index (Jin 2007; Jin <em>et al.</em> 2007) is an adaptation of the " \
-                    "<em>r-</em>index which includes time. Rather than being the square-root of the total " \
+                    "__R-index__ which includes time. Rather than being the square-root of the total " \
                     "citations within the core, it is the square-root of the citations per year within the " \
                     "core,</p>" + equation + "<p>where <em>Y</em> is the current year.</p>"
     m.references = ["Jin, B. (2007) The <em>ar-</em>index: Complementing the <em>h-</em>index. "
@@ -5576,6 +5837,9 @@ def metric_ar_index() -> Metric:
                     "Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_ar_index
+    m.properties["Time"] = True
+    m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5599,8 +5863,8 @@ def metric_dynamic_h_type_index() -> Metric:
     eq1 = r"$$h_{dyn}=R\times v_h,$$"
     m.description = "<p>The dynamic <em>h-</em>type index (Rousseau and Ye 2008) is a measure of both the size of " \
                     "the core as well as how the core is changing through time. The basic index is</p>" + eq1 + \
-                    "where <em>R</em> is the <em>R-</em>index and <em>v<sub>h</sub></em> is a measure of the rate of " \
-                    "change of <em>h</em> through time. Rousseau and Ye (2008) suggest a number of ways to " \
+                    "where <em>R</em> is the __R-index__ and <em>v<sub>h</sub></em> is a measure of the rate of " \
+                    "change of the __h-index__ through time. Rousseau and Ye (2008) suggest a number of ways to " \
                     "estimate <em>v<sub>h</sub></em>, including that it be determined over a fixed time " \
                     "interval (<em>e.g.</em>, 5 or 10 years) to make it more contemporary. They also suggest one " \
                     "use the rational <em>h</em> rather than <em>h</em> because its finer grained resolution will " \
@@ -5612,6 +5876,9 @@ def metric_dynamic_h_type_index() -> Metric:
                     "59(11):1853&ndash;1855."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_dynamic_h_type_index
+    m.properties["Core Property"] = True
+    m.properties["Compound Metric"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5675,7 +5942,7 @@ def metric_hpd_index() -> Metric:
     m.metric_type = INT
     cpd = r"$$cpd_i=\frac{10C_i}{Y-Y_i+1}$$"
     equation = r"$$hpd=\underset{i}{\max}\left(i \leq cpd_i\right)$$"
-    m.description = "<p>The hpd-index (Kosmulski 2009) is very similar to the <em>h-</em>index, except that it " \
+    m.description = "<p>The hpd-index (Kosmulski 2009) is very similar to the __h-index__, except that it " \
                     "adjusts for the age of a publication. Rather than adjust per year, the metric is adjusted per " \
                     "decade. Thus if</p>" + cpd + "<p>is the number of citations an article has per decade (where " \
                     "<em>Y</em> is the current year), then " \
@@ -5686,6 +5953,8 @@ def metric_hpd_index() -> Metric:
                     "Informetrics</em> 3:341&ndash;347."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_hpd_index
+    m.properties["Time"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -5760,12 +6029,14 @@ def metric_contemporary_h_index() -> Metric:
                     "<em>h<sup>C</sup></em> if <em>h<sup>C</sup></em> of their articles (ranked by " \
                     "<em>S<sup>C</sup></em>) have <em>S<sup>C</sup></em> ≥ <em>h<sup>C</sup></em>.</p>" + hceq + \
                     "Sidiropuolos <em>et al.</em> (2007) set <em>γ</em> = 4 and <em>δ</em> = 1. These choices have " \
-                    "the consequence of making this metric virtually identical to <em>hpd,</em> except measured on a " \
-                    "four year cycle rather than a decade.</p>"
+                    "the consequence of making this metric virtually identical to the __hpd-index__, except measured " \
+                    "on a four year cycle rather than a decade.</p>"
     m.references = ["Sidiropoulos, A., D. Katsaros, and Y. Manolopoulos (2007) Generalized Hirsch <em>h-</em>index "
                     "for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_contemporary_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5869,7 +6140,7 @@ def metric_trend_h_index() -> Metric:
     st2eq = r"$$S^t_i = \gamma \sum\limits_{k=1}^{Y}{C_{i.k}\left(Y-Y_k+1\right)^{-\delta}}.$$"
     hteq = r"$$h^t = \underset{i}{\max}\left(i \leq S^t_i\right)$$"
     m.description = "<p>The trend <em>h-</em>index (Sidiropoulos <em>et al.</em> 2007) is essentially the " \
-                    "opposite of the contemporary <em>h-</em>index. It is designed to measure how current an " \
+                    "opposite of the __contemporary h-index__. It is designed to measure how current an " \
                     "author\'s impact is by how recently they are being cited. The trend score for a publication " \
                     "is measured as</p>" + steq + "<p>where <em>γ</em> and <em>δ</em> are parameters " \
                     "(often set to 4 and 1, respectively, just as with the contemporary <em>h-</em>index) and " \
@@ -5884,6 +6155,8 @@ def metric_trend_h_index() -> Metric:
                     "for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_trend_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5903,8 +6176,8 @@ def metric_impact_vitality() -> Metric:
     m.metric_type = FLOAT_NA
     equation = r"$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{c^{Y-w}}{i}}}" \
                r"{\sum\limits_{i=1}^{w}{c^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$"
-    m.description = "<p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the trend " \
-                    "<em>h-</em>index, but more complicated to measure. If <em>c<sup>x</sup></em> is the total " \
+    m.description = "<p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the __trend h-index__, " \
+                    "but more complicated to measure. If <em>c<sup>x</sup></em> is the total " \
                     "number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the " \
                     "number of years back from the present (year <em>Y</em>) one wishes to calculate the metric for " \
                     "(the citation window), " \
@@ -5922,6 +6195,10 @@ def metric_impact_vitality() -> Metric:
                     "citations one year ago.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_impact_vitality
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -5939,6 +6216,7 @@ def metric_specific_impact_s_index() -> Metric:
     m.full_name = "specific impact s-index"
     m.html_name = "specific impact <em>s-</em>index"
     m.symbol = "<em>s</em>"
+    m.synonyms = ["<em>s</em>-index (specific impact)"]
     m.metric_type = FLOAT
     equation = r"$$S=\frac{C^P}{10\sum\limits_{i=1}^{P}{\left(1-e^{0.1\left(Y-Y_i\right)}\right)}}=\frac" \
                r"{\sum\limits_{i=1}^{P}{C_i}}{10\sum\limits_{i=1}^{P}{\left(1-e^{0.1\left(Y-Y_i\right)}\right)}},$$"
@@ -5956,6 +6234,8 @@ def metric_specific_impact_s_index() -> Metric:
                     "American Society for Information Science and Technology</em> 61(2):319&ndash;328."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_specific_impact_s_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5975,7 +6255,7 @@ def metric_franceschini_f_index() -> Metric:
     m.metric_type = INT
     equation = r"$$f=\max\left(Y_i|C_i>0\right) - \min\left(Y_i|C_i>0\right) + 1,$$"
     m.description = "<p>Franceschini and Maisano\'s <em>f-</em>index (Franceschini and Maisano 2010) is designed as " \
-                    "a complement to the <em>h-</em>index. It is a measure of the time-width of impact. It is the " \
+                    "a complement to the __h-index__. It is a measure of the time-width of impact. It is the " \
                     "range of time for publications with at least one citation and is calculated as</p>" + equation + \
                     "<p>or the year of the most recent publication with at least one citation minus the year of " \
                     "the earliest publication with at least one citation (plus one to consider the time spent " \
@@ -5988,6 +6268,8 @@ def metric_franceschini_f_index() -> Metric:
                     "properties. <em>European Journal of Operational Research</em> 203:494&ndash;504."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_franceschini_f_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -6009,12 +6291,15 @@ def metric_annual_h_index() -> Metric:
     equation = r"$$\text{hIa} = \frac{h_i}{Y-Y_0+1}.$$"
     m.description = "<p>The annual <em>h</em>-index attempts to normalize by both the number of coauthors of each " \
                     "publication as well as the academic age of the researcher and is calculated as the " \
-                    "normalized <em>h<sub>i</sub>-</em>index divided by academic age, or:</p>" + equation
+                    "__normal hi-index__ divided by academic age, or:</p>" + equation
     m.references = ["Harzing, A.-W., S. Alakangas, and D. Adams (2014) hIa: an individual annual <em>h-</em>index "
                     "to accommodate disciplinary and career length differences. <em>Scientometrics</em> "
                     "99:811&ndash;821."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_annual_h_index
+    m.properties["Coauthorship"] = True
+    m.properties["Time"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -6106,6 +6391,9 @@ def metric_cds_index() -> Metric:
                     "Informetrics</em> 7(1):72&ndash;83."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cds_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6125,7 +6413,7 @@ def metric_cdr_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$\text{CDR}=100\frac{\text{CDS}}{\text{CDS}_\max}=100\frac{\text{CDS}}{14P}.$$"
     m.description = "<p>The citation distribution rate index (Vinkler 2011, 2013) is a complement to " \
-                    "the citation distribution score index, calculated as the percent of the maximum possible CDS " \
+                    "the __CDS-index__, calculated as the percent of the maximum possible CDS " \
                     "index actually observed, or</p>" + equation
     m.references = ["Vinkler, P. (2011) Application of the distribution of citations among publications in "
                     "scientometric evaluations. <em>Journal of the American Society for Information Science "
@@ -6135,6 +6423,9 @@ def metric_cdr_index() -> Metric:
                     "Informetrics</em> 7(1):72&ndash;83."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cdr_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6151,14 +6442,17 @@ def metric_circ_cite_area_radius() -> Metric:
     m.symbol = "r"
     m.metric_type = FLOAT
     equation = r"$$r=\sqrt{\frac{C^P}{\pi}}=\sqrt{\frac{\sum\limits_{i=1}^{P}{C_i}}{\pi}}$$"
-    m.description = "<p>The circular citation area radius (Sangwal 2012 )is an easy to calculate approximation of " \
-                    "the <em>h-</em>index.</p>" + equation
+    m.description = "<p>The circular citation area radius (Sangwal 2012) is an easy to calculate approximation of " \
+                    "the __h-index__.</p>" + equation
     m.references = ["Sangwal, K. (2012) On the relationship between citations of publication output and Hirsch "
                     "index <em>h</em> of authors: Conceptualization of tapered Hirsch index <em>h<sub>T</sub></em>, "
                     "circular citation area radius <em>R</em> and ciation acceleration <em>a.</em> "
                     "<em>Scientometrics</em> 93:987&ndash;1004."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_circ_cite_area_radius
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6184,6 +6478,10 @@ def metric_citation_acceleration() -> Metric:
                     "<em>Scientometrics</em> 93:987&ndash;1004."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_citation_acceleration
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -6201,12 +6499,14 @@ def metric_redner_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$R=\sqrt{C^P}=\sqrt{\sum\limits_{i=1}^{P}{C_i}}$$"
     m.description = "<p>The Redner index (Redner 2010) is just the square-root of the total citation count for " \
-                    "all publications, similar to the Levene <em>j-</em>index, which is the sum of the square-root " \
+                    "all publications, similar to the __Levene j-index__, which is the sum of the square-root " \
                     "of the counts.</p>" + equation
     m.references = ["Redner, S. (2010) On the meaning of the <em>h-</em>index. <em>Journal of Statistical "
                     "Mechanics: Theory and Experiment</em> 2010(3):L03005."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_redner_index
+    m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6225,13 +6525,15 @@ def metric_levene_j_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$j=\sum\limits_{i=1}^{P}{\sqrt{C_i}}$$"
     m.description = "<p>The Levene <em>j-</em>index (Levene <em>et al.</em> 2012) is the sum of the square-root " \
-                    "of citation counts for all publications, similar to the Redner index which is the square-root " \
-                    "of the sum.</p>" + equation
+                    "of citation counts for all publications, similar to the __Redner index__ which is the " \
+                    "square-root of the sum.</p>" + equation
     m.references = ["Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list "
                     "of cited publications. <em>International Journal of Scientometrics, Informetrics and "
                     "Bibliometrics</em> 16:1."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_levene_j_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6257,6 +6559,7 @@ def metric_s_index_h_mixed() -> Metric:
                     "<em>Journal of Library and Information Studies</em> 8:1&ndash;9."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_s_index_h_mixed
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -6278,12 +6581,13 @@ def metric_t_index_h_mixed() -> Metric:
     equation = r"$$T=100\log_{10}\left(R\times h \times C/P\right),$$"
     m.description = "<p>The <em>T-</em>index (Ye 2010) is an <em>h-</em>mixed synthetic index which " \
                     "combines multiple metrics together into a single value. It is calculated as </p>" + \
-                    equation + "<p>where <em>R</em> is the <em>R-</em>index and C/P is the mean number of " \
+                    equation + "<p>where <em>R</em> is the __R-index__ and C/P is the mean number of " \
                     "citations per publication.</p>"
     m.references = ["Ye, F.Y. (2010) Two H-mixed synthetic indices for the assessment of research performance. "
                     "<em>Journal of Library and Information Studies</em> 8:1&ndash;9."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_t_index_h_mixed
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -6297,19 +6601,24 @@ def calculate_citation_entropy(metric_set: MetricSet) -> float:
 def metric_citation_entropy() -> Metric:
     m = Metric()
     m.name = "citation entropy"
-    m.full_name = "citation entropy (s-index)"
-    m.html_name = "citation entropy (<em>s-</em>index)"
+    m.full_name = "citation entropy"
+    # m.html_name = "citation entropy"
+    m.synonyms = ["<em>s-</em>index (citation entropy)"]
     m.symbol = "<em>s</em>"
     m.metric_type = FLOAT
     equation = r"$$s=\frac{1}{4}\sqrt{C^P}e^{H^*},$$"
     heq = r"$$H^*=-\sum\limits_{i=1}^{P}{\left(\frac{C_i}{C^P}\log_2\frac{C_i}{C^P}\right)}.$$"
-    m.description = "<p>Citation entropy attempts to characterize the quality and impact of scientific research" \
+    m.description = "<p>Citation entropy (also known as the <em>s-</em> index) attempts to characterize the quality " \
+                    "and impact of scientific research" \
                     "using an entropy model. It is calculated as</p>" + equation + "<p>where <em>H</em><sup>*</sup> " \
                     "is the standardized Shannon entropy or</p>" + heq
     m.references = ["Silagadze, Z.K. (2009) Citation entropy and research impact estimation. "
                     "<em>ArXiv:physics</em> 0905.1039v2:1-7."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_citation_entropy
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -6332,16 +6641,19 @@ def metric_cq_index() -> Metric:
                     "and the total publications. It is calculated as:</p>" + eq_str + \
                     "which is the product of the mean number of citations per publication and the geometric mean " \
                     "of the numbers of citations and publications. It was designed to overcome problems with the " \
-                    "<em>C/P</em> index, particularly with respect to younger researchers."
+                    "__c/p__, particularly with respect to younger researchers."
     m.synonyms = ["<em>CQ</em> index"]
     m.references = ["Lindsey, D. (1978) The Corrected Quality Ratio: A composite index of scientific contribution "
                     "to knowledge. <em>Social Studies of Science</em> 8:349&ndash;354."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_cq_index
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
-# Corrected Quality ratios / 60:40 (Lindsay 1978)
+# Corrected Quality ratios / 60:40 (Glanzel 2008)
 def calculate_cq04_index(metric_set: MetricSet) -> float:
     total_cites = metric_set.metrics["total cites"].value
     total_pubs = metric_set.metrics["total pubs"].value
@@ -6351,18 +6663,21 @@ def calculate_cq04_index(metric_set: MetricSet) -> float:
 def metric_cq04_index() -> Metric:
     m = Metric()
     m.name = "cq0.4 index"
-    m.full_name = "CQ0.4 index"
-    m.html_name = "CQ<sup>0.4</sup> index"
+    m.full_name = "corrected quality ratio (60:40)"
+    m.html_name = "corrected quality ratio (60:40)"
     m.metric_type = FLOAT
     equation = r"$$CQ^{0.4}=\left(\frac{C^P}{P}\right)^{0.6}P^{0.4}$$"
-    m.description = "<p>The <em>CQ</em><sup>0.4</sup> index (Glänzel 2008) is a modification of the <em>CQ</em> " \
-                    "index, meant to better match the dimensionality of the <em>h-</em>index, calculated as:</p>" + \
+    m.description = "<p>The <em>CQ</em><sup>0.4</sup> index (Glänzel 2008) is a modification of the __cq index__, " \
+                    "meant to better match the dimensionality of the __h-index__, calculated as:</p>" + \
                     equation
     m.references = ["Glänzel, W. (2008) On some new bibliometric applications of statistics related to the "
                     "<em>h-</em>index. <em>Scientometrics</em> 77:187&ndash;196."]
     m.symbol = "CQ<sup>0.4</sup>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_cq04_index
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -6442,6 +6757,9 @@ def metric_th_index() -> Metric:
                     "<em>ArXiv:physics</em>:0508113v1."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_th_index
+    m.properties["Time"] = True
+    m.properties["All Citations"] = True
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -6459,13 +6777,17 @@ def metric_mean_at_index() -> Metric:
     m.symbol = r"\(\bar{a_t}\)"
     m.synonyms = ["<em>a<sub>t</sub></em>"]
     m.metric_type = FLOAT
-    equation = r"$$\bar{a_t}=\frac{C^P}{2t_h}.$$"
+    equation = r"$$\bar{a_t}=\frac{C^P}{2t_h},$$"
     m.description = "<p>The average activity (Popov 2005) of a researcher over the characteristic time scale of " \
-                    "their scientific activity is defined as:</p>" + equation
+                    "their scientific activity is defined as:</p>" + equation + "<p>where <em>t<sub>h</sub></em> " \
+                    "is the __th index__."
     m.references = ["Popov, S.B. (2005) A parameter to quantify dynamics of a researcher's scientific activity. "
                     "<em>ArXiv:physics</em>:0508113v1."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_mean_at_index
+    m.properties["Time"] = True
+    m.properties["All Citations"] = True
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -6511,6 +6833,10 @@ def metric_dci_index2() -> Metric:
                     "67:1424&ndash;1439."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_dci_index2
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -6529,7 +6855,7 @@ def metric_ddci_index2() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$"
     m.description = "<p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; " \
-                    "Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which " \
+                    "Ahlfren and Järvelin 2010) is an addendum to the __dci index 2__ which " \
                     "cumulates across different time intervals, rather than a single fixed interval. Formally, " \
                     "it is a vector defined as:</p>" + equation + "<p>where DCI<em><sub>j</sub></em>[<em>j</em>] " \
                     "is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated " \
@@ -6547,6 +6873,10 @@ def metric_ddci_index2() -> Metric:
                     "67:1424&ndash;1439."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_ddci_index2
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -6592,6 +6922,10 @@ def metric_dci_index10() -> Metric:
                     "67:1424&ndash;1439."]
     m.graph_type = MULTILINE_CHART_LEFT
     m.calculate = calculate_dci_index10
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -6610,7 +6944,7 @@ def metric_ddci_index10() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$\text{dDCI}_Y\left[j\right]=DCI_j\left[j\right] ,$$"
     m.description = "<p>The dynamic discounted cumulated impact index (Järvelin and Pearson 2008; " \
-                    "Ahlfren and Järvelin 2010) is an addendum to the discounted cumulated impact index which " \
+                    "Ahlfren and Järvelin 2010) is an addendum to the __dci index 10__ which " \
                     "cumulates across different time intervals, rather than a single fixed interval. Formally, " \
                     "it is a vector defined as:</p>" + equation + "<p>where DCI<em><sub>j</sub></em>[<em>j</em>] " \
                     "is essentially the last item in the DCI vector for time interval <em>j.</em> When calculated " \
@@ -6628,6 +6962,10 @@ def metric_ddci_index10() -> Metric:
                     "67:1424&ndash;1439."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_ddci_index10
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -6761,7 +7099,7 @@ def metric_history_h_index() -> Metric:
     hkeq = r"$$H^k=\underset{i}{\max}\left(C_i \geq i \times 2^k\right).$$"
     equation = r"$$H=\sum\limits_{k=0}^{K}{H^k},$$"
     m.description = "<p>The history <em>h-</em>index (Randić 2009) is another metric designed to help distinguish " \
-                    "among researchers with identical <em>h-</em>indices. It is based on the idea of exploring a " \
+                    "among researchers with identical __h-index__. It is based on the idea of exploring a " \
                     "power expansion of the citation counts for publications in the core. This index starts by " \
                     "creating a vector representing larger power expansions of citation counts. " \
                     "The <em>k</em><sup>th</sup> " \
@@ -6781,6 +7119,7 @@ def metric_history_h_index() -> Metric:
                     "<em>Scientometrics</em> 80(3):809&ndash;818."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_history_h_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -6799,8 +7138,8 @@ def metric_quality_quotient() -> Metric:
     m.synonyms = ["<em>Q</em>"]
     m.metric_type = FLOAT
     equation = r"$$Q=\frac{H}{h}.$$"
-    m.description = "<p>The quality quotient (Randić 2009) is the ratio between the history <em>h-</em>index and the " \
-                    "<em>h-</em>index,</p>" + equation + "<p>This metric can only really be used to compare " \
+    m.description = "<p>The quality quotient (Randić 2009) is the ratio between the __history h-index__ and the " \
+                    "__h-index__,</p>" + equation + "<p>This metric can only really be used to compare " \
                     "individuals with identical <em>h-</em>indices, as the minimum possible value varies with " \
                     "<em>h</em> in a non-monotonic manner, <em>e.g.,</em> " \
                     "when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; " \
@@ -6811,6 +7150,7 @@ def metric_quality_quotient() -> Metric:
                     "<em>Scientometrics</em> 80(3):809&ndash;818."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_quality_quotient
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -6852,6 +7192,10 @@ def metric_scientist_level() -> Metric:
                     "Engineering Science and Technology Review</em> 2(1):68&ndash;70."]
     m.graph_type = LINE_CHART_COMBINE
     m.calculate = calculate_scientist_level
+    m.properties["Alternative Metric"] = True
+    m.properties["total citations"] = True
+    m.properties["total publications"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -6872,12 +7216,15 @@ def metric_scientist_level_nonint() -> Metric:
     equation = r"$$\tau=\ln{\left(\sqrt{C^P}+P\right)}.$$"
     m.description = "<p>The non-integer scientist\'s level (Todeschini and Baccini 2016) is a logarithmic " \
                     "approach to scaling the total number of citations and publications of an author into a single " \
-                    "measure without the degeneracy of the integer measure. It is calculated as</p>" + \
-                    equation
+                    "measure without the degeneracy of the integer versioned __scientist level__. It is calculated " \
+                    "as</p>" + equation
     m.references = ["Todeschini, R., and A. Baccini (2016) <em>Handbook of Bibliometric Indicators: Quantitative "
                     "Tools for Studying and Evaluating Research.</em> Weinheim, Germany: Wiley."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_scientist_level_nonint
+    m.properties["Alternative Metric"] = True
+    m.properties["total citations"] = True
+    m.properties["total publications"] = True
     return m
 
 
@@ -6980,9 +7327,9 @@ def metric_q_index() -> Metric:
            r"\neq C_{i-1}\\ 1+a_{i-1} & \text{if }i>h \text{ and } C_i = C_{i-1} \end{matrix}\right. .$$"
     equation = r"$$Q=\frac{1}{P}\sum\limits_{i=1}^{P}{c_i q_i}.$$"
     m.description = "<p>The <em>q-</em>index (Bartneck and Kokkelmans 2011) is an attempt to measure whether an " \
-                    "author is manipulating their own <em>h-</em>index through self-citation. It calculates a " \
+                    "author is manipulating their own __h-index__ through self-citation. It calculates a " \
                     "potential cost of a self-citation for each publication whose citation count is equal or less " \
-                    "than <em>h,</em> sums these costs for all self-citations, then normalizes by the total " \
+                    "than the <em>h,</em> sums these costs for all self-citations, then normalizes by the total " \
                     "number of publications. Essentially, publications with a citation count equal to <em>h</em> " \
                     "generate a cost of 1 per self-citation, with each subsequent publication in rank order " \
                     "generating costs of 1/2, 1/3, 1/4, etc., with ties generating equal values. The potential costs " \
@@ -6997,6 +7344,8 @@ def metric_q_index() -> Metric:
                     "self-citation analysis. <em>Scientometrics</em> 87(1):85&ndash;98."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_q_index
+    m.properties["Self-Citation"] = True
+    m.properties["Alternative Metric"] = True
     return m
 
 
@@ -7055,7 +7404,7 @@ def metric_career_years_h_index_pub() -> Metric:
     equation = r"$$\text{career years }h\text{ by publications}=\underset{i}{\max}\left(i\leq P_i\right).$$"
     m.description = "<p>The career years <em>h-</em>index by publications (Mahbuba and Rousseau 2013) is a measure " \
                     "of publication intensity or distribution, rather than citation intensity as captured by " \
-                    "most <em>h-</em>type indices. Rather than create a list of publications ranked by citation " \
+                    "most __h-index__ type indices. Rather than create a list of publications ranked by citation " \
                     "count, one creates a list of years ranked by publication count. This list is then processed " \
                     "in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index " \
                     "by publications is the largest value <em>h</em> for which at least <em>h</em> years have " \
@@ -7069,6 +7418,9 @@ def metric_career_years_h_index_pub() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_pub
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -7131,7 +7483,7 @@ def metric_career_years_h_index_cite() -> Metric:
     equation = r"$$\text{career years }h\text{ by citations}=\underset{i}{\max}\left(i\leq P_i\right).$$"
     m.description = "<p>The career years <em>h-</em>index by citations (Mahbuba and Rousseau 2013) is a measure " \
                     "of citation intensity or distribution by publication year, rather than by publication as " \
-                    "captured by most <em>h-</em>type indices. Rather than create a list of publications ranked by " \
+                    "captured by most __h-index__ type indices. Rather than create a list of publications ranked by " \
                     "citation count, one creates a list of years ranked by citation count for all publications from " \
                     "that year. This list is then processed in the same manner as a typical <em>h-</em>type index, " \
                     "namely the career years <em>h-</em>index by citations is the largest value <em>h</em> for " \
@@ -7146,6 +7498,10 @@ def metric_career_years_h_index_cite() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_cite
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -7223,7 +7579,8 @@ def metric_career_years_h_index_avgcite() -> Metric:
     equation2 = r"$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}" \
                 r"{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$"
     m.description = "<p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) " \
-                    "is similar to the other two career years <em>h-</em>indices, but is based on the average " \
+                    "is similar to the __career years h-index by cite__ and __career years h-index by pub__, " \
+                    "but is based on the average " \
                     "number of citations generated per publication per year, rather than on the total publications " \
                     "or total citations for each year. One creates a list of years ranked by average citation count " \
                     "per publication for all publications from that year. This list is then processed in the same " \
@@ -7237,6 +7594,10 @@ def metric_career_years_h_index_avgcite() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_avgcite
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -7314,7 +7675,7 @@ def metric_career_years_h_index_diffspeed() -> Metric:
     equation2 = r"$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{A_h}-h\frac{C_{h+1}}{A_{h+1}}}" \
                 r"{1-\frac{C_{h+1}}{A_{h+1}}+\frac{C_h}{A_h}}.$$"
     m.description = "<p>The career years <em>h-</em>index by diffusion speed (Mahbuba and Rousseau 2013) " \
-                    "is similar to the other career years <em>h-</em>indices, but rescales the citation " \
+                    "is similar to the __career years h-index by avg cite__, but rescales the citation " \
                     "counts per year for the time ellapsed since the year of publication. One could also calculate " \
                     "it for a fixed time window, but here we are using career length at the time of calcuation. " \
                     "One creates a list of years ranked by diffusion speed estimated for all citations for all " \
@@ -7329,6 +7690,10 @@ def metric_career_years_h_index_diffspeed() -> Metric:
                     "<em>Scientometrics</em> 96(3):785&ndash;797."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_career_years_h_index_diffspeed
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -7381,6 +7746,8 @@ def metric_collaborative_index() -> Metric:
                     "Florida."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_collaborative_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -7405,6 +7772,9 @@ def metric_degree_of_collaboration() -> Metric:
                     "<em>Journal of Information Science</em> 6(1):33&ndash;38."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_degree_of_collaboration
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -7454,6 +7824,8 @@ def metric_collaborative_coefficient() -> Metric:
                     "of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_collaborative_coefficient
+    m.properties["Alternative Metric"] = True
+    m.properties["Coauthorship"] = True
     return m
 
 
@@ -7473,6 +7845,7 @@ def metric_i10_index() -> Metric:
                     "have received at least 10 citations.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_i10_index
+    m.properties["Basic Statistic"] = True
     return m
 
 
@@ -7489,12 +7862,13 @@ def metric_i100_index() -> Metric:
     m.symbol = "i100"
     m.metric_type = INT
     m.description = "<p>The <em>i100</em> index (Teixeira da Silva 2021) is an exapansion of Google Scholar's " \
-                    "i10 index and is simply the number of publications which have received at least 100 citations.</p>"
+                    "__i10__ and is simply the number of publications which have received at least 100 citations.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_i100_index
     m.references = ["Teixeira da Silva, J.A. (2021) The i100-index, i1000-index and i10,000-index: expansion and "
                     "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
                     "classification. <em>Scientometrics</em> 126:3667-3672."]
+    m.properties["Basic Statistic"] = True
     return m
 
 
@@ -7511,13 +7885,14 @@ def metric_i1000_index() -> Metric:
     m.symbol = "i1000"
     m.metric_type = INT
     m.description = "<p>The <em>i1000</em> index (Teixeira da Silva 2021) is an exapansion of Google Scholar's " \
-                    "i10 index and is simply the number of publications which have received at least 1000 " \
+                    "__i10__ and is simply the number of publications which have received at least 1000 " \
                     "citations.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_i1000_index
     m.references = ["Teixeira da Silva, J.A. (2021) The i100-index, i1000-index and i10,000-index: expansion and "
                     "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
                     "classification. <em>Scientometrics</em> 126:3667-3672."]
+    m.properties["Basic Statistic"] = True
     return m
 
 
@@ -7529,15 +7904,16 @@ def calculate_p1_index(metric_set: MetricSet) -> int:
 def metric_p1_index() -> Metric:
     m = Metric()
     m.name = "P1"
-    m.full_name = "P1"
-    m.html_name = "<em>P</em><sub>1</sub>"
+    m.full_name = "p-index (P1)"
+    m.html_name = "<em>p-</em>index (<em>P</em><sub>1</sub>)"
     m.symbol = "P1"
-    m.synonyms = ["<em>p-</em>index (<em>P</em><sub>1</sub>)"]
+    m.synonyms = ["<em>p-</em>index (<em>P</em><sub>1</sub>)", "<em>P</em><sub>1</sub>"]
     m.metric_type = INT
     m.description = "<p><em>P</em><sub>1</sub> (van Eck and Waltman 2008), also known as the <em>p-</em>index, is " \
                     "simply the number of publications which have received at least one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_p1_index
+    m.properties["Basic Statistic"] = True
     return m
 
 
@@ -7550,13 +7926,16 @@ def metric_cited_paper_percent() -> Metric:
     m = Metric()
     m.name = "cited paper percent"
     m.full_name = "cited paper percent"
-    m.html_name = "<em>P</em><sub>C</sub>%"
+    # m.html_name = "<em>P</em><sub>C</sub>%"
+    m.synonyms = ["<em>P</em><sub>C</sub>%"]
     m.symbol = "Pc%"
     m.metric_type = FLOAT
     m.description = "<p>The cited paper percent is simply the percent of publications which have received at least " \
                     "one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_cited_paper_percent
+    m.properties["Basic Statistic"] = True
+    m.properties["Uncited Publications"] = True
     return m
 
 
@@ -7577,6 +7956,8 @@ def metric_uncitedness_factor() -> Metric:
                     "<p>where <em>P</em><sub>1</sub> is the number of publications with at least one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_uncitedness_factor
+    m.properties["Basic Statistic"] = True
+    m.properties["Uncited Publications"] = True
     return m
 
 
@@ -7589,7 +7970,8 @@ def metric_uncited_paper_percent() -> Metric:
     m = Metric()
     m.name = "uncited paper percent"
     m.full_name = "uncited paper percent"
-    m.html_name = "<em>P</em><sub>U</sub>%"
+    # m.html_name = "<em>P</em><sub>U</sub>%"
+    m.synonyms = ["<em>P</em><sub>U</sub>%"]
     m.symbol = "Pu%"
     m.metric_type = FLOAT
     equation = r"$$P_U\% = 100 - P_C\%,$$"
@@ -7598,6 +7980,8 @@ def metric_uncited_paper_percent() -> Metric:
                     "publications with at least one citation.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_uncited_paper_percent
+    m.properties["Basic Statistic"] = True
+    m.properties["Uncited Publications"] = True
     return m
 
 
@@ -7742,15 +8126,17 @@ def metric_apparent_h_index() -> Metric:
     m.metric_type = FLOAT
     m.example = write_apparent_h_index_example
     equation = r"$$h_A=h \frac{P_{\textrm{non-zero cites}}}{P}.$$"
-    m.description = "<p>The apparent <em>h-</em>index (Mohammed <em>et al.</em> 2020) is simply the <em>h-</em>index " \
+    m.description = "<p>The apparent <em>h-</em>index (Mohammed <em>et al.</em> 2020) is simply the __h-index__ " \
                     "times the proportion of publications that have at least one citation; it is similar to the " \
-                    "normalized <em>h-</em>index.</p>" + equation
+                    "__normalized h-index__.</p>" + equation
     m.symbol = "<em>h<sub>A</sub></em>"
     m.synonyms = ["<em>h<sub>A</sub></em>"]
     m.references = ["Mohammed, S., A. Morgan, and E. Nyantakyi (2020) On the influence of uncited publications on a "
                     "researcher's <em>h</em>‑index. <em>Scientometrics</em>."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_apparent_h_index
+    m.properties["Uncited Publications"] = True
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -7868,6 +8254,7 @@ def metric_rec_index() -> Metric:
                     "<em>rec-index</em>. <em>Scientometrics</em> 120:885-896."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_rec_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -7980,13 +8367,14 @@ def metric_chi_index() -> Metric:
     m.metric_type = FLOAT
     m.description = "<p>The <em>χ-</em>index (Fenner <em>et al.</em> 2018) is the square-root of the size of the " \
                     "largest rectangle which can " \
-                    "fit under the citation curve; similar to how <em>h</em> is the size of the largest square. It " \
-                    "is the square-root of the <em>rec-</em>index.</p>" \
+                    "fit under the citation curve; similar to how the __h-index__ is the size of the largest square. " \
+                    "It is the square-root of the __rec-index__.</p>" \
                     "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
     m.references = ["Fenner, T., M. Harris, M. Levene, and J. Bar-Ilan (2018) A novel bibliometric index with a "
                     "simple geometric interpretation. <em>PLoS ONE</em> 13(7):e0200098."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_chi_index
+    m.properties["Core Metric"] = True
     return m
 
 
@@ -8069,7 +8457,7 @@ def metric_reci_recp() -> Metric:
     m.synonyms = ["<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"]
     m.metric_type = INTLIST
     m.description = "<p>The [<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>] metrics (Levene <em>et al.</em> " \
-                    "2020) are a two-dimensional expansion of the <em>rec</em>-index, where <em>rec<sub>I</sub></em> " \
+                    "2020) are a two-dimensional expansion of the __rec-index__, where <em>rec<sub>I</sub></em> " \
                     "is the largest vertical (influential) rectangle that can fit under the citation " \
                     "curve and <em>rec<sub>P</sub></em> is the largest horizontal (prolific) rectangle " \
                     "that can fit under the citation curve. The minimum size of both is the area of the " \
@@ -8078,6 +8466,8 @@ def metric_reci_recp() -> Metric:
                     "quality and quantity. <em>Scientometrics</em>."]
     m.graph_type = TWO_LINE_CHART
     m.calculate = calculate_reci_recp
+    m.properties["Core Metric"] = True
+    m.properties["Multidimensional Metric"] = True
     return m
 
 
@@ -8168,6 +8558,14 @@ def metric_academic_trace() -> Metric:
                     "<em>Scientometrics.</em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_academic_trace
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["Tail Citations"] = True
+    m.properties["Tail Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Uncited Publications"] = True
     return m
 
 
@@ -8221,12 +8619,14 @@ def metric_scientific_quality_index() -> Metric:
                     "which is simply the sum of the mean " \
                     "citations per publication and the percent of publications with 10 or more citations (both " \
                     "adjusted for self- and co-author citations, in a perfect world). The authors considered it to " \
-                    "be a slightly better judge of quality than metrics such as <em>h</em>.</p>"
+                    "be a slightly better judge of quality than metrics such as the __h-index__.</p>"
     m.references = ["Pluskiewicz, W., B. Drozdzowska, P. Adamczyk, and K. Noga (2019) Scientific Quality Index: A "
                     "composite size‑independent metric compared with <em>h</em>‑index for 480 medical researchers. "
                     "<em>Scientometrics</em> 119:1009&ndash;1016."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_scientific_quality_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -8248,7 +8648,7 @@ def metric_first_author_h_index() -> Metric:
     m.description = "<p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale output" \
                     "between large and small collaborative research teams under an assumption that larger teams " \
                     "could produce more output per year just by the nature of being larger. It attempts to rescale " \
-                    "the <em>h-</em>index based on the number of publications in the <em>h-</em>core that were " \
+                    "the __h-index__ based on the number of publications in the <em>h-</em>core that were " \
                     "first-authored (<em>P<sub>fa</sub></em>).</p>" + equation + "<p>The authors did not seem to " \
                     "realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal " \
                     "to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of " \
@@ -8263,6 +8663,9 @@ def metric_first_author_h_index() -> Metric:
                     "Engineering Sciences in Medicine</em> 33:299&ndash;300."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_first_author_h_index
+    m.properties["Core Property"] = True
+    m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -8282,7 +8685,7 @@ def metric_o_index() -> Metric:
     equation = r"$$o=\sqrt{hC_{max}}.$$"
     m.description = "<p>The <em>o-</em>index (Dorogovtsev and Mendses 2015) was designed to balance a researcher\'s " \
                     "most-cited work with their diligence in regular publication, and is simply the geometric mean " \
-                    "of their <em>h-</em>index and the count of citations to their most cited work. It is calculated " \
+                    "of their __h-index__ and the count of citations to their most cited work. It is calculated " \
                     "as:</p>" + equation
     m.symbol = "<em>o</em>"
     m.synonyms = ["<em>o</em>"]
@@ -8290,6 +8693,7 @@ def metric_o_index() -> Metric:
                     "11(11):882&ndash;883."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_o_index
+    m.properties["Compound Metric"] = True
     return m
 
 
@@ -8310,7 +8714,7 @@ def metric_discounted_h_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$dh=h \sqrt{\frac{C^P-S^P}{C^P}},$$"
     m.description = "<p>The discounted <em>h-</em>index (Ferrara and Romero 2013) was designed to adjust the " \
-                    "<em>h-</em>index for self-citations by multiplying it by square-root of the percentage of total " \
+                    "__h-index__ for self-citations by multiplying it by square-root of the percentage of total " \
                     "citations that were not self-citations. It is readily calculated " \
                     "as:</p>" + equation + "<p>where <em>S<sup>P</sup></em> is the sum of self-citations for all " \
                     "publications."
@@ -8321,6 +8725,8 @@ def metric_discounted_h_index() -> Metric:
                     "Society for Information Science and Technology</em> 64(11):2332&ndash;2339."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_discounted_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Self-Citation"] = True
     return m
 
 
@@ -8430,8 +8836,8 @@ def metric_mikhailov_j_index() -> Metric:
     graph.name = "mikhailov_j_index_desc"
     graph.data = write_mikhailov_j_index_desc_data
     equation = r"$$j=\underset{i}{\max}\left(\text{floor}\left(i^{3/2}\right) \leq C_i\right).$$"
-    m.description = "<p>Mikhailov\'s <em>j</em>-index (Mikhailov 2014) falls bewteen the <em>h</em>-index and the " \
-                    "<em>h</em>(2)-index. Rather than requiring each publication in the core to have <em>h</em> or " \
+    m.description = "<p>Mikhailov\'s <em>j</em>-index (Mikhailov 2014) falls between the __h-index__ and the " \
+                    "__h(2)-index__. Rather than requiring each publication in the core to have <em>h</em> or " \
                     "<em>h</em><sup>2</sup> publications, respectively, it requires them to have " \
                     "<em>j</em><sup>3/2</sup>:</p>" + \
                     equation + "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>"
@@ -8439,6 +8845,7 @@ def metric_mikhailov_j_index() -> Metric:
                     "the Russian Academy of Sciences</em> 84(3):217&ndash;220."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_mikhailov_j_index
+    m.properties["Core Metric"] = True
     return m
 
 
