@@ -20,23 +20,6 @@ LINE_CHART_COMBINE = 4
 TWO_LINE_CHART = 5
 FSTR = "1.4f"  # constant formatting string
 
-# METRIC_PROPERTIES = ("Basic Statistic",
-#                      "Core Metric",
-#                      "Core Property",
-#                      "Alternative Metric",
-#                      "Compound Metric",
-#                      "Multidimensional Metric",
-#                      "Time",
-#                      "Coauthorship",
-#                      "Self-Citation",
-#                      "All Publications",
-#                      "Core Publications",
-#                      "Tail Publications",
-#                      "Uncited Publications",
-#                      "All Citations",
-#                      "Core Citations",
-#                      "Tail Citations")
-
 PROPERTY_TYPES = ("Metric Type",
                   "Metric Property",
                   "Considerations and Adjustments",
@@ -1444,7 +1427,9 @@ def metric_wu_wq() -> Metric:
     m.symbol = "<em>q</em>"
     m.metric_type = INT
     m.description = "<p>A corollary measure of the __Wu w-index__, <em>q</em> (Wu 2010) is the number of " \
-                    "additional citations needed by an author to raise their <em>w-</em>index by one.</p>"
+                    "additional citations needed by an author to raise their <em>w-</em>index by one. It is similar " \
+                    "to the __rational h-index__, except expressed as an integer rather than a fractional " \
+                    "component.</p>"
     m.references = ["Wu, Q. (2010) The <em>w-</em>index: A measure to assess scientific impact by focusing on widely "
                     "cited papers. <em>Journal of the American Society for Information Science and Technology</em> "
                     "61(3):609&ndash;614."]
@@ -1535,10 +1520,10 @@ def metric_r_index() -> Metric:
     m.description = "<p>The <em>R-</em>index (Jin <em>et al.</em> 2007) is a measure of the quality of the " \
                     "__h-index__ " \
                     "core, designed to avoid punishing scientists with larger cores. As a simple arithmetic average, " \
-                    "the <em>a-</em>index has the size of the core in the divisor and therefore can lead to smaller " \
+                    "the __a-index__ has the size of the core in the divisor and therefore can lead to smaller " \
                     "values for scientists with much larger cores than those with much smaller cores (this is not an " \
-                    "issue of the indices are only being used to compare those with similar sized cores). The " \
-                    "<em>R-</em>index uses the square-root of the citations in the core rather than average:</p>" + \
+                    "issue if the indices are only being used to compare those with similar sized cores). The " \
+                    "<em>R-</em>index is the square-root of the citations in the core rather than average:</p>" + \
                     equation
     m.references = ["Jin, B., L. Liang, R. Rousseau, and L. Egghe (2007) The <em>R-</em> and <em>AR-</em>indices: "
                     "Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863."]
@@ -1576,6 +1561,8 @@ def metric_indifference() -> Metric:
                     "<em>Scientometrics</em> 36:97&ndash;107."]
     m.calculate = calculate_indifference
     m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -1658,6 +1645,8 @@ def metric_rational_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_rational_h_index
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -1755,6 +1744,8 @@ def metric_real_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_real_h_index
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -1826,7 +1817,7 @@ def metric_tapered_h_index() -> Metric:
     m.synonyms = ["<em>h<sub>T</sub></em>"]
     m.graph_type = LINE_CHART
     m.calculate = calculate_tapered_h_index
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
     m.properties["All Citations"] = True
     m.properties["All Publications"] = True
     return m
@@ -1929,8 +1920,9 @@ def metric_todeschini_j_index() -> Metric:
                     "comparisons between other common indices. <em>Scientometrics</em> 87:621&ndash;639."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_todeschini_j_index
-    m.properties["Core Metric"] = True
+    m.properties["Core Property"] = True
     m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2042,7 +2034,9 @@ def metric_wohlin_w_index() -> Metric:
                     "81(2):521&ndash;533."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_wohlin_w_index
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -2115,6 +2109,7 @@ def metric_v_index() -> Metric:
     m.symbol = "<em>v</em>"
     m.calculate = calculate_v_index
     m.properties["Core Property"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -2142,6 +2137,7 @@ def metric_normalized_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_normalized_h_index
     m.properties["Core Property"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -2390,6 +2386,8 @@ def metric_pi_rate() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_pi_rate
     m.properties["Core Property"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2409,7 +2407,7 @@ def metric_q2_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$q^2=\sqrt{h\times m}.$$"
     m.description = "<p>The <em>q</em><sup>2</sup>-index (Cabrerizo <em>et al.</em> 2010) is another metric " \
-                    "designed to describe the Hirsch core. It is the geometric mean of both a quantitative " \
+                    "designed to describe the __h-index__ core. It is the geometric mean of both a quantitative " \
                     "(__h-index__) and a qualitative (__m-index__) measure of the core,</p>" + equation
     m.references = ["Cabrerizo, F.J., S. Alonso, E. Herrera-Viedma, and F. Herrera (2010) "
                     "<em>q</em><sup>2</sup>-index: quantiative and qualitative evaluation based on the number and "
@@ -2418,6 +2416,8 @@ def metric_q2_index() -> Metric:
     m.calculate = calculate_q2_index
     m.properties["Core Property"] = True
     m.properties["Compound Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2498,6 +2498,7 @@ def metric_e_index() -> Metric:
     m.calculate = calculate_e_index
     m.properties["Core Property"] = True
     m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2523,6 +2524,8 @@ def metric_maxprod_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_maxprod_index
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -2809,7 +2812,8 @@ def metric_k_index() -> Metric:
     m.properties["Core Property"] = True
     m.properties["Core Citations"] = True
     m.properties["Tail Citations"] = True
-    m.properties["All Publications"] = True
+    m.properties["Tail Publications"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -2841,6 +2845,8 @@ def metric_prathap_p_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_prathap_p_index
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -2863,7 +2869,10 @@ def metric_ph_ratio() -> Metric:
                     "proportion of citations in the upper core and the lower tail.</p>"
     m.graph_type = LINE_CHART
     m.calculate = calculate_ph_ratio
+    m.properties["Core Property"] = True
     m.properties["Compound Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3043,6 +3052,7 @@ def metric_multdim_h_index() -> Metric:
     m.properties["Multidimensional Metric"] = True
     m.properties["Core Metric"] = True
     m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -3293,7 +3303,7 @@ def write_em_index_example(metric_set: MetricSet) -> str:
         return cnt
 
     outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
-             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
              "publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
@@ -3315,7 +3325,8 @@ def write_em_index_example(metric_set: MetricSet) -> str:
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
     outstr += "<table class=\"example_table\">"
-    oldh = len(em_components)
+    # oldh = len(em_components)
+    oldh = len(citations)
     for j, h in enumerate(em_components):
         if j == 0:
             row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -3425,7 +3436,6 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
     outstr += "<table class=\"example_table\">"
-    # oldh = len(em_components)
     for j, h in enumerate(em_components):
         if j == 0:
             row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -3520,7 +3530,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
         return cnt
 
     outstr = "<p>Publications are ordered by number of citations, from highest to lowest. After each step, " \
-             "<em>E<sub>i</sub></em> is substracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
              "publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
@@ -3542,7 +3552,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
     outstr += "<table class=\"example_table\">"
-    oldh = len(em_components)
+    oldh = len(citations)
     for j, h in enumerate(em_components):
         if j == 0:
             row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -3759,6 +3769,8 @@ def metric_total_self_cites() -> Metric:
     m.calculate = calculate_total_self_cites
     m.properties["Basic Statistic"] = True
     m.properties["Self-Citation"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3784,6 +3796,8 @@ def metric_total_self_cite_rate() -> Metric:
     m.calculate = calculate_total_self_cite_rate
     m.properties["Basic Statistic"] = True
     m.properties["Self-Citation"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3810,6 +3824,8 @@ def metric_mean_self_cite_rate() -> Metric:
     m.calculate = calculate_mean_self_cite_rate
     m.properties["Basic Statistic"] = True
     m.properties["Self-Citation"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -3841,6 +3857,8 @@ def metric_sharpened_h_index_self() -> Metric:
     m.calculate = calculate_sharpened_h_index_self
     m.properties["Core Metric"] = True
     m.properties["Self-Citation"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -3878,6 +3896,8 @@ def metric_b_index_mean_self() -> Metric:
     m.calculate = calculate_b_index_mean_self
     m.properties["Core Metric"] = True
     m.properties["Self-Citation"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -4053,6 +4073,8 @@ def metric_b_index_10_percent() -> Metric:
     m.calculate = calculate_b_index_10_percent
     m.properties["Core Metric"] = True
     m.properties["Self-Citation"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -4129,6 +4151,8 @@ def metric_hi_index() -> Metric:
     m.calculate = calculate_hi_index
     m.properties["Coauthorship"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4207,6 +4231,8 @@ def metric_pure_h_index_frac() -> Metric:
     m.calculate = calculate_pure_h_index_frac
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4304,6 +4330,8 @@ def metric_pure_h_index_prop() -> Metric:
     m.calculate = calculate_pure_h_index_prop
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4401,6 +4429,8 @@ def metric_pure_h_index_geom() -> Metric:
     m.calculate = calculate_pure_h_index_geom
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4488,6 +4518,8 @@ def metric_adapt_pure_h_index_frac() -> Metric:
     m.calculate = calculate_adapt_pure_h_index_frac
     m.properties["Coauthorship"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4597,6 +4629,8 @@ def metric_adapt_pure_h_index_prop() -> Metric:
     m.calculate = calculate_adapt_pure_h_index_prop
     m.properties["Coauthorship"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4706,6 +4740,8 @@ def metric_adapt_pure_h_index_geom() -> Metric:
     m.calculate = calculate_adapt_pure_h_index_geom
     m.properties["Coauthorship"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4781,9 +4817,9 @@ def metric_profit_p_index() -> Metric:
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_profit_p_index
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
     m.properties["Coauthorship"] = True
-
+    m.properties["All Publications"] = True
     return m
 
 
@@ -4882,6 +4918,8 @@ def metric_profit_adj_h_index() -> Metric:
     m.calculate = calculate_profit_adj_h_index
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -4908,8 +4946,11 @@ def metric_profit_h_index() -> Metric:
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_profit_h_index
+    m.properties["Core Property"] = True
     m.properties["Compound Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -5000,6 +5041,8 @@ def metric_normal_hi_index() -> Metric:
     m.calculate = calculate_normal_hi_index
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5080,6 +5123,8 @@ def metric_gf_cite_index() -> Metric:
     m.calculate = calculate_gf_cite_index
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5170,6 +5215,8 @@ def metric_hm_index() -> Metric:
     m.calculate = calculate_hm_index
     m.properties["Coauthorship"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5257,6 +5304,8 @@ def metric_gf_paper_index() -> Metric:
     m.calculate = calculate_gf_paper_index
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5353,6 +5402,8 @@ def metric_pos_weight_h_index() -> Metric:
     m.calculate = calculate_pos_weight_h_index
     m.properties["Core Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5384,6 +5435,8 @@ def metric_prop_weight_cite_agg() -> Metric:
     m.calculate = calculate_prop_weight_cite_agg
     m.properties["Alternative Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -5476,6 +5529,8 @@ def metric_prop_weight_cite_h_cut() -> Metric:
     m.calculate = calculate_prop_weight_cite_h_cut
     m.properties["Core Property"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5504,6 +5559,8 @@ def metric_frac_weight_cite_agg() -> Metric:
     m.calculate = calculate_frac_weight_cite_agg
     m.properties["Alternative Metric"] = True
     m.properties["Coauthorship"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     return m
 
 
@@ -5578,6 +5635,8 @@ def metric_frac_weight_cite_h_cut() -> Metric:
     m.calculate = calculate_frac_weight_cite_h_cut
     m.properties["Core Property"] = True
     m.properties["Coauthorship"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -5666,6 +5725,8 @@ def metric_h_rate() -> Metric:
     m.calculate = calculate_h_rate
     m.properties["Core Property"] = True
     m.properties["Time"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -5744,6 +5805,8 @@ def metric_ls_h_rate() -> Metric:
     m.calculate = calculate_ls_h_rate
     m.properties["Core Property"] = True
     m.properties["Time"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -5771,9 +5834,8 @@ def metric_time_scaled_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_time_scaled_h_index
     m.properties["Core Property"] = True
-    m.properties["Core Citations"] = True
-    m.properties["Tail Citations"] = True
     m.properties["All Publications"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -5807,6 +5869,7 @@ def metric_alpha_index() -> Metric:
     m.calculate = calculate_alpha_index
     m.properties["Core Property"] = True
     m.properties["Time"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -5840,6 +5903,7 @@ def metric_ar_index() -> Metric:
     m.properties["Time"] = True
     m.properties["Core Property"] = True
     m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -5955,6 +6019,8 @@ def metric_hpd_index() -> Metric:
     m.calculate = calculate_hpd_index
     m.properties["Time"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -6036,6 +6102,8 @@ def metric_contemporary_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_contemporary_h_index
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     m.properties["Time"] = True
     return m
 
@@ -6156,6 +6224,8 @@ def metric_trend_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_trend_h_index
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     m.properties["Time"] = True
     return m
 
@@ -6269,6 +6339,7 @@ def metric_franceschini_f_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_franceschini_f_index
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
     m.properties["Time"] = True
     return m
 
@@ -6300,6 +6371,8 @@ def metric_annual_h_index() -> Metric:
     m.properties["Coauthorship"] = True
     m.properties["Time"] = True
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -6505,7 +6578,7 @@ def metric_redner_index() -> Metric:
                     "Mechanics: Theory and Experiment</em> 2010(3):L03005."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_redner_index
-    m.properties["Basic Statistic"] = True
+    m.properties["Alternative Metric"] = True
     m.properties["All Citations"] = True
     return m
 
@@ -6560,6 +6633,10 @@ def metric_s_index_h_mixed() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_s_index_h_mixed
     m.properties["Compound Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -6588,6 +6665,10 @@ def metric_t_index_h_mixed() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_t_index_h_mixed
     m.properties["Compound Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -6759,6 +6840,7 @@ def metric_th_index() -> Metric:
     m.calculate = calculate_th_index
     m.properties["Time"] = True
     m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Alternative Metric"] = True
     return m
 
@@ -6787,6 +6869,7 @@ def metric_mean_at_index() -> Metric:
     m.calculate = calculate_mean_at_index
     m.properties["Time"] = True
     m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Alternative Metric"] = True
     return m
 
@@ -6835,6 +6918,7 @@ def metric_dci_index2() -> Metric:
     m.calculate = calculate_dci_index2
     m.properties["Alternative Metric"] = True
     m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     m.properties["Time"] = True
     m.properties["Multidimensional Metric"] = True
     return m
@@ -6875,6 +6959,7 @@ def metric_ddci_index2() -> Metric:
     m.calculate = calculate_ddci_index2
     m.properties["Alternative Metric"] = True
     m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     m.properties["Time"] = True
     m.properties["Multidimensional Metric"] = True
     return m
@@ -6924,6 +7009,7 @@ def metric_dci_index10() -> Metric:
     m.calculate = calculate_dci_index10
     m.properties["Alternative Metric"] = True
     m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     m.properties["Time"] = True
     m.properties["Multidimensional Metric"] = True
     return m
@@ -6964,6 +7050,7 @@ def metric_ddci_index10() -> Metric:
     m.calculate = calculate_ddci_index10
     m.properties["Alternative Metric"] = True
     m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
     m.properties["Time"] = True
     m.properties["Multidimensional Metric"] = True
     return m
@@ -7120,6 +7207,8 @@ def metric_history_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_history_h_index
     m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -7150,7 +7239,10 @@ def metric_quality_quotient() -> Metric:
                     "<em>Scientometrics</em> 80(3):809&ndash;818."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_quality_quotient
+    m.properties["Core Property"] = True
     m.properties["Compound Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -7193,8 +7285,8 @@ def metric_scientist_level() -> Metric:
     m.graph_type = LINE_CHART_COMBINE
     m.calculate = calculate_scientist_level
     m.properties["Alternative Metric"] = True
-    m.properties["total citations"] = True
-    m.properties["total publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Multidimensional Metric"] = True
     return m
 
@@ -7223,8 +7315,8 @@ def metric_scientist_level_nonint() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_scientist_level_nonint
     m.properties["Alternative Metric"] = True
-    m.properties["total citations"] = True
-    m.properties["total publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -7345,6 +7437,8 @@ def metric_q_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_q_index
     m.properties["Self-Citation"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Alternative Metric"] = True
     return m
 
@@ -7747,6 +7841,7 @@ def metric_collaborative_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_collaborative_index
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
     m.properties["Coauthorship"] = True
     return m
 
@@ -7825,6 +7920,7 @@ def metric_collaborative_coefficient() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_collaborative_coefficient
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
     m.properties["Coauthorship"] = True
     return m
 
@@ -7846,6 +7942,8 @@ def metric_i10_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_i10_index
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -7869,6 +7967,8 @@ def metric_i100_index() -> Metric:
                     "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
                     "classification. <em>Scientometrics</em> 126:3667-3672."]
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -7893,6 +7993,8 @@ def metric_i1000_index() -> Metric:
                     "fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher "
                     "classification. <em>Scientometrics</em> 126:3667-3672."]
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -7914,6 +8016,9 @@ def metric_p1_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_p1_index
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["Uncited Publications"] = True
     return m
 
 
@@ -7935,6 +8040,8 @@ def metric_cited_paper_percent() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_cited_paper_percent
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Uncited Publications"] = True
     return m
 
@@ -7957,6 +8064,8 @@ def metric_uncitedness_factor() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_uncitedness_factor
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Uncited Publications"] = True
     return m
 
@@ -7981,6 +8090,8 @@ def metric_uncited_paper_percent() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_uncited_paper_percent
     m.properties["Basic Statistic"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Uncited Publications"] = True
     return m
 
@@ -8136,6 +8247,9 @@ def metric_apparent_h_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_apparent_h_index
     m.properties["Uncited Publications"] = True
+    m.properties["All Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     m.properties["Core Metric"] = True
     return m
 
@@ -8254,7 +8368,9 @@ def metric_rec_index() -> Metric:
                     "<em>rec-index</em>. <em>Scientometrics</em> 120:885-896."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_rec_index
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -8374,7 +8490,9 @@ def metric_chi_index() -> Metric:
                     "simple geometric interpretation. <em>PLoS ONE</em> 13(7):e0200098."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_chi_index
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -8466,7 +8584,9 @@ def metric_reci_recp() -> Metric:
                     "quality and quantity. <em>Scientometrics</em>."]
     m.graph_type = TWO_LINE_CHART
     m.calculate = calculate_reci_recp
-    m.properties["Core Metric"] = True
+    m.properties["Alternative Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     m.properties["Multidimensional Metric"] = True
     return m
 
@@ -8627,6 +8747,9 @@ def metric_scientific_quality_index() -> Metric:
     m.calculate = calculate_scientific_quality_index
     m.properties["Alternative Metric"] = True
     m.properties["Self-Citation"] = True
+    m.properties["Compound Metric"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -8666,6 +8789,7 @@ def metric_first_author_h_index() -> Metric:
     m.properties["Core Property"] = True
     m.properties["Coauthorship"] = True
     m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     return m
 
 
@@ -8694,6 +8818,8 @@ def metric_o_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_o_index
     m.properties["Compound Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
     return m
 
 
@@ -8727,6 +8853,10 @@ def metric_discounted_h_index() -> Metric:
     m.calculate = calculate_discounted_h_index
     m.properties["Core Metric"] = True
     m.properties["Self-Citation"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
     return m
 
 
@@ -8846,6 +8976,738 @@ def metric_mikhailov_j_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_mikhailov_j_index
     m.properties["Core Metric"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Core Publications"] = True
+    return m
+
+
+# year-based EM-index by publications (Bihari and Tripathi 2018)
+def calculate_year_based_em_pub(metric_set: MetricSet) -> float:
+    pub_years = metric_set.publication_years()
+    return Impact_Funcs.calculate_year_based_em_pub(pub_years)
+
+
+def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
+    def count_pubs(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of publications, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> " \
+             "years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
+
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
+    data.sort(reverse=True)
+
+    ydata = [[pub_years.count(y), y] for y in range(miny, maxy + 1)]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_pubs = count_pubs(data)
+    while n_pubs > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_pubs = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            data = [max(0, c-h) for c in data]
+            n_pubs = count_pubs(data)
+
+    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
+    data.sort(reverse=True)
+    outstr += "<table class=\"example_table\">"
+
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    oldh = len(data)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Publications per Year (<em>P<sub>i</sub></em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Publications (<em>P<sub>i</sub></em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i >= oldh:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 == h:
+                    v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i+1)
+                row3 += "<td>{}</td>".format(v)
+        data = [max(0, c-h) for c in data]
+        oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_em = metric_set.metrics["Year-based EM-index by publications"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The Year-based <em>EM</em>-index by publications is the " \
+              "square-root of this " \
+              "sum, thus <em>Yp_EM</em>&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_em)
+    return outstr
+
+
+def metric_year_based_em_pub() -> Metric:
+    m = Metric()
+    m.name = "Year-based EM-index by publications"
+    m.full_name = "Year-based EM-index by publications"
+    m.html_name = "Year-based <em>EM</em>-index by publications"
+    m.symbol = "<em>Yp_EM</em>"
+    m.synonyms = ["<em>Yp_EM</em>"]
+    m.example = write_year_based_em_pub_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>-index by publications (Bihari and S. Tripathi 2018) is an " \
+                    "adapation of the " \
+                    "__EM-index__ applied to the __career years h-index by pub__. This metric is a measure " \
+                    "of publication intensity or distribution, rather than citation intensity as captured by " \
+                    "most __h-index__ type indices. Rather than create a list of publications ranked by citation " \
+                    "count, one creates a list of years ranked by publication count. " \
+                    "This list is then processed in the same multivariate manner as the EM-index.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_em_pub
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# year-based EM-index by publication year citations (Bihari and Tripathi 2018)
+def calculate_year_based_em_pycites(metric_set: MetricSet) -> float:
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    return Impact_Funcs.calculate_year_based_em_pycites(pub_years, cites)
+
+
+def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
+    def count_cites(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
+
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    cites = metric_set.citations
+    year_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        year_cnts[pub_years[i]] += c
+    data = [year_cnts[y] for y in year_cnts]
+    data.sort(reverse=True)
+
+    ydata = [[year_cnts[y], y] for y in range(miny, maxy + 1)]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_cites = count_cites(data)
+    while n_cites > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_cites = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            data = [max(0, c-h) for c in data]
+            n_cites = count_cites(data)
+
+    data = [year_cnts[y] for y in year_cnts]
+    data.sort(reverse=True)
+
+    outstr += "<table class=\"example_table\">"
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    oldh = len(data)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations from Publication Year (<em>C<sub>i</sub></em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i >= oldh:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 == h:
+                    v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i+1)
+                row3 += "<td>{}</td>".format(v)
+        data = [max(0, c-h) for c in data]
+        oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_em = metric_set.metrics["Year-based EM-index by publication year citations"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. Year-based <em>EM</em>-index by publication year " \
+              "citations is the square-root of this " \
+              "sum, thus <em>Ypc_EM</em>&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_em)
+    return outstr
+
+
+def metric_year_based_em_pycites() -> Metric:
+    m = Metric()
+    m.name = "Year-based EM-index by publication year citations"
+    m.full_name = "Year-based EM-index by publication year citations"
+    m.html_name = "Year-based <em>EM</em>-index by publication year citations"
+    m.symbol = "<em>Ypc_EM</em>"
+    m.synonyms = ["<em>Ypc_EM</em>"]
+    m.example = write_year_based_em_pycites_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>-index by publication year citations (Bihari and S. Tripathi 2018) " \
+                    "is an adapation of the __EM-index__ applied to the __career years h-index by cite__. This " \
+                    "metric is a measure of citation intensity or distribution by publication year, rather than by " \
+                    "publication. Rather than create a list of publications ranked by citation count, one creates a " \
+                    "list of years ranked by citation count for all publications from that year. " \
+                    "This list is then processed in the same multivariate manner as the <em>EM-</em>index.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_em_pycites
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# year-based EM-index by citations (Bihari and Tripathi 2018)
+def calculate_year_based_em_cites(metric_set: MetricSet) -> float:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_list[:metric_pos + 1]]
+    return Impact_Funcs.calculate_year_based_em_cites(total_cite_list)
+
+
+def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
+    def count_cites(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of citations received that year, from highest to lowest. After each " \
+             "step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>"
+
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    metric_pos = metric_set.parent_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_set.parent_list[:metric_pos + 1]]
+    total_cites_per_year = Impact_Funcs.total_citations_each_year(total_cite_list)
+    data = [d for d in total_cites_per_year]
+    data.sort(reverse=True)
+
+    tmpy = [y for y in range(miny, maxy + 1)]
+    ydata = [[total_cites_per_year[y], tmpy[y]] for y in range(len(tmpy))]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_cites = count_cites(data)
+    while n_cites > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_cites = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i + 1 <= c:
+                    h += 1
+            em_components.append(h)
+            data = [max(0, c - h) for c in data]
+            n_cites = count_cites(data)
+
+    data = [d for d in total_cites_per_year]
+    data.sort(reverse=True)
+    outstr += "<table class=\"example_table\">"
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    oldh = len(data)
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations received in year (<em>C<sub>i</sub></em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i >= oldh:
+                row1 += "<td class=\"light_box\"></td>"
+                row2 += "<td class=\"light_box\"></td>"
+                row3 += "<td></td>"
+            else:
+                if i + 1 == h:
+                    v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j + 1, h)
+                    ec = " class=\"box\""
+                else:
+                    v = ""
+                    ec = ""
+                row1 += "<td" + ec + ">{}</td>".format(c)
+                row2 += "<td" + ec + ">{}</td>".format(i + 1)
+                row3 += "<td>{}</td>".format(v)
+        data = [max(0, c - h) for c in data]
+        oldh = h
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_em = metric_set.metrics["Year-based EM-index by citations"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The Year-based <em>EM-</em>index by citations is the " \
+              "square-root of this " \
+              "sum, thus <em>Yc_EM</em>&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_em)
+    return outstr
+
+
+def metric_year_based_em_cites() -> Metric:
+    m = Metric()
+    m.name = "Year-based EM-index by citations"
+    m.full_name = "Year-based EM-index by citations"
+    m.html_name = "Year-based <em>EM</em>-index by citations"
+    m.symbol = "<em>Yc_EM</em>"
+    m.synonyms = ["<em>Yc_EM</em>"]
+    m.example = write_year_based_em_cites_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>-index by citations (Bihari and S. Tripathi 2018) is an " \
+                    "adapation of the __EM-index__ applied to the citation counts received in a year (to all " \
+                    "publications), rather than citations clustered by year of publication. " \
+                    "One creates a list of years ranked by citations received that year for all publications. " \
+                    "This list is then processed in the same multivariate manner as the <em>EM-</em>index.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_em_cites
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# year-based EM'-index by publications (Bihari and Tripathi 2018)
+def calculate_year_based_emp_pub(metric_set: MetricSet) -> float:
+    pub_years = metric_set.publication_years()
+    return Impact_Funcs.calculate_year_based_emp_pub(pub_years)
+
+
+def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
+    def count_pubs(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of publications, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> " \
+             "years. The yearly data is then resorted from high to low for each subsequent step.</p>"
+
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
+    data.sort(reverse=True)
+
+    ydata = [[pub_years.count(y), y] for y in range(miny, maxy + 1)]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_pubs = count_pubs(data)
+    while n_pubs > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_pubs = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            for i in range(h):
+                data[i] = max(0, data[i]-h)
+            data.sort(reverse=True)
+            n_pubs = count_pubs(data)
+
+    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
+    data.sort(reverse=True)
+    outstr += "<table class=\"example_table\">"
+
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Publications per Year (<em>P<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Publications (<em>P<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>New Rank (<em>i</em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        # row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i + 1 == h:
+                v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                ec = " class=\"box\""
+            else:
+                v = ""
+                ec = ""
+            row1 += "<td" + ec + ">{}</td>".format(c)
+            row2 += "<td" + ec + ">{}</td>".format(i+1)
+            row3 += "<td>{}</td>".format(v)
+        for i in range(h):
+            data[i] = max(0, data[i]-h)
+        data.sort(reverse=True)
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_emp = metric_set.metrics["Year-based EMp-index by publications"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The Year-based <em>EM</em>&prime;-index by publications " \
+              "is the square-root of this sum, thus " \
+              "<em>Yp_EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_emp)
+    return outstr
+
+
+def metric_year_based_emp_pub() -> Metric:
+    m = Metric()
+    m.name = "Year-based EMp-index by publications"
+    m.full_name = "Year-based EM\'-index by publications"
+    m.html_name = "Year-based <em>EM</em>&prime;-index by publications"
+    m.symbol = "<em>Yp_EM</em>&prime;"
+    m.synonyms = ["<em>Yp_EM</em>&prime;"]
+    m.example = write_year_based_emp_pub_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>&prime;-index by publications (Bihari and S. Tripathi 2018) is an " \
+                    "adapation of the __Year-based EM-index by publications__ which includes all years " \
+                    "rather than just those in the initial core. It is calculated just like the Year-based " \
+                    "<em>EM</em>&prime;-index by publications, except with a __EMp-index__ style modification.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_emp_pub
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# year-based EM'-index by publication year citations (Bihari and Tripathi 2018)
+def calculate_year_based_emp_pycites(metric_set: MetricSet) -> float:
+    pub_years = metric_set.publication_years()
+    cites = metric_set.citations
+    return Impact_Funcs.calculate_year_based_emp_pycites(pub_years, cites)
+
+
+def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
+    def count_cites(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of citations, from highest to lowest. After each step, " \
+             "<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "years. The yearly data is then resorted from high to low for each subsequent step.</p>"
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    cites = metric_set.citations
+    year_cnts = {y: 0 for y in range(miny, maxy+1)}
+    for i, c in enumerate(cites):
+        year_cnts[pub_years[i]] += c
+    data = [year_cnts[y] for y in year_cnts]
+    data.sort(reverse=True)
+
+    ydata = [[year_cnts[y], y] for y in range(miny, maxy + 1)]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_cites = count_cites(data)
+    while n_cites > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_cites = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i+1 <= c:
+                    h += 1
+            em_components.append(h)
+            for i in range(h):
+                data[i] = max(0, data[i]-h)
+            data.sort(reverse=True)
+            n_cites = count_cites(data)
+
+    data = [year_cnts[y] for y in year_cnts]
+    data.sort(reverse=True)
+
+    outstr += "<table class=\"example_table\">"
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations from Publication Year (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>New Rank (<em>i</em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        # row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i + 1 == h:
+                v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j+1, h)
+                ec = " class=\"box\""
+            else:
+                v = ""
+                ec = ""
+            row1 += "<td" + ec + ">{}</td>".format(c)
+            row2 += "<td" + ec + ">{}</td>".format(i+1)
+            row3 += "<td>{}</td>".format(v)
+
+        for i in range(h):
+            data[i] = max(0, data[i]-h)
+        data.sort(reverse=True)
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_em = metric_set.metrics["Year-based EMp-index by publication year citations"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. Year-based <em>EM</em>&prime;-index by publication year " \
+              "citations is the square-root of this sum, thus " \
+              "<em>Ypc_EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_em)
+    return outstr
+
+
+def metric_year_based_emp_pycites() -> Metric:
+    m = Metric()
+    m.name = "Year-based EMp-index by publication year citations"
+    m.full_name = "Year-based EM\'-index by publication year citations"
+    m.symbol = "<em>Ypc_EM</em>&prime;"
+    m.synonyms = ["<em>Ypc_EM</em>&prime;"]
+    m.example = write_year_based_emp_pycites_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>&prime;-index by publication year citations " \
+                    "(Bihari and S. Tripathi 2018) is an adapation of the __Year-based EM-index by " \
+                    "publication year citations__ which includes all years " \
+                    "rather than just those in the initial core. It is calculated just like the Year-based " \
+                    "<em>EM</em>&prime;-index by publication year citations, except with a __EMp-index__ " \
+                    "style modification.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_emp_pycites
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# year-based EM'-index by citations (Bihari and Tripathi 2018)
+def calculate_year_based_emp_cites(metric_set: MetricSet) -> float:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_list[:metric_pos + 1]]
+    return Impact_Funcs.calculate_year_based_emp_cites(total_cite_list)
+
+
+def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
+    def count_cites(tmpc: list) -> int:
+        cnt = 0
+        for cc in tmpc:
+            if cc > 0:
+                cnt += 1
+        return cnt
+
+    outstr = "<p>Years are ordered by number of citations received that year, from highest to lowest. After each " \
+             "step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> " \
+             "years. The yearly data is then resorted from high to low for each subsequent step.</p>"
+
+    pub_years = metric_set.publication_years()
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    metric_pos = metric_set.parent_list.index(metric_set)
+    total_cite_list = [m.metrics["total cites"].value for m in metric_set.parent_list[:metric_pos + 1]]
+    total_cites_per_year = Impact_Funcs.total_citations_each_year(total_cite_list)
+    data = [d for d in total_cites_per_year]
+    data.sort(reverse=True)
+
+    tmpy = [y for y in range(miny, maxy +1)]
+    ydata = [[total_cites_per_year[y], tmpy[y]] for y in range(len(tmpy))]
+    ydata.sort(reverse=True)
+
+    # calculate vector
+    em_components = []
+    n_cites = count_cites(data)
+    while n_cites > 1:
+        if max(data) == 1:
+            em_components.append(1)
+            n_cites = 0
+        else:
+            h = 0
+            for i, c in enumerate(data):
+                if i + 1 <= c:
+                    h += 1
+            em_components.append(h)
+            for i in range(h):
+                data[i] = max(0, data[i] - h)
+            data.sort(reverse=True)
+            n_cites = count_cites(data)
+
+    data = [d for d in total_cites_per_year]
+    data.sort(reverse=True)
+    outstr += "<table class=\"example_table\">"
+    row0 = "<tr><th>Year (<em>y<sub>i</sub></em>)</th>"
+    for x in ydata:
+        row0 += "<td>{}</td>".format(x[1])
+    row0 += "</tr>"
+    outstr += row0
+
+    for j, h in enumerate(em_components):
+        if j == 0:
+            row1 = "<tr class=\"top_row\"><th>Citations received in year (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>Rank (<em>i</em>)</th>"
+        else:
+            row1 = "<tr class=\"top_row\"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>"
+            row2 = "<tr><th>New Rank (<em>i</em>)</th>"
+        if j + 1 == len(em_components):
+            row4 = ""
+        else:
+            row4 = "<tr class=\"spacer_row\"><th></th>" + len(data) * "<td></td>" + "</tr>"
+        row3 = "<tr><th></th>"
+        for i, c in enumerate(data):
+            if i + 1 == h:
+                v = "<em>E</em><sub>{}</sub>&nbsp;=&nbsp;{}".format(j + 1, h)
+                ec = " class=\"box\""
+            else:
+                v = ""
+                ec = ""
+            row1 += "<td" + ec + ">{}</td>".format(c)
+            row2 += "<td" + ec + ">{}</td>".format(i + 1)
+            row3 += "<td>{}</td>".format(v)
+        for i in range(h):
+            data[i] = max(0, data[i] - h)
+        data.sort(reverse=True)
+        row1 += "</tr>"
+        row2 += "</tr>"
+        row3 += "</tr>"
+        outstr += row1 + row2 + row3 + row4
+    outstr += "</table>"
+    yp_em = metric_set.metrics["Year-based EMp-index by citations"].value
+    outstr += "<p>The sum of the {} <em>E</em> values is {}. The Year-based <em>EM</em>&prime;-index by citations " \
+              "is the square-root of this sum, thus " \
+              "<em>Yc_EM</em>&prime;&nbsp;=&nbsp;{:0.4f}.</p>".format(len(em_components), sum(em_components), yp_em)
+    return outstr
+
+
+def metric_year_based_emp_cites() -> Metric:
+    m = Metric()
+    m.name = "Year-based EMp-index by citations"
+    m.full_name = "Year-based EM\'-index by citations"
+    m.html_name = "Year-based <em>EM</em>&prime;-index by citations"
+    m.symbol = "<em>Yc_EM</em>&prime;"
+    m.synonyms = ["<em>Yc_EM</em>&prime;"]
+    m.example = write_year_based_emp_cites_example
+    m.metric_type = FLOAT
+    m.description = "<p>The Year-based <em>EM</em>&prime;-index by citations (Bihari and S. Tripathi 2018) is an " \
+                    "adapation of the __Year-based EM-index by citations__ which includes all years " \
+                    "rather than just those in the initial core. It is calculated just like the Year-based " \
+                    "<em>EM</em>&prime;-index by citations, except with a __EMp-index__ " \
+                    "style modification.</p>"
+    m.references = ["Bihari, A., and S. Tripathi (2018) Year based EM-index: A new approach to evaluate the "
+                    "scientific impact of scholars. <em>Scientometrics</em> 114:1175&ndash;1205."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_year_based_emp_cites
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
     return m
 
 
@@ -8995,7 +9857,13 @@ def load_all_metrics() -> list:
                    metric_iterative_weighted_emp_index(),
                    metric_o_index(),
                    metric_discounted_h_index(),
-                   metric_mikhailov_j_index()
+                   metric_mikhailov_j_index(),
+                   metric_year_based_em_pub(),
+                   metric_year_based_em_pycites(),
+                   metric_year_based_em_cites(),
+                   metric_year_based_emp_pub(),
+                   metric_year_based_emp_pycites(),
+                   metric_year_based_emp_cites()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
