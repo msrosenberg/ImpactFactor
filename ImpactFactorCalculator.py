@@ -256,6 +256,10 @@ def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = 
     outfile.write("   <p>The code for calculating all of these metrics can be found on "
                   "<a href=\"https://github.com/msrosenberg/ImpactFactor\"><span class=\"fab fa-github\">"
                   "</span> Github</a>.</p>\n")
+    now = datetime.datetime.now()
+    outfile.write("   <p>Citation data used for calculating all examples extracted from Google Scholar "
+                  "on {}.</p>\n".format(now.strftime("%Y-%m-%d")))
+
     if not inc_self:
         outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
                       "self- and coauthor-citation are not currently included in the descriptions below because the "
