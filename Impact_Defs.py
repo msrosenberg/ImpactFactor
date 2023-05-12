@@ -4908,10 +4908,10 @@ def metric_profit_adj_h_index() -> Metric:
                     "estimate effort for each publication. The effort for the <em>i</em><sup>th</sup> " \
                     "publication is</p>" + weq + "<p>where</p>" + deq + "<p>The sum of <em>E<sub>i</sub></em> for " \
                     "all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being " \
-                    "defined as a single-authored publication). The profit adjusted <em>h-</em> index is calculated " \
+                    "defined as a single-authored publication). The profit adjusted <em>h-</em>index is calculated " \
                     "by weighting each publications citation count by this effort,</p>" + ceq + \
-                    "<p>reranking the publications based these weighted counts, and calculating the index as</p>" + \
-                    equation
+                    "<p>reranking the publications based upon these weighted counts, and calculating the index " \
+                    "as</p>" + equation
     m.references = ["Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors "
                     "profit from co-authors. <em>PLoS ONE</em> 8(4):e59814."]
     m.graph_type = LINE_CHART
