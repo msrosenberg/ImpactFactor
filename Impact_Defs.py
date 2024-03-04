@@ -9618,7 +9618,7 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
     data = [d for d in total_cites_per_year]
     data.sort(reverse=True)
 
-    tmpy = [y for y in range(miny, maxy +1)]
+    tmpy = [y for y in range(miny, maxy + 1)]
     ydata = [[total_cites_per_year[y], tmpy[y]] for y in range(len(tmpy))]
     ydata.sort(reverse=True)
 
