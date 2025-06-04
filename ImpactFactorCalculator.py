@@ -322,7 +322,7 @@ def format_description(instr: str, metric_data: Impact_Defs.MetricSet, single_pa
             prefix = "impact_"
             suffix = ".html"
         replace_str = "<a href=\"" + prefix + encode_name(name) + suffix + "\">" + metric.html_name + "</a>"
-        instr = re.sub(search_str, replace_str, instr, 1)
+        instr = re.sub(search_str, replace_str, instr, count=1)
     return instr
 
 

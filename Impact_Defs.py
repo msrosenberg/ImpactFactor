@@ -106,13 +106,14 @@ class Metric:
                 return format(self.value, FSTR)
         elif self.metric_type == FLOATLIST:
             vl = self.value
-            return "[" + ", ".join([format(v, FSTR) for v in vl]) + "]"
+            return f"[{", ".join([format(v, FSTR) for v in vl])}]"
+            # return "[" + ", ".join([format(v, FSTR) for v in vl]) + "]"
+        return ""  # should never reach this
 
 
 class MetricSet:
     """
-    This class contains all of the metric output for a single year,
-    as well as data used to calculate these metrics
+    This class contains all metric output for a single year, as well as data used to calculate these metrics
     """
     def __init__(self):
         self.date = datetime.date(1970, 1, 1)

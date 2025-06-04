@@ -304,7 +304,10 @@ def calculate_q2_index(h: int, m: float) -> float:
 
 # k-index (Ye and Rousseau 2010)
 def calculate_k_index(total_cites: int, core_cites: int, total_pubs: int) -> float:
-    return (total_cites * core_cites) / (total_pubs * (total_cites - core_cites))
+    try:
+        return (total_cites * core_cites) / (total_pubs * (total_cites - core_cites))
+    except ZeroDivisionError:
+        return 0
 
 
 # Franceschini f-index (Franceschini and Maisano 2010)
