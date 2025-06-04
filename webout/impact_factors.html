@@ -2163,7 +2163,7 @@
         var chart_h2_tail_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_h2_tail_index_desc_div'));
         chart_h2_tail_index_desc.draw(data_h2_tail_index_desc, options_h2_tail_index_desc);
 
-        var data_k_index = google.visualization.arrayToDataTable([
+        var data_Ye_and_Rousseau_k_index = google.visualization.arrayToDataTable([
            ['Year', '<em>k</em>'],
            ['1997', 0.3333333333333333],
            ['1998', 8.666666666666666],
@@ -2196,13 +2196,13 @@
            ['2025', 3993.416098729048],
 		]);
 
-        var options_k_index = {
+        var options_Ye_and_Rousseau_k_index = {
 		     legend: {position: 'none'},
 		     hAxis: {slantedText: true},
         };
 
-        var chart_k_index = new google.visualization.LineChart(document.getElementById('chart_k_index_div'));
-        chart_k_index.draw(data_k_index, options_k_index);
+        var chart_Ye_and_Rousseau_k_index = new google.visualization.LineChart(document.getElementById('chart_Ye_and_Rousseau_k_index_div'));
+        chart_Ye_and_Rousseau_k_index.draw(data_Ye_and_Rousseau_k_index, options_Ye_and_Rousseau_k_index);
 
         var data_p_index = google.visualization.arrayToDataTable([
            ['Year', '<em>p</em>'],
@@ -6784,7 +6784,7 @@
         var chart_h_prime_index = new google.visualization.LineChart(document.getElementById('chart_h_prime_index_div'));
         chart_h_prime_index.draw(data_h_prime_index, options_h_prime_index);
 
-        var data_e_index_desc = google.visualization.arrayToDataTable([
+        var data_h_prime_index_desc = google.visualization.arrayToDataTable([
            ['Rank', 'Tail', 'Center', 'Upper'],
            [1, null, 6, 53],
            [2, null, 6, 20],
@@ -6806,7 +6806,7 @@
            [18, 0, null, null],
 		]);
 
-        var options_e_index_desc = {
+        var options_h_prime_index_desc = {
 		     legend: {position: 'top'},
 		     isStacked: true,
 		     interpolateNulls: true,
@@ -6821,8 +6821,212 @@
 		             gridlines: {color: 'transparent'}},
         };
 
-        var chart_e_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_e_index_desc_div'));
-        chart_e_index_desc.draw(data_e_index_desc, options_e_index_desc);
+        var chart_h_prime_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_h_prime_index_desc_div'));
+        chart_h_prime_index_desc.draw(data_h_prime_index_desc, options_h_prime_index_desc);
+
+        var data_hc = google.visualization.arrayToDataTable([
+           ['Year', '<em>h<sub>c</sub></em>'],
+           ['1997', 1],
+           ['1998', 4],
+           ['1999', 5],
+           ['2000', 7],
+           ['2001', 8],
+           ['2002', 10],
+           ['2003', 12],
+           ['2004', 14],
+           ['2005', 16],
+           ['2006', 18],
+           ['2007', 20],
+           ['2008', 22],
+           ['2009', 25],
+           ['2010', 26],
+           ['2011', 29],
+           ['2012', 33],
+           ['2013', 34],
+           ['2014', 35],
+           ['2015', 36],
+           ['2016', 36],
+           ['2017', 38],
+           ['2018', 39],
+           ['2019', 39],
+           ['2020', 40],
+           ['2021', 41],
+           ['2022', 43],
+           ['2023', 43],
+           ['2024', 44],
+           ['2025', 46],
+		]);
+
+        var options_hc = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_hc = new google.visualization.LineChart(document.getElementById('chart_hc_div'));
+        chart_hc.draw(data_hc, options_hc);
+
+        var data_Anania_and_Caruso_k_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>k</em>'],
+           ['1997', 1.0],
+           ['1998', 3.3076923076923075],
+           ['1999', 3.756756756756757],
+           ['2000', 5.666666666666667],
+           ['2001', 6.7293233082706765],
+           ['2002', 8.711711711711711],
+           ['2003', 10.707602339181287],
+           ['2004', 12.741472172351886],
+           ['2005', 15.735294117647058],
+           ['2006', 16.789300411522635],
+           ['2007', 19.78027997565429],
+           ['2008', 21.789599236641223],
+           ['2009', 24.778631821675635],
+           ['2010', 25.801018783826805],
+           ['2011', 28.795460474823898],
+           ['2012', 32.77646802008295],
+           ['2013', 33.79576144036009],
+           ['2014', 34.80876757650951],
+           ['2015', 35.81814133016627],
+           ['2016', 35.834883407467316],
+           ['2017', 37.830820563519524],
+           ['2018', 37.842752124971284],
+           ['2019', 37.853095825732375],
+           ['2020', 38.85491811514116],
+           ['2021', 39.85691439322672],
+           ['2022', 41.85211577373097],
+           ['2023', 41.859271661783175],
+           ['2024', 42.85959885386819],
+           ['2025', 44.850247524752476],
+		]);
+
+        var options_Anania_and_Caruso_k_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_Anania_and_Caruso_k_index = new google.visualization.LineChart(document.getElementById('chart_Anania_and_Caruso_k_index_div'));
+        chart_Anania_and_Caruso_k_index.draw(data_Anania_and_Caruso_k_index, options_Anania_and_Caruso_k_index);
+
+        var data_k_index_anania_caruso_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 53],
+           [2, null, 6, 20],
+           [3, null, 6, 10],
+           [4, null, 6, 5],
+           [5, null, 6, 5],
+           [6, null, 6, 4],
+           [7, 4, null, null],
+           [8, 3, null, null],
+           [9, 3, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+           [16, 0, null, null],
+           [17, 0, null, null],
+           [18, 0, null, null],
+		]);
+
+        var options_k_index_anania_caruso_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_k_index_anania_caruso_desc = new google.visualization.ColumnChart(document.getElementById('chart_k_index_anania_caruso_desc_div'));
+        chart_k_index_anania_caruso_desc.draw(data_k_index_anania_caruso_desc, options_k_index_anania_caruso_desc);
+
+        var data_Anania_and_Caruso_w_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>w</em>'],
+           ['1997', 1.5],
+           ['1998', 3.4375],
+           ['1999', 3.7954545454545454],
+           ['2000', 5.705882352941177],
+           ['2001', 6.756756756756757],
+           ['2002', 8.751937984496124],
+           ['2003', 10.74937343358396],
+           ['2004', 12.774647887323944],
+           ['2005', 15.761146496815286],
+           ['2006', 16.810510732790526],
+           ['2007', 19.79821129122415],
+           ['2008', 21.80417406749556],
+           ['2009', 24.79016393442623],
+           ['2010', 25.813599761407694],
+           ['2011', 28.806706114398423],
+           ['2012', 32.78428481145987],
+           ['2013', 33.80253853127833],
+           ['2014', 34.81444622792937],
+           ['2015', 35.8237917146145],
+           ['2016', 35.84047402005469],
+           ['2017', 37.83567398871684],
+           ['2018', 37.84785507890642],
+           ['2019', 37.8583988415391],
+           ['2020', 38.86048309178744],
+           ['2021', 39.862713241267265],
+           ['2022', 41.85743363582393],
+           ['2023', 41.864686468646866],
+           ['2024', 42.865003443789696],
+           ['2025', 44.855694692903995],
+		]);
+
+        var options_Anania_and_Caruso_w_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_Anania_and_Caruso_w_index = new google.visualization.LineChart(document.getElementById('chart_Anania_and_Caruso_w_index_div'));
+        chart_Anania_and_Caruso_w_index.draw(data_Anania_and_Caruso_w_index, options_Anania_and_Caruso_w_index);
+
+        var data_h_norm = google.visualization.arrayToDataTable([
+           ['Year', '<em>h-norm</em>'],
+           ['1997', 0],
+           ['1998', 1],
+           ['1999', 2],
+           ['2000', 4],
+           ['2001', 4],
+           ['2002', 6],
+           ['2003', 8],
+           ['2004', 9],
+           ['2005', 12],
+           ['2006', 14],
+           ['2007', 16],
+           ['2008', 19],
+           ['2009', 20],
+           ['2010', 22],
+           ['2011', 23],
+           ['2012', 24],
+           ['2013', 26],
+           ['2014', 26],
+           ['2015', 26],
+           ['2016', 27],
+           ['2017', 27],
+           ['2018', 27],
+           ['2019', 28],
+           ['2020', 29],
+           ['2021', 31],
+           ['2022', 33],
+           ['2023', 33],
+           ['2024', 33],
+           ['2025', 33],
+		]);
+
+        var options_h_norm = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_h_norm = new google.visualization.LineChart(document.getElementById('chart_h_norm_div'));
+        chart_h_norm.draw(data_h_norm, options_h_norm);
 
 		}
     </script>
@@ -6924,6 +7128,7 @@
         <li><a href="#h_prime_index"><em>h'-</em>index</a></li>
         <li><a href="#h2_index"><em>h</em>(2)-index</a></li>
         <li><a href="#h_index"><em>h-</em>index</a></li>
+        <li><a href="#h_norm"><em>h-norm</em> index</a></li>
         <li><a href="#h_rate"><em>h-</em>rate</a></li>
         <li><a href="#h2_center_index"><em>h</em><sup>2</sup>-center index</a></li>
         <li><a href="#h2_tail_index"><em>h</em><sup>2</sup>-tail index</a></li>
@@ -6931,6 +7136,7 @@
         <li><a href="#apparent_h_index"><em>h<sub>A</sub></em></a></li>
         <li><a href="#harmonic_p_index">harmonic <em>p-</em>index</a></li>
         <li><a href="#contemporary_h_index"><em>h<sup>C</sup></em></a></li>
+        <li><a href="#hc"><em>h<sub>c</sub></em></a></li>
         <li><a href="#normal_hi_index"><em>h<sub>e</sub></em></a></li>
         <li><a href="#normal_hi_index"><em>h<sub>f</sub></em></a></li>
         <li><a href="#hm_index"><em>h<sub>F</sub>-</em>index</a></li>
@@ -6971,7 +7177,8 @@
         <li><a href="#Todeschini_j_index"><em>j-</em>index (Todeschini)</a></li>
         <li><a href="#c_p">journal paper citedness</a></li>
         <li><a href="#c_p"><em>JPC</em></a></li>
-        <li><a href="#k_index"><em>k-</em>index</a></li>
+        <li><a href="#Anania_and_Caruso_k_index"><em>k-</em>index (Anania and Caruso)</a></li>
+        <li><a href="#Ye_and_Rousseau_k_index"><em>k-</em>index (Ye and Rousseau)</a></li>
         <li><a href="#ls_h_rate">least squares <em>h-</em>rate</a></li>
         <li><a href="#scientist_level"><em>L<sup>v</sup></em></a></li>
         <li><a href="#m_index"><em>m-</em>index</a></li>
@@ -7051,6 +7258,7 @@
         <li><a href="#uncitedness_factor">uncitedness factor</a></li>
         <li><a href="#v_index"><em>v-</em>index</a></li>
         <li><a href="#Wu_wq"><em>w</em>(<em>q</em>) (Wu)</a></li>
+        <li><a href="#Anania_and_Caruso_w_index"><em>w-</em>index (Anania and Caruso)</a></li>
         <li><a href="#Woeginger_w_index"><em>w-</em>index (Woeginger)</a></li>
         <li><a href="#Wohlin_w_index"><em>w-</em>index (Wohlin)</a></li>
         <li><a href="#Wu_w_index"><em>w-</em>index (Wu)</a></li>
@@ -8029,6 +8237,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="#h_norm"><em>h-norm</em> index</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="#h_rate"><em>h-</em>rate</a></td>
         <td></td>
         <td></td>
@@ -8121,6 +8348,25 @@
         <td></td>
         <td>⚫</td>
         <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#hc"><em>h<sub>c</sub></em></a></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
         <td></td>
         </tr>
         <tr>
@@ -8485,7 +8731,26 @@
         <td></td>
         </tr>
         <tr>
-          <td class="first_col"><a href="#k_index"><em>k-</em>index</a></td>
+          <td class="first_col"><a href="#Anania_and_Caruso_k_index"><em>k-</em>index (Anania and Caruso)</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#Ye_and_Rousseau_k_index"><em>k-</em>index (Ye and Rousseau)</a></td>
         <td></td>
         <td></td>
         <td>⚫</td>
@@ -9489,6 +9754,25 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#Anania_and_Caruso_w_index"><em>w-</em>index (Anania and Caruso)</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td>⚫</td>
         <td></td>
         </tr>
         <tr>
@@ -11920,8 +12204,8 @@
         </div>
       </div>
     </div>
-    <div id="k_index" class="metric_container">
-      <h2><em>k-</em>index</h2>
+    <div id="Ye_and_Rousseau_k_index" class="metric_container">
+      <h2><em>k-</em>index (Ye and Rousseau)</h2>
       <h3>Properties</h3>
         <ul>
           <li><strong>Metric Type:</strong> Core Property</li>
@@ -11967,7 +12251,7 @@
           </table>
         </div>
         <div class="graph_container">
-          <div id="chart_k_index_div" class="impact_chart"></div>
+          <div id="chart_Ye_and_Rousseau_k_index_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -17341,7 +17625,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
           <li><strong>Citation Focus:</strong> All Citations, Core Citations, Tail Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the <a href="#h_index"><em>h-</em>index</a>, where <em>h</em> is scaled by the ratio of excess and tail citations relative to the core. It is measured as:</p>$$h^\prime=\frac{eh}{t}.$$<p>where, <em>e</em> is the <a href="#e_index"><em>e-</em>index</a> (the square root of the count of citations in the core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the square root of all citations for publications not in the core. <div id="chart_h_prime_index_desc_div" class="proportional_chart"></div>
+      <p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the <a href="#h_index"><em>h-</em>index</a>, where <em>h</em> is scaled by the ratio of excess and tail citations relative to the core. It is measured as:</p>$$h^\prime=\frac{eh}{t}.$$<p>where <em>e</em> is the <a href="#e_index"><em>e-</em>index</a> (the square root of the count of citations in the core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the square root of all citations for publications in the tail (<em>i.e.</em>, not in the core). <div id="chart_h_prime_index_desc_div" class="proportional_chart"></div>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -17383,6 +17667,213 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="hc" class="metric_container">
+      <h2><em>h<sub>c</sub></em></h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Property</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p><em>h<sub>c</sub></em> (Kharana and Sharma 2022) is a modification of the <a href="#h_index"><em>h-</em>index</a> which includes an additional weighting factor for the most cited publication of the author's record. This extra factor is the maximum power one can raise <em>h</em> to which is less than the <a href="#max_cites">maximum citations</a>, which is then added to <em>h</em>, thus:</p>$$h_c = h+k.$$<p>The original authors describe the calculation of <em>k</em> through an algorithm, but it can directly be determined as:</p>$$k = \left[\log_h\left(C_{\max}-1 \right)\right],$$<p>which is the logarithm in base <em>h</em> of one less than the largest number of citations to a single paper, truncated to an integer. If <em>h</em> &le; 1, then <em>h<sub>c</sub></em> = <em>h</em>.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h<sub>c</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">20</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">22</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">29</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">33</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">34</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">35</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">36</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">36</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">38</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">39</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">39</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">40</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">41</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">43</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">43</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">44</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">46</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_hc_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="Anania_and_Caruso_k_index" class="metric_container">
+      <h2><em>k-</em>index (Anania and Caruso)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The <em>k-</em>index (Anania and Caruso 2013) is a variant of the <a href="#h_index"><em>h-</em>index</a>, where <em>h</em> includes a fractional component representing the proportion of the <a href="#h_core_cites">Hirsch core citations</a> (<em>C<sup>H</sup></em>) which are above and beyond those necessary to achieve <em>h</em>, making <em>k</em> essentially a function of <em>h</em> and the <a href="#e_index"><em>e-</em>index</a>. It can be calculated as:</p>$$k=h+\left(1-\frac{h^2}{C^H}\right)=h+\frac{e^2}{C^H}=h+\frac{e^2}{h^2 + e^2}.$$<p><em>k</em> will always be between <em>h</em> and <em>h</em>+1. The authors also described a very similar metric known as the <a href="#Anania_and_Caruso_w_index"><em>w-</em>index (Anania and Caruso)</a>; <em>w</em> will always be equal to or greater than <em>k</em>.<div id="chart_k_index_anania_caruso_desc_div" class="proportional_chart"></div>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>k</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.3077</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.7568</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.6667</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">6.7293</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">8.7117</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10.7076</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">12.7415</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">15.7353</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">16.7893</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">19.7803</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">21.7896</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">24.7786</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">25.8010</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.7955</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">32.7765</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">33.7958</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">34.8088</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">35.8181</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">35.8349</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">37.8308</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">37.8428</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.8531</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.8549</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">39.8569</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">41.8521</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">41.8593</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">42.8596</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">44.8502</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_Anania_and_Caruso_k_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="Anania_and_Caruso_w_index" class="metric_container">
+      <h2><em>w-</em>index (Anania and Caruso)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations, Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The <em>w-</em>index (Anania and Caruso 2013) is a variant of the <a href="#h_index"><em>h-</em>index</a>, where <em>h</em> includes a fractional component representing the proportion of the <a href="#total_cites">total citations</a> (<em>C<sub>T</sub></em>) which are above and beyond those necessary to achieve <em>h</em>. It can be calculated as:</p>$$w=h+\left(1-\frac{h^2}{C_T}\right).$$<p><em>w</em> will always be between <em>h</em> and <em>h</em>+1. The authors also described a very similar metric known as the <a href="#Anania_and_Caruso_k_index"><em>k-</em>index (Anania and Caruso)</a>; <em>w</em> will always be equal to or greater than <em>k</em>.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>w</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.5000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.4375</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.7955</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.7059</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">6.7568</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">8.7519</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10.7494</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">12.7746</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">15.7611</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">16.8105</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">19.7982</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">21.8042</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">24.7902</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">25.8136</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.8067</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">32.7843</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">33.8025</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">34.8144</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">35.8238</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">35.8405</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">37.8357</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">37.8479</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.8584</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.8605</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">39.8627</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">41.8574</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">41.8647</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">42.8650</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">44.8557</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_Anania_and_Caruso_w_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="h_norm" class="metric_container">
+      <h2><em>h-norm</em> index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The <em>h-norm</em> index (Anania and Caruso 2013) is described more or less incidentally when building up to normalized versions of other metrics in the paper. It is a version of the <a href="#h_index"><em>h-</em>index</a> normalized by the number of coauthors for each publication. It is very similar to the calculation of <em>h<sub>e</sub></em> when determining the <a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a>, but citation counts are divided by the number of coauthors rather than the square root. Citation accounts are adjusted for coauthor counts as:</p>$$C^{*}_i = \frac{C_i}{A_i}.$$<p>and <em>h-norm</em> isdetermined using these adjusted counts:</p>$$h{-}norm = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$
+      <h3>Example</h3>
+      <p>Publications are ordered by adjusted number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>11</td><td>26</td><td>16</td><td>11</td><td>3</td><td>10</td><td>4</td><td>1</td><td>1</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>1</td><td>3</td><td>2</td><td>3</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>4</td><td>2</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr class="top_row"><th>Adjusted Citations (\(C^*_i\))</th><td>19.67</td><td>11.00</td><td>8.67</td><td class="box">8.00</td><td>3.67</td><td>3.00</td><td>2.50</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.75</td><td>0.50</td><td>0.50</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td><em>h-norm</em>&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where \(i \leq C^*_i\) is 4.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h-norm</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">19</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">20</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">22</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">23</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">24</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">27</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">27</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">27</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">28</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">29</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">31</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">33</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">33</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">33</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">33</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_h_norm_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -17391,6 +17882,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Ahlgren, P., and K. Järvelin (2010) Measuring impact of 12 information scientists using the DCI-index. <em>Journal of the American Society for Information Science and Technology</em> 67:1424&ndash;1439.</li>
         <li>Ajiferuke, I., Q.L. Burrell, and J. Tague (1988) Collaborative coefficient: A single measure of the degree of collaboration in research. <em>Scientometrics</em> 14(5&ndash;6):421&ndash;433.</li>
         <li>Alonso, S., F.J. Cabrerizo, E. Herrera-Viedma, and F. Herrera (2010) <em>hg-</em>index: A new index to characterize the scientific outpuf of researchers based on the <em>h-</em> and <em>g-</em>indices. <em>Scientometrics</em> 82:391&ndash;400.</li>
+        <li>Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate research in disciplines where publications typically receive less citations. <em>Scientometrics</em> 96:617-631.</li>
         <li>Anderson, T.R., R.K.S. Hankin, and P.D. Killworth (2008) Beyond the Durfee square: Enhancing the <em>h-</em>index to score total publication output. <em>Scientometrics</em> 76(3):577&ndash;588.</li>
         <li>Aziz, N.A., and M.P. Rozing (2013) Profit (<em>p</em>)-Index: The degree to which authors profit from co-authors. <em>PLoS ONE</em> 8(4):e59814.</li>
         <li>Bartneck, C., and S. Kokkelmans (2011) Detecting <em>h-</em>index manipulation through self-citation analysis. <em>Scientometrics</em> 87(1):85&ndash;98.</li>
@@ -17430,6 +17922,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Jin, B. (2007) The <em>ar-</em>index: Complementing the <em>h-</em>index. <em>ISSI</em> Newsletter 3(1):6.</li>
         <li>Jin, B., L. Liang, R. Rousseau, and L. Egghe (2007) The <em>R-</em> and <em>AR-</em>indices: Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863.</li>
         <li>Järvelin, K., and O. Pearson (2008) The DCI-index: Discounted impact-based research evaluation. <em>Journal of the American Society for Information Science and Technology</em> 59:1433&ndash;1440.</li>
+        <li>Khurana, P., and K. Sharma (2022) Impact of <em>h‑</em>index on author’s rankings: An improvement to the <em>h‑</em>index for lower‑ranked authors. <em>Scientometrics</em> 127:4483-4498.</li>
         <li>Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original <em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6.</li>
         <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
@@ -17478,7 +17971,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742&ndash;750.</li>
         <li>Ye, F.Y., and R. Rousseau (2010) Probing the <em>h-</em>core: An investigation of the tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439.</li>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
-        <li>Zhang, C.-T. (2013) The h’ Index, effectively improving the h-Index nased on the citation distribution. <em>PLoS ONE</em> 8(4):e59912.</li>
+        <li>Zhang, C.-T. (2013) The <em>h’</em> Index, effectively improving the <em>h</em>-Index based on the citation distribution. <em>PLoS ONE</em> 8(4):e59912.</li>
       </ul>
     </div>
   </body>

@@ -27,6 +27,9 @@ reason for exclusion.
 ## Requires evalution of focal author's time devoted to research
 * *v*-index
   * Vaidya, J.S. (2005) V-index: A fairer index to quantify an individual's research output capacity. BMJ 331:1339.
+* *GG*-index
+  * Gunthe, S.S., and R. Gettu (2022) A new index for assessing faculty research performance in higher educational institutions of emerging economies such as India. Scientometrics 127:4959-4976.
+
 
 
 ## Requires evaluation of journal quality in some manner

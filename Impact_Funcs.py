@@ -1866,3 +1866,39 @@ def calculate_year_based_emp_cites(total_cite_list: list) -> float:
 # h' index (Zhang 2012)
 def calculate_h_prime(h: int, e: float, t: float) -> float:
     return e*h/t
+
+
+# hc index (Khurana and Sharma 2022)
+def calculate_hc(h: int, m: int) -> int:
+    if h <= 1:
+        return h
+    else:
+        k = math.trunc(math.log(m-1, h))
+        return h + k
+
+
+# k index (Anania and Caruso 2013)
+def calculate_k_index_anania_caruso(h: int, core: int) -> float:
+    return h + (1 - h**2/core)
+
+
+# w index (Anania and Caruso 2013)
+def calculate_w_index_anania_caruso(h: int, total: int) -> float:
+    return h + (1 - h**2/total)
+
+
+# h-norm index (Anania and Caruso 2013)
+def calculate_h_norm(citations: list, n_authors: list) -> int:
+    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
+    n = len(sc)
+    _, tmporder = sort_and_rank(sc, n)
+    h = 0
+    for i in range(n):
+        if tmporder[i] <= sc[i]:
+            h += 1
+    return h
+
+
+# only used for spot testing new functions
+if __name__ == "__main__":
+    pass

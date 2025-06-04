@@ -2791,9 +2791,9 @@ def calculate_k_index(metric_set: MetricSet) -> float:
 
 def metric_k_index() -> Metric:
     m = Metric()
-    m.name = "k-index"
-    m.full_name = "k-index"
-    m.html_name = "<em>k-</em>index"
+    m.name = "Ye and Rousseau k-index"
+    m.full_name = "k-index (Ye and Rousseau)"
+    m.html_name = "<em>k-</em>index (Ye and Rousseau)"
     m.symbol = "<em>k</em>"
     m.metric_type = FLOAT
     equation = r"$$k=\frac{C^PC^h}{P\left(C^P-C^h\right)}.$$"
@@ -9775,7 +9775,7 @@ def metric_h_prime_index() -> Metric:
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "h_prime_index_desc"
-    graph.data = write_e_index_desc_data
+    graph.data = write_h_prime_index_desc_data
     equation = r"$$h^\prime=\frac{eh}{t}.$$"
     m.description = ("<p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the __h-index__, where "
                      "<em>h</em> is scaled by the ratio of excess and tail citations relative to the core. "
@@ -9789,7 +9789,6 @@ def metric_h_prime_index() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_h_prime_index
     m.properties["Core Property"] = True
-    # m.properties["Core Citations"] = True
     m.properties["All Publications"] = True
     m.properties["All Citations"] = True
     m.properties["Core Citations"] = True
@@ -9797,6 +9796,243 @@ def metric_h_prime_index() -> Metric:
     return m
 
 
+# hc (Khuarana and Sharma 2022)
+def calculate_hc(metric_set: MetricSet) -> int:
+    h = metric_set.metrics["h-index"].value
+    m = metric_set.metrics["max cites"].value
+    return Impact_Funcs.calculate_hc(h, m)
+
+
+def metric_hc() -> Metric:
+    m = Metric()
+    m.name = "hc"
+    m.full_name = "hc"
+    m.html_name = "<em>h<sub>c</sub></em>"
+    m.symbol = "<em>h<sub>c</sub></em>"
+    m.metric_type = INT
+    equation = r"$$k = \left[\log_h\left(C_{\max}-1 \right)\right],$$"
+    equation2 = r"$$h_c = h+k.$$"
+    m.description = (f"<p><em>h<sub>c</sub></em> (Kharana and Sharma 2022) is a modification of the __h-index__ "
+                     f"which includes an additional weighting "
+                     f"factor for the most cited publication of the author's record. This extra factor is the maximum "
+                     f"power one can raise <em>h</em> to which is less than the __max cites__, which is then added to "
+                     f"<em>h</em>, thus:</p>{equation2}<p>The original authors describe the calculation of <em>k</em> "
+                     f"through an algorithm, but it can directly be determined "
+                     f"as:</p>{equation}<p>which is the logarithm in base <em>h</em> of one "
+                     f"less than the largest number of citations to a single paper, truncated to an integer. If "
+                     f"<em>h</em> &le; 1, then <em>h<sub>c</sub></em> = <em>h</em>.")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_hc
+    m.properties["Core Property"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.references = ["Khurana, P., and K. Sharma (2022) Impact of <em>h‑</em>index on author’s rankings: An "
+                    "improvement to the <em>h‑</em>index for lower‑ranked authors. <em>Scientometrics</em> "
+                    "127:4483-4498."]
+    return m
+
+
+# k-index (Anania and Caruso 2013)
+def calculate_k_index_anania_caruso(metric_set: MetricSet) -> float:
+    core_cites = metric_set.metrics["h-core cites"].value
+    h = metric_set.metrics["h-index"].value
+    return Impact_Funcs.calculate_k_index_anania_caruso(h, core_cites)
+
+
+def write_k_index_anania_caruso_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["Anania and Caruso k-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
+def metric_k_index_anania_caruso() -> Metric:
+    m = Metric()
+    m.name = "Anania and Caruso k-index"
+    m.full_name = "k-index (Anania and Caruso)"
+    m.html_name = "<em>k-</em>index (Anania and Caruso)"
+    m.symbol = "<em>k</em>"
+    m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "k_index_anania_caruso_desc"
+    graph.data = write_k_index_anania_caruso_desc_data
+    equation = r"$$k=h+\left(1-\frac{h^2}{C^H}\right)=h+\frac{e^2}{C^H}=h+\frac{e^2}{h^2 + e^2}.$$"
+    m.description = (f"<p>The <em>k-</em>index (Anania and Caruso 2013) is a variant of the __h-index__, where "
+                     f"<em>h</em> includes a fractional component representing the proportion of the __h-core cites__ "
+                     f"(<em>C<sup>H</sup></em>) which are above and beyond those necessary to achieve <em>h</em>, "
+                     f"making <em>k</em> essentially a function of <em>h</em> and the __e-index__. "
+                     f"It can be calculated as:</p>{equation}<p><em>k</em> will always be between <em>h</em> and "
+                     f"<em>h</em>+1. The authors also described a very similar metric known as the "
+                     f"__Anania and Caruso w-index__; <em>w</em> will always be equal to or greater than <em>k</em>."
+                     "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>")
+    m.references = ["Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate "
+                    "research in disciplines where publications typically receive less citations. "
+                    "<em>Scientometrics</em> 96:617-631."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_k_index_anania_caruso
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    return m
+
+
+# w-index (Anania and Caruso 2013)
+def calculate_w_index_anania_caruso(metric_set: MetricSet) -> float:
+    total_cites = metric_set.metrics["total cites"].value
+    h = metric_set.metrics["h-index"].value
+    return Impact_Funcs.calculate_w_index_anania_caruso(h, total_cites)
+
+
+def metric_w_index_anania_caruso() -> Metric:
+    m = Metric()
+    m.name = "Anania and Caruso w-index"
+    m.full_name = "w-index (Anania and Caruso)"
+    m.html_name = "<em>w-</em>index (Anania and Caruso)"
+    m.symbol = "<em>w</em>"
+    m.metric_type = FLOAT
+    equation = r"$$w=h+\left(1-\frac{h^2}{C_T}\right).$$"
+    m.description = (f"<p>The <em>w-</em>index (Anania and Caruso 2013) is a variant of the __h-index__, where "
+                     f"<em>h</em> includes a fractional component representing the proportion of the __total cites__ "
+                     f"(<em>C<sub>T</sub></em>) which are above and beyond those necessary to achieve <em>h</em>. "
+                     f"It can be calculated as:</p>{equation}<p><em>w</em> will always be between <em>h</em> and "
+                     f"<em>h</em>+1. The authors also described a very similar metric known as the "
+                     f"__Anania and Caruso k-index__; <em>w</em> will always be equal to or greater than <em>k</em>.")
+    m.references = ["Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate "
+                    "research in disciplines where publications typically receive less citations. "
+                    "<em>Scientometrics</em> 96:617-631."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_w_index_anania_caruso
+    m.properties["Core Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+
+
+
+# h-norm index (Anania and Caruso 2013)
+def calculate_h_norm(metric_set: MetricSet) -> int:
+    citations = metric_set.citations
+    n_authors = metric_set.author_counts()
+    return Impact_Funcs.calculate_h_norm(citations, n_authors)
+
+
+def write_h_norm_example(metric_set: MetricSet) -> str:
+    outstr = "<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>"
+    outstr += "<table class=\"example_table\">"
+    data = []
+    for i in range(len(metric_set.citations)):
+        c = metric_set.citations[i]
+        a = metric_set.author_counts()[i]
+        data.append([c/a, c, a])
+    data.sort(reverse=True)
+    row1 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
+    row2 = "<tr><th>Authors (<em>A<sub>i</sub></em>)</th>"
+    cstari = r"\(C^*_i\)"
+    row3 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
+    row4 = "<tr><th>Rank (<em>i</em>)</th>"
+    row5 = "<tr><th></th>"
+    # hn = 0
+    # for i, d in enumerate(data):
+    #     if i + 1 <= d[0]:
+    #         hn = i+1
+    hn = metric_set.metrics["h-norm"].value
+    for i, d in enumerate(data):
+        cs = d[0]
+        c = d[1]
+        a = d[2]
+        if i + 1 == hn:
+            v = "<em>h-norm</em>&nbsp;=&nbsp;{}".format(hn)
+            ec = " class=\"box\""
+        else:
+            v = ""
+            ec = ""
+        row1 += "<td>{}</td>".format(c)
+        row2 += "<td>{}</td>".format(a)
+        row3 += "<td" + ec + ">{:1.2f}</td>".format(cs)
+        row4 += "<td" + ec + ">{}</td>".format(i + 1)
+        row5 += "<td>{}</td>".format(v)
+    row1 += "</tr>"
+    row2 += "</tr>"
+    row3 += "</tr>"
+    row4 += "</tr>"
+    row5 += "</tr>"
+    outstr += row1 + row2 + row3 + row4 + row5 + "</table>"
+    eq = r"\(i \leq C^*_i\)"
+    outstr += f"<p>The largest rank where {eq} is {hn}.</p>"
+    return outstr
+
+
+def metric_h_norm() -> Metric:
+    m = Metric()
+    m.name = "h-norm"
+    m.full_name = "h-norm"
+    m.html_name = "<em>h-norm</em> index"
+    m.symbol = "<em>h-norm</em>"
+    m.example = write_h_norm_example
+    m.metric_type = INT
+    ceq = r"$$C^{*}_i = \frac{C_i}{A_i}.$$"
+    hnormeq = r"$$h{-}norm = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
+    m.description = (f"<p>The <em>h-norm</em> index (Anania and Caruso 2013) is described more or less incidentally "
+                     f"when building up to normalized versions of other metrics in the paper. It is a version of the "
+                     f"__h-index__ normalized by the number of coauthors for each publication. It is very similar to "
+                     f"the calculation of <em>h<sub>e</sub></em> when determining the __adapt pure h-index frac__, "
+                     f"but citation counts are divided by the number of coauthors rather than the square root. "
+                     f"Citation accounts are adjusted for coauthor counts as:</p>{ceq}<p>and <em>h-norm</em> is"
+                     f"determined using these adjusted counts:</p>{hnormeq}")
+    m.references = ["Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate "
+                    "research in disciplines where publications typically receive less citations. "
+                    "<em>Scientometrics</em> 96:617-631."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_h_norm
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Coauthorship"] = True
+    return m
 
 
 
@@ -9953,7 +10189,11 @@ def load_all_metrics() -> list:
                    metric_year_based_emp_pub(),
                    metric_year_based_emp_pycites(),
                    metric_year_based_emp_cites(),
-                   metric_h_prime_index()
+                   metric_h_prime_index(),
+                   metric_hc(),
+                   metric_k_index_anania_caruso(),
+                   metric_w_index_anania_caruso(),
+                   metric_h_norm()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
