@@ -1892,11 +1892,41 @@ def calculate_h_norm(citations: list, n_authors: list) -> int:
     sc = [citations[i] / n_authors[i] for i in range(len(citations))]
     n = len(sc)
     _, tmporder = sort_and_rank(sc, n)
-    h = 0
+    hn = 0
     for i in range(n):
         if tmporder[i] <= sc[i]:
-            h += 1
-    return h
+            hn += 1
+    return hn
+
+
+# k-norm index (Anania and Caruso 2013)
+def calculate_k_norm_index(citations: list, n_authors: list) -> float:
+    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
+    n = len(sc)
+    _, tmporder = sort_and_rank(sc, n)
+    hn = 0
+    normcore = 0
+    for i in range(n):
+        if tmporder[i] <= sc[i]:
+            hn += 1
+            normcore += sc[i]
+    try:
+        return hn + (1 - hn**2/normcore)
+    except ZeroDivisionError:
+        return 0
+
+
+# w-norm index (Anania and Caruso 2013)
+def calculate_w_norm_index(citations: list, n_authors: list) -> float:
+    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
+    n = len(sc)
+    _, tmporder = sort_and_rank(sc, n)
+    hn = 0
+    for i in range(n):
+        if tmporder[i] <= sc[i]:
+            hn += 1
+    normtotal = sum(sc)
+    return hn + (1 - hn**2/normtotal)
 
 
 # only used for spot testing new functions

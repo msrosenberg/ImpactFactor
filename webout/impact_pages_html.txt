@@ -144,6 +144,7 @@
         <li><a href="impact_c_p.html"><em>JPC</em></a></li>
         <li><a href="impact_Anania_and_Caruso_k_index.html"><em>k-</em>index (Anania and Caruso)</a></li>
         <li><a href="impact_Ye_and_Rousseau_k_index.html"><em>k-</em>index (Ye and Rousseau)</a></li>
+        <li><a href="impact_k_norm_index.html"><em>k-norm</em> index</a></li>
         <li><a href="impact_ls_h_rate.html">least squares <em>h-</em>rate</a></li>
         <li><a href="impact_scientist_level.html"><em>L<sup>v</sup></em></a></li>
         <li><a href="impact_m_index.html"><em>m-</em>index</a></li>
@@ -227,6 +228,7 @@
         <li><a href="impact_Woeginger_w_index.html"><em>w-</em>index (Woeginger)</a></li>
         <li><a href="impact_Wohlin_w_index.html"><em>w-</em>index (Wohlin)</a></li>
         <li><a href="impact_Wu_w_index.html"><em>w-</em>index (Wu)</a></li>
+        <li><a href="impact_w_norm_index.html"><em>w-norm</em> index</a></li>
         <li><a href="impact_frac_weight_cite_agg.html">weighted citation aggregate (fractional)</a></li>
         <li><a href="impact_prop_weight_cite_agg.html">weighted citation aggregate (proportional)</a></li>
         <li><a href="impact_frac_weight_cite_h_cut.html">weighted citation H-cut (fractional)</a></li>
@@ -15102,6 +15104,194 @@ impact_h_norm.html
         </div>
         <div class="graph_container">
           <div id="chart_h_norm_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate research in disciplines where publications typically receive less citations. <em>Scientometrics</em> 96:617-631.</li>
+      </ul>
+    </div>
+@@@@
+impact_k_norm_index.html
+        var data_k_norm_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>k-norm</em>'],
+           ['1997', 0],
+           ['1998', 1.5714285714285714],
+           ['1999', 2.625],
+           ['2000', 4.445086705202312],
+           ['2001', 4.661971830985916],
+           ['2002', 6.570576540755467],
+           ['2003', 8.535108958837773],
+           ['2004', 9.596345514950166],
+           ['2005', 12.539445628997868],
+           ['2006', 14.571584699453553],
+           ['2007', 16.592351536138107],
+           ['2008', 19.563875891692874],
+           ['2009', 20.610651463533337],
+           ['2010', 22.624718465003507],
+           ['2011', 23.662856217944178],
+           ['2012', 24.683342495876854],
+           ['2013', 26.689004753872105],
+           ['2014', 26.720486071230503],
+           ['2015', 26.747190711092905],
+           ['2016', 27.755103673151627],
+           ['2017', 27.773455771231124],
+           ['2018', 27.79043288497582],
+           ['2019', 28.79177482744338],
+           ['2020', 29.7923415079374],
+           ['2021', 31.780664549137455],
+           ['2022', 33.77067639799797],
+           ['2023', 33.78371664411975],
+           ['2024', 33.795506749116335],
+           ['2025', 33.80098568751559],
+		]);
+
+        var options_k_norm_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_k_norm_index = new google.visualization.LineChart(document.getElementById('chart_k_norm_index_div'));
+        chart_k_norm_index.draw(data_k_norm_index, options_k_norm_index);
+
+@@
+    <div id="k_norm_index" class="metric_container">
+      <h2><em>k-norm</em> index</h2>
+      <p>The <em>k-norm</em> index (Anania and Caruso 2013) is a variant of the <a href="impact_Anania_and_Caruso_k_index.html"><em>k-</em>index (Anania and Caruso)</a>, where citation counts are first normalized by dividing by the number of coauthors for each publication:</p>$$C^{*}_i = \frac{C_i}{A_i}.$$<p>These are used to calculate a normalized version of <em>h</em> (<a href="impact_h_norm.html"><em>h-norm</em> index</a>), and then <em>k-norm</em> is determined as:$$k{-}norm=h{-}norm+\left(1-\frac{{h{-}norm}^2}{\sum\limits_{i=1}^{h{-}norm} C^{*}_i}\right).$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>k-norm</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.5714</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.6250</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4.4451</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4.6620</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6.5706</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">8.5351</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">9.5963</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">12.5394</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">14.5716</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">16.5924</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">19.5639</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">20.6107</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">22.6247</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">23.6629</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">24.6833</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">26.6890</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">26.7205</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">26.7472</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">27.7551</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">27.7735</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">27.7904</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">28.7918</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">29.7923</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">31.7807</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">33.7707</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">33.7837</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">33.7955</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">33.8010</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_k_norm_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate research in disciplines where publications typically receive less citations. <em>Scientometrics</em> 96:617-631.</li>
+      </ul>
+    </div>
+@@@@
+impact_w_norm_index.html
+        var data_w_norm_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>w-norm</em>'],
+           ['1997', 1.0],
+           ['1998', 1.8421052631578947],
+           ['1999', 2.7563451776649748],
+           ['2000', 4.524752475247524],
+           ['2001', 4.738775510204082],
+           ['2002', 6.660173808810309],
+           ['2003', 8.618371548235963],
+           ['2004', 9.687093505990365],
+           ['2005', 12.615313893177442],
+           ['2006', 14.643390764989663],
+           ['2007', 16.653244504862226],
+           ['2008', 19.61167129751797],
+           ['2009', 20.650330067224424],
+           ['2010', 22.655214834257066],
+           ['2011', 23.691466361878497],
+           ['2012', 24.709750107857165],
+           ['2013', 26.70964929498839],
+           ['2014', 26.74040416512703],
+           ['2015', 26.766789607056708],
+           ['2016', 27.772852308521273],
+           ['2017', 27.79054386373678],
+           ['2018', 27.807102116877836],
+           ['2019', 28.807758863819473],
+           ['2020', 29.808218327704576],
+           ['2021', 31.79605139024289],
+           ['2022', 33.784289431136784],
+           ['2023', 33.796762569108985],
+           ['2024', 33.80860329281626],
+           ['2025', 33.814011284666236],
+		]);
+
+        var options_w_norm_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_w_norm_index = new google.visualization.LineChart(document.getElementById('chart_w_norm_index_div'));
+        chart_w_norm_index.draw(data_w_norm_index, options_w_norm_index);
+
+@@
+    <div id="w_norm_index" class="metric_container">
+      <h2><em>w-norm</em> index</h2>
+      <p>The <em>w-norm</em> index (Anania and Caruso 2013) is a variant of the <a href="impact_Anania_and_Caruso_w_index.html"><em>w-</em>index (Anania and Caruso)</a>, where citation counts are first normalized by dividing by the number of coauthors for each publication:</p>$$C^{*}_i = \frac{C_i}{A_i}.$$<p>These are used to calculate a normalized version of <em>h</em> (<a href="impact_h_norm.html"><em>h-norm</em> index</a>), and then <em>w-norm</em> is determined as:$$w{-}norm=h{-}norm+\left(1-\frac{{h{-}norm}^2}{\sum\limits_{i=1}^{P} C^{*}_i}\right).$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>w-norm</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.8421</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.7563</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4.5248</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4.7388</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6.6602</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">8.6184</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">9.6871</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">12.6153</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">14.6434</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">16.6532</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">19.6117</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">20.6503</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">22.6552</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">23.6915</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">24.7098</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">26.7096</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">26.7404</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">26.7668</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">27.7729</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">27.7905</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">27.8071</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">28.8078</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">29.8082</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">31.7961</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">33.7843</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">33.7968</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">33.8086</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">33.8140</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_w_norm_index_div" class="impact_chart"></div>
         </div>
       </div>
     </div>

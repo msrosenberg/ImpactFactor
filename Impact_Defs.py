@@ -9950,9 +9950,6 @@ def metric_w_index_anania_caruso() -> Metric:
     return m
 
 
-
-
-
 # h-norm index (Anania and Caruso 2013)
 def calculate_h_norm(metric_set: MetricSet) -> int:
     citations = metric_set.citations
@@ -9975,10 +9972,6 @@ def write_h_norm_example(metric_set: MetricSet) -> str:
     row3 = "<tr class=\"top_row\"><th>Adjusted Citations (" + cstari + ")</th>"
     row4 = "<tr><th>Rank (<em>i</em>)</th>"
     row5 = "<tr><th></th>"
-    # hn = 0
-    # for i, d in enumerate(data):
-    #     if i + 1 <= d[0]:
-    #         hn = i+1
     hn = metric_set.metrics["h-norm"].value
     for i, d in enumerate(data):
         cs = d[0]
@@ -10033,6 +10026,90 @@ def metric_h_norm() -> Metric:
     m.properties["Core Citations"] = True
     m.properties["Coauthorship"] = True
     return m
+
+
+
+
+
+
+
+
+
+
+
+# k-norm index (Anania and Caruso 2013)
+def calculate_k_norm_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    n_authors = metric_set.author_counts()
+    return Impact_Funcs.calculate_k_norm_index(citations, n_authors)
+
+
+def metric_k_norm_index() -> Metric:
+    m = Metric()
+    m.name = "k-norm index"
+    m.full_name = "k-norm index"
+    m.html_name = "<em>k-norm</em> index"
+    m.symbol = "<em>k-norm</em>"
+    m.metric_type = FLOAT
+    ceq = r"$$C^{*}_i = \frac{C_i}{A_i}.$$"
+    equation = r"$$k{-}norm=h{-}norm+\left(1-\frac{{h{-}norm}^2}{\sum\limits_{i=1}^{h{-}norm} C^{*}_i}\right).$$"
+    m.description = (f"<p>The <em>k-norm</em> index (Anania and Caruso 2013) is a variant of the "
+                     f"__Anania and Caruso k-index__, where citation counts are first normalized by dividing by the "
+                     f"number of coauthors for each publication:</p>{ceq}<p>These are used to calculate a normalized "
+                     f"version of <em>h</em> (__h-norm__), and then <em>k-norm</em> is determined as:{equation}")
+    m.references = ["Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate "
+                    "research in disciplines where publications typically receive less citations. "
+                    "<em>Scientometrics</em> 96:617-631."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_k_norm_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# w-norm index (Anania and Caruso 2013)
+def calculate_w_norm_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    n_authors = metric_set.author_counts()
+    return Impact_Funcs.calculate_w_norm_index(citations, n_authors)
+
+
+def metric_w_norm_index() -> Metric:
+    m = Metric()
+    m.name = "w-norm index"
+    m.full_name = "w-norm index"
+    m.html_name = "<em>w-norm</em> index"
+    m.symbol = "<em>w-norm</em>"
+    m.metric_type = FLOAT
+    ceq = r"$$C^{*}_i = \frac{C_i}{A_i}.$$"
+    equation = r"$$w{-}norm=h{-}norm+\left(1-\frac{{h{-}norm}^2}{\sum\limits_{i=1}^{P} C^{*}_i}\right).$$"
+    m.description = (f"<p>The <em>w-norm</em> index (Anania and Caruso 2013) is a variant of the "
+                     f"__Anania and Caruso w-index__, where citation counts are first normalized by dividing by the "
+                     f"number of coauthors for each publication:</p>{ceq}<p>These are used to calculate a normalized "
+                     f"version of <em>h</em> (__h-norm__), and then <em>w-norm</em> is determined as:{equation}")
+    m.references = ["Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate "
+                    "research in disciplines where publications typically receive less citations. "
+                    "<em>Scientometrics</em> 96:617-631."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_w_norm_index
+    m.properties["Core Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["All Citations"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10193,7 +10270,9 @@ def load_all_metrics() -> list:
                    metric_hc(),
                    metric_k_index_anania_caruso(),
                    metric_w_index_anania_caruso(),
-                   metric_h_norm()
+                   metric_h_norm(),
+                   metric_k_norm_index(),
+                   metric_w_norm_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
