@@ -201,10 +201,6 @@ class DescriptionGraph:
     def __init__(self):
         self.name = ""  # a label which will be used to identify specific plots
         self.data = None
-        # self.data = []
-        # self.series_type = []
-        # self.graph_options = None
-        # self.series_options = []
 
 
 # --- Definitions and Calculations for Individual Metrics---
@@ -9712,6 +9708,98 @@ def metric_year_based_emp_cites() -> Metric:
     return m
 
 
+# h'-index (Zhang 2013)
+def calculate_h_prime_index(metric_set: MetricSet) -> float:
+    total_cites = metric_set.metrics["total cites"].value
+    core_cites = metric_set.metrics["h-core cites"].value
+    h = metric_set.metrics["h-index"].value
+    e = metric_set.metrics["e-index"].value
+    t = math.sqrt(total_cites - core_cites)
+    return Impact_Funcs.calculate_h_prime(h, e, t)
+
+
+def write_h_prime_index_desc_data(metric_set: MetricSet) -> list:
+    metric = metric_set.metrics["h_prime-index"]
+    graph = metric.description_graphs[0]
+    output = list()
+    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+    output.append("           ['Rank', 'Tail', 'Center', 'Upper'],\n")
+    tmp_cites = [c for c in metric_set.citations]
+    tmp_cites.sort(reverse=True)
+    h = metric_set.metrics["h-index"].value
+    maxx = metric_set.metrics["total pubs"].value
+    maxv = 50
+    for x in range(1, maxx + 1):
+        outstr = "           [{}".format(x)  # write rank
+        if x < h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        elif x == h:
+            outstr += ", null, {}, {}".format(h, tmp_cites[x - 1] - h)
+        else:
+            outstr += ", {}, null, null".format(tmp_cites[x - 1])
+        outstr += "],\n"
+        output.append(outstr)
+
+    output.append("		]);\n")
+    output.append("\n")
+    output.append("        var options_{} = {{\n".format(graph.name))
+    output.append("		     legend: {position: 'top'},\n")
+    output.append("		     isStacked: true,\n")
+    output.append("		     interpolateNulls: true,\n")
+    output.append("		     hAxis: {slantedText: true,\n")
+    output.append("		             title: \'Rank\',\n")
+    output.append("		             gridlines: {color: \'transparent\'},\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+    output.append("		             title: \'Citation Count\',\n")
+    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+    output.append("		             gridlines: {color: \'transparent\'}},\n")
+    output.append("        };\n")
+    output.append("\n")
+    output.append("        var chart_{} = new google.visualization."
+                  "ColumnChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+    output.append("\n")
+
+    return output
+
+
+def metric_h_prime_index() -> Metric:
+    m = Metric()
+    m.name = "h_prime-index"
+    m.full_name = "h'-index"
+    m.html_name = "<em>h'-</em>index"
+    m.symbol = "<em>h'</em>"
+    m.metric_type = FLOAT
+    graph = DescriptionGraph()
+    m.description_graphs.append(graph)
+    graph.name = "h_prime_index_desc"
+    graph.data = write_e_index_desc_data
+    equation = r"$$h^\prime=\frac{eh}{t}.$$"
+    m.description = ("<p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the __h-index__, where "
+                     "<em>h</em> is scaled by the ratio of excess and tail citations relative to the core. "
+                     "It is measured as:</p>" + equation + "<p>where <em>e</em> "
+                     "is the __e-index__ (the square root of the count of citations in the "
+                     "core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the "
+                     "square root of all citations for publications in the tail (<em>i.e.</em>, not in the core). "
+                     "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>")
+    m.references = ["Zhang, C.-T. (2013) The <em>h’</em> Index, effectively improving the <em>h</em>-Index based on "
+                    "the citation distribution. <em>PLoS ONE</em> 8(4):e59912."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_h_prime_index
+    m.properties["Core Property"] = True
+    # m.properties["Core Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Tail Citations"] = True
+    return m
+
+
+
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -9864,7 +9952,8 @@ def load_all_metrics() -> list:
                    metric_year_based_em_cites(),
                    metric_year_based_emp_pub(),
                    metric_year_based_emp_pycites(),
-                   metric_year_based_emp_cites()
+                   metric_year_based_emp_cites(),
+                   metric_h_prime_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

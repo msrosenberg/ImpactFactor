@@ -6743,6 +6743,87 @@
         var chart_Year_based_EMp_index_by_citations = new google.visualization.LineChart(document.getElementById('chart_Year_based_EMp_index_by_citations_div'));
         chart_Year_based_EMp_index_by_citations.draw(data_Year_based_EMp_index_by_citations, options_Year_based_EMp_index_by_citations);
 
+        var data_h_prime_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>h'</em>'],
+           ['1997', 0.0],
+           ['1998', 3.464101615137755],
+           ['1999', 6.0],
+           ['2000', 11.180339887498949],
+           ['2001', 15.257784898208518],
+           ['2002', 16.759740119968715],
+           ['2003', 20.60488785479727],
+           ['2004', 26.930805644891628],
+           ['2005', 39.096452635701525],
+           ['2006', 42.487368365059226],
+           ['2007', 56.30165816677842],
+           ['2008', 68.3999831309021],
+           ['2009', 90.33643411531878],
+           ['2010', 86.12463544299436],
+           ['2011', 103.53431440874897],
+           ['2012', 148.12824141133405],
+           ['2013', 158.90037088960003],
+           ['2014', 174.7845623710608],
+           ['2015', 176.7894620414036],
+           ['2016', 170.83111318132077],
+           ['2017', 196.23855135435775],
+           ['2018', 185.4682430446846],
+           ['2019', 176.59263014083376],
+           ['2020', 175.92501837623922],
+           ['2021', 175.6615811477115],
+           ['2022', 195.96258547401433],
+           ['2023', 189.98890079891046],
+           ['2024', 194.6153876376886],
+           ['2025', 208.82434378533802],
+		]);
+
+        var options_h_prime_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_h_prime_index = new google.visualization.LineChart(document.getElementById('chart_h_prime_index_div'));
+        chart_h_prime_index.draw(data_h_prime_index, options_h_prime_index);
+
+        var data_e_index_desc = google.visualization.arrayToDataTable([
+           ['Rank', 'Tail', 'Center', 'Upper'],
+           [1, null, 6, 53],
+           [2, null, 6, 20],
+           [3, null, 6, 10],
+           [4, null, 6, 5],
+           [5, null, 6, 5],
+           [6, null, 6, 4],
+           [7, 4, null, null],
+           [8, 3, null, null],
+           [9, 3, null, null],
+           [10, 2, null, null],
+           [11, 1, null, null],
+           [12, 1, null, null],
+           [13, 1, null, null],
+           [14, 0, null, null],
+           [15, 0, null, null],
+           [16, 0, null, null],
+           [17, 0, null, null],
+           [18, 0, null, null],
+		]);
+
+        var options_e_index_desc = {
+		     legend: {position: 'top'},
+		     isStacked: true,
+		     interpolateNulls: true,
+		     hAxis: {slantedText: true,
+		             title: 'Rank',
+		             gridlines: {color: 'transparent'},
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             viewWindow: {max:50}},
+		     vAxis: {viewWindow: {max:50},
+		             title: 'Citation Count',
+		             ticks: [0, 10, 20, 30, 40, 50],
+		             gridlines: {color: 'transparent'}},
+        };
+
+        var chart_e_index_desc = new google.visualization.ColumnChart(document.getElementById('chart_e_index_desc_div'));
+        chart_e_index_desc.draw(data_e_index_desc, options_e_index_desc);
+
 		}
     </script>
   </head>
@@ -6750,7 +6831,7 @@
     <div>
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-05-18.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-06-04.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
           <li><em>P</em> &mdash; The total number of publications of an author. Unless otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having the most citations and <em>P</em> the fewest.</li>
@@ -6840,6 +6921,7 @@
         <li><a href="#gf_paper"><em>g<sub>F</sub></em></a></li>
         <li><a href="#gf_cite"><em>g<sub>f</sub></em></a></li>
         <li><a href="#history_h_index"><em>H</em></a></li>
+        <li><a href="#h_prime_index"><em>h'-</em>index</a></li>
         <li><a href="#h2_index"><em>h</em>(2)-index</a></li>
         <li><a href="#h_index"><em>h-</em>index</a></li>
         <li><a href="#h_rate"><em>h-</em>rate</a></li>
@@ -7888,6 +7970,25 @@
         <td></td>
         <td>⚫</td>
         <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#h_prime_index"><em>h'-</em>index</a></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td>⚫</td>
+        <td>⚫</td>
         </tr>
         <tr>
           <td class="first_col"><a href="#h2_index"><em>h</em>(2)-index</a></td>
@@ -17231,6 +17332,57 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="h_prime_index" class="metric_container">
+      <h2><em>h'-</em>index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Property</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations, Core Citations, Tail Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the <a href="#h_index"><em>h-</em>index</a>, where <em>h</em> is scaled by the ratio of excess and tail citations relative to the core. It is measured as:</p>$$h^\prime=\frac{eh}{t}.$$<p>where, <em>e</em> is the <a href="#e_index"><em>e-</em>index</a> (the square root of the count of citations in the core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the square root of all citations for publications not in the core. <div id="chart_h_prime_index_desc_div" class="proportional_chart"></div>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h'</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.4641</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">6.0000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">11.1803</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">15.2578</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">16.7597</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">20.6049</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">26.9308</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">39.0965</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">42.4874</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">56.3017</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">68.4000</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">90.3364</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">86.1246</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">103.5343</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">148.1282</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">158.9004</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">174.7846</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">176.7895</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">170.8311</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">196.2386</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">185.4682</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">176.5926</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">175.9250</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">175.6616</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">195.9626</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">189.9889</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">194.6154</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">208.8243</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_h_prime_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -17326,6 +17478,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Ye, F.Y., and L. Leydesdorff (2014) The “Academic Trace” of the Performance Matrix: A Mathematical Synthesis of the <em>h</em>-Index and the Integrated Impact Indicator (I3). <em>Journal of the Association for Information Science and Technology</em> 65(4):742&ndash;750.</li>
         <li>Ye, F.Y., and R. Rousseau (2010) Probing the <em>h-</em>core: An investigation of the tail-core ratio for rank distributions. <em>Scientometrics</em> 84(2):431&ndash;439.</li>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
+        <li>Zhang, C.-T. (2013) The h’ Index, effectively improving the h-Index nased on the citation distribution. <em>PLoS ONE</em> 8(4):e59912.</li>
       </ul>
     </div>
   </body>
