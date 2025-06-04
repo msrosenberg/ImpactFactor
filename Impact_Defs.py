@@ -10028,15 +10028,6 @@ def metric_h_norm() -> Metric:
     return m
 
 
-
-
-
-
-
-
-
-
-
 # k-norm index (Anania and Caruso 2013)
 def calculate_k_norm_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
@@ -10102,6 +10093,79 @@ def metric_w_norm_index() -> Metric:
     return m
 
 
+# yearly h-index (Singh 2022)
+def calculate_yearly_h_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    pub_years = metric_set.publication_years()
+    return Impact_Funcs.calculate_yearly_h_index(citations, pub_years)
+
+
+def metric_yearly_h_index() -> Metric:
+    m = Metric()
+    m.name = "yearly h-index"
+    m.full_name = "yearly h-index"
+    m.html_name = "yearly <em>h-</em>index"
+    m.symbol = r"\(\bar{h}_y\)"
+    m.metric_type = FLOAT
+    equation = r"$$\bar{h}_y = \frac{\sum\limits_{i=Y_0}^{Y}h_i}{\text{academic age}},$$"
+    m.description = (f"<p>The yearly <em>h-</em>index (Singh 2022) is described more or less incidentally "
+                     f"when building up to another metric in the paper. It is simply the average __h-index__ "
+                     f"for a researcher based on calculations of <em>h</em> from sets of papers published from each "
+                     f"individual year of their career, rather than a single <em>h</em> determined for the entire "
+                     f"career. It is calculated as:</p>{equation}<p>where <em>h<sub>i</sub></em> is simply an "
+                     f"<em>h-</em>index calculated only for papers from year <em>i</em>. Regardless of citation "
+                     f"counts, the yearly <em>h-</em> index will always be limited by the total number of papers "
+                     f"published per year, thus highly cited papers and poorly cited papers will frequently "
+                     f"contribute about equal weight in any given year. It serves more as a general measure of "
+                     f"consistency and&mdash;assuming most papers get at least a few citations&mdash;is little "
+                     f"different than the average number of papers published per year, at least for most "
+                     f"individuals.")
+    m.references = ["Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis "
+                    "using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_yearly_h_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Time"] = True
+    return m
+
+
+# t-index (Singh 2022)
+def calculate_t_index_singh(metric_set: MetricSet) -> float:
+    year_h = metric_set.metrics["yearly h-index"].value
+    age = metric_set.academic_age()
+    citations = metric_set.citations
+    total_cites = metric_set.metrics["total cites"].value
+    return Impact_Funcs.calculate_t_index_singh(citations, year_h, age, total_cites)
+
+
+def metric_t_index_singh() -> Metric:
+    m = Metric()
+    m.name = "Singh t-index"
+    m.full_name = "t-index (Singh)"
+    m.html_name = "<em>t-</em>index (Singh)"
+    m.symbol = "<em>t</em>"
+    m.metric_type = FLOAT
+    equation = r"$$t=4e^{T/T^\prime}\bar{h}_y,$$"
+    teq1 = r"$$T = \sum\limits_{i=1}^{P}\frac{c_i}{C^P}\ln\frac{c_i}{C^P}$$"
+    teq2 = r"$$T^\prime=\ln \left(10 \times  \text{academic age} \right).$$"
+    m.description = (f"<p>The <em>t-</em>index (Singh 2022) is an alternative metric for impact based on the "
+                     f"information entropy of individual publications, with scaling factors based on academic age "
+                     f"and the __yearly h-index__. It is calculated as:</p>{equation}<p>where</p>{teq1}<p>and</p>"
+                     f"{teq2}<p>It is a bit difficult to interpret and is not guaranteed to monotonically "
+                     f"increase.")
+    m.references = ["Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis "
+                    "using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_t_index_singh
+    m.properties["Alternative Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    m.properties["Time"] = True
+    return m
 
 
 
@@ -10272,7 +10336,9 @@ def load_all_metrics() -> list:
                    metric_w_index_anania_caruso(),
                    metric_h_norm(),
                    metric_k_norm_index(),
-                   metric_w_norm_index()
+                   metric_w_norm_index(),
+                   metric_yearly_h_index(),
+                   metric_t_index_singh()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

@@ -206,6 +206,7 @@
         <li><a href="impact_sharpened_h_index_narrow.html">sharpened <em>h-</em>index (narrow)</a></li>
         <li><a href="impact_specific_impact_s_index.html">specific impact <em>s-</em>index</a></li>
         <li><a href="impact_T_index_h_mixed.html"><em>T-</em>index (<em>h-</em>mixed synthetic index)</a></li>
+        <li><a href="impact_Singh_t_index.html"><em>t-</em>index (Singh)</a></li>
         <li><a href="impact_Tol_t_index.html"><em>t-</em>index (Tol)</a></li>
         <li><a href="impact_tapered_h_index.html">tapered <em>h-</em>index</a></li>
         <li><a href="impact_th_index.html"><em>t<sub>h</sub></em></a></li>
@@ -242,6 +243,7 @@
         <li><a href="impact_Year_based_EM_index_by_citations.html">Year-based <em>EM</em>-index by citations</a></li>
         <li><a href="impact_Year_based_EM_index_by_publication_year_citations.html">Year-based <em>EM</em>-index by publication year citations</a></li>
         <li><a href="impact_Year_based_EM_index_by_publications.html">Year-based <em>EM</em>-index by publications</a></li>
+        <li><a href="impact_yearly_h_index.html">yearly <em>h-</em>index</a></li>
         <li><a href="impact_Year_based_EM_index_by_publications.html"><em>Yp_EM</em></a></li>
         <li><a href="impact_Year_based_EMp_index_by_publications.html"><em>Yp_EM</em>&prime;</a></li>
         <li><a href="impact_Year_based_EM_index_by_publication_year_citations.html"><em>Ypc_EM</em></a></li>
@@ -15299,5 +15301,193 @@ impact_w_norm_index.html
       <h2>References</h2>
       <ul>
         <li>Anania, G., and A. Caruso (2013) Two simple new bibliometric indexes to better evaluate research in disciplines where publications typically receive less citations. <em>Scientometrics</em> 96:617-631.</li>
+      </ul>
+    </div>
+@@@@
+impact_yearly_h_index.html
+        var data_yearly_h_index = google.visualization.arrayToDataTable([
+           ['Year', '\(\bar{h}_y\)'],
+           ['1997', 1.0],
+           ['1998', 1.5],
+           ['1999', 1.3333333333333333],
+           ['2000', 1.75],
+           ['2001', 1.8],
+           ['2002', 2.3333333333333335],
+           ['2003', 2.4285714285714284],
+           ['2004', 2.625],
+           ['2005', 2.7777777777777777],
+           ['2006', 2.8],
+           ['2007', 2.727272727272727],
+           ['2008', 2.5833333333333335],
+           ['2009', 2.6153846153846154],
+           ['2010', 2.9285714285714284],
+           ['2011', 2.8666666666666667],
+           ['2012', 2.875],
+           ['2013', 2.764705882352941],
+           ['2014', 2.8333333333333335],
+           ['2015', 2.9473684210526314],
+           ['2016', 2.85],
+           ['2017', 2.8095238095238093],
+           ['2018', 2.772727272727273],
+           ['2019', 2.782608695652174],
+           ['2020', 2.75],
+           ['2021', 2.72],
+           ['2022', 2.6923076923076925],
+           ['2023', 2.730769230769231],
+           ['2024', 2.607142857142857],
+           ['2025', 2.586206896551724],
+		]);
+
+        var options_yearly_h_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_yearly_h_index = new google.visualization.LineChart(document.getElementById('chart_yearly_h_index_div'));
+        chart_yearly_h_index.draw(data_yearly_h_index, options_yearly_h_index);
+
+@@
+    <div id="yearly_h_index" class="metric_container">
+      <h2>yearly <em>h-</em>index</h2>
+      <p>The yearly <em>h-</em>index (Singh 2022) is described more or less incidentally when building up to another metric in the paper. It is simply the average <a href="impact_h_index.html"><em>h-</em>index</a> for a researcher based on calculations of <em>h</em> from sets of papers published from each individual year of their career, rather than a single <em>h</em> determined for the entire career. It is calculated as:</p>$$\bar{h}_y = \frac{\sum\limits_{i=Y_0}^{Y}h_i}{\text{academic age}},$$<p>where <em>h<sub>i</sub></em> is simply an <em>h-</em>index calculated only for papers from year <em>i</em>. Regardless of citation counts, the yearly <em>h-</em> index will always be limited by the total number of papers published per year, thus highly cited papers and poorly cited papers will frequently contribute about equal weight in any given year. It serves more as a general measure of consistency and&mdash;assuming most papers get at least a few citations&mdash;is little different than the average number of papers published per year, at least for most individuals.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>\(\bar{h}_y\)</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.5000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1.3333</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">1.7500</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">1.8000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">2.3333</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">2.4286</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">2.6250</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">2.7778</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">2.8000</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">2.7273</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">2.5833</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">2.6154</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">2.9286</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">2.8667</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">2.8750</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">2.7647</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">2.8333</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">2.9474</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">2.8500</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">2.8095</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">2.7727</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">2.7826</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">2.7500</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">2.7200</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">2.6923</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">2.7308</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">2.6071</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">2.5862</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_yearly_h_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660.</li>
+      </ul>
+    </div>
+@@@@
+impact_Singh_t_index.html
+        var data_Singh_t_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>t</em>'],
+           ['1997', 5.404999490269068],
+           ['1998', 9.646981210972529],
+           ['1999', 8.234886044132221],
+           ['2000', 11.28658492725125],
+           ['2001', 11.690689025820568],
+           ['2002', 16.042832277662427],
+           ['2003', 17.106200749717487],
+           ['2004', 19.002899689731283],
+           ['2005', 20.297596772883207],
+           ['2006', 20.626512822974547],
+           ['2007', 20.046172467845942],
+           ['2008', 19.03231698435341],
+           ['2009', 19.260472713703347],
+           ['2010', 21.691920308957933],
+           ['2011', 21.377482563830952],
+           ['2012', 21.457134999789616],
+           ['2013', 20.641315738609784],
+           ['2014', 21.068587416376495],
+           ['2015', 21.891451329564045],
+           ['2016', 21.065518495642454],
+           ['2017', 20.67898543182815],
+           ['2018', 20.35829756712321],
+           ['2019', 20.395577014072412],
+           ['2020', 20.141771146312756],
+           ['2021', 19.925744264537332],
+           ['2022', 19.66241220106342],
+           ['2023', 19.890752836878224],
+           ['2024', 18.94697457228736],
+           ['2025', 18.77477215595635],
+		]);
+
+        var options_Singh_t_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_Singh_t_index = new google.visualization.LineChart(document.getElementById('chart_Singh_t_index_div'));
+        chart_Singh_t_index.draw(data_Singh_t_index, options_Singh_t_index);
+
+@@
+    <div id="Singh_t_index" class="metric_container">
+      <h2><em>t-</em>index (Singh)</h2>
+      <p>The <em>t-</em>index (Singh 2022) is an alternative metric for impact based on the information entropy of individual publications, with scaling factors based on academic age and the <a href="impact_yearly_h_index.html">yearly <em>h-</em>index</a>. It is calculated as:</p>$$t=4e^{T/T^\prime}\bar{h}_y,$$<p>where</p>$$T = \sum\limits_{i=1}^{P}\frac{c_i}{C^P}\ln\frac{c_i}{C^P}$$<p>and</p>$$T^\prime=\ln \left(10 \times  \text{academic age} \right).$$<p>It is a bit difficult to interpret and is not guaranteed to monotonically increase.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>t</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">5.4050</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">9.6470</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">8.2349</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">11.2866</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">11.6907</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">16.0428</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">17.1062</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">19.0029</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">20.2976</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">20.6265</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">20.0462</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">19.0323</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">19.2605</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">21.6919</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">21.3775</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">21.4571</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">20.6413</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">21.0686</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">21.8915</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">21.0655</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">20.6790</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">20.3583</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">20.3956</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">20.1418</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">19.9257</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">19.6624</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">19.8908</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">18.9470</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">18.7748</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_Singh_t_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660.</li>
       </ul>
     </div>

@@ -1929,6 +1929,41 @@ def calculate_w_norm_index(citations: list, n_authors: list) -> float:
     return hn + (1 - hn**2/normtotal)
 
 
+# yearly h-index (Singh 2022)
+def calculate_yearly_h_index(citations: list, pub_years: list) -> float:
+    miny = min(pub_years)
+    maxy = max(pub_years)
+    havg = 0
+    yearcnt = 0
+    # calculate h only for papers published in a single  year
+    for year in range(miny, maxy+1):
+        # create citation count list for a single year
+        tmp_citations = []
+        for i, y in enumerate(pub_years):
+            if y == year:
+                tmp_citations.append(citations[i])
+        n = len(tmp_citations)
+        _, tmporder = sort_and_rank(tmp_citations, n)
+        # calculate h for the year
+        hy = 0
+        for i in range(n):
+            if tmporder[i] <= tmp_citations[i]:
+                hy += 1
+        havg += hy
+        yearcnt += 1
+    return havg / yearcnt  # average across all years
+
+
+# t-index (Singh 2022)
+def calculate_t_index_singh(citations, year_h, age, total_cites) -> float:
+    t_prime = math.log(10*age)
+    t = 0
+    for c in citations:
+        if c > 0:
+            t += -(c/total_cites) * math.log(c/total_cites)
+    return 4 * math.exp(t/t_prime) * year_h
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
