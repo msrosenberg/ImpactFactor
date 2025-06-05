@@ -36,7 +36,7 @@ def string_to_date(s: str) -> datetime.date:
 
 
 def date_to_string(d: datetime.date) -> str:
-    return str(d.month) + '/' + str(d.day) + '/'+str(d.year)
+    return f"{str(d.month)}/{str(d.day)}/{str(d.year)}"
 
 
 def read_data_file(filename: str) -> Tuple[list, list]:
