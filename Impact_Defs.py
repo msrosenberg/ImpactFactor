@@ -9768,16 +9768,16 @@ def write_h_prime_index_desc_data(metric_set: MetricSet) -> list:
 def metric_h_prime_index() -> Metric:
     m = Metric()
     m.name = "h_prime-index"
-    m.full_name = "h'-index"
-    m.html_name = "<em>h'-</em>index"
-    m.symbol = "<em>h'</em>"
+    m.full_name = "h&prime;-index"
+    m.html_name = "<em>h&prime;-</em>index"
+    m.symbol = "<em>h&prime;</em>"
     m.metric_type = FLOAT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "h_prime_index_desc"
     graph.data = write_h_prime_index_desc_data
     equation = r"$$h^\prime=\frac{eh}{t}.$$"
-    m.description = ("<p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the __h-index__, where "
+    m.description = ("<p>The <em>h&prime;-</em>index (Zhang 2013) is a variant of the __h-index__, where "
                      "<em>h</em> is scaled by the ratio of excess and tail citations relative to the core. "
                      "It is measured as:</p>" + equation + "<p>where <em>e</em> "
                      "is the __e-index__ (the square root of the count of citations in the "

@@ -90,7 +90,7 @@
         <li><a href="impact_gf_paper.html"><em>g<sub>F</sub></em></a></li>
         <li><a href="impact_gf_cite.html"><em>g<sub>f</sub></em></a></li>
         <li><a href="impact_history_h_index.html"><em>H</em></a></li>
-        <li><a href="impact_h_prime_index.html"><em>h'-</em>index</a></li>
+        <li><a href="impact_h_prime_index.html"><em>h&prime;-</em>index</a></li>
         <li><a href="impact_h2_index.html"><em>h</em>(2)-index</a></li>
         <li><a href="impact_h_index.html"><em>h-</em>index</a></li>
         <li><a href="impact_h_norm.html"><em>h-norm</em> index</a></li>
@@ -14566,7 +14566,7 @@ impact_Year_based_EMp_index_by_citations.html
 @@@@
 impact_h_prime_index.html
         var data_h_prime_index = google.visualization.arrayToDataTable([
-           ['Year', '<em>h'</em>'],
+           ['Year', '<em>h&prime;</em>'],
            ['1997', 0.0],
            ['1998', 3.464101615137755],
            ['1999', 6.0],
@@ -14648,13 +14648,13 @@ impact_h_prime_index.html
 
 @@
     <div id="h_prime_index" class="metric_container">
-      <h2><em>h'-</em>index</h2>
-      <p>The <em>h<sup>'</sup>-</em>index (Zhang 2013) is a variant of the <a href="impact_h_index.html"><em>h-</em>index</a>, where <em>h</em> is scaled by the ratio of excess and tail citations relative to the core. It is measured as:</p>$$h^\prime=\frac{eh}{t}.$$<p>where <em>e</em> is the <a href="impact_e_index.html"><em>e-</em>index</a> (the square root of the count of citations in the core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the square root of all citations for publications in the tail (<em>i.e.</em>, not in the core). <div id="chart_h_prime_index_desc_div" class="proportional_chart"></div>
+      <h2><em>h&prime;-</em>index</h2>
+      <p>The <em>h&prime;-</em>index (Zhang 2013) is a variant of the <a href="impact_h_index.html"><em>h-</em>index</a>, where <em>h</em> is scaled by the ratio of excess and tail citations relative to the core. It is measured as:</p>$$h^\prime=\frac{eh}{t}.$$<p>where <em>e</em> is the <a href="impact_e_index.html"><em>e-</em>index</a> (the square root of the count of citations in the core above and beyond what is necessary to produce <em>h</em>) and <em>t</em> is the square root of all citations for publications in the tail (<em>i.e.</em>, not in the core). <div id="chart_h_prime_index_desc_div" class="proportional_chart"></div>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th><em>h'</em></th></tr>
+            <tr><th>Year</th><th><em>h&prime;</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">3.4641</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">6.0000</td></tr>
