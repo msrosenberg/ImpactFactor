@@ -18,9 +18,6 @@ import datetime
 from typing import Tuple
 import re
 
-tb = '\t'
-
-
 class Article:
     def __init__(self):
         self.year = 0
@@ -79,29 +76,29 @@ def read_data_file(filename: str) -> Tuple[list, list]:
             if a == 0:
                 # skip 1st 4 columns
                 for i in range(4):
-                    line = line[line.find(tb)+1:]
-                tmp_list = line.split(tb)
+                    line = line[line.find("\t")+1:]
+                tmp_list = line.split("\t")
                 for d in tmp_list:
                     date_list.append(string_to_date(d))
             # read data
             elif line != '':
                 new_article = Article()
                 article_list.append(new_article)
-                tstr = line[:line.find(tb)]
-                line = line[line.find(tb)+1:]
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
                 new_article.year = int(tstr)
-                tstr = line[:line.find(tb)]
-                line = line[line.find(tb)+1:]
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
                 new_article.authors = int(tstr)
-                tstr = line[:line.find(tb)]
-                line = line[line.find(tb)+1:]
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
 
                 new_article.author_rank = int(tstr)
-                tstr = line[:line.find(tb)]
-                line = line[line.find(tb)+1:]
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
 
                 new_article.title = tstr
-                cite_list = line.split(tb)
+                cite_list = line.split("\t")
                 for n in cite_list:
                     if n == 'n/a':
                         n = None
@@ -130,14 +127,14 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
                 if (a != 0) and (line != ''):
                     article = article_list[a - 1]
                     # skip year
-                    line = line[line.find(tb) + 1:]
+                    line = line[line.find("\t") + 1:]
                     # skip authors
-                    line = line[line.find(tb) + 1:]
+                    line = line[line.find("\t") + 1:]
                     # skip author rank
-                    line = line[line.find(tb) + 1:]
+                    line = line[line.find("\t") + 1:]
                     # skip title
-                    line = line[line.find(tb) + 1:]
-                    cite_list = line.split(tb)
+                    line = line[line.find("\t") + 1:]
+                    cite_list = line.split("\t")
                     for n in cite_list:
                         if n == 'n/a':
                             n = None
@@ -199,7 +196,7 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
         # write header of dates
         outfile.write("Date")
         for date in date_list:
-            outfile.write(tb + date_to_string(date))
+            outfile.write("\t" + date_to_string(date))
         outfile.write("\n")
 
         # write a row for each metric type, with columns representing years
@@ -213,7 +210,7 @@ def write_output(fname: str, date_list: list, yearly_metrics_list: list, inc_sel
             else:
                 outfile.write(tmp_metric.full_name)  # name of metric
                 for metric_list in yearly_metrics_list:
-                    outfile.write(tb + str(metric_list.metrics[m]))
+                    outfile.write("\t" + str(metric_list.metrics[m]))
                 outfile.write("\n")
 
 
