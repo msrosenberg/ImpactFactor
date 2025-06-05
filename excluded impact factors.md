@@ -34,6 +34,9 @@ reason for exclusion.
 
 ## Requires evaluation of journal quality in some manner
 * Mikhailov, O.V. (2012) A new citation index for researchers. Herald of the Russian Academy of Sciences 82(5):403-405.
+* _r_-index
+  * Rahul, P.R.C. (2013) r-index: Quantifying the quality of an individual's scientific research output. Journal of Scientometric Research 2(1):80-82.
+* Hostiuc, S., and I. Negoi (2016) A new method for evaluating author's scientific impact by using an eigenfactor derived scoring system. Journal of Scientometric Research 5(1):85-90.
 
 
 ## Requires evaluation and comparison of coauthors

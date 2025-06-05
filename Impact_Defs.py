@@ -10168,15 +10168,6 @@ def metric_t_index_singh() -> Metric:
     return m
 
 
-
-
-
-
-
-
-
-
-
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """

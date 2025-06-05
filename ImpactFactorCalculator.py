@@ -252,6 +252,8 @@ def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = 
     outfile.write(f"   <p>Citation data used for calculating all examples extracted from Google Scholar "
                   f"on {now.strftime("%Y-%m-%d")}.</p>\n")
 
+    outfile.write(f"   <p>Below the Index is a table summarizing major properties of the various indices.</p>\n")
+
     if not inc_self:
         outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
                       "self- and coauthor-citation are not currently included in the descriptions below because the "
@@ -322,6 +324,9 @@ def create_metric_table(outfile, metric_base_data, metric_names, inc_coauth: boo
                         is_single: bool = True):
     # new and temp
     outfile.write("    <hr/>\n")
+    outfile.write("    <h2>Properties Table</h2>\n")
+    outfile.write("    <p>This table attempts to give a basic summary of some of the properties that distinguish "
+                  "the different metrics and measures.</p>\n")
     outfile.write("    <div>\n")
     outfile.write('      <table class="property_table">\n')
     outfile.write("       <thead>\n")
@@ -614,6 +619,8 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth
             name = name_links[i[1]]
             outfile.write(f'        <li><a href="impact_{name[1]}.html">{name[0]}</a></li>\n')
         outfile.write("      </ul>\n")
+        create_metric_table(outfile, metric_base_data, metric_names, inc_coauth, inc_self, is_single=False)
+
         # output a page for every metric
         for name in metric_names:
             metric = metric_base_data.metrics[name]
@@ -726,7 +733,19 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth
                 # output page info
                 outfile.write(f'    <div id="{encode_name(name)}" class="metric_container">\n')
                 outfile.write(f'      <h2>{metric.html_name}</h2>\n')
-                outfile.write("      " + format_description(metric.description, metric_base_data) + "\n")
+                outfile.write("      <h3>Properties</h3>\n")
+                outfile.write("        <ul>\n")
+                for m_type in Impact_Defs.PROPERTY_TYPES:
+                    outlist = []
+                    for p in Impact_Defs.PROPERTY_DICT[m_type]:
+                        if metric.properties[p]:
+                            outlist.append(p)
+                    if len(outlist) > 0:
+                        outfile.write("          <li><strong>{}:</strong> {}</li>\n".format(m_type, ", ".join(outlist)))
+                outfile.write("        </ul>\n")
+                outfile.write("      <h3>Description</h3>\n")
+                outfile.write("      " + format_description(metric.description, metric_base_data, True) + "\n")
+
                 if metric.example is not None:
                     outfile.write("      <h3>Example</h3>\n")
                     outfile.write("      " + metric.example(metric_base_data) + "\n")
