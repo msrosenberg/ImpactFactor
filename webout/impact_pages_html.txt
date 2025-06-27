@@ -15,6 +15,7 @@
         </ul>
       <h3>Index</h3>
       <ul class="index_list">
+        <li><a href="impact_3DSI.html">3DSI (ρ<sub>R</sub>)</a></li>
         <li><a href="impact_a_index.html"><em>a-</em>index</a></li>
         <li><a href="impact_academic_trace.html">academic trace</a></li>
         <li><a href="impact_adapt_pure_h_index_frac.html">adapted pure <em>h-</em>index (fractional credit)</a></li>
@@ -58,6 +59,8 @@
         <li><a href="impact_total_cites.html"><em>C<sup>P</sup></em></a></li>
         <li><a href="impact_c_p.html"><em>CPP</em></a></li>
         <li><a href="impact_cq_index.html"><em>CQ</em> index</a></li>
+        <li><a href="impact_csr.html"><em>csr</em></a></li>
+        <li><a href="impact_css.html"><em>css</em></a></li>
         <li><a href="impact_total_cites.html"><em>C<sub>T</sub></em></a></li>
         <li><a href="impact_citations_per_year.html"><em>C<sup>TS</sup></em></a></li>
         <li><a href="impact_indifference.html">D</a></li>
@@ -173,6 +176,7 @@
         <li><a href="impact_P1.html"><em>p-</em>index (<em>P</em><sub>1</sub>)</a></li>
         <li><a href="impact_p_index.html"><em>p-</em>index (Prathap)</a></li>
         <li><a href="impact_P1.html"><em>P</em><sub>1</sub></a></li>
+        <li><a href="impact_p20.html"><em>p</em><sub>20</sub></a></li>
         <li><a href="impact_cited_paper_percent.html"><em>P</em><sub>C</sub>%</a></li>
         <li><a href="impact_fractional_p_index.html"><em>p<sub>f</sub></em></a></li>
         <li><a href="impact_harmonic_p_index.html"><em>p<sub>h</sub></em></a></li>
@@ -199,6 +203,7 @@
         <li><a href="impact_reci_recp.html"><em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em></a></li>
         <li><a href="impact_Redner_index.html">Redner index</a></li>
         <li><a href="impact_rm_index.html"><em>r<sub>m</sub>-</em>index</a></li>
+        <li><a href="impact_rmp_index.html"><em>rmp</em>-index</a></li>
         <li><a href="impact_citation_entropy.html"><em>s-</em>index (citation entropy)</a></li>
         <li><a href="impact_S_index_h_mixed.html"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="impact_specific_impact_s_index.html"><em>s</em>-index (specific impact)</a></li>
@@ -206,6 +211,7 @@
         <li><a href="impact_scientist_level.html">scientist's level</a></li>
         <li><a href="impact_nonint_scientist_level.html">scientist's level (non-integer)</a></li>
         <li><a href="impact_sharpened_h_index_narrow.html">sharpened <em>h-</em>index (narrow)</a></li>
+        <li><a href="impact_slg.html"><em>slg</em></a></li>
         <li><a href="impact_specific_impact_s_index.html">specific impact <em>s-</em>index</a></li>
         <li><a href="impact_T_index_h_mixed.html"><em>T-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="impact_Singh_t_index.html"><em>t-</em>index (Singh)</a></li>
@@ -299,6 +305,25 @@
         </tr>
        </thead>
        <tbody>
+        <tr>
+          <td class="first_col"><a href="impact_3DSI.html">3DSI (ρ<sub>R</sub>)</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        </tr>
         <tr>
           <td class="first_col"><a href="impact_a_index.html"><em>a-</em>index</a></td>
         <td></td>
@@ -814,6 +839,44 @@
         </tr>
         <tr>
           <td class="first_col"><a href="impact_cq0_4_index.html">corrected quality ratio (60:40)</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_csr.html"><em>csr</em></a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_css.html"><em>css</em></a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -2029,6 +2092,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="impact_p20.html"><em>p</em><sub>20</sub></a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="impact_ph_ratio.html"><em>ph-</em>ratio</a></td>
         <td></td>
         <td></td>
@@ -2390,6 +2472,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="impact_rmp_index.html"><em>rmp</em>-index</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="impact_S_index_h_mixed.html"><em>S-</em>index (<em>h-</em>mixed synthetic index)</a></td>
         <td></td>
         <td></td>
@@ -2482,6 +2583,25 @@
         <td></td>
         <td></td>
         <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_slg.html"><em>slg</em></a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
         <td></td>
         </tr>
         <tr>
@@ -19742,7 +19862,7 @@ impact_zynergy_index.html
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The Zynergy-Index (Prathap 2014) is a heuristic alternative to the <a href="#h_index"><em>h-</em>index</a> based on a thermodynamical model. It is a function of the total number of citations and publications of an author, along with the distribution of the citations across the publications as measured by <a href="#fairness">fairness</a> (<em>η</em>).</p>$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}},$$.
+      <p>The Zynergy-Index (Prathap 2014) is a heuristic alternative to the <a href="#h_index"><em>h-</em>index</a> based on a thermodynamical model. It is a function of the total number of citations and publications of an author, along with the distribution of the citations across the publications as measured by <a href="#fairness">fairness</a> (<em>η</em>).</p>$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}}$$.
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -19788,5 +19908,570 @@ impact_zynergy_index.html
       <h2>References</h2>
       <ul>
         <li>Prathap, G. (2014) The Zynergy-Index and the formula for the h-Index. <em>Journal of the Association for Information Science and Technology</em> 65(2):426-427.</li>
+      </ul>
+    </div>
+@@@@
+impact_p20.html
+        var data_p20 = google.visualization.arrayToDataTable([
+           ['Year', '<em>p</em><sub>20</sub>'],
+           ['1997', 0.0],
+           ['1998', 0.25],
+           ['1999', 0.3409090909090909],
+           ['2000', 0.6588235294117647],
+           ['2001', 0.6486486486486487],
+           ['2002', 0.5310077519379846],
+           ['2003', 0.46365914786967416],
+           ['2004', 0.39123630672926446],
+           ['2005', 0.35987261146496813],
+           ['2006', 0.3012583271650629],
+           ['2007', 0.27780883174958076],
+           ['2008', 0.2633214920071048],
+           ['2009', 0.2663023679417122],
+           ['2010', 0.26871458395466746],
+           ['2011', 0.29092702169625245],
+           ['2012', 0.28333684432273015],
+           ['2013', 0.2754306436990027],
+           ['2014', 0.277207062600321],
+           ['2015', 0.27071346375143845],
+           ['2016', 0.26930589920562575],
+           ['2017', 0.27031568839275],
+           ['2018', 0.28973105134474325],
+           ['2019', 0.28920148944973106],
+           ['2020', 0.28444444444444444],
+           ['2021', 0.2851340373679935],
+           ['2022', 0.3082859808328386],
+           ['2023', 0.3069306930693069],
+           ['2024', 0.30473712405295783],
+           ['2025', 0.33072450805008946],
+		]);
+
+        var options_p20 = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_p20 = new google.visualization.LineChart(document.getElementById('chart_p20_div'));
+        chart_p20.draw(data_p20, options_p20);
+
+@@
+    <div id="p20" class="metric_container">
+      <h2><em>p</em><sub>20</sub></h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. <em>p</em><sub>20</sub> (which stems from economics) is the proportion of the total citations that occur in the top 20% of an author's publications. One could view it as the proportion of citations within the core, if the core were fixed as the top 20% of publications rather than defined in a manner more similar to the <a href="#h_index"><em>h-</em>index</a>.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>p</em><sub>20</sub></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.2500</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.3409</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.6588</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.6486</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.5310</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.4637</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.3912</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.3599</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.3013</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.2778</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.2633</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.2663</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.2687</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.2909</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.2833</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.2754</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.2772</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.2707</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.2693</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.2703</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">0.2897</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">0.2892</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">0.2844</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">0.2851</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">0.3083</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">0.3069</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">0.3047</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">0.3307</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_p20_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+      </ul>
+    </div>
+@@@@
+impact_rmp_index.html
+        var data_rmp_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>rmp</em>'],
+           ['1997', 1.4142135623730951],
+           ['1998', 3.0],
+           ['1999', 5.0990195135927845],
+           ['2000', 5.916079783099616],
+           ['2001', 7.745966692414834],
+           ['2002', 10.0],
+           ['2003', 11.313708498984761],
+           ['2004', 16.0],
+           ['2005', 18.973665961010276],
+           ['2006', 24.08318915758459],
+           ['2007', 27.748873851023216],
+           ['2008', 30.397368307141328],
+           ['2009', 32.863353450309965],
+           ['2010', 35.58089374931439],
+           ['2011', 38.82009788756334],
+           ['2012', 42.42640687119285],
+           ['2013', 45.89117562233506],
+           ['2014', 48.744230427815765],
+           ['2015', 51.749396131742444],
+           ['2016', 54.79963503528103],
+           ['2017', 56.78027826631356],
+           ['2018', 57.8013840664737],
+           ['2019', 59.86651818838306],
+           ['2020', 62.20932405998316],
+           ['2021', 64.57553716385176],
+           ['2022', 64.8074069840786],
+           ['2023', 66.61831579978588],
+           ['2024', 67.97058187186572],
+           ['2025', 68.38128398911503],
+		]);
+
+        var options_rmp_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_rmp_index = new google.visualization.LineChart(document.getElementById('chart_rmp_index_div'));
+        chart_rmp_index.draw(data_rmp_index, options_rmp_index);
+
+@@
+    <div id="rmp_index" class="metric_container">
+      <h2><em>rmp</em>-index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. The <em>rmp</em>-index is simply the square-root of the <a href="#maxprod_index">maxprod-index</a>.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>rmp</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.4142</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">5.0990</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.9161</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">7.7460</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">10.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">11.3137</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">16.0000</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">18.9737</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">24.0832</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">27.7489</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">30.3974</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">32.8634</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">35.5809</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">38.8201</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">42.4264</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">45.8912</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">48.7442</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">51.7494</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">54.7996</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">56.7803</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">57.8014</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">59.8665</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">62.2093</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">64.5755</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">64.8074</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">66.6183</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">67.9706</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">68.3813</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_rmp_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+      </ul>
+    </div>
+@@@@
+impact_css.html
+        var data_css = google.visualization.arrayToDataTable([
+           ['Year', '<em>css</em>'],
+           ['1997', 1.2599210498948732],
+           ['1998', 4.160167646103808],
+           ['1999', 8.281635498845706],
+           ['2000', 11.649589527925084],
+           ['2001', 16.863966266808983],
+           ['2002', 22.665609331686426],
+           ['2003', 28.599732665765274],
+           ['2004', 35.9415202811785],
+           ['2005', 44.369478252300595],
+           ['2006', 54.069982425217674],
+           ['2007', 64.26929174859077],
+           ['2008', 73.36837627289458],
+           ['2009', 82.45773163824678],
+           ['2010', 92.98627769940477],
+           ['2011', 102.78933913175202],
+           ['2012', 112.51150499622214],
+           ['2013', 122.18548779726692],
+           ['2014', 132.31261990911153],
+           ['2015', 141.31679353340343],
+           ['2016', 151.17668600434968],
+           ['2017', 159.88532147068895],
+           ['2018', 167.7855824654992],
+           ['2019', 175.30337581185893],
+           ['2020', 182.35516124289052],
+           ['2021', 189.60934507102888],
+           ['2022', 197.72310204553102],
+           ['2023', 204.77792330236534],
+           ['2024', 211.91190566731024],
+           ['2025', 215.3879420927826],
+		]);
+
+        var options_css = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_css = new google.visualization.LineChart(document.getElementById('chart_css_div'));
+        chart_css.draw(data_css, options_css);
+
+@@
+    <div id="css" class="metric_container">
+      <h2><em>css</em></h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. <em>css</em> is the cube-root of the sum of squared citation counts.</p>$$css = \sqrt[3]{\sum\limits_{i=1}^P C_i^2}$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>css</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.2599</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.1602</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">8.2816</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">11.6496</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">16.8640</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">22.6656</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">28.5997</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">35.9415</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">44.3695</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">54.0700</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">64.2693</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">73.3684</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">82.4577</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">92.9863</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">102.7893</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">112.5115</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">122.1855</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">132.3126</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">141.3168</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">151.1767</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">159.8853</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">167.7856</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">175.3034</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">182.3552</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">189.6093</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">197.7231</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">204.7779</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">211.9119</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">215.3879</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_css_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+      </ul>
+    </div>
+@@@@
+impact_csr.html
+        var data_csr = google.visualization.arrayToDataTable([
+           ['Year', '<em>csr</em>'],
+           ['1997', 2.4101422641752297],
+           ['1998', 4.610436292058446],
+           ['1999', 6.179746605865644],
+           ['2000', 8.391942386667608],
+           ['2001', 10.602918384761807],
+           ['2002', 15.145255515285214],
+           ['2003', 19.06625071766616],
+           ['2004', 24.151243958001537],
+           ['2005', 28.82013124388116],
+           ['2006', 33.728811574837415],
+           ['2007', 37.718838954616686],
+           ['2008', 41.33768308946374],
+           ['2009', 44.69672613391197],
+           ['2010', 48.47176590287457],
+           ['2011', 53.785845928553194],
+           ['2012', 57.80044379715357],
+           ['2013', 61.93254891364509],
+           ['2014', 65.12355198586124],
+           ['2015', 68.42795273503182],
+           ['2016', 71.28805805083786],
+           ['2017', 73.60127646258145],
+           ['2018', 75.97956514309344],
+           ['2019', 78.20677112938075],
+           ['2020', 80.56855392485438],
+           ['2021', 82.91892213197002],
+           ['2022', 84.8748793489536],
+           ['2023', 86.64216434227907],
+           ['2024', 88.45830970717583],
+           ['2025', 89.6767830072278],
+		]);
+
+        var options_csr = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_csr = new google.visualization.LineChart(document.getElementById('chart_csr_div'));
+        chart_csr.draw(data_csr, options_csr);
+
+@@
+    <div id="csr" class="metric_container">
+      <h2><em>csr</em></h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. <em>csr</em> is the cube-root of the sum of ranks, a function of the average rank of the counts in the citation vector.</p>$$csr = \sqrt[3]{2\sum\limits_{i=1}^P \left(i-0.5\right)C_i}$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>csr</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2.4101</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.6104</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">6.1797</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">8.3919</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">10.6029</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">15.1453</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">19.0663</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">24.1512</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">28.8201</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">33.7288</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">37.7188</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">41.3377</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">44.6967</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">48.4718</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">53.7858</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">57.8004</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">61.9325</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">65.1236</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">68.4280</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">71.2881</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">73.6013</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">75.9796</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">78.2068</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">80.5686</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">82.9189</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">84.8749</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">86.6422</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">88.4583</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">89.6768</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_csr_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+      </ul>
+    </div>
+@@@@
+impact_slg.html
+        var data_slg = google.visualization.arrayToDataTable([
+           ['Year', '<em>slg</em>'],
+           ['1997', 0.6020599913279624],
+           ['1998', 2.8853612200315117],
+           ['1999', 4.9577030415488315],
+           ['2000', 7.6133901744520305],
+           ['2001', 10.92302034187793],
+           ['2002', 17.00954194538253],
+           ['2003', 22.378382606787724],
+           ['2004', 28.761765331486895],
+           ['2005', 35.34651474971858],
+           ['2006', 42.45449666153446],
+           ['2007', 47.33678589367473],
+           ['2008', 52.863519621887434],
+           ['2009', 57.28452669680046],
+           ['2010', 66.18320910233352],
+           ['2011', 72.64124481465272],
+           ['2012', 78.00288703260233],
+           ['2013', 82.93211877857722],
+           ['2014', 88.76069225930102],
+           ['2015', 94.35717111444472],
+           ['2016', 98.18150024412516],
+           ['2017', 101.90775024742148],
+           ['2018', 105.99623542758287],
+           ['2019', 110.2617284020091],
+           ['2020', 114.53072889896043],
+           ['2021', 119.10236385684158],
+           ['2022', 122.85160389403114],
+           ['2023', 126.01779612024393],
+           ['2024', 130.18329469557628],
+           ['2025', 133.54002442154504],
+		]);
+
+        var options_slg = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_slg = new google.visualization.LineChart(document.getElementById('chart_slg_div'));
+        chart_slg.draw(data_slg, options_slg);
+
+@@
+    <div id="slg" class="metric_container">
+      <h2><em>slg</em></h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. <em>slg</em> is the sum of the logarithms of the citation counts (plus one), which is an estimator often used for Pareto distributions.</p>$$slg= \sum\limits_{i=1}^P \log\left(C_i + 1\right)$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>slg</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.6021</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.8854</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.9577</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.6134</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">10.9230</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">17.0095</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">22.3784</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">28.7618</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">35.3465</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">42.4545</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">47.3368</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">52.8635</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">57.2845</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">66.1832</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">72.6412</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">78.0029</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">82.9321</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">88.7607</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">94.3572</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">98.1815</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">101.9078</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">105.9962</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">110.2617</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">114.5307</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">119.1024</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">122.8516</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">126.0178</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">130.1833</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">133.5400</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_slg_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+      </ul>
+    </div>
+@@@@
+impact_3DSI.html
+@@
+    <div id="3DSI" class="metric_container">
+      <h2>3DSI (ρ<sub>R</sub>)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Metric Property:</strong> Multidimensional Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Siudem <em>et al.</em> (2020) describe a three-dimensional model to measure scientific impact of an author, generally called 3DSI. The first dimension is simply the total number of publications, and the second is the total number of citations. The third dimension is for a parameter <em>ρ</em> which generally describes the distribution of citations within the publications based on a preferential attachment rule (strictly speaking <em>ρ</em> is the ratio of preferential citations to total citations). Roughly speaking, positive values of <em>ρ</em> (approximately one or greater) indicate that most citations are preferentially going to a limited number of publications, values around zero indicate approximately a random citation distribution according to their model, and negative values indicate citations are more evenly spread among publications.</p><p>While the first two dimensions are simple to calculate, there are many methods for estimating <em>ρ<sub>R</sub></em> from empirical data.</p><p>In this version, we use a rank-size domain estimator, <em>ρ<sub>R</sub></em> (Gagolewski <em>et al.</em> 2022), determined as:</p>$$\rho_R = \frac{P-\frac{2csr^3}{C^P}+1}{P-\frac{csr^3}{C^P}},$$<p>where <a href="#csr"><em>csr</em></a> is the cube-root of the sum of ranks.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>[<em>P</em>, <em>C<sup>P</sup></em>, ρ<sub>R</sub>]</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">[6, 2, 7.0000]</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">[8, 16, -1.7333]</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">[9, 44, -0.2000]</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">[14, 85, 0.1553]</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">[18, 148, 0.2908]</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">[22, 258, -0.4605]</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">[26, 399, -0.8972]</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">[29, 639, -2.0261]</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">[35, 942, -1.5461]</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">[36, 1351, -2.6064]</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">[39, 1789, -2.2204]</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">[41, 2252, -2.1523]</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">[45, 2745, -1.5285]</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">[51, 3353, -0.9352]</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">[55, 4056, -1.2457]</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">[56, 4747, -1.5899]</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">[62, 5515, -1.2230]</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">[64, 6230, -1.2033]</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">[67, 6952, -1.1561]</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">[69, 7679, -1.1162]</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">[70, 8331, -1.1163]</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">[75, 8998, -0.8187]</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">[76, 9668, -0.8277]</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">[77, 10350, -0.8713]</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">[79, 11079, -0.8321]</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">[84, 11791, -0.5820]</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">[84, 12423, -0.6229]</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">[87, 13067, -0.5273]</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">[89, 13416, -0.4968]</td></tr>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
+        <li>Siudem, G., B. Żogała‑Siudem, A. Cena, and M. Gagolewski (2020) Three dimensions of scientific impact. <em>Proceedings of the National Academy of Sciences of the United States of America</em> 117(25):13896&ndash;13900.</li>
       </ul>
     </div>

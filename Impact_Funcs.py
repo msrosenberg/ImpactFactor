@@ -1977,6 +1977,43 @@ def calculate_zynergy(total_cites: int, total_pubs: int, fairness: float) -> flo
     return ((fairness * total_cites**2) / total_pubs)**(1/3)
 
 
+# p20 (Gagolewski et al 2022)
+def calculate_p20(citations: list, total_cites: int, total_pubs: int) -> float:
+    p = round(total_pubs / 5)  # index of top 20%
+    core = sum(citations[:p])
+    return core / total_cites
+
+
+# rmp (Gagolewski et al 2022)
+def calculate_rmp(mp: int) -> float:
+    return math.sqrt(mp)
+
+
+# css (Gagolewski et al 2022)
+def calculate_css(citations: list) -> float:
+    s = sum(c**2 for c in citations)
+    return s**(1/3)
+
+
+# csr (Gagolewski et al 2022)
+def calculate_csr(citations: list) -> float:
+    s = 0
+    for i, c in enumerate(citations):
+        s += 2*(i+0.5)*c  # it is i + 0.5 rather than i - 0.5 because i is counting from 0
+    return s**(1/3)
+
+
+# slg (Gagolewski et al 2022)
+def calculate_slg(citations: list) -> float:
+    return sum(math.log10(c+1) for c in citations)
+
+
+# 3DSI w/pr (Gagolewski et al 2022)
+def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
+    pr = (total_pubs - 2*csr**3/total_cites + 1) / (total_pubs - csr**3/total_cites)
+    return [total_pubs, total_cites, pr]
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

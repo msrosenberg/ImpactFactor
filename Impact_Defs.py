@@ -12,6 +12,7 @@ INTLIST = 2
 FLOAT_NA = 3
 # LISTLIST = 4
 FLOATLIST = 5
+MIXLIST = 6
 
 LINE_CHART = 1
 MULTILINE_CHART_LEFT = 2
@@ -69,6 +70,7 @@ class Metric:
         self.graph_type = None
         self.description_graphs = []
         self.example = None
+        self.mixformats = []
         # self.properties = {x: False for x in METRIC_PROPERTIES}
         self.properties = {}
         for y in PROPERTY_TYPES:
@@ -107,7 +109,17 @@ class Metric:
         elif self.metric_type == FLOATLIST:
             vl = self.value
             return f"[{", ".join([format(v, FSTR) for v in vl])}]"
-            # return "[" + ", ".join([format(v, FSTR) for v in vl]) + "]"
+        elif self.metric_type == MIXLIST:
+            vl = self.value
+            fl = []
+            for i, v in enumerate(vl):
+                if self.mixformats[i] == INT:
+                    fl.append(str(v))
+                elif self.mixformats[i] == FLOAT:
+                    fl.append(format(v, FSTR))
+                else:
+                    fl.append("")
+            return f"[{", ".join(fl)}]"
         return ""  # should never reach this
 
 
@@ -10180,7 +10192,6 @@ def metric_fairness() -> Metric:
     m = Metric()
     m.name = "fairness"
     m.full_name = "fairness"
-    m.html_name = "fairness"
     m.symbol = "<em>η</em>"
     m.metric_type = FLOAT
     m.synonyms = ["<em>η</em>"]
@@ -10218,13 +10229,10 @@ def metric_zynergy() -> Metric:
     m = Metric()
     m.name = "zynergy index"
     m.full_name = "Zynergy-Index"
-    m.html_name = "Zynergy-Index"
     m.symbol = "<em>z</em>"
     m.metric_type = FLOAT
     m.synonyms = ["<em>z</em>"]
-
-    equation = r"$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}},$$"
-
+    equation = r"$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}}$$"
     m.description = (f"<p>The Zynergy-Index (Prathap 2014) is a heuristic alternative to the __h-index__ based on "
                      f"a thermodynamical model. It is a function of the total number of citations and publications "
                      f"of an author, along with the distribution of the citations across the publications as measured "
@@ -10235,6 +10243,201 @@ def metric_zynergy() -> Metric:
     m.graph_type = LINE_CHART
     m.calculate = calculate_zynergy
     m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# p20 (Gagolewski et al 2022)
+def calculate_p20(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_p20(citations, total_cites, total_pubs)
+
+
+def metric_p20() -> Metric:
+    m = Metric()
+    m.name = "p20"
+    m.full_name = "p20"
+    m.html_name = "<em>p</em><sub>20</sub>"
+    m.symbol = "<em>p</em><sub>20</sub>"
+    m.metric_type = FLOAT
+    m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
+                     f"approximate the distribution of an author's citation vector, some of which were novel in "
+                     f"a bibliometric context. <em>p</em><sub>20</sub> (which stems from economics) is the proportion "
+                     f"of the total citations that occur in the top 20% of an author's publications. One could view "
+                     f"it as the proportion of citations within the core, if the core were fixed as the top 20% "
+                     f"of publications rather than defined in a manner more similar to the __h-index__.")
+
+    m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_p20
+    m.properties["Alternative Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    return m
+
+
+# rmp (Gagolewski et al 2022)
+def calculate_rmp(metric_set: MetricSet) -> float:
+    mp = metric_set.metrics["maxprod-index"].value
+    return Impact_Funcs.calculate_rmp(mp)
+
+
+def metric_rmp() -> Metric:
+    m = Metric()
+    m.name = "rmp-index"
+    m.full_name = "rmp-index"
+    m.html_name = "<em>rmp</em>-index"
+    m.symbol = "<em>rmp</em>"
+    m.metric_type = FLOAT
+    m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
+                     f"approximate the distribution of an author's citation vector, some of which were novel in "
+                     f"a bibliometric context. The <em>rmp</em>-index is simply the square-root of the "
+                     f"__maxprod-index__.")
+
+    m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_rmp
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# css (Gagolewski et al 2022)
+def calculate_css(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_css(citations)
+
+
+def metric_css() -> Metric:
+    m = Metric()
+    m.name = "css"
+    m.full_name = "css"
+    m.html_name = "<em>css</em>"
+    m.symbol = "<em>css</em>"
+    m.metric_type = FLOAT
+    equation = r"$$css = \sqrt[3]{\sum\limits_{i=1}^P C_i^2}$$"
+    m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
+                     f"approximate the distribution of an author's citation vector, some of which were novel in "
+                     f"a bibliometric context. <em>css</em> is the cube-root of the sum of squared citation "
+                     f"counts.</p>{equation}")
+
+    m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_css
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# csr (Gagolewski et al 2022)
+def calculate_csr(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_csr(citations)
+
+
+def metric_csr() -> Metric:
+    m = Metric()
+    m.name = "csr"
+    m.full_name = "csr"
+    m.html_name = "<em>csr</em>"
+    m.symbol = "<em>csr</em>"
+    m.metric_type = FLOAT
+    equation = r"$$csr = \sqrt[3]{2\sum\limits_{i=1}^P \left(i-0.5\right)C_i}$$"
+    m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
+                     f"approximate the distribution of an author's citation vector, some of which were novel in "
+                     f"a bibliometric context. <em>csr</em> is the cube-root of the sum of ranks, a function of "
+                     f"the average rank of the counts in the citation vector.</p>{equation}")
+
+    m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_csr
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# slg (Gagolewski et al 2022)
+def calculate_slg(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_slg(citations)
+
+
+def metric_slg() -> Metric:
+    m = Metric()
+    m.name = "slg"
+    m.full_name = "slg"
+    m.html_name = "<em>slg</em>"
+    m.symbol = "<em>slg</em>"
+    m.metric_type = FLOAT
+    equation = r"$$slg= \sum\limits_{i=1}^P \log\left(C_i + 1\right)$$"
+    m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
+                     f"approximate the distribution of an author's citation vector, some of which were novel in "
+                     f"a bibliometric context. <em>slg</em> is the sum of the logarithms of the citation counts "
+                     f"(plus one), which is an estimator often used for Pareto distributions.</p>{equation}")
+
+    m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_slg
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# 3DSI (pr) (Siudem et al 2020, Gagolewsi et al 2022)
+def calculate_3dsi_pr(metric_set: MetricSet) -> list:
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    csr = metric_set.metrics["csr"].value
+    return Impact_Funcs.calculate_3dsi_pr(total_pubs, total_cites, csr)
+
+
+def metric_3dsi_pr() -> Metric:
+    m = Metric()
+    m.name = "3DSI (pr)"
+    m.full_name = "3DSI (pr)"
+    m.html_name = "3DSI (ρ<sub>R</sub>)"
+    m.metric_type = MIXLIST
+    m.mixformats = [INT, INT, FLOAT]
+    m.symbol = "[<em>P</em>, <em>C<sup>P</sup></em>, ρ<sub>R</sub>]"
+
+    equation = r"$$\rho_R = \frac{P-\frac{2csr^3}{C^P}+1}{P-\frac{csr^3}{C^P}},$$"
+    m.description = (f"<p>Siudem <em>et al.</em> (2020) describe a three-dimensional model to measure scientific "
+                     f"impact of an author, generally called 3DSI. The first dimension is simply the total number "
+                     f"of publications, and the second is the total number of citations. The third dimension is "
+                     f"for a parameter <em>ρ</em> which generally describes the distribution of citations within the "
+                     f"publications based on a preferential attachment rule (strictly speaking <em>ρ</em> is the ratio "
+                     f"of preferential citations to total citations). Roughly speaking, positive values of "
+                     f"<em>ρ</em> (approximately one or greater) indicate that most citations are preferentially "
+                     f"going to a limited number of publications, values around zero indicate "
+                     f"approximately a random citation distribution according to their model, and negative values "
+                     f"indicate citations are more evenly spread among publications.</p>"
+                     f"<p>While the first two dimensions are simple to "
+                     f"calculate, there are many methods for estimating <em>ρ<sub>R</sub></em> from empirical data.</p>"
+                     f"<p>In this version, we use a rank-size domain estimator, <em>ρ<sub>R</sub></em> "
+                     f"(Gagolewski <em>et al.</em> 2022), determined as:</p>{equation}<p>where __csr__ is the "
+                     f"cube-root of the sum of ranks.")
+
+    m.references = ["Siudem, G., B. Żogała‑Siudem, A. Cena, and M. Gagolewski (2020) Three dimensions of "
+                    "scientific impact. <em>Proceedings of the National Academy of Sciences of the United States of"
+                    " America</em> 117(25):13896&ndash;13900.",
+                    "Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
+                    "impact. <em>Scientometrics</em> 127:2829-2845."]
+    # m.graph_type = LINE_CHART
+    m.calculate = calculate_3dsi_pr
+    m.properties["Alternative Metric"] = True
+    m.properties["Multidimensional Metric"] = True
     m.properties["All Publications"] = True
     m.properties["All Citations"] = True
     return m
@@ -10403,7 +10606,13 @@ def load_all_metrics() -> list:
                    metric_yearly_h_index(),
                    metric_t_index_singh(),
                    metric_fairness(),
-                   metric_zynergy()
+                   metric_zynergy(),
+                   metric_p20(),
+                   metric_rmp(),
+                   metric_css(),
+                   metric_csr(),
+                   metric_slg(),
+                   metric_3dsi_pr()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
