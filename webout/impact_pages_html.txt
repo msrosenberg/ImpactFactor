@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-06-05.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-06-27.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -80,6 +80,7 @@
         <li><a href="impact_normal_hi_index.html">equally weighted <em>h-</em>index</a></li>
         <li><a href="impact_Franceschini_f_index.html"><em>f-</em>index (Franceschini &amp; Maisano)</a></li>
         <li><a href="impact_Tol_f_index.html"><em>f-</em>index (Tol)</a></li>
+        <li><a href="impact_fairness.html">fairness</a></li>
         <li><a href="impact_first_author_h_index.html">first-author <em>h-</em>index</a></li>
         <li><a href="impact_gf_cite.html">fractional citation <em>g-</em>index</a></li>
         <li><a href="impact_normal_hi_index.html">fractional citation <em>h-</em>index</a></li>
@@ -249,7 +250,10 @@
         <li><a href="impact_Year_based_EMp_index_by_publications.html"><em>Yp_EM</em>&prime;</a></li>
         <li><a href="impact_Year_based_EM_index_by_publication_year_citations.html"><em>Ypc_EM</em></a></li>
         <li><a href="impact_Year_based_EMp_index_by_publication_year_citations.html"><em>Ypc_EM</em>&prime;</a></li>
+        <li><a href="impact_zynergy_index.html"><em>z</em></a></li>
+        <li><a href="impact_zynergy_index.html">Zynergy-Index</a></li>
         <li><a href="impact_alpha_index.html"><em>α-</em>index</a></li>
+        <li><a href="impact_fairness.html"><em>η</em></a></li>
         <li><a href="impact_mu_index.html"><em>μ-</em>index</a></li>
         <li><a href="impact_frac_weight_cite_h_cut.html"><em>ξ<sub>e</sub></em></a></li>
         <li><a href="impact_prop_weight_cite_h_cut.html"><em>ξ<sub>p</sub></em></a></li>
@@ -1053,6 +1057,25 @@
         <td></td>
         <td></td>
         <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_fairness.html">fairness</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
         <td></td>
         </tr>
         <tr>
@@ -3086,6 +3109,25 @@
         <td></td>
         <td></td>
         <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_zynergy_index.html">Zynergy-Index</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
         <td></td>
         </tr>
         <tr>
@@ -19543,5 +19585,208 @@ impact_Singh_t_index.html
       <h2>References</h2>
       <ul>
         <li>Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660.</li>
+      </ul>
+    </div>
+@@@@
+impact_fairness.html
+        var data_fairness = google.visualization.arrayToDataTable([
+           ['Year', '<em>η</em>'],
+           ['1997', 0.3333333333333333],
+           ['1998', 0.4444444444444444],
+           ['1999', 0.37871674491392804],
+           ['2000', 0.32642089093702],
+           ['2001', 0.2537299601519785],
+           ['2002', 0.25984510165204083],
+           ['2003', 0.26174989888493927],
+           ['2004', 0.30325948184881474],
+           ['2005', 0.29025572586501286],
+           ['2006', 0.32072994665750093],
+           ['2007', 0.30913311645380037],
+           ['2008', 0.3132032013090605],
+           ['2009', 0.2986606688985879],
+           ['2010', 0.2741828850032403],
+           ['2011', 0.27541588274823636],
+           ['2012', 0.28252678950696875],
+           ['2013', 0.2689307500351071],
+           ['2014', 0.26181366638346226],
+           ['2015', 0.2556015010128853],
+           ['2016', 0.24734650721550833],
+           ['2017', 0.24258863204011213],
+           ['2018', 0.22854240570198653],
+           ['2019', 0.2282910329079844],
+           ['2020', 0.22942238757724753],
+           ['2021', 0.22792649866164844],
+           ['2022', 0.21411630808278567],
+           ['2023', 0.21395590697662967],
+           ['2024', 0.20623694109070012],
+           ['2025', 0.20239134289007651],
+		]);
+
+        var options_fairness = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_fairness = new google.visualization.LineChart(document.getElementById('chart_fairness_div'));
+        chart_fairness.draw(data_fairness, options_fairness);
+
+@@
+    <div id="fairness" class="metric_container">
+      <h2>fairness</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>Fairness (Prathap 2014; Gagolewski <em> et al.</em> 2022) is a measure of the distribution of citations across all of an author's publications. A value of 1 would indicate that all publications have the same number of citations, while lower values indicate a skewed distribution with some publications having more citations than other. It is calculated as:</p>$$\eta = \frac{\left(C^P\right)^2}{P\sum\limits_{i=1}^{P} C_i^2}.$$<p>It is not generally considered as an impact measure in-and-of itself, but serves as a complement to other metrics.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>η</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.3333</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">0.4444</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">0.3787</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">0.3264</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">0.2537</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">0.2598</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">0.2617</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">0.3033</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">0.2903</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">0.3207</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">0.3091</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">0.3132</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">0.2987</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">0.2742</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">0.2754</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">0.2825</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">0.2689</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">0.2618</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">0.2556</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">0.2473</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">0.2426</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">0.2285</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">0.2283</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">0.2294</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">0.2279</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">0.2141</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">0.2140</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">0.2062</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">0.2024</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_fairness_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Fairness in the three‑dimensional model for citation impact. <em>Scientometrics</em> 127:6055-6059.</li>
+        <li>Prathap, G. (2014) The Zynergy-Index and the formula for the h-Index. <em>Journal of the Association for Information Science and Technology</em> 65(2):426-427.</li>
+      </ul>
+    </div>
+@@@@
+impact_zynergy_index.html
+        var data_zynergy_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>z</em>'],
+           ['1997', 0.6057068642773799],
+           ['1998', 2.4228274571095194],
+           ['1999', 4.335033425264765],
+           ['2000', 5.522841596674354],
+           ['2001', 6.7588720595638545],
+           ['2002', 9.229476927831765],
+           ['2003', 11.702706736811974],
+           ['2004', 16.223306343257175],
+           ['2005', 19.450832129171697],
+           ['2006', 25.3347079995607],
+           ['2007', 29.383297711886716],
+           ['2008', 33.837092298582554],
+           ['2009', 36.84258315498414],
+           ['2010', 39.24452625996192],
+           ['2011', 43.51183459900868],
+           ['2012', 48.44363132015765],
+           ['2013', 50.90728499545244],
+           ['2014', 54.149711103499826],
+           ['2015', 56.91621894603829],
+           ['2016', 59.5692330792178],
+           ['2017', 62.190238854029175],
+           ['2018', 62.71900640210567],
+           ['2019', 65.48113242012704],
+           ['2020', 68.34004438236033],
+           ['2021', 70.74943090607564],
+           ['2022', 70.76588022455994],
+           ['2023', 73.25422114157351],
+           ['2024', 73.97182429106641],
+           ['2025', 74.24764357652062],
+		]);
+
+        var options_zynergy_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_zynergy_index = new google.visualization.LineChart(document.getElementById('chart_zynergy_index_div'));
+        chart_zynergy_index.draw(data_zynergy_index, options_zynergy_index);
+
+@@
+    <div id="zynergy_index" class="metric_container">
+      <h2>Zynergy-Index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Alternative Metric</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The Zynergy-Index (Prathap 2014) is a heuristic alternative to the <a href="#h_index"><em>h-</em>index</a> based on a thermodynamical model. It is a function of the total number of citations and publications of an author, along with the distribution of the citations across the publications as measured by <a href="#fairness">fairness</a> (<em>η</em>).</p>$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}},$$.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>z</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.6057</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.4228</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.3350</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.5228</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">6.7589</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">9.2295</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">11.7027</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">16.2233</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">19.4508</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">25.3347</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">29.3833</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">33.8371</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">36.8426</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">39.2445</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">43.5118</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">48.4436</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">50.9073</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">54.1497</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">56.9162</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">59.5692</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">62.1902</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">62.7190</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">65.4811</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">68.3400</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">70.7494</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">70.7659</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">73.2542</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">73.9718</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">74.2476</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_zynergy_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Prathap, G. (2014) The Zynergy-Index and the formula for the h-Index. <em>Journal of the Association for Information Science and Technology</em> 65(2):426-427.</li>
       </ul>
     </div>

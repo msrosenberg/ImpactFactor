@@ -1955,13 +1955,26 @@ def calculate_yearly_h_index(citations: list, pub_years: list) -> float:
 
 
 # t-index (Singh 2022)
-def calculate_t_index_singh(citations, year_h, age, total_cites) -> float:
+def calculate_t_index_singh(citations, year_h, age: int, total_cites: int) -> float:
     t_prime = math.log(10*age)
     t = 0
     for c in citations:
         if c > 0:
             t += -(c/total_cites) * math.log(c/total_cites)
     return 4 * math.exp(t/t_prime) * year_h
+
+
+# fairness
+def calculate_fairness(total_cites: int, total_pubs: int, citations: list) -> float:
+    sumc2 = 0
+    for c in citations:
+        sumc2 += c**2
+    return total_cites**2 / (total_pubs * sumc2)
+
+
+# Zynergy (Prathap 2014)
+def calculate_zynergy(total_cites: int, total_pubs: int, fairness: float) -> float:
+    return ((fairness * total_cites**2) / total_pubs)**(1/3)
 
 
 # only used for spot testing new functions

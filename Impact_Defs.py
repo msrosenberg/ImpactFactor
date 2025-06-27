@@ -10168,6 +10168,78 @@ def metric_t_index_singh() -> Metric:
     return m
 
 
+# fairness
+def calculate_fairness(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_fairness(total_cites, total_pubs, citations)
+
+
+def metric_fairness() -> Metric:
+    m = Metric()
+    m.name = "fairness"
+    m.full_name = "fairness"
+    m.html_name = "fairness"
+    m.symbol = "<em>η</em>"
+    m.metric_type = FLOAT
+    m.synonyms = ["<em>η</em>"]
+
+    equation = r"$$\eta = \frac{\left(C^P\right)^2}{P\sum\limits_{i=1}^{P} C_i^2}.$$"
+
+    m.description = (f"<p>Fairness (Prathap 2014; Gagolewski <em> et al.</em> 2022) is a measure of the "
+                     f"distribution of citations across all of an author's publications. A value of 1 would indicate "
+                     f"that all publications have the same number of citations, while lower values indicate a skewed "
+                     f"distribution with some publications having more citations than other. It is calculated as:"
+                     f"</p>{equation}<p>It is not generally considered as an impact measure in-and-of itself, but "
+                     f"serves as a complement to other metrics.")
+
+    m.references = ["Prathap, G. (2014) The Zynergy-Index and the formula for the h-Index. <em>Journal of the "
+                    "Association for Information Science and Technology</em> 65(2):426-427.",
+                    "Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Fairness in the three‑dimensional"
+                    " model for citation impact. <em>Scientometrics</em> 127:6055-6059."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_fairness
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
+# Zynergy (Prathap 2014)
+def calculate_zynergy(metric_set: MetricSet) -> float:
+    f = metric_set.metrics["fairness"].value
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_zynergy(total_cites, total_pubs, f)
+
+
+def metric_zynergy() -> Metric:
+    m = Metric()
+    m.name = "zynergy index"
+    m.full_name = "Zynergy-Index"
+    m.html_name = "Zynergy-Index"
+    m.symbol = "<em>z</em>"
+    m.metric_type = FLOAT
+    m.synonyms = ["<em>z</em>"]
+
+    equation = r"$$z = \sqrt[3]{\frac{\eta \left(C^P\right)^2}{P}},$$"
+
+    m.description = (f"<p>The Zynergy-Index (Prathap 2014) is a heuristic alternative to the __h-index__ based on "
+                     f"a thermodynamical model. It is a function of the total number of citations and publications "
+                     f"of an author, along with the distribution of the citations across the publications as measured "
+                     f"by __fairness__ (<em>η</em>).</p>{equation}.")
+
+    m.references = ["Prathap, G. (2014) The Zynergy-Index and the formula for the h-Index. <em>Journal of the "
+                    "Association for Information Science and Technology</em> 65(2):426-427."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_zynergy
+    m.properties["Alternative Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -10329,7 +10401,9 @@ def load_all_metrics() -> list:
                    metric_k_norm_index(),
                    metric_w_norm_index(),
                    metric_yearly_h_index(),
-                   metric_t_index_singh()
+                   metric_t_index_singh(),
+                   metric_fairness(),
+                   metric_zynergy()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
