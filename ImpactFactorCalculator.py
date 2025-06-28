@@ -23,8 +23,9 @@ class Article:
         self.year = 0
         self.authors = 0
         self.author_rank = 0
+        self.coauthors = ""
         self.rank = 0
-        self.title = ''
+        self.title = ""
         self.citations = []
         self.self_cites = []
         self.coauthor_cites = []
@@ -65,7 +66,7 @@ def read_data_file(filename: str) -> Tuple[list, list]:
     string "n/a".
       
     """
-    with open(filename, "r") as inFile:
+    with open(filename, "r", encoding="UTF-8") as inFile:
         a = -1
         article_list = []
         date_list = []
@@ -74,8 +75,8 @@ def read_data_file(filename: str) -> Tuple[list, list]:
             a += 1
             # header
             if a == 0:
-                # skip 1st 4 columns
-                for i in range(4):
+                # skip 1st 5 columns
+                for i in range(5):
                     line = line[line.find("\t")+1:]
                 tmp_list = line.split("\t")
                 for d in tmp_list:
@@ -92,11 +93,12 @@ def read_data_file(filename: str) -> Tuple[list, list]:
                 new_article.authors = int(tstr)
                 tstr = line[:line.find("\t")]
                 line = line[line.find("\t")+1:]
-
                 new_article.author_rank = int(tstr)
                 tstr = line[:line.find("\t")]
                 line = line[line.find("\t")+1:]
-
+                new_article.coauthors = tstr
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
                 new_article.title = tstr
                 cite_list = line.split("\t")
                 for n in cite_list:
@@ -118,7 +120,7 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
     the self-citation counts
     """
     def read_self_citation_file(filename: str, is_coauthor: bool) -> None:
-        with open(filename, "r") as infile:
+        with open(filename, "r", encoding="UTF-8") as infile:
             a = -1
             for line in infile:
                 line = line.strip()
@@ -131,6 +133,8 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
                     # skip authors
                     line = line[line.find("\t") + 1:]
                     # skip author rank
+                    line = line[line.find("\t") + 1:]
+                    # skip coauthors
                     line = line[line.find("\t") + 1:]
                     # skip title
                     line = line[line.find("\t") + 1:]
