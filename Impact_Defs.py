@@ -8,11 +8,12 @@ from typing import Union
 # --- Internal Constants ---
 INT = 0
 FLOAT = 1
-INTLIST = 2
+# INTLIST = 2
 FLOAT_NA = 3
 # LISTLIST = 4
-FLOATLIST = 5
-MIXLIST = 6
+# FLOATLIST = 5
+# MIXLIST = 6
+LIST = 7
 
 LINE_CHART = 1
 MULTILINE_CHART_LEFT = 2
@@ -70,7 +71,8 @@ class Metric:
         self.graph_type = None
         self.description_graphs = []
         self.example = None
-        self.mixformats = []
+        # self.mixformats = []
+        self.list_formats = []
         # self.properties = {x: False for x in METRIC_PROPERTIES}
         self.properties = {}
         for y in PROPERTY_TYPES:
@@ -99,27 +101,35 @@ class Metric:
             return str(self.value)
         elif self.metric_type == FLOAT:
             return format(self.value, FSTR)
-        elif self.metric_type == INTLIST:
-            return str(self.value)
+        # elif self.metric_type == INTLIST:
+        #     return str(self.value)
         elif self.metric_type == FLOAT_NA:
             if self.value == "n/a":
                 return self.value
             else:
                 return format(self.value, FSTR)
-        elif self.metric_type == FLOATLIST:
-            vl = self.value
-            return f"[{", ".join([format(v, FSTR) for v in vl])}]"
-        elif self.metric_type == MIXLIST:
-            vl = self.value
-            fl = []
-            for i, v in enumerate(vl):
-                if self.mixformats[i] == INT:
-                    fl.append(str(v))
-                elif self.mixformats[i] == FLOAT:
-                    fl.append(format(v, FSTR))
+        # elif self.metric_type == FLOATLIST:
+        #     vl = self.value
+        #     return f"[{", ".join([format(v, FSTR) for v in vl])}]"
+        # elif self.metric_type == MIXLIST:
+        elif self.metric_type == LIST:
+            value_list = self.value
+            formatted_values = []
+            if self.list_formats == INT:  # all values are integers
+                formats = [INT for _ in value_list]
+            elif self.list_formats == FLOAT:  # all values are float
+                formats = [FLOAT for _ in value_list]
+            else:  # mixed types
+                formats = [x for x in self.list_formats]
+
+            for i, v in enumerate(value_list):
+                if formats[i] == INT:
+                    formatted_values.append(str(v))
+                elif formats[i] == FLOAT:
+                    formatted_values.append(format(v, FSTR))
                 else:
-                    fl.append("")
-            return f"[{", ".join(fl)}]"
+                    formatted_values.append("")
+            return f"[{", ".join(formatted_values)}]"
         return ""  # should never reach this
 
 
@@ -2063,7 +2073,9 @@ def metric_hj_indices() -> Metric:
     m.name = "hj-indices"
     m.full_name = "Hj-indices"
     m.html_name = "<em>H<sub>j</sub>-</em>indices"
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     equation1 = r"$$H_0=h^2.$$"
     equation2 = r"$$H_j=H_{j-1}+\left( C_{h-j} - C_{h-j+1} \right) \left(h-j\right)+C_{h+j}.$$"
     m.description = "<p>The <em>H<sub>j</sub></em>-indices (Dorta-González and Dorta-González 2010) are essentially " \
@@ -3032,7 +3044,9 @@ def metric_multdim_h_index() -> Metric:
     m.full_name = "multidimensional h-index"
     m.html_name = "multidimensional <em>h-</em>index"
     m.symbol = "<strong><em>H</em></strong>"
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     m.example = write_multidim_h_index_example
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
@@ -3236,7 +3250,9 @@ def metric_two_sided_h_index() -> Metric:
     graph.name = "two_sided_h_index_desc"
     graph.data = write_two_sided_h_index_desc_data
     m.example = write_two_sided_h_index_example
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     m.description = "<p>The two-sided <em>h-</em>index (García-Pérez 2012) is an extension of the " \
                     "__multidim h-index__, which recalcultes <em>h</em> not only for the tail of the distribution " \
                     "(as in the multidimensional version) but also for the excess citations from <em>h-</em>core " \
@@ -6897,7 +6913,9 @@ def metric_dci_index2() -> Metric:
     m.full_name = "discounted cumulated impact (sharp decay)"
     m.symbol = "DCI (<em>b</em> = 2)"
     m.synonyms = ["DCI index (sharp decay)"]
-    m.metric_type = FLOATLIST
+    # m.metric_type = FLOATLIST
+    m.metric_type = LIST
+    m.list_formats = FLOAT
     equation = r"$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} " \
                r"\frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & " \
                r"\text{if }i=1 \\ " \
@@ -6988,7 +7006,9 @@ def metric_dci_index10() -> Metric:
     m.full_name = "discounted cumulated impact (mild decay)"
     m.symbol = "DCI (<em>b</em> = 10)"
     m.synonyms = ["DCI index (mild decay)"]
-    m.metric_type = FLOATLIST
+    # m.metric_type = FLOATLIST
+    m.metric_type = LIST
+    m.list_formats = FLOAT
     equation = r"$$\text{DCI}_Y\left(i\right)=\left|\begin{matrix} " \
                r"\frac{c^i}{\max\left[1, \log_b\left(Y-1\right)\right]} & " \
                r"\text{if }i=1 \\ " \
@@ -7268,7 +7288,9 @@ def metric_scientist_level() -> Metric:
     m.full_name = "scientist\'s level"
     m.symbol = "<em>L<sup>v</sup></em> = [<em>v</em>, <em>L</em>]"
     m.synonyms = ["<em>L<sup>v</sup></em>"]
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     eq1 = r"$$v=\text{floor}\left[\log\left(C^P + P\right)\right]$$"
     eq2 = r"$$L^v=\text{floor}\left(\frac{C^P + P}{10^v}\right)$$"
     eq3 = r"$$\text{level}=v.L=v + \frac{L}{10}.$$"
@@ -8119,7 +8141,9 @@ def metric_beauty_coefficient() -> Metric:
     m.full_name = "beauty coefficient"
     m.html_name = "beauty coefficient"
     m.symbol = "B"
-    m.metric_type = FLOATLIST
+    # m.metric_type = FLOATLIST
+    m.metric_type = LIST
+    m.list_formats = FLOAT
     line_equation = r"$$x_t = \frac{c_{\max}-c_0}{t_{\max}}t+c_{0}.$$"
     b_equation = r"$$B=\sum^{t_\max}_{t=0}{\frac{\frac{c_\max-c_0}{t_\max}t+c_0-c_t}{\max{\left(1, c_t\right)}}}.$$"
     m.description = "<p>The Beauty Coefficient attempts to measure the citation trajectory of individual " \
@@ -8162,7 +8186,9 @@ def metric_awakening_time() -> Metric:
     m.full_name = "awakening time"
     m.html_name = "awakening time"
     m.symbol = "ta"
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     # m.description = "The uncited paper percent is simply the percent of publications which have not received any " \
     #                 "citations, or</p>" + equation + "<p>where <em>P</em><sub>C</sub>% is the percent of " \
     #                 "publications with at least one citation.</p>"
@@ -8582,7 +8608,9 @@ def metric_reci_recp() -> Metric:
     m.symbol = "[<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>]"
     m.example = write_reci_recp_example
     m.synonyms = ["<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"]
-    m.metric_type = INTLIST
+    # m.metric_type = INTLIST
+    m.metric_type = LIST
+    m.list_formats = INT
     m.description = "<p>The [<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>] metrics (Levene <em>et al.</em> " \
                     "2020) are a two-dimensional expansion of the __rec-index__, where <em>rec<sub>I</sub></em> " \
                     "is the largest vertical (influential) rectangle that can fit under the citation " \
@@ -10408,8 +10436,8 @@ def metric_3dsi_pr() -> Metric:
     m.name = "3DSI (pr)"
     m.full_name = "3DSI (pr)"
     m.html_name = "3DSI (ρ<sub>R</sub>)"
-    m.metric_type = MIXLIST
-    m.mixformats = [INT, INT, FLOAT]
+    m.metric_type = LIST
+    m.list_formats = [INT, INT, FLOAT]
     m.symbol = "[<em>P</em>, <em>C<sup>P</sup></em>, ρ<sub>R</sub>]"
 
     equation = r"$$\rho_R = \frac{P-\frac{2csr^3}{C^P}+1}{P-\frac{csr^3}{C^P}},$$"

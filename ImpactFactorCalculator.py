@@ -565,11 +565,13 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
                     outfile.write("      <h3>Example</h3>\n")
                     outfile.write("      " + metric.example(metric_base_data) + "\n")
                 outfile.write("      <h3>History</h3>\n")
-                if metric.metric_type == Impact_Defs.INTLIST:
-                    outfile.write(f'    <div id="{encode_name(name)}" class="metric_data_container_wide">\n')
-                    # outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_data_container_wide\">\n")
-                else:
-                    outfile.write('      <div class="metric_data_container">\n')
+
+                # if metric.metric_type == Impact_Defs.INTLIST:
+                #     outfile.write(f'    <div id="{encode_name(name)}" class="metric_data_container_wide">\n')
+                # else:
+                #     outfile.write('      <div class="metric_data_container">\n')
+                outfile.write('      <div class="metric_data_container">\n')
+
                 outfile.write('        <div class="table_container">\n')
                 outfile.write('          <table class="impact_table">\n')
                 outfile.write("            <tr>")
@@ -750,10 +752,12 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth
                     outfile.write("      <h3>Example</h3>\n")
                     outfile.write("      " + metric.example(metric_base_data) + "\n")
                 outfile.write("      <h3>History</h3>\n")
-                if metric.metric_type == Impact_Defs.INTLIST:
-                    outfile.write(f'    <div id="{encode_name(name)}" class="metric_data_container_wide">\n')
-                else:
-                    outfile.write('      <div class="metric_data_container">\n')
+                # if metric.metric_type == Impact_Defs.INTLIST:
+                #     outfile.write(f'    <div id="{encode_name(name)}" class="metric_data_container_wide">\n')
+                # else:
+                #     outfile.write('      <div class="metric_data_container">\n')
+                outfile.write('      <div class="metric_data_container">\n')
+
                 outfile.write('        <div class="table_container">\n')
                 outfile.write('          <table class="impact_table">\n')
                 outfile.write("            <tr>")
