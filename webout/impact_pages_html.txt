@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-06-28.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-06-30.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -177,6 +177,7 @@
         <li><a href="impact_p_index.html"><em>p-</em>index (Prathap)</a></li>
         <li><a href="impact_P1.html"><em>P</em><sub>1</sub></a></li>
         <li><a href="impact_p20.html"><em>p</em><sub>20</sub></a></li>
+        <li><a href="impact_partnership_ability.html">partnership ability</a></li>
         <li><a href="impact_cited_paper_percent.html"><em>P</em><sub>C</sub>%</a></li>
         <li><a href="impact_fractional_p_index.html"><em>p<sub>f</sub></em></a></li>
         <li><a href="impact_harmonic_p_index.html"><em>p<sub>h</sub></em></a></li>
@@ -222,6 +223,7 @@
         <li><a href="impact_time_scaled_h_index.html">time-scaled <em>h-</em>index</a></li>
         <li><a href="impact_pubs_per_year.html">time-scaled number of publications</a></li>
         <li><a href="impact_total_cites.html">total citations</a></li>
+        <li><a href="impact_total_collaborators.html">total collaborators</a></li>
         <li><a href="impact_total_pubs.html">total publications</a></li>
         <li><a href="impact_total_self_cites.html">total self citations</a></li>
         <li><a href="impact_total_self_cite_rate.html">total self-citation rate</a></li>
@@ -266,6 +268,7 @@
         <li><a href="impact_pi_rate.html"><em>π-</em>core citation rate</a></li>
         <li><a href="impact_pi_index.html"><em>π-</em>index</a></li>
         <li><a href="impact_nonint_scientist_level.html"><em>τ</em></a></li>
+        <li><a href="impact_partnership_ability.html"><em>φ</em></a></li>
         <li><a href="impact_chi_index.html"><em>χ-</em>index</a></li>
         <li><a href="impact_frac_weight_cite_agg.html"><em>ψ<sub>e</sub></em></a></li>
         <li><a href="impact_prop_weight_cite_agg.html"><em>ψ<sub>p</sub></em></a></li>
@@ -2111,6 +2114,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="impact_partnership_ability.html">partnership ability</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="impact_ph_ratio.html"><em>ph-</em>ratio</a></td>
         <td></td>
         <td></td>
@@ -2734,6 +2756,25 @@
         <td></td>
         <td></td>
         <td>⚫</td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_total_collaborators.html">total collaborators</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td></td>
         <td></td>
         </tr>
@@ -20473,5 +20514,201 @@ impact_3DSI_pr.html
       <ul>
         <li>Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation impact. <em>Scientometrics</em> 127:2829-2845.</li>
         <li>Siudem, G., B. Żogała‑Siudem, A. Cena, and M. Gagolewski (2020) Three dimensions of scientific impact. <em>Proceedings of the National Academy of Sciences of the United States of America</em> 117(25):13896&ndash;13900.</li>
+      </ul>
+    </div>
+@@@@
+impact_total_collaborators.html
+        var data_total_collaborators = google.visualization.arrayToDataTable([
+           ['Year', 'collaborators'],
+           ['1997', 5],
+           ['1998', 5],
+           ['1999', 5],
+           ['2000', 6],
+           ['2001', 7],
+           ['2002', 18],
+           ['2003', 28],
+           ['2004', 31],
+           ['2005', 32],
+           ['2006', 33],
+           ['2007', 35],
+           ['2008', 41],
+           ['2009', 42],
+           ['2010', 71],
+           ['2011', 74],
+           ['2012', 76],
+           ['2013', 107],
+           ['2014', 107],
+           ['2015', 111],
+           ['2016', 117],
+           ['2017', 119],
+           ['2018', 130],
+           ['2019', 130],
+           ['2020', 130],
+           ['2021', 139],
+           ['2022', 151],
+           ['2023', 151],
+           ['2024', 174],
+           ['2025', 482],
+		]);
+
+        var options_total_collaborators = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_total_collaborators = new google.visualization.LineChart(document.getElementById('chart_total_collaborators_div'));
+        chart_total_collaborators.draw(data_total_collaborators, options_total_collaborators);
+
+@@
+    <div id="total_collaborators" class="metric_container">
+      <h2>total collaborators</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>This is simply the total number of unique collaborators of an author. It is not an impact factor in the traditional sense.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>collaborators</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">28</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">31</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">32</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">33</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">35</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">41</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">42</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">71</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">74</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">76</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">107</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">107</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">111</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">117</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">119</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">130</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">130</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">130</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">139</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">151</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">151</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">174</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">482</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_total_collaborators_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+@@@@
+impact_partnership_ability.html
+        var data_partnership_ability = google.visualization.arrayToDataTable([
+           ['Year', '<em>φ</em>'],
+           ['1997', 2],
+           ['1998', 2],
+           ['1999', 3],
+           ['2000', 3],
+           ['2001', 3],
+           ['2002', 3],
+           ['2003', 4],
+           ['2004', 4],
+           ['2005', 4],
+           ['2006', 4],
+           ['2007', 4],
+           ['2008', 4],
+           ['2009', 4],
+           ['2010', 4],
+           ['2011', 5],
+           ['2012', 5],
+           ['2013', 5],
+           ['2014', 5],
+           ['2015', 5],
+           ['2016', 5],
+           ['2017', 5],
+           ['2018', 5],
+           ['2019', 5],
+           ['2020', 5],
+           ['2021', 5],
+           ['2022', 5],
+           ['2023', 5],
+           ['2024', 5],
+           ['2025', 5],
+		]);
+
+        var options_partnership_ability = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_partnership_ability = new google.visualization.LineChart(document.getElementById('chart_partnership_ability_div'));
+        chart_partnership_ability.draw(data_partnership_ability, options_partnership_ability);
+
+@@
+    <div id="partnership_ability" class="metric_container">
+      <h2>partnership ability</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The partnership ability index (Schubert 2012) is the collaborator equivalent of the <a href="#h_index"><em>h-</em>index</a>. It is the largest value for which <em>φ</em> coauthors of the target author have produced at least <em>φ</em> publications with the target author.</p><p>A <em>φ</em> of zero would indicate the target author has only produced solo-author publications. A <em>φ</em> of one indicates at least one coauthor on one publication, but also at most one coauthor with whom they have published more than once.</p><p><em>φ</em> is essentially a simple form of a collaboration network metric.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>φ</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">5</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_partnership_ability_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Schubert, A. (2012) A Hirsch-type index of co-author partnership ability. <em>Scientometrics</em> 91:303-308.</li>
       </ul>
     </div>

@@ -9,7 +9,7 @@ reason for exclusion.
     Pp. 375-379 in 2016 International Conference on Intelligent Networking and Collaborative Systems (INCoS). 
     Ostrava, Czech Republic: IEEE.
 
-    
+
 ## Requires evaluation of the citation network
 
 * SARA
@@ -22,6 +22,10 @@ reason for exclusion.
 
 * robust *h*-index, *rH*-index
   * Poirrier, M., S. Moreno, and G. Huerta-Cánepa (2021) Robust h-index. Scientometrics 126:1969-1981.
+ 
+ 
+## Requires evaluation of the collaboration network
+* Rousseau, R., and S.X. Zhao (2015) A general conceptual framework for characterizing the ego in a network. Journal of Informetrics 9:145-149.
 
 
 ## Requires evalution of focal author's time devoted to research

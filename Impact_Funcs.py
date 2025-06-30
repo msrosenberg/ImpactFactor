@@ -2014,6 +2014,52 @@ def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
     return [total_pubs, total_cites, pr]
 
 
+# total collaborators
+def calculate_total_collaborators(publications):
+    c = []
+    for p in publications:
+        if p.coauthors != ".":
+            if ";" in p.coauthors:
+                c.extend(p.coauthors.split(";"))
+            else:
+                c.append(p.coauthors)
+    return len(set(c))
+
+
+# partnership ability index (Schubert 2012)
+def calculate_partnership_ability(publications: list):
+    # create counts of publications per coauthor
+    coauthor_cnts = {}
+    for p in publications:
+        if p.coauthors != ".":
+            if ";" in p.coauthors:
+                coa_list = p.coauthors.split(";")
+            else:
+                coa_list = [p.coauthors]
+            for a in coa_list:
+                if a in coauthor_cnts:
+                    coauthor_cnts[a] += 1
+                else:
+                    coauthor_cnts[a] = 1
+    phi = 0
+    cnts = list(coauthor_cnts.values())
+    n = len(cnts)
+    _, tmporder = sort_and_rank(cnts, n)
+    # calculate phi
+    for i in range(n):
+        if tmporder[i] <= cnts[i]:
+            phi += 1
+
+    # test
+    # for c in coauthor_cnts:
+    #     if coauthor_cnts[c] >= phi:
+    #         print(c, coauthor_cnts[c])
+    # print()
+    # print()
+
+    return phi
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

@@ -10471,6 +10471,58 @@ def metric_3dsi_pr() -> Metric:
     return m
 
 
+# total collaborators
+def calculate_total_collaborators(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_total_collaborators(metric_set.publications)
+
+
+def metric_total_collaborators() -> Metric:
+    m = Metric()
+    m.name = "total collaborators"
+    m.full_name = "total collaborators"
+    m.symbol = "collaborators"
+    m.metric_type = INT
+    m.description = ("<p>This is simply the total number of unique collaborators of an author. It is not an impact "
+                     "factor in the traditional sense.</p>")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_total_collaborators
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# partnership ability index (Schubert 2012)
+def calculate_partnership_ability(metric_set: MetricSet) -> int:
+    return Impact_Funcs.calculate_partnership_ability(metric_set.publications)
+
+
+def metric_partnership_ability() -> Metric:
+    m = Metric()
+    m.name = "partnership ability"
+    m.full_name = "partnership ability"
+    m.symbol = "<em>φ</em>"
+    m.synonyms = ["<em>φ</em>"]
+    m.metric_type = INT
+    m.description = ("<p>The partnership ability index (Schubert 2012) is the collaborator equivalent of "
+                     "the __h-index__. It is the "
+                     "largest value for which <em>φ</em> coauthors of the target author have produced at least "
+                     "<em>φ</em> publications with the target author.</p><p>A <em>φ</em> of zero would indicate the "
+                     "target author has only produced solo-author publications. A <em>φ</em> of one indicates "
+                     "at least one coauthor on one publication, but also at most one coauthor with whom they have "
+                     "published more than once.</p><p><em>φ</em> is essentially a simple form of a collaboration "
+                     "network metric.")
+    m.references = ["Schubert, A. (2012) A Hirsch-type index of co-author partnership ability. "
+                    "<em>Scientometrics</em> 91:303-308."]
+
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_partnership_ability
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -10640,7 +10692,9 @@ def load_all_metrics() -> list:
                    metric_css(),
                    metric_csr(),
                    metric_slg(),
-                   metric_3dsi_pr()
+                   metric_3dsi_pr(),
+                   metric_total_collaborators(),
+                   metric_partnership_ability()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
