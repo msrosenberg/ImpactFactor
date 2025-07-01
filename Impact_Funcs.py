@@ -1979,8 +1979,10 @@ def calculate_zynergy(total_cites: int, total_pubs: int, fairness: float) -> flo
 
 # p20 (Gagolewski et al 2022)
 def calculate_p20(citations: list, total_cites: int, total_pubs: int) -> float:
+    sorted_cites = sorted(citations)
+    sorted_cites.reverse()
     p = round(total_pubs / 5)  # index of top 20%
-    core = sum(citations[:p])
+    core = sum(sorted_cites[:p])
     return core / total_cites
 
 
@@ -2058,6 +2060,38 @@ def calculate_partnership_ability(publications: list):
     # print()
 
     return phi
+
+
+# stratified h-index (Wurtz and Schmidt 2016)
+def calculate_stratified_h(h: int, publications: list, citations: list) -> list:
+    def calc_h(cites: list) -> int:
+        hn = 0
+        n = len(cites)
+        _, tmporder = sort_and_rank(cites, n)
+        for j in range(n):
+            if tmporder[j] <= cites[j]:
+                hn += 1
+        return hn
+
+    # sort citations of publications into lists based on author position
+    pub1, pub2, pub3, publast = [], [], [], []
+    for i, p in enumerate(publications):
+        if p.author_rank == 1:
+            pub1.append(citations[i])
+        elif p.author_rank == 2:
+            pub2.append(citations[i])
+        elif p.author_rank == 3:
+            pub3.append(citations[i])
+        elif p.author_rank == p.authors:
+            publast.append(citations[i])
+
+    h1 = calc_h(pub1)
+    h2 = calc_h(pub2)
+    h3 = calc_h(pub3)
+    hlast = calc_h(publast)
+
+    return [h, h1, h2, h3, hlast]
+
 
 
 # only used for spot testing new functions

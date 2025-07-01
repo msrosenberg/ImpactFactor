@@ -10523,6 +10523,50 @@ def metric_partnership_ability() -> Metric:
     return m
 
 
+
+
+
+
+
+
+# stratified h-index (Wurtz and Schmidt 2016)
+def calculate_stratified_h(metric_set: MetricSet) -> list:
+    h = metric_set.metrics["h-index"].value
+    return Impact_Funcs.calculate_stratified_h(h, metric_set.publications, metric_set.citations)
+
+
+def metric_stratified_h() -> Metric:
+    m = Metric()
+    m.name = "stratified h-index"
+    m.full_name = "stratified h-index"
+    m.html_name = "stratified <em>h-</em>index"
+    m.symbol = ("[<em>h</em>, <em>h</em><sub>1</sub>, <em>h</em><sub>2</sub>, <em>h</em><sub>3</sub>, "
+                "<em>h</em><sub>last</sub>]")
+    m.metric_type = LIST
+    m.list_formats = INT
+    m.description = ("<p>The stratified <em>h-</em>index (Würtz and Schmidt 2016) attempts to deal with coauthorship "
+                     "by producing a set of "
+                     "<em>h-</em>indices based on differing authorship position wihin the publications. Essentially, "
+                     "in addition to the general __h-index__, one calculates independent indices for publications "
+                     "in which one is the first author, second author, third author, or last author, with these "
+                     "four positions being deemed the highest contributing to a publication, in various degrees "
+                     "of importance. In theory, by viewing this set of indices, rather than a single value, one can "
+                     "determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to "
+                     "publications versus secondary.")
+    m.references = ["Würtz, M., and M. Schmidt (2016) The stratified H-index. <em>Annals of Epidemiology</em> "
+                    "26(4):299-300."]
+
+    m.calculate = calculate_stratified_h
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Multidimensional Metric"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -10694,7 +10738,8 @@ def load_all_metrics() -> list:
                    metric_slg(),
                    metric_3dsi_pr(),
                    metric_total_collaborators(),
-                   metric_partnership_ability()
+                   metric_partnership_ability(),
+                   metric_stratified_h()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

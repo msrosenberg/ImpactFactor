@@ -70,5 +70,5 @@ reason for exclusion.
 ## Requires in-depth knowledge of coauthor roles
 * Ding, J., C. Liu, Q. Zheng, and W. Cai (2021) A new method of co-author credit allocation based on contributor 
   roles taxonomy: proof of concept and evaluation using papers published in PLOS ONE. Scientometrics 126:7561-7581.
-
+* Altman et al (???)
 

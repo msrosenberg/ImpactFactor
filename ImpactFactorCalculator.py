@@ -21,9 +21,9 @@ import re
 class Article:
     def __init__(self):
         self.year = 0
-        self.authors = 0
-        self.author_rank = 0
-        self.coauthors = ""
+        self.authors = 0  # number of authors
+        self.author_rank = 0  # position within author list
+        self.coauthors = ""  # string containing all coauthor names
         self.rank = 0
         self.title = ""
         self.citations = []
