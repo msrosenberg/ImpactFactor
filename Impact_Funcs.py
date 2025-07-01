@@ -2093,6 +2093,10 @@ def calculate_stratified_h(h: int, publications: list, citations: list) -> list:
     return [h, h1, h2, h3, hlast]
 
 
+# platinum h-index (Smith 2015)
+def calculate_platinum_h(h: int, total_cites: int, total_pubs: int, age: int) -> float:
+    return (h / age) * (total_cites / total_pubs)
+
 
 # only used for spot testing new functions
 if __name__ == "__main__":

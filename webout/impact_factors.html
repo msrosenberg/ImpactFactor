@@ -7561,21 +7561,46 @@
         var chart_partnership_ability = new google.visualization.LineChart(document.getElementById('chart_partnership_ability_div'));
         chart_partnership_ability.draw(data_partnership_ability, options_partnership_ability);
 
-        var data_stratified_h_index = google.visualization.arrayToDataTable([
-           ['i', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-           ['1', 1, 3, 3, 5, 6, 8, 10, 12, 15, 16, 19, 21, 24, 25, 28, 32, 33, 34, 35, 35, 37, 37, 37, 38, 39, 41, 41, 42, 44],
-           ['2', 1, 1, 2, 3, 4, 5, 6, 9, 11, 12, 16, 16, 17, 18, 20, 21, 21, 21, 21, 22, 22, 22, 23, 25, 26, 26, 26, 27, 27],
-           ['3', 0, 1, 1, 1, 1, 1, 1, 2, 3, 4, 4, 6, 6, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10],
-           ['4', 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7],
-           ['5', 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        var data_platinum_h_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>h</em><sub>plat</sub>'],
+           ['1997', 0.3333333333333333],
+           ['1998', 3.0],
+           ['1999', 4.888888888888889],
+           ['2000', 7.5892857142857135],
+           ['2001', 9.866666666666665],
+           ['2002', 15.636363636363635],
+           ['2003', 21.923076923076923],
+           ['2004', 33.05172413793103],
+           ['2005', 44.85714285714286],
+           ['2006', 60.04444444444445],
+           ['2007', 79.23310023310023],
+           ['2008', 96.1219512195122],
+           ['2009', 112.61538461538463],
+           ['2010', 117.40196078431374],
+           ['2011', 137.65818181818182],
+           ['2012', 169.53571428571428],
+           ['2013', 172.67077798861482],
+           ['2014', 183.87152777777777],
+           ['2015', 191.13904163393556],
+           ['2016', 194.7572463768116],
+           ['2017', 209.69183673469388],
+           ['2018', 201.77333333333334],
+           ['2019', 204.6430205949657],
+           ['2020', 212.82467532467533],
+           ['2021', 218.7751898734177],
+           ['2022', 221.35119047619048],
+           ['2023', 224.57804232804233],
+           ['2024', 225.29310344827587],
+           ['2025', 228.71135218907398],
 		]);
 
-        var options_stratified_h_index = {
+        var options_platinum_h_index = {
+		     legend: {position: 'none'},
 		     hAxis: {slantedText: true},
         };
 
-        var chart_stratified_h_index = new google.visualization.LineChart(document.getElementById('chart_stratified_h_index_div'));
-        chart_stratified_h_index.draw(data_stratified_h_index, options_stratified_h_index);
+        var chart_platinum_h_index = new google.visualization.LineChart(document.getElementById('chart_platinum_h_index_div'));
+        chart_platinum_h_index.draw(data_platinum_h_index, options_platinum_h_index);
 
 		}
     </script>
@@ -7766,6 +7791,7 @@
         <li><a href="#fractional_p_index"><em>p<sub>f</sub></em></a></li>
         <li><a href="#harmonic_p_index"><em>p<sub>h</sub></em></a></li>
         <li><a href="#ph_ratio"><em>ph-</em>ratio</a></li>
+        <li><a href="#platinum_h_index">platinum <em>h-</em>index</a></li>
         <li><a href="#position_weighted_h_index">position-weighted <em>h-</em>index</a></li>
         <li><a href="#profit_adj_h_index">profit adjusted <em>h-</em>index</a></li>
         <li><a href="#profit_h_index">profit <em>h-</em>index</a></li>
@@ -9735,6 +9761,25 @@
         <td></td>
         <td>⚫</td>
         <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#platinum_h_index">platinum <em>h-</em>index</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td>⚫</td>
         <td></td>
         </tr>
         <tr>
@@ -19456,7 +19501,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
           <li><strong>Publication Focus:</strong> Core Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>The stratified <em>h-</em>index (Würtz and Schmidt 2016) attempts to deal with coauthorship by producing a set of <em>h-</em>indices based on differing authorship position wihin the publications. Essentially, in addition to the general <a href="#h_index"><em>h-</em>index</a>, one calculates independent indices for publications in which one is the first author, second author, third author, or last author, with these four positions being deemed the highest contributing to a publication, in various degrees of importance. In theory, by viewing this set of indices, rather than a single value, one can determine how much of an author's impact is based on &ldquo;primar&rdquo; contributions to publications versus secondary.
+      <p>The stratified <em>h-</em>index (Würtz and Schmidt 2016) attempts to deal with coauthorship by producing a set of <em>h-</em>indices based on differing authorship position wihin the publications. Essentially, in addition to the general <a href="#h_index"><em>h-</em>index</a>, one calculates independent indices for publications in which one is the first author, second author, third author, or last author, with these four positions being deemed the highest contributing to a publication, in various degrees of importance. In theory, by viewing this set of indices, rather than a single value, one can determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to publications versus secondary.
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -19493,8 +19538,58 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
             <tr><td class="cell_year">2025</td><td class="cell_value">[44, 27, 10, 7, 3]</td></tr>
           </table>
         </div>
+        </div>
+      </div>
+    </div>
+    <div id="platinum_h_index" class="metric_container">
+      <h2>platinum <em>h-</em>index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Property:</strong> Compound Metric</li>
+          <li><strong>Considerations and Adjustments:</strong> Time</li>
+          <li><strong>Publication Focus:</strong> All Publications, Core Publications</li>
+          <li><strong>Citation Focus:</strong> All Citations, Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The platinum <em>h-</em>index (Smith 2015) is a compound metric that rescales the <a href="#h_index"><em>h-</em>index</a> based on the academic age of the researcher and the average number of citations per publication. It is simply calculated as:</p>$$h_{plat}=\frac{hC^P}{\left(\text{academic age}\right)P}=\frac{hC^P}{\left({Y-Y_{0}+1}\right)P}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h</em><sub>plat</sub></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.3333</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.8889</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.5893</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">9.8667</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">15.6364</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">21.9231</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">33.0517</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">44.8571</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">60.0444</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">79.2331</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">96.1220</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">112.6154</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">117.4020</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">137.6582</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">169.5357</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">172.6708</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">183.8715</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">191.1390</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">194.7572</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">209.6918</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">201.7733</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">204.6430</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">212.8247</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">218.7752</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">221.3512</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">224.5780</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">225.2931</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">228.7114</td></tr>
+          </table>
+        </div>
         <div class="graph_container">
-          <div id="chart_stratified_h_index_div" class="impact_chart"></div>
+          <div id="chart_platinum_h_index_div" class="impact_chart"></div>
         </div>
       </div>
     </div>
@@ -19584,6 +19679,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Silagadze, Z.K. (2009) Citation entropy and research impact estimation. <em>ArXiv:physics</em> 0905.1039v2:1-7.</li>
         <li>Singh, P.K. (2022) <em>t-</em>index: Entropy based random document and citation analysis using average <em>h-index</em>. <em>Scientometrics</em> 127:637-660.</li>
         <li>Siudem, G., B. Żogała‑Siudem, A. Cena, and M. Gagolewski (2020) Three dimensions of scientific impact. <em>Proceedings of the National Academy of Sciences of the United States of America</em> 117(25):13896&ndash;13900.</li>
+        <li>Smith, D.R. (2015) “Platinum H”: Refining the h-Index to more realistically assess career trajectory and scientific publications. <em>Archives of Environmental & Occupational Health</em> 70(2):67-69.</li>
         <li>Subramanyam, K. (1983) Bibliometric studies of research collaboration: A review. <em>Journal of Information Science</em> 6(1):33&ndash;38.</li>
         <li>Teixeira da Silva, J.A. (2021) The i100-index, i1000-index and i10,000-index: expansion and fortification of the Google Scholar h-index for finer-scale citation descriptions and researcher classification. <em>Scientometrics</em> 126:3667-3672.</li>
         <li>Todeschini, R. (2011) The <em>j-</em>index: A new bibliometric index and multivariate comparisons between other common indices. <em>Scientometrics</em> 87:621&ndash;639.</li>

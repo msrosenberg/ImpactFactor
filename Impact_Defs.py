@@ -10564,6 +10564,41 @@ def metric_stratified_h() -> Metric:
     return m
 
 
+# platinum h-index (Smith 2015)
+def calculate_platinum_h(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    total_cites = metric_set.metrics["total cites"].value
+    total_pubs = metric_set.metrics["total pubs"].value
+    age = metric_set.academic_age()
+    return Impact_Funcs.calculate_platinum_h(h, total_cites, total_pubs, age)
+
+
+def metric_platinum_h() -> Metric:
+    m = Metric()
+    m.name = "platinum h-index"
+    m.full_name = "platinum h-index"
+    m.html_name = "platinum <em>h-</em>index"
+    m.symbol = "<em>h</em><sub>plat</sub>"
+    m.metric_type = FLOAT
+    equation = r"$$h_{plat}=\frac{hC^P}{\left(\text{academic age}\right)P}=\frac{hC^P}{\left({Y-Y_{0}+1}\right)P}.$$"
+    m.description = (f"<p>The platinum <em>h-</em>index (Smith 2015) is a compound metric that rescales the "
+                     f"__h-index__ based on the academic age of the researcher and the average number of "
+                     f"citations per publication. It is simply calculated as:</p>{equation}")
+    m.references = ["Smith, D.R. (2015) “Platinum H”: Refining the h-Index to more realistically assess career "
+                    "trajectory and scientific publications. <em>Archives of Environmental & Occupational Health</em> "
+                    "70(2):67-69."]
+
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_platinum_h
+    m.properties["Compound Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["All Citations"] = True
+    m.properties["All Publications"] = True
+    m.properties["Time"] = True
+    return m
+
+
 
 
 
@@ -10739,7 +10774,8 @@ def load_all_metrics() -> list:
                    metric_3dsi_pr(),
                    metric_total_collaborators(),
                    metric_partnership_ability(),
-                   metric_stratified_h()
+                   metric_stratified_h(),
+                   metric_platinum_h()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
