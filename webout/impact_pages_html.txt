@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-01.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-02.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -124,6 +124,7 @@
         <li><a href="impact_hpd_index.html"><em>hpd-</em>index</a></li>
         <li><a href="impact_real_h_index.html"><em>h<sub>r</sub></em></a></li>
         <li><a href="impact_rational_h_index.html">h<sub>rat</sub></a></li>
+        <li><a href="impact_stochastic_h_index.html"><em>h<sub>s</sub></em></a></li>
         <li><a href="impact_tapered_h_index.html"><em>h<sub>T</sub></em></a></li>
         <li><a href="impact_trend_h_index.html"><em>h<sup>t</sup></em></a></li>
         <li><a href="impact_time_scaled_h_index.html"><em>h<sup>TS</sup></em></a></li>
@@ -215,6 +216,7 @@
         <li><a href="impact_sharpened_h_index_narrow.html">sharpened <em>h-</em>index (narrow)</a></li>
         <li><a href="impact_slg.html"><em>slg</em></a></li>
         <li><a href="impact_specific_impact_s_index.html">specific impact <em>s-</em>index</a></li>
+        <li><a href="impact_stochastic_h_index.html">stochastic <em>h-</em>index</a></li>
         <li><a href="impact_stratified_h_index.html">stratified <em>h-</em>index</a></li>
         <li><a href="impact_T_index_h_mixed.html"><em>T-</em>index (<em>h-</em>mixed synthetic index)</a></li>
         <li><a href="impact_Singh_t_index.html"><em>t-</em>index (Singh)</a></li>
@@ -2664,6 +2666,25 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="impact_stochastic_h_index.html">stochastic <em>h-</em>index</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
         <td></td>
         </tr>
         <tr>
@@ -20911,5 +20932,106 @@ impact_platinum_h_index.html
       <h2>References</h2>
       <ul>
         <li>Smith, D.R. (2015) “Platinum H”: Refining the h-Index to more realistically assess career trajectory and scientific publications. <em>Archives of Environmental & Occupational Health</em> 70(2):67-69.</li>
+      </ul>
+    </div>
+@@@@
+impact_stochastic_h_index.html
+        var data_stochastic_h_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>h<sub>s</sub></em>'],
+           ['1997', 1.8886156574359954],
+           ['1998', 3.963529383848244],
+           ['1999', 3.423941393033869],
+           ['2000', 5.928928870437413],
+           ['2001', 6.212893629519533],
+           ['2002', 8.99999643304671],
+           ['2003', 10.989212351930087],
+           ['2004', 12.99972649651547],
+           ['2005', 15.999837208360246],
+           ['2006', 16.99348799794403],
+           ['2007', 19.999998672650683],
+           ['2008', 21.996417786117934],
+           ['2009', 24.993271982688086],
+           ['2010', 25.99999987569625],
+           ['2011', 28.99997719908038],
+           ['2012', 32.9901405917433],
+           ['2013', 33.99998721345332],
+           ['2014', 34.68211134226524],
+           ['2015', 35.66138702556951],
+           ['2016', 35.93282616954204],
+           ['2017', 37.88655879702448],
+           ['2018', 37.87220565148529],
+           ['2019', 37.86112219134123],
+           ['2020', 38.94543090358319],
+           ['2021', 39.99005141479293],
+           ['2022', 41.99604237131747],
+           ['2023', 41.994528473315135],
+           ['2024', 42.999991843843645],
+           ['2025', 44.999996893090135],
+		]);
+
+        var options_stochastic_h_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_stochastic_h_index = new google.visualization.LineChart(document.getElementById('chart_stochastic_h_index_div'));
+        chart_stochastic_h_index.draw(data_stochastic_h_index, options_stochastic_h_index);
+
+@@
+    <div id="stochastic_h_index" class="metric_container">
+      <h2>stochastic <em>h-</em>index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The stochastic <em>h-</em>index (Naid and Turlach 2012) is a variant of the <a href="#h_index"><em>h-</em>index</a> where h is modified to include a fractional component equal to the probability that it will increase by at least one by the next year. It is somewhat similar to the <a href="#rational_h_index">rational <em>h-</em>index</a> and the <a href="#real_h_index">real <em>h-</em>index</a> in that its value ranges between <em>h</em> and <em>h</em>+1 and that the fractional component indicates something about progress toward the higher value.</p><p>Although the logic behind this metric is not particularly difficult, the calculation is a bit complicated to explain. Publications can be divided into two sets: those already with <em>h</em>+1 or more citations (thus not needing any additional citations for the researcher to reach the next value of <em>h</em>) and those with <em>h</em> or fewer citations. The number of publications in each of these sets are labeled as <em>L</em><sub>0</sub> and <em>n</em>, respectively. The number of publications within the second set that will need to gain citations to reach <em>h</em>+1 is <em>k</em> = <em>h</em>&minus;<em>L</em><sub>0</sub></p><p>The probability that one of the publications in the second set will get to <em>h</em>+1 citations is determined from a Poisson distribution with a mean equal to the average annual citation rate of that publication (<em>λ<sub>i</sub></em>) and the number of citations it needs to gain to reach <em>h</em>+1. The probability it will reach at least <em>h</em>+1 citations is labeled <em>p<sub>i</sub></em>, and the probability it will not reach at least <em>h</em>+1 citations is labeled <em>q<sub>i</sub></em> = 1&minus;<em>p<sub>i</sub></em>.</p><p>If a publication has zero citations, its presumed rate of future citation is based on the age of the publication, determined as:</p>$$\lambda_i=-ln\left(\frac{\text{age}_i+1}{\text{age}_i+2}\right).$$<p>Give the probabilities of the individual publications reaching at least <em>h</em>+1 citations in the next year, the stochastic <em>h-</em>index is then calculated as</p>$$h_s=h + 1 - \sum\limits_{i=1}^k Q_i,$$<p>where </p>$$Q_0=\prod\limits_{i=1}^{n}q_i \\Q_1=\sum\limits_{i=1}^{n}\left(p_i\prod\limits_{j=1, j\ne i}^{n}q_j\right) \\Q_2=\sum\limits_{i=1}^{n}\sum\limits_{j=i+1}^{n}\left(p_ip_j\prod\limits_{k=1, k\ne i, k\ne j}^{n}q_k\right)\\\text{etc.}$$<p>These products and sums represent the combined probabilities of all of the ways that the publication set can fail to reach the citation count necessary to achieve an <em>h-</em>index of <em>h</em>+1.</p><p>One of the interesting factors of this index is it can, within certain limits, decrease from one year to the next. If more poorly cited publications fail to be cited with enough frequency in a given year, the reduced average rate of citation for those publications can decreases the probability of achieving <em>h</em>+1 the following year.
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h<sub>s</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1.8886</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.9635</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.4239</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.9289</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">6.2129</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">9.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10.9892</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">12.9997</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">15.9998</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">16.9935</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">20.0000</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">21.9964</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">24.9933</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">26.0000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">29.0000</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">32.9901</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">34.0000</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">34.6821</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">35.6614</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">35.9328</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">37.8866</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">37.8722</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.8611</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.9454</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">39.9901</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">41.9960</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">41.9945</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">43.0000</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">45.0000</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_stochastic_h_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ul>
+        <li>Nair, G.M., and B.A. Turlach (2012) The stochastic <em>h-</em>index. <em>Journal of Informetrics</em> 6(1):80-87.</li>
       </ul>
     </div>

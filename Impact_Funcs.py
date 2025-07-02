@@ -8,6 +8,9 @@ from generic data, without the reliance on the special class structure of the gr
 import math
 import datetime
 from typing import Tuple, Union
+import scipy
+import itertools
+
 
 Number = Union[int, float]
 
@@ -2098,6 +2101,55 @@ def calculate_platinum_h(h: int, total_cites: int, total_pubs: int, age: int) ->
     return (h / age) * (total_cites / total_pubs)
 
 
+# stochastic h-index (Nair and Turlach 2012)
+def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) -> float:
+    # main function codde
+    pub_ages = publication_ages(year, pub_years)
+    sub_ages = []  # age of publications with h or fewer citations
+    sub_cites = []  # the citation count for the publications in l_pubs
+    l0 = 0  # count of publications with h+1 or more citations
+    for i, c in enumerate(citations):
+        if c <= h:
+            sub_ages.append(pub_ages[i])
+            sub_cites.append(c)
+        else:
+            l0 += 1
+    k = h - l0  # number of publications which have to reach h+1 citations for h to increase by 1
+
+    # calculate probability of a publication not reaching h+1 citations in a year
+    pub_q = []
+    for i, c in enumerate(sub_cites):
+        age = sub_ages[i]
+        if c == 0:
+            rate = -math.log((age + 1)/(age + 2))
+        else:
+            rate = c / age  # citations per year
+        m = h - c
+        pub_q.append(scipy.stats.poisson.cdf(m, rate))
+    hs = h + 1
+    for i in range(k+1):  # go from 0 to k
+        all_indices = range(len(pub_q))
+        p_indices = itertools.combinations(all_indices, i)
+        qi = 0
+        product = 1
+        for p_inds in p_indices:
+            for j in all_indices:
+                if j in p_inds:
+                    product *= (1 - pub_q[j])
+                else:
+                    product *= pub_q[j]
+            qi += product
+        hs -= qi
+    return hs
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
+    # test stochastic_h
+    # h = 10
+    # cites = [770,124,110,55,39,36,34,17,13,11,10,9,9,8,7,6,5,4,3,3,3,3,3,2,2,1,1,1,0,0,0]
+    # years = [2004,2000,2000,2001,2005,1997,2004,1997,1997,1996,1998,2005,1997,1999,2008,1999,1999,1996,2006,2005,2002,1999,1997,2008,2004,2009,2007,2004,2010,2007,2000]
+    # cyear = 2010
+    # hs = calculate_stochastic_h(h, cites, cyear, years)
+    # print(hs)
     pass

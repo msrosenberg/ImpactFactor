@@ -10523,12 +10523,6 @@ def metric_partnership_ability() -> Metric:
     return m
 
 
-
-
-
-
-
-
 # stratified h-index (Wurtz and Schmidt 2016)
 def calculate_stratified_h(metric_set: MetricSet) -> list:
     h = metric_set.metrics["h-index"].value
@@ -10599,7 +10593,72 @@ def metric_platinum_h() -> Metric:
     return m
 
 
+# stochastic h-index (Nair and Turlach 2012)
+def calculate_stochastic_h(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    citations = metric_set.citations
+    pub_years = metric_set.publication_years()
+    year = metric_set.year()
+    return Impact_Funcs.calculate_stochastic_h(h, citations, year, pub_years)
 
+
+def metric_stochastic_h() -> Metric:
+    m = Metric()
+    m.name = "stochastic h-index"
+    m.full_name = "stochastic h-index"
+    m.html_name = "stochastic <em>h-</em>index"
+    m.symbol = "<em>h<sub>s</sub></em>"
+    m.synonyms = ["<em>h<sub>s</sub></em>"]
+    m.metric_type = FLOAT
+
+    eq1 = r"$$\lambda_i=-ln\left(\frac{\text{age}_i+1}{\text{age}_i+2}\right).$$"
+    eq2 = r"$$h_s=h + 1 - \sum\limits_{i=1}^k Q_i,$$"
+    eq3 = (r"$$Q_0=\prod\limits_{i=1}^{n}q_i \\Q_1=\sum\limits_{i=1}^{n}\left(p_i\prod\limits_{j=1, "
+           r"j\ne i}^{n}q_j\right) \\Q_2=\sum\limits_{i=1}^{n}\sum\limits_{j=i+1}^{n}\left(p_ip_j\prod\limits_{k=1, "
+           r"k\ne i, k\ne j}^{n}q_k\right)\\\text{etc.}$$")
+
+    m.description = (f"<p>The stochastic <em>h-</em>index (Naid and Turlach 2012) is a variant of the __h-index__ "
+                     f"where h is modified to include a fractional component equal to the probability that it will "
+                     f"increase by at least one by the next year. It is somewhat similar to the __rational h-index__ "
+                     f"and the __real h-index__ in that its value ranges between <em>h</em> and <em>h</em>+1 and "
+                     f"that the fractional component indicates something about progress toward the higher value.</p>"
+                     f"<p>Although the logic behind this metric is not particularly difficult, the calculation "
+                     f"is a bit complicated to explain. Publications can be "
+                     f"divided into two sets: those already with <em>h</em>+1 or more citations (thus not needing any "
+                     f"additional citations for the researcher to reach the next value of <em>h</em>) and those "
+                     f"with <em>h</em> or fewer citations. The number of publications in each of these sets are "
+                     f"labeled as <em>L</em><sub>0</sub> and <em>n</em>, respectively. "
+                     f"The number of publications within the second set that will need to gain "
+                     f"citations to reach <em>h</em>+1 is <em>k</em> = <em>h</em>&minus;<em>L</em><sub>0</sub></p>"
+                     f"<p>The probability that one of the publications in the second set will get to <em>h</em>+1 "
+                     f"citations is determined from a Poisson distribution with a mean equal to the average annual "
+                     f"citation rate of that publication (<em>λ<sub>i</sub></em>) and the number of citations it "
+                     f"needs to gain to reach "
+                     f"<em>h</em>+1. The probability it will reach at least <em>h</em>+1 citations is labeled "
+                     f"<em>p<sub>i</sub></em>, and the "
+                     f"probability it will not reach at least <em>h</em>+1 citations is labeled "
+                     f"<em>q<sub>i</sub></em> = "
+                     f"1&minus;<em>p<sub>i</sub></em>.</p><p>If a publication has zero citations, its presumed rate "
+                     f"of future citation is based on the age of the publication, determined as:</p>{eq1}"
+                     f"<p>Give the probabilities of the individual publications reaching at least <em>h</em>+1 "
+                     f"citations in the next year, the stochastic <em>h-</em>index is then calculated as</p>{eq2}"
+                     f"<p>where </p>{eq3}<p>These products and sums represent the combined probabilities of all of "
+                     f"the ways that the publication set can fail to reach the citation count necessary to achieve an "
+                     f"<em>h-</em>index of <em>h</em>+1.</p><p>One of the interesting factors of this index is it "
+                     f"can, within certain limits, decrease from one year to the next. If more poorly cited "
+                     f"publications fail to be cited with enough frequency in a given year, the reduced average "
+                     f"rate of citation for those publications can decreases the probability of achieving "
+                     f"<em>h</em>+1 the following year.")
+
+
+    m.references = ["Nair, G.M., and B.A. Turlach (2012) The stochastic <em>h-</em>index. <em>Journal of "
+                    "Informetrics</em> 6(1):80-87."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_stochastic_h
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    return m
 
 
 # --- main initialization loop ---
@@ -10775,7 +10834,8 @@ def load_all_metrics() -> list:
                    metric_total_collaborators(),
                    metric_partnership_ability(),
                    metric_stratified_h(),
-                   metric_platinum_h()
+                   metric_platinum_h(),
+                   metric_stochastic_h()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]
