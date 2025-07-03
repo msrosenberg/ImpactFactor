@@ -203,6 +203,13 @@ class MetricSet:
         """
         return [p.year for p in self.publications]
 
+    def coauthors(self) -> list:
+        """
+        returns a list containing the coauthor string for each publication, in the same order as citations
+        """
+        return [p.coauthors for p in self.publications]
+
+
     def year(self) -> int:
         return self.date.year
 
@@ -10473,7 +10480,7 @@ def metric_3dsi_pr() -> Metric:
 
 # total collaborators
 def calculate_total_collaborators(metric_set: MetricSet) -> int:
-    return Impact_Funcs.calculate_total_collaborators(metric_set.publications)
+    return Impact_Funcs.calculate_total_collaborators(metric_set.coauthors())
 
 
 def metric_total_collaborators() -> Metric:
@@ -10494,7 +10501,8 @@ def metric_total_collaborators() -> Metric:
 
 # partnership ability index (Schubert 2012)
 def calculate_partnership_ability(metric_set: MetricSet) -> int:
-    return Impact_Funcs.calculate_partnership_ability(metric_set.publications)
+    return Impact_Funcs.calculate_partnership_ability(metric_set.coauthors())
+    # return Impact_Funcs.calculate_partnership_ability(metric_set.publications)
 
 
 def metric_partnership_ability() -> Metric:

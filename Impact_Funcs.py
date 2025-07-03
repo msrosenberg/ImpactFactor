@@ -2021,27 +2021,27 @@ def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
 
 
 # total collaborators
-def calculate_total_collaborators(publications):
+def calculate_total_collaborators(coauthor_list: list) -> int:
     c = []
-    for p in publications:
-        if p.coauthors != ".":
-            if ";" in p.coauthors:
-                c.extend(p.coauthors.split(";"))
+    for coauthors in coauthor_list:
+        if coauthors != ".":
+            if ";" in coauthors:
+                c.extend(coauthors.split(";"))
             else:
-                c.append(p.coauthors)
+                c.append(coauthors)
     return len(set(c))
 
 
 # partnership ability index (Schubert 2012)
-def calculate_partnership_ability(publications: list):
+def calculate_partnership_ability(coauthor_list: list):
     # create counts of publications per coauthor
     coauthor_cnts = {}
-    for p in publications:
-        if p.coauthors != ".":
-            if ";" in p.coauthors:
-                coa_list = p.coauthors.split(";")
+    for coauthors in coauthor_list:
+        if coauthors != ".":
+            if ";" in coauthors:
+                coa_list = coauthors.split(";")
             else:
-                coa_list = [p.coauthors]
+                coa_list = [coauthors]
             for a in coa_list:
                 if a in coauthor_cnts:
                     coauthor_cnts[a] += 1
@@ -2055,14 +2055,6 @@ def calculate_partnership_ability(publications: list):
     for i in range(n):
         if tmporder[i] <= cnts[i]:
             phi += 1
-
-    # test
-    # for c in coauthor_cnts:
-    #     if coauthor_cnts[c] >= phi:
-    #         print(c, coauthor_cnts[c])
-    # print()
-    # print()
-
     return phi
 
 
