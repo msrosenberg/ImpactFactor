@@ -939,8 +939,8 @@ def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
     return iteratively_weighted_h_index
 
 
-# EM-index (Bihari and Tripathi 2017)
-def calculate_em_index(citations: list, rank_order: list) -> float:
+# subfunction from (Bihari and Tripathi 2017)
+def calculate_em_components(citations: list, rank_order: list) -> list:
     def count_cited_articles(tmpc: list) -> int:
         cnt = 0
         for c in tmpc:
@@ -948,7 +948,6 @@ def calculate_em_index(citations: list, rank_order: list) -> float:
                 cnt += 1
         return cnt
 
-    # EM-index
     em_component = []
     tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
     n_cited = count_cited_articles(tmp_cites)
@@ -964,108 +963,80 @@ def calculate_em_index(citations: list, rank_order: list) -> float:
             em_component.append(h_index)
             tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
             n_cited = count_cited_articles(tmp_cites)
+
+    # the 2017 paper makes it sound like one should quit when there is only a single paper left, but the
+    # example in the 2021 paper requires one last value added to the component list in this case
+    if (n_cited == 1) and max(tmp_cites) > 0:
+        em_component.append(1)
+    return em_component
+
+# subfunction from (Bihari and Tripathi 2017)
+def calculate_emp_components(citations: list, rank_order: list) -> list:
+    def count_cited_articles(tmpc: list) -> int:
+        cnt = 0
+        for c in tmpc:
+            if c > 0:
+                cnt += 1
+        return cnt
+
+    # EM'-index
+    emp_component = []
+    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
+    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
+    n_cited = count_cited_articles(tmp_cites)
+    while n_cited > 1:
+        if max(tmp_cites) == 1:
+            emp_component.append(1)
+            n_cited = 0
+        else:
+            h_index = 0
+            for i in range(len(citations)):
+                if tmp_ranks[i] <= tmp_cites[i]:
+                    h_index += 1
+            emp_component.append(h_index)
+            # subtract h_index only from top h pubs
+            for i in range(len(citations)):
+                if tmp_ranks[i] <= tmp_cites[i]:
+                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
+            n_cited = count_cited_articles(tmp_cites)
+            # rerank counts
+            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
+
+    # the 2017 paper makes it sound like one should quit when there is only a single paper left, but the em
+    # example in the 2021 paper requires one last value added to the component list in this case
+    if (n_cited == 1) and max(tmp_cites) > 0:
+        emp_component.append(1)
+
+    return emp_component
+
+
+# EM-index (Bihari and Tripathi 2017)
+def calculate_em_index(citations: list, rank_order: list) -> float:
+    em_component = calculate_em_components(citations, rank_order)
     return math.sqrt(sum(em_component))
 
 
 # EM'-index (Bihari and Tripathi 2017)
 def calculate_emp_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
-
-    # EM'-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            # subtract h_index only from top h pubs
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
-            n_cited = count_cited_articles(tmp_cites)
-            # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
-    return math.sqrt(sum(em_component))
+    emp_component = calculate_emp_components(citations, rank_order)
+    return math.sqrt(sum(emp_component))
 
 
 # iterative weighted EM-index (Bihari et al 2021)
 def calculate_iterative_weighted_em_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
-
-    # EM-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if rank_order[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
-            n_cited = count_cited_articles(tmp_cites)
+    em_component = calculate_em_components(citations, rank_order)
     iwem = 0
-    for i in range(len(em_component)):
-        iwem += em_component[i]/(i+1)
+    for i, e in enumerate(em_component):
+        iwem += e/(i+1)
     return iwem
 
 
 # iterative weighted EM'-index (Bihari et al 2021)
 def calculate_iterative_weighted_emp_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
-
-    # EM'-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            # subtract h_index only from top h pubs
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
-            n_cited = count_cited_articles(tmp_cites)
-            # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
+    emp_component = calculate_emp_components(citations, rank_order)
     iwemp = 0
-    for i in range(len(em_component)):
-        iwemp += em_component[i]/(i+1)
+    for i, e in enumerate(emp_component):
+        iwemp += e/(i+1)
     return iwemp
 
 
