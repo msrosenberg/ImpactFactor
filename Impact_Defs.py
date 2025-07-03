@@ -10526,7 +10526,10 @@ def metric_partnership_ability() -> Metric:
 # stratified h-index (Wurtz and Schmidt 2016)
 def calculate_stratified_h(metric_set: MetricSet) -> list:
     h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_stratified_h(h, metric_set.publications, metric_set.citations)
+    author_pos = metric_set.author_position()
+    author_cnts = metric_set.author_counts()
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_stratified_h(h, author_pos, author_cnts, citations)
 
 
 def metric_stratified_h() -> Metric:

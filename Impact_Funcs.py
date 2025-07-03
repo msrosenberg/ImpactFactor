@@ -163,6 +163,7 @@ def calculate_h_index(citations: list, rank_order: list) -> Tuple[int, list]:
 
 
 # Hirsch core citations (Hirsch )
+# this is the sum of the citations within the core
 def calculate_h_core(citations: list, is_core: list) -> int:
     core_cites = 0
     for i in range(len(citations)):
@@ -2066,7 +2067,7 @@ def calculate_partnership_ability(publications: list):
 
 
 # stratified h-index (Wurtz and Schmidt 2016)
-def calculate_stratified_h(h: int, publications: list, citations: list) -> list:
+def calculate_stratified_h(h: int, author_pos: list, author_cnts: list, citations: list) -> list:
     def calc_h(cites: list) -> int:
         hn = 0
         n = len(cites)
@@ -2078,14 +2079,15 @@ def calculate_stratified_h(h: int, publications: list, citations: list) -> list:
 
     # sort citations of publications into lists based on author position
     pub1, pub2, pub3, publast = [], [], [], []
-    for i, p in enumerate(publications):
-        if p.author_rank == 1:
+    for i, p in enumerate(author_pos):
+        if p == 1:
             pub1.append(citations[i])
-        elif p.author_rank == 2:
+        elif p == 2:
             pub2.append(citations[i])
-        elif p.author_rank == 3:
+        elif p == 3:
             pub3.append(citations[i])
-        elif p.author_rank == p.authors:
+        # elif p == author_cnts[i]:
+        if p == author_cnts[i]:  # do this separately, because for solo-authored papers, one is both 1st and last author
             publast.append(citations[i])
 
     h1 = calc_h(pub1)
@@ -2145,11 +2147,4 @@ def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) 
 
 # only used for spot testing new functions
 if __name__ == "__main__":
-    # test stochastic_h
-    # h = 10
-    # cites = [770,124,110,55,39,36,34,17,13,11,10,9,9,8,7,6,5,4,3,3,3,3,3,2,2,1,1,1,0,0,0]
-    # years = [2004,2000,2000,2001,2005,1997,2004,1997,1997,1996,1998,2005,1997,1999,2008,1999,1999,1996,2006,2005,2002,1999,1997,2008,2004,2009,2007,2004,2010,2007,2000]
-    # cyear = 2010
-    # hs = calculate_stochastic_h(h, cites, cyear, years)
-    # print(hs)
     pass
