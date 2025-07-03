@@ -1,10 +1,16 @@
 import Impact_Funcs
 
-# common data for conducting tests
+# common data for conducting many of the tests
 TEST_CITATION_DATA = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0]
 TEST_YEAR_DATA = [1997, 1997, 1997, 1997, 1998, 1999, 2000, 2000, 2001, 2001, 2001, 1997, 2000, 2001, 2000, 2000]
 TEST_AUTHOR_CNT = [1, 3, 4, 4, 2, 4, 4, 1, 1, 2, 2, 3, 3, 1, 1, 4]
 TEST_AUTHOR_ORDER = [1, 3, 3, 3, 2, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 3]
+TEST_COAUTHORS = ["Adams, D.C.;Gurevitch, J.", ".", "Adams, D.C.;Gurevitch, J.", ".",
+                  "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.", "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.",
+                  "Adams, D.C.", ".", "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.", ".", "Adams, D.C.;Gurevitch, J.",
+                  ".", "Oden, N.L.;Sokal, R.R.;Thomson, B.A.", "Oden, N.L.;Sokal, R.R.;Thomson, B.A.", ".",
+                  "Kumar, S.", ".", "Kumar, S."]
+
 
 
 def test_rank():
@@ -129,23 +135,18 @@ def test_calculate_h_core():
     assert Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, core) == sum((9, 9, 11, 14, 36, 42))  # 121
 
 
-
-"""
-
-
-# Hirsch minimum constant
-def calculate_hirsch_min_const(total_cites: int, h: int) -> float:
-    return total_cites / h**2
+def test_calculate_hirsch_min_const():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_hirsch_min_const(total_cites, h) == 133/36
 
 
-# g-index (Egghe 2006)
-def calculate_g_index(cumulative_citations: list, rank_order: list) -> int:
-    g = 0
-    for i in range(len(rank_order)):
-        if rank_order[i]**2 <= cumulative_citations[rank_order[i]-1]:
-            g += 1
-    return g
-"""
+def test_calculate_g_index():
+    # cumulative_cnt = [42, 78, 92, 103, 112, 121, 124, 126, 128, 130, 131, 132, 133, 133, 133, 133]
+    # rank squared =   [1   4   9   16   25   36   49   64   81   100  121  144  <- g = 11
+    rank_order, cumulative_cites = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_g_index(cumulative_cites, rank_order) == 11
 
 
 def test_calculate_h2_index():
@@ -153,10 +154,16 @@ def test_calculate_h2_index():
     assert Impact_Funcs.calculate_h2_index(TEST_CITATION_DATA, rank_order) == 3
 
 
+def test_calculate_hg_index():
+    rank_order, cumulative_cites = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    g = Impact_Funcs.calculate_g_index(cumulative_cites, rank_order)
+    assert round(Impact_Funcs.calculate_hg_index(h, g), 3) == 8.124
+
+
+
+
 """
-# hg-index (Alonso et al 2010)
-def calculate_hg_index(h: int, g: int) -> float:
-    return math.sqrt(h*g)
 
 
 # total self citations
@@ -223,16 +230,13 @@ def test_calculate_r_index():
     assert Impact_Funcs.calculate_r_index(core_total) == 11  # square-root of 121
 
 
-"""
-# rm-index (Panaretos and Malesios 2009)
-def calculate_rm_index(citations: list, is_core: list) -> float:
-    rm_index = 0
-    for i in range(len(citations)):
-        if is_core[i]:
-            rm_index += math.sqrt(citations[i])
-    rm_index = math.sqrt(rm_index)
-    return rm_index
+def test_calculate_rm_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    _, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_rm_index(TEST_CITATION_DATA, core), 4) == 5.0536
 
+
+"""
 
 # ar-index (Jin 2007; Jin et al 2007)
 def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: int) -> float:
@@ -243,24 +247,16 @@ def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: in
         if is_core[i]:
             ar_index += cites_per_year[i]
     return math.sqrt(ar_index)
+"""
 
 
-# m-index (median index) (Bornmann et al 2008)
-def calculate_m_index(citations: list, is_core: list, h: int) -> float:
-    core_cites = []
-    for i in range(len(citations)):
-        if is_core[i]:
-            core_cites.append(citations[i])
-    core_cites.sort()
-    if h % 2 == 1:
-        # odd number in core
-        m_index = core_cites[(h // 2)]
-    else:
-        # even number in core
-        m_index = (core_cites[(h // 2) - 1] + core_cites[h // 2]) / 2
-    return m_index
+def test_calculate_m_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    _, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_m_index(TEST_CITATION_DATA, core) == 12.5
 
 
+"""
 # q2-index (Cabrerizo et al 2010)
 def calculate_q2_index(h: int, m: float) -> float:
     return math.sqrt(h * m)
@@ -332,17 +328,23 @@ def calculate_reci_recp(sorted_citations: list, h: int) -> list:
         if i + 1 >= h:
             recp = max(recp, (i + 1)*min(c, h))
     return [reci, recp]
+"""
+
+def test_calculate_v_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    n = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_v_index(h, n) == 37.5
 
 
-# v-index (Riikonen and Vihinen 2008)
-def calculate_v_index(h: int, total_pubs: int) -> float:
-    return 100 * h / total_pubs
+def test_calculate_e_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    assert round(Impact_Funcs.calculate_e_index(core_total, h), 4) == 9.2195
 
 
-# e-index (Zhang 2009)
-def calculate_e_index(core_cites: int, h: int) -> float:
-    return math.sqrt(core_cites - h ** 2)
-
+"""
 
 # rational h-index (Ruane and Tol 2008)
 def calculate_rational_h(citations: list, rank_order: list, is_core: list, h: int) -> float:
@@ -370,26 +372,30 @@ def calculate_h2_center_index(total_cites: int, h: int) -> float:
 # h2-tail index (Bornmann et al 2010)
 def calculate_h2_tail_index(total_cites: int, core_cites: int) -> float:
     return 100 * (total_cites - core_cites) / total_cites
+"""
 
 
-# tapered h-index (Anderson et al 2008)
-def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
-    n = len(citations)
-    ht = []
-    for i in range(n):
-        ht.append(0)
-        if citations[i] <= rank_order[i]:
-            ht[i] = citations[i] / (2*rank_order[i] - 1)
-        else:
-            ht[i] = rank_order[i] / (2*rank_order[i] - 1)
-            for j in range(rank_order[i]+1, n+1):
-                ht[i] += 1 / (2*j - 1)
-    tapered_h_index = 0
-    for i in range(n):
-        tapered_h_index += ht[i]
-    return tapered_h_index
+def test_calculate_tapered_h_index():
+    # data and answers from original publication, Anderson et al 2008
+    citations = [100, 98, 98, 97, 96, 4, 3, 2, 1, 1]
+    rank = [i+1 for i in range(10)]
+    assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 13.27
+
+    citations = [9, 8, 8, 6, 5, 4, 4, 3, 2, 1]
+    assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 6.89
+
+    citations = [10 for _ in range(10)]
+    assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 10
+
+    citations = [9, 8, 7, 6, 5]
+    rank = [i+1 for i in range(5)]
+    assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 5.79
+
+    citations = [120, 110, 100, 90, 80]
+    assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 12.46
 
 
+"""
 # pi-index (Vinkler 2009)
 def calculate_pi_index(total_pubs: int, citations: list, rank_order: list) -> float:
     p_pi = math.floor(math.sqrt(total_pubs))
@@ -907,136 +913,79 @@ def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
         iteratively_weighted_h_index += h / (p + 1)
     return iteratively_weighted_h_index
 
+"""
 
-# EM-index (Bihari and Tripathi 2017)
-def calculate_em_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
+def test_calculate_em_components():
+    # data and answer from original paper, Bihari Tripathi 2017
+    answer = [10, 6, 5, 3, 2, 2, 2]
+    citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert Impact_Funcs.calculate_em_components(citations, rank_order) == answer
 
-    # EM-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if rank_order[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
-            n_cited = count_cited_articles(tmp_cites)
-    return math.sqrt(sum(em_component))
+    answer = [10, 7, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1]
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert Impact_Funcs.calculate_em_components(citations, rank_order) == answer
 
 
-# EM'-index (Bihari and Tripathi 2017)
-def calculate_emp_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
+def test_calculate_emp_components():
+    # data and answer from original paper, Bihari Tripathi 2017
+    answer = [10, 9, 5, 4, 3, 2, 1, 1]
+    citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert Impact_Funcs.calculate_emp_components(citations, rank_order) == answer
 
-    # EM'-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            # subtract h_index only from top h pubs
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
-            n_cited = count_cited_articles(tmp_cites)
-            # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
-    return math.sqrt(sum(em_component))
+    answer = [10, 8, 6, 6, 5, 4, 3, 3, 2, 2, 1, 1]
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert Impact_Funcs.calculate_emp_components(citations, rank_order) == answer
 
 
-# iterative weighted EM-index (Bihari et al 2021)
-def calculate_iterative_weighted_em_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
+def test_calculate_em_index():
+    # data and answer from original paper, Bihari Tripathi 2017
+    citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_em_index(citations, rank_order), 2) == 5.48
 
-    # EM-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if rank_order[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
-            n_cited = count_cited_articles(tmp_cites)
-    iwem = 0
-    for i in range(len(em_component)):
-        iwem += em_component[i]/(i+1)
-    return iwem
+    # data and answer from original paper, Bihari Tripathi 2021
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_em_index(citations, rank_order), 2) == 6.78
 
 
-# iterative weighted EM'-index (Bihari et al 2021)
-def calculate_iterative_weighted_emp_index(citations: list, rank_order: list) -> float:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
+def test_calculate_emp_index():
+    # data from original paper, Bihari Tripathi 2017
+    #    note: I've cross-checked the math, and the value reported in their paper is slightly inaccurate,
+    #          as they appear to have truncated the value to one decimal rather than rounding it. They report
+    #          5.91 when it should be 5.92, as the value calculated to more digits is 5.91608.
+    citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_emp_index(citations, rank_order), 3) == 5.916
 
-    # EM'-index
-    em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
-            em_component.append(1)
-            n_cited = 0
-        else:
-            h_index = 0
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            # subtract h_index only from top h pubs
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
-            n_cited = count_cited_articles(tmp_cites)
-            # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
-    iwemp = 0
-    for i in range(len(em_component)):
-        iwemp += em_component[i]/(i+1)
-    return iwemp
+    # data and answer from original paper, Bihari Tripathi 2021
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_emp_index(citations, rank_order), 2) == 7.14
 
+
+def test_calculate_iterative_weighted_em_index():
+    # data from original paper, Bihari Tripathi 2021
+    # as in the previous paper, the answer they present (18.96) seems to have a rounding issue and is only
+    # accurate to a single decimal place, as the value should be 18.98334 (calculated independently).
+    # I suspect they round/truncate calculated values at an early stage of the process and accuracy is lost a bit
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_iterative_weighted_em_index(citations, rank_order), 5) == 18.98334
+
+
+def test_calculate_iterative_weighted_emp_index():
+    # data and answer from original paper, Bihari Tripathi 2021
+    citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    assert round(Impact_Funcs.calculate_iterative_weighted_emp_index(citations, rank_order), 2) == 20.57
+
+
+"""
 
 # alpha-index
 def calculate_alpha_index(h: int, age: int) -> float:
@@ -1841,18 +1790,38 @@ def calculate_hc(h: int, m: int) -> int:
     else:
         k = math.trunc(math.log(m-1, h))
         return h + k
+"""
+
+def test_calculate_k_index_anania_caruso():
+    # data and answers from original publication, Anania and Caruso 2013
+    citations = [20, 16, 15, 15, 15, 10, 6, 6, 6, 2, 2, 2, 1, 1, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    core_total = Impact_Funcs.calculate_h_core(citations, is_core)
+    assert round(Impact_Funcs.calculate_k_index_anania_caruso(h, core_total), 2) == 6.60
+
+    citations = [9, 8, 8, 7, 7, 6, 3, 2, 2, 1, 1, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    core_total = Impact_Funcs.calculate_h_core(citations, is_core)
+    assert round(Impact_Funcs.calculate_k_index_anania_caruso(h, core_total), 2) == 6.20
 
 
-# k index (Anania and Caruso 2013)
-def calculate_k_index_anania_caruso(h: int, core: int) -> float:
-    return h + (1 - h**2/core)
+def test_calculate_w_index_anania_caruso():
+    # data and answers from original publication, Anania and Caruso 2013
+    citations = [20, 16, 15, 15, 15, 10, 6, 6, 6, 2, 2, 2, 1, 1, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    total_cites = Impact_Funcs.calculate_total_cites(citations)
+    assert round(Impact_Funcs.calculate_w_index_anania_caruso(h, total_cites), 2) == 6.69
 
+    citations = [9, 8, 8, 7, 7, 6, 3, 2, 2, 1, 1, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    total_cites = Impact_Funcs.calculate_total_cites(citations)
+    assert round(Impact_Funcs.calculate_w_index_anania_caruso(h, total_cites), 2) == 6.33
 
-# w index (Anania and Caruso 2013)
-def calculate_w_index_anania_caruso(h: int, total: int) -> float:
-    return h + (1 - h**2/total)
-
-
+"""
 # h-norm index (Anania and Caruso 2013)
 def calculate_h_norm(citations: list, n_authors: list) -> int:
     sc = [citations[i] / n_authors[i] for i in range(len(citations))]
@@ -1980,53 +1949,14 @@ def calculate_slg(citations: list) -> float:
 def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
     pr = (total_pubs - 2*csr**3/total_cites + 1) / (total_pubs - csr**3/total_cites)
     return [total_pubs, total_cites, pr]
-
-
-# total collaborators
-def calculate_total_collaborators(publications):
-    c = []
-    for p in publications:
-        if p.coauthors != ".":
-            if ";" in p.coauthors:
-                c.extend(p.coauthors.split(";"))
-            else:
-                c.append(p.coauthors)
-    return len(set(c))
-
-
-# partnership ability index (Schubert 2012)
-def calculate_partnership_ability(publications: list):
-    # create counts of publications per coauthor
-    coauthor_cnts = {}
-    for p in publications:
-        if p.coauthors != ".":
-            if ";" in p.coauthors:
-                coa_list = p.coauthors.split(";")
-            else:
-                coa_list = [p.coauthors]
-            for a in coa_list:
-                if a in coauthor_cnts:
-                    coauthor_cnts[a] += 1
-                else:
-                    coauthor_cnts[a] = 1
-    phi = 0
-    cnts = list(coauthor_cnts.values())
-    n = len(cnts)
-    _, tmporder = sort_and_rank(cnts, n)
-    # calculate phi
-    for i in range(n):
-        if tmporder[i] <= cnts[i]:
-            phi += 1
-
-    # test
-    # for c in coauthor_cnts:
-    #     if coauthor_cnts[c] >= phi:
-    #         print(c, coauthor_cnts[c])
-    # print()
-    # print()
-
-    return phi
 """
+
+def test_calculate_total_collaborators():
+    assert Impact_Funcs.calculate_total_collaborators(TEST_COAUTHORS) == 7
+
+
+def test_calculate_partnership_ability():
+    assert Impact_Funcs.calculate_partnership_ability(TEST_COAUTHORS) == 3
 
 
 def test_calculate_stratified_h():
