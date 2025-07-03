@@ -284,18 +284,6 @@ def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: in
 
 # m-index (median index) (Bornmann et al 2008)
 def calculate_m_index(citations: list, is_core: list) -> float:
-    # core_cites = []
-    # for i in range(len(citations)):
-    #     if is_core[i]:
-    #         core_cites.append(citations[i])
-    # core_cites.sort()
-    # if h % 2 == 1:
-    #     # odd number in core
-    #     m_index = core_cites[(h // 2)]
-    # else:
-    #     # even number in core
-    #     m_index = (core_cites[(h // 2) - 1] + core_cites[h // 2]) / 2
-    # return m_index
     core_cites = []
     for i, c in enumerate(citations):
         if is_core[i]:
@@ -381,7 +369,7 @@ def calculate_v_index(h: int, total_pubs: int) -> float:
 
 # e-index (Zhang 2009)
 def calculate_e_index(core_cites: int, h: int) -> float:
-    return math.sqrt(core_cites - h ** 2)
+    return math.sqrt(core_cites - h**2)
 
 
 # rational h-index (Ruane and Tol 2008)
@@ -422,7 +410,7 @@ def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
             ht[i] = citations[i] / (2*rank_order[i] - 1)
         else:
             ht[i] = rank_order[i] / (2*rank_order[i] - 1)
-            for j in range(rank_order[i]+1, n+1):
+            for j in range(rank_order[i]+1, citations[i]+1):
                 ht[i] += 1 / (2*j - 1)
     tapered_h_index = 0
     for i in range(n):
