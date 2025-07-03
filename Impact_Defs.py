@@ -2173,8 +2173,8 @@ def metric_normalized_h_index() -> Metric:
 def calculate_m_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     is_core = metric_set.is_core
-    h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_m_index(citations, is_core, h)
+    # h = metric_set.metrics["h-index"].value
+    return Impact_Funcs.calculate_m_index(citations, is_core)
 
 
 def metric_m_index() -> Metric:

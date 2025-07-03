@@ -283,19 +283,24 @@ def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: in
 
 
 # m-index (median index) (Bornmann et al 2008)
-def calculate_m_index(citations: list, is_core: list, h: int) -> float:
+def calculate_m_index(citations: list, is_core: list) -> float:
+    # core_cites = []
+    # for i in range(len(citations)):
+    #     if is_core[i]:
+    #         core_cites.append(citations[i])
+    # core_cites.sort()
+    # if h % 2 == 1:
+    #     # odd number in core
+    #     m_index = core_cites[(h // 2)]
+    # else:
+    #     # even number in core
+    #     m_index = (core_cites[(h // 2) - 1] + core_cites[h // 2]) / 2
+    # return m_index
     core_cites = []
-    for i in range(len(citations)):
+    for i, c in enumerate(citations):
         if is_core[i]:
-            core_cites.append(citations[i])
-    core_cites.sort()
-    if h % 2 == 1:
-        # odd number in core
-        m_index = core_cites[(h // 2)]
-    else:
-        # even number in core
-        m_index = (core_cites[(h // 2) - 1] + core_cites[h // 2]) / 2
-    return m_index
+            core_cites.append(c)
+    return calculate_median(core_cites)
 
 
 # q2-index (Cabrerizo et al 2010)
