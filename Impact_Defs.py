@@ -10664,6 +10664,48 @@ def metric_stochastic_h() -> Metric:
     return m
 
 
+# multiple h-index (Yaminfirooz and Gholinia 2015)
+def calculate_multiple_h_index(metric_set: MetricSet) -> float:
+    citations = metric_set.citations
+    rank_order = metric_set.rank_order
+    is_core = metric_set.is_core
+    h = metric_set.metrics["h-index"].value
+    year = metric_set.year()
+    pub_years = metric_set.publication_years()
+    return Impact_Funcs.calculate_multiple_h_index(citations, rank_order, is_core, h, year, pub_years)
+
+
+def metric_multiple_h_index() -> Metric:
+    m = Metric()
+    m.name = "multiple h-index"
+    m.full_name = "multiple h-index"
+    m.html_name = "multiple <em>h-</em>index"
+    m.symbol = "<em>Mh</em>"
+    m.synonyms = ["<em>Mh</em>"]
+    m.metric_type = FLOAT
+    # m.example = write_multiple_h_index_example
+    equation = (r"$$Mh = \sqrt{\sum\limits_{i=1}^P\frac{h_iC_i^2}{\text{age}_i}} = "
+                r"\sqrt{\sum\limits_{i=1}^P\frac{h_iC_i^2}{Y_i-Y_0+1}},$$")
+
+    m.description = (f"<p>The multiple <em>h-</em>index (Yaminfirooz and Gholinia 2015) is essentially a function "
+                     f"of the __multidim h-index__ where the series of <em>h-</em>indices are used to combine the "
+                     f"citation counts of individual publications into a single value, including a scaling for the "
+                     f"age of each publication.</p><p>The first step is to calculate the multidimensional "
+                     f"<em>h-</em>index, keeping track of which value of <em>h</em> in the multidimensional vector "
+                     f"each publication falls into. From these, one can calculate the multiple <em>h-</em>index as"
+                     f"</p>{equation}<p>where <em>h<sub>i</sub></em> is the value of the multidimensional "
+                     f"<em>h-</em>index associated with the <em>i</em><sup>th</sup> publication.</p>")
+
+    m.references = ["Yaminfirooz, M., and H. Gholinia (2015) Multiple h-index: A new scientometric indicator. "
+                    "<em>Electronic Library</em> 33(3):547-556."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_multiple_h_index
+    m.properties["Core Metric"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
+
+
 # --- main initialization loop ---
 def load_all_metrics() -> list:
     """
@@ -10838,7 +10880,8 @@ def load_all_metrics() -> list:
                    metric_partnership_ability(),
                    metric_stratified_h(),
                    metric_platinum_h(),
-                   metric_stochastic_h()
+                   metric_stochastic_h(),
+                   metric_multiple_h_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

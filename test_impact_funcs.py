@@ -2063,5 +2063,21 @@ def test_calculate_stochastic_h():
     years = [2004, 2000, 2000, 2001, 2005, 1997, 2004, 1997, 1997, 1996, 1998, 2005, 1997, 1999, 2008, 1999, 1999,
              1996, 2006, 2005, 2002, 1999, 1997, 2008, 2004, 2009, 2007, 2004, 2010, 2007, 2000]
     cyear = 2010
+    answer = 10.828
     hs = Impact_Funcs.calculate_stochastic_h(h, cites, cyear, years)
-    assert round(hs, 3) == 10.828
+    assert round(hs, 3) == answer
+
+
+def test_calculate_multiple_h_index():
+    # data and answer from original publication, Yaminfirooz and Gholinia 2015
+    answer = 42.45
+    citations = [20, 18, 18, 13, 13, 12, 10, 9, 6, 5, 5, 4, 3, 2, 2, 2, 1, 1, 1, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    ages = [10, 8, 9, 7, 7, 8, 8, 6, 4, 5, 3, 3, 4, 2, 2, 1, 3, 3, 5, 1]
+    # original paper gave the ages, not the publication year, so we're back calculating
+    year = 2010
+    pub_year = [year + 1 - a for a in ages]
+
+    assert round(Impact_Funcs.calculate_multiple_h_index(citations, rank_order, is_core, h, year,
+                                                         pub_year), 2) == answer

@@ -2145,6 +2145,43 @@ def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) 
     return hs
 
 
+# multiple h-index (Yaminfirooz and Gholinia 2015)
+def calculate_multiple_h_index(citations: list, rank_order: list, is_core: list, h: int, year: int,
+                               pub_years: list) -> float:
+    multi_dim_h_index = [h]
+    multi_used = []
+    matching_h = [0 for _ in citations]  # the value of h associated with each publication
+    for i in range(len(citations)):
+        if is_core[i]:
+            multi_used.append(True)
+            matching_h[i] = h
+        else:
+            multi_used.append(False)
+    j = 0
+    tmph = -1
+    while tmph != 0:
+        nc = len(multi_dim_h_index)
+        j += multi_dim_h_index[nc-1]
+        tmph = 0
+        for i in range(len(citations)):
+            if not multi_used[i]:
+                if rank_order[i] - j <= citations[i]:
+                    multi_used[i] = True
+                    tmph += 1
+        if tmph > 0:
+            multi_dim_h_index.append(tmph)
+            # replace the default h of 0 with tmph for the newly used publications
+            for i in range(len(citations)):
+                if multi_used[i] and (matching_h[i] == 0):
+                    matching_h[i] = tmph
+
+    pub_ages = publication_ages(year, pub_years)
+    mh = 0
+    for i, c in enumerate(citations):
+        mh += (matching_h[i] * c**2) / pub_ages[i]
+    return math.sqrt(mh)
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
