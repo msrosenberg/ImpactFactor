@@ -209,6 +209,12 @@ class MetricSet:
         """
         return [p.coauthors for p in self.publications]
 
+    def primary_authorship(self) -> list:
+        """
+        returns a list containing the primary authorship for each publication, in the same order as citations
+        """
+        return [p.primary_author for p in self.publications]
+
 
     def year(self) -> int:
         return self.date.year
@@ -10556,7 +10562,8 @@ def metric_stratified_h() -> Metric:
                      "four positions being deemed the highest contributing to a publication, in various degrees "
                      "of importance. In theory, by viewing this set of indices, rather than a single value, one can "
                      "determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to "
-                     "publications versus secondary.")
+                     "publications versus secondary.</p><p>This concept is very similar to a few other proposals, "
+                     "including the __hmaj-index__.</p>")
     m.references = ["Würtz, M., and M. Schmidt (2016) The stratified H-index. <em>Annals of Epidemiology</em> "
                     "26(4):299-300."]
 
@@ -10711,6 +10718,62 @@ def metric_multiple_h_index() -> Metric:
     m.properties["All Publications"] = True
     m.properties["All Citations"] = True
     return m
+
+
+
+
+
+
+
+
+
+
+
+# hmaj-index (Hu et al 2010; Bucur et al 2015)
+def calculate_hmaj_index(metric_set: MetricSet) -> int:
+    citations = metric_set.citations
+    # h = metric_set.metrics["h-index"].value
+    primary = metric_set.primary_authorship()
+    return Impact_Funcs.calculate_hmaj_index(citations, primary)
+
+
+def metric_hmaj_index() -> Metric:
+    m = Metric()
+    m.name = "hmaj-index"
+    m.full_name = "hmajor-index"
+    m.html_name = "<em>h<sub>major</sub>-</em>index"
+    # m.html_name = "<em>h</em>(<em>p</em>,<em>t</em>)-index"
+    m.symbol = "<em>h<sub>maj</sub>"
+    m.synonyms = ["<em>h</em>(<em>p</em>,<em>t</em>)"]
+    m.metric_type = INT
+
+    m.description = (f"<p>This metric proposed by Hu <em>et al.</em> (2010) suggests reporting an <em>h-</em>index "
+                     f"based only on those publications in which the author is a major contributor "
+                     f"(lead author or corresponding author).</p><p><em>h<sub>maj</sub></em> is essentially "
+                     f"identical to the primary author part of the <em>h</em>(<em>p</em>,<em>t</em>) index pair "
+                     f"suggested by Bucur <em>et al.</em> (2015), with the only potential difference being subtleties "
+                     f"in how one defines a major or primary author. This concept is very similar to a few other "
+                     f"proposals, including the __stratified h-index__.</p>")
+
+    m.references = ["Hu, X., R. Rousseau, and J. Chen (2010) In those fields where multiple authorship is the rule, "
+                    "the h-index should be supllmeneted by role-based h-indices. <em>Journal of Information "
+                    "Science</em> 36(1):73-85.",
+                    "Bucur, O., A. Almasan, R. Zubarev, M. Friedman, G.L. Nicolson, P. Sumazin, M. Leabu, "
+                    "B.S. Nikolajczyk, D. Avram, T. Kunej, G.A. Calin, A.K. Godwin, H.-O. Adami, P.G. Zaphiropoulos, "
+                    "D.R. Richardson, G. Schmitt-Ulms, H. Westerblad, M. Keniry, G.E.R. Grau, S. Carbonetto, "
+                    "R.V. Stan, A. Popa-Wagner, K. Takhar, B.W. Baron, P.J. Galardy, F. Yang, D. Data, O. Fadare, "
+                    "K.T.J. Yeo, G.R. Gabreanu, S. Andrei, G.R. Soare, M.A. Nelson, and E.A. Liehn (2015) An "
+                    "updated h-index measures both the primary and total scientific output of a researcher. "
+                    "<em>Discoveries</em> 3(3):e50."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_hmaj_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
 
 
 # --- main initialization loop ---
@@ -10888,7 +10951,8 @@ def load_all_metrics() -> list:
                    metric_stratified_h(),
                    metric_platinum_h(),
                    metric_stochastic_h(),
-                   metric_multiple_h_index()
+                   metric_multiple_h_index(),
+                   metric_hmaj_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

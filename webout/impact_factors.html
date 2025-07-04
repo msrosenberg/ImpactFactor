@@ -7684,6 +7684,47 @@
         var chart_multiple_h_index = new google.visualization.LineChart(document.getElementById('chart_multiple_h_index_div'));
         chart_multiple_h_index.draw(data_multiple_h_index, options_multiple_h_index);
 
+        var data_hmaj_index = google.visualization.arrayToDataTable([
+           ['Year', '<em>h<sub>maj</sub>'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 2],
+           ['2000', 4],
+           ['2001', 4],
+           ['2002', 6],
+           ['2003', 7],
+           ['2004', 10],
+           ['2005', 12],
+           ['2006', 13],
+           ['2007', 16],
+           ['2008', 18],
+           ['2009', 20],
+           ['2010', 22],
+           ['2011', 24],
+           ['2012', 24],
+           ['2013', 25],
+           ['2014', 25],
+           ['2015', 25],
+           ['2016', 26],
+           ['2017', 26],
+           ['2018', 26],
+           ['2019', 26],
+           ['2020', 28],
+           ['2021', 29],
+           ['2022', 30],
+           ['2023', 30],
+           ['2024', 30],
+           ['2025', 30],
+		]);
+
+        var options_hmaj_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_hmaj_index = new google.visualization.LineChart(document.getElementById('chart_hmaj_index_div'));
+        chart_hmaj_index.draw(data_hmaj_index, options_hmaj_index);
+
 		}
     </script>
   </head>
@@ -7788,6 +7829,7 @@
         <li><a href="#history_h_index"><em>H</em></a></li>
         <li><a href="#h_prime_index"><em>h&prime;-</em>index</a></li>
         <li><a href="#h2_index"><em>h</em>(2)-index</a></li>
+        <li><a href="#hmaj_index"><em>h</em>(<em>p</em>,<em>t</em>)</a></li>
         <li><a href="#h_index"><em>h-</em>index</a></li>
         <li><a href="#h_norm"><em>h-norm</em> index</a></li>
         <li><a href="#h_rate"><em>h-</em>rate</a></li>
@@ -7810,6 +7852,7 @@
         <li><a href="#history_h_index">history <em>h-</em>index</a></li>
         <li><a href="#hj_indices"><em>H<sub>j</sub>-</em>indices</a></li>
         <li><a href="#hm_index"><em>h<sub>m</sub>-</em>index</a></li>
+        <li><a href="#hmaj_index"><em>h<sub>major</sub>-</em>index</a></li>
         <li><a href="#normalized_h_index"><em>h<sup>n</sup></em></a></li>
         <li><a href="#position_weighted_h_index"><em>h<sub>p</sub></em></a></li>
         <li><a href="#hpd_index"><em>hpd-</em>index</a></li>
@@ -9243,6 +9286,25 @@
         </tr>
         <tr>
           <td class="first_col"><a href="#hm_index"><em>h<sub>m</sub>-</em>index</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#hmaj_index"><em>h<sub>major</sub>-</em>index</a></td>
         <td></td>
         <td>⚫</td>
         <td></td>
@@ -19625,7 +19687,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
           <li><strong>Publication Focus:</strong> Core Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>The stratified <em>h-</em>index (Würtz and Schmidt 2016) attempts to deal with coauthorship by producing a set of <em>h-</em>indices based on differing authorship position wihin the publications. Essentially, in addition to the general <a href="#h_index"><em>h-</em>index</a>, one calculates independent indices for publications in which one is the first author, second author, third author, or last author, with these four positions being deemed the highest contributing to a publication, in various degrees of importance. In theory, by viewing this set of indices, rather than a single value, one can determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to publications versus secondary.
+      <p>The stratified <em>h-</em>index (Würtz and Schmidt 2016) attempts to deal with coauthorship by producing a set of <em>h-</em>indices based on differing authorship position wihin the publications. Essentially, in addition to the general <a href="#h_index"><em>h-</em>index</a>, one calculates independent indices for publications in which one is the first author, second author, third author, or last author, with these four positions being deemed the highest contributing to a publication, in various degrees of importance. In theory, by viewing this set of indices, rather than a single value, one can determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to publications versus secondary.</p><p>This concept is very similar to a few other proposals, including the <a href="#hmaj_index"><em>h<sub>major</sub>-</em>index</a>.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -19819,6 +19881,58 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="hmaj_index" class="metric_container">
+      <h2><em>h<sub>major</sub>-</em>index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>This metric proposed by Hu <em>et al.</em> (2010) suggests reporting an <em>h-</em>index based only on those publications in which the author is a major contributor (lead author or corresponding author).</p><p><em>h<sub>maj</sub></em> is essentially identical to the primary author part of the <em>h</em>(<em>p</em>,<em>t</em>) index pair suggested by Bucur <em>et al.</em> (2015), with the only potential difference being subtleties in how one defines a major or primary author. This concept is very similar to a few other proposals, including the <a href="#stratified_h_index">stratified <em>h-</em>index</a>.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>h<sub>maj</sub></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">20</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">22</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">24</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">24</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">25</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">25</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">25</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">26</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">28</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">29</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">30</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">30</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">30</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">30</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_hmaj_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -19838,6 +19952,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Bornmann, L., R. Mutz, and H.-D. Daniel (2008) Are there better indices for evaluation purposes than the <em>h</em> index? A comparison of nine different variants of the <em>h</em> index using data from biomedicine. <em>Journal of the American Society for Information Science and Technology</em> 59(5):830&ndash;837.</li>
         <li>Bornmann, L., R. Mutz, and H.-D. Daniel (2010) The <em>h</em> index research output measurement: Two approaches to enhance its accuracy. <em>Journal of Informetrics</em> 4:407&ndash;414.</li>
         <li>Brown, R.J.C. (2009) A simple method for excluding self-citation from the <em>h-</em>index: the <em>b-</em>index. <em>Online Information Review</em> 33(6):1129&ndash;1136.</li>
+        <li>Bucur, O., A. Almasan, R. Zubarev, M. Friedman, G.L. Nicolson, P. Sumazin, M. Leabu, B.S. Nikolajczyk, D. Avram, T. Kunej, G.A. Calin, A.K. Godwin, H.-O. Adami, P.G. Zaphiropoulos, D.R. Richardson, G. Schmitt-Ulms, H. Westerblad, M. Keniry, G.E.R. Grau, S. Carbonetto, R.V. Stan, A. Popa-Wagner, K. Takhar, B.W. Baron, P.J. Galardy, F. Yang, D. Data, O. Fadare, K.T.J. Yeo, G.R. Gabreanu, S. Andrei, G.R. Soare, M.A. Nelson, and E.A. Liehn (2015) An updated h-index measures both the primary and total scientific output of a researcher. <em>Discoveries</em> 3(3):e50.</li>
         <li>Burrell, Q.L. (2007) Hirsch index or Hirsch rate? Some thoughts arising from Liang's data. <em>Scientometrics</em> 73(1):19-28.</li>
         <li>Burrell, Q.L. (2012) Comments on "A publication index that is independent of age" by Abt. <em>Scientometrics</em> 91:1059&ndash;1060.</li>
         <li>Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field for small and large institute medical and science scholars. <em>Australasian Physical and Engineering Sciences in Medicine</em> 33:299&ndash;300.</li>
@@ -19865,6 +19980,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the <em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71.</li>
         <li>Harzing, A.-W., S. Alakangas, and D. Adams (2014) hIa: an individual annual <em>h-</em>index to accommodate disciplinary and career length differences. <em>Scientometrics</em> 99:811&ndash;821.</li>
         <li>Hirsch, J.E. (2005) An index to quantify an individual's scientific research output. <em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572.</li>
+        <li>Hu, X., R. Rousseau, and J. Chen (2010) In those fields where multiple authorship is the rule, the h-index should be supllmeneted by role-based h-indices. <em>Journal of Information Science</em> 36(1):73-85.</li>
         <li>Jin, B. (2006) <em>h-</em>index: An evaluation indicator proposed by scientist. <em>Science Focus</em> 1(1):8&ndash;9.</li>
         <li>Jin, B. (2007) The <em>ar-</em>index: Complementing the <em>h-</em>index. <em>ISSI</em> Newsletter 3(1):6.</li>
         <li>Jin, B., L. Liang, R. Rousseau, and L. Egghe (2007) The <em>R-</em> and <em>AR-</em>indices: Complementing the <em>h-</em>index. <em>Chinese Science Bulletin</em> 52(6):855&ndash;863.</li>

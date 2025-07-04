@@ -5,6 +5,8 @@ TEST_CITATION_DATA = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0]
 TEST_YEAR_DATA = [1997, 1997, 1997, 1997, 1998, 1999, 2000, 2000, 2001, 2001, 2001, 1997, 2000, 2001, 2000, 2000]
 TEST_AUTHOR_CNT = [1, 3, 4, 4, 2, 4, 4, 1, 1, 2, 2, 3, 3, 1, 1, 4]
 TEST_AUTHOR_ORDER = [1, 3, 3, 3, 2, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 3]
+TEST_PRIMARY = [False, True, False, False, True, False, True, False, True, True, True, True, True, True, True, False]
+# coauthor list is independent of the above data
 TEST_COAUTHORS = ["Adams, D.C.;Gurevitch, J.", ".", "Adams, D.C.;Gurevitch, J.", ".",
                   "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.", "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.",
                   "Adams, D.C.", ".", "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.", ".", "Adams, D.C.;Gurevitch, J.",
@@ -2011,3 +2013,11 @@ def test_calculate_multiple_h_index():
 
     assert round(Impact_Funcs.calculate_multiple_h_index(citations, rank_order, is_core, h, year,
                                                          pub_year), 2) == answer
+
+
+def test_calculate_hmaj_index():
+    assert Impact_Funcs.calculate_hmaj_index(TEST_CITATION_DATA, TEST_PRIMARY) == 4
+    # rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    # h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    # assert Impact_Funcs.calculate_hmaj_index(TEST_CITATION_DATA, h, TEST_PRIMARY) == [4, 6]
+

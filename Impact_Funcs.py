@@ -2138,6 +2138,23 @@ def calculate_multiple_h_index(citations: list, rank_order: list, is_core: list,
     return math.sqrt(mh)
 
 
+# hmaj-index (Hu et al 2010; Bucur et al 2015)
+# def calculate_hmaj_index(citations: list, ht: int, primary: list) -> list:
+def calculate_hmaj_index(citations: list, primary: list) -> int:
+    # create list containing only the publications in which the author is primary
+    tmp_cites = []
+    for i, c in enumerate(citations):
+        if primary[i]:
+            tmp_cites.append(c)
+    hp = 0
+    n = len(tmp_cites)
+    _, tmporder = sort_and_rank(tmp_cites, n)
+    for j in range(n):
+        if tmporder[j] <= tmp_cites[j]:
+            hp += 1
+    return hp
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
