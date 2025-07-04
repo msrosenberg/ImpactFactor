@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-03.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-04.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -6114,34 +6114,34 @@ impact_tapered_h_index.html
         var data_tapered_h_index = google.visualization.arrayToDataTable([
            ['Year', '<em>h<sub>T</sub></em>'],
            ['1997', 1.3333333333333333],
-           ['1998', 4.373759573759573],
-           ['1999', 5.408549620314325],
-           ['2000', 8.364847036323681],
-           ['2001', 10.213290239225772],
-           ['2002', 13.151102122721072],
-           ['2003', 16.906488614549847],
-           ['2004', 19.914327877979133],
-           ['2005', 23.387634455496148],
-           ['2006', 25.74507757586869],
-           ['2007', 28.595995781604596],
-           ['2008', 31.101499603224934],
-           ['2009', 34.126831660098446],
-           ['2010', 37.43543724184532],
-           ['2011', 40.854330584074596],
-           ['2012', 42.98037382917519],
-           ['2013', 45.55257117653707],
-           ['2014', 47.1167815999768],
-           ['2015', 49.006362790271865],
-           ['2016', 50.02681184348031],
-           ['2017', 51.20329544232293],
-           ['2018', 53.02161805078655],
-           ['2019', 53.86147994994158],
-           ['2020', 55.76723345020835],
-           ['2021', 57.57147434867402],
-           ['2022', 59.696282039142964],
-           ['2023', 60.56167066247555],
-           ['2024', 61.917575874312405],
-           ['2025', 63.79143703599144],
+           ['1998', 3.818625818625818],
+           ['1999', 5.67236437735103],
+           ['2000', 8.128783447723],
+           ['2001', 10.145758489708577],
+           ['2002', 13.380208875262566],
+           ['2003', 16.69818003266835],
+           ['2004', 21.19890502039731],
+           ['2005', 25.077216655734944],
+           ['2006', 29.224957755593994],
+           ['2007', 33.024089443953365],
+           ['2008', 36.63337078407853],
+           ['2009', 40.01289955206284],
+           ['2010', 43.67275771595783],
+           ['2011', 47.86847278681218],
+           ['2012', 51.4279171798886],
+           ['2013', 54.720203490673214],
+           ['2014', 57.08302454730328],
+           ['2015', 59.63570761813834],
+           ['2016', 61.72866285606221],
+           ['2017', 63.60695600291045],
+           ['2018', 65.56298338502934],
+           ['2019', 67.48955038643157],
+           ['2020', 69.58473587696714],
+           ['2021', 71.9293740769189],
+           ['2022', 73.60746397503279],
+           ['2023', 75.12662781774344],
+           ['2024', 76.69653864838055],
+           ['2025', 77.89374128316484],
 		]);
 
         var options_tapered_h_index = {
@@ -6169,34 +6169,34 @@ impact_tapered_h_index.html
           <table class="impact_table">
             <tr><th>Year</th><th><em>h<sub>T</sub></em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.3333</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">4.3738</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">5.4085</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">8.3648</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">10.2133</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">13.1511</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">16.9065</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">19.9143</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">23.3876</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">25.7451</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">28.5960</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">31.1015</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">34.1268</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">37.4354</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">40.8543</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">42.9804</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">45.5526</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">47.1168</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">49.0064</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">50.0268</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">51.2033</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">53.0216</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">53.8615</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">55.7672</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">57.5715</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">59.6963</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">60.5617</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">61.9176</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">63.7914</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.8186</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">5.6724</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">8.1288</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">10.1458</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">13.3802</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">16.6982</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">21.1989</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">25.0772</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">29.2250</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">33.0241</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">36.6334</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">40.0129</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">43.6728</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">47.8685</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">51.4279</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">54.7202</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">57.0830</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">59.6357</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">61.7287</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">63.6070</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">65.5630</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">67.4896</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">69.5847</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">71.9294</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">73.6075</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">75.1266</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">76.6965</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">77.8937</td></tr>
           </table>
         </div>
         <div class="graph_container">
@@ -8735,34 +8735,34 @@ impact_EM_index.html
         var data_EM_index = google.visualization.arrayToDataTable([
            ['Year', '<em>EM</em>'],
            ['1997', 1.0],
-           ['1998', 1.7320508075688772],
-           ['1999', 3.605551275463989],
-           ['2000', 4.123105625617661],
-           ['2001', 5.0990195135927845],
-           ['2002', 5.656854249492381],
-           ['2003', 7.14142842854285],
-           ['2004', 8.602325267042627],
-           ['2005', 10.198039027185569],
-           ['2006', 11.874342087037917],
-           ['2007', 13.674794331177344],
-           ['2008', 15.652475842498529],
-           ['2009', 16.97056274847714],
-           ['2010', 18.547236990991408],
-           ['2011', 19.621416870348583],
-           ['2012', 20.92844953645635],
-           ['2013', 22.11334438749598],
-           ['2014', 23.021728866442675],
-           ['2015', 24.0],
-           ['2016', 25.15949125081825],
-           ['2017', 26.476404589747453],
-           ['2018', 27.76688675382964],
-           ['2019', 28.77498913987632],
-           ['2020', 29.49576240750525],
-           ['2021', 30.033314835362415],
-           ['2022', 30.805843601498726],
-           ['2023', 32.66496594212215],
-           ['2024', 34.72751070837067],
-           ['2025', 35.79106033634656],
+           ['1998', 2.0],
+           ['1999', 3.7416573867739413],
+           ['2000', 4.242640687119285],
+           ['2001', 5.196152422706632],
+           ['2002', 5.744562646538029],
+           ['2003', 7.211102550927978],
+           ['2004', 8.660254037844387],
+           ['2005', 10.246950765959598],
+           ['2006', 11.916375287812984],
+           ['2007', 13.711309200802088],
+           ['2008', 15.684387141358123],
+           ['2009', 17.0],
+           ['2010', 18.57417562100671],
+           ['2011', 19.6468827043885],
+           ['2012', 20.952326839756964],
+           ['2013', 22.135943621178654],
+           ['2014', 23.043437243605826],
+           ['2015', 24.020824298928627],
+           ['2016', 25.179356624028344],
+           ['2017', 26.49528259898354],
+           ['2018', 27.784887978899608],
+           ['2019', 28.792360097775937],
+           ['2020', 29.512709126747414],
+           ['2021', 30.04995840263344],
+           ['2022', 30.822070014844883],
+           ['2023', 32.68026927673638],
+           ['2024', 34.741905532080416],
+           ['2025', 35.805027579936315],
 		]);
 
         var options_EM_index = {
@@ -8785,41 +8785,41 @@ impact_EM_index.html
       <h3>Description</h3>
       <p>The <em>EM-</em>index (Bihaari and Tripathi 2017) combines elements of the <a href="#multidim_h_index">multidimensional <em>h-</em>index</a>, the <a href="#two_sided_h_index">two-sided <em>h-</em>index</a>, the <a href="#iter_weighted_h_index">iteratively weighted <em>h-</em>index</a>, and the <a href="#e_index"><em>e-</em>index</a>. The <em>EM-</em>index begins by creating a vector (<strong><em>E</em></strong>) which is equivalent to the upper/excess half of the two-sided <em>h-</em>index, namely a series of <em>h</em> values calculated from the citation curve of just the core publications, stopping when one reaches only a single remaining publication, no citations remain, or all remaining publications have only a single citation. From this vector, <em>EM</em> can be calculated as:</p>$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>53</td><td>20</td><td>10</td><td>5</td><td class="box">5</td><td>4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td class="box">5</td><td>6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>15</td><td class="box">5</td><td>0</td><td>0</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td class="box">12</td><td>2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>43</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>41</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>37</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>35</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The sum of the 9 <em>E</em> values is 26. The <em>EM-</em>index is the square-root of this sum, thus <em>EM</em>&nbsp;=&nbsp;5.0990.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>53</td><td>20</td><td>10</td><td>5</td><td class="box">5</td><td>4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td class="box">5</td><td>6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>15</td><td class="box">5</td><td>0</td><td>0</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td class="box">12</td><td>2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>43</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>41</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>37</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>35</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The sum of the 9 <em>E</em> values is 26. The <em>EM-</em>index is the square-root of this sum, thus <em>EM</em>&nbsp;=&nbsp;5.1962.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>EM</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">3.6056</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">4.1231</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">5.0990</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">5.6569</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">7.1414</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">8.6023</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">10.1980</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">11.8743</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">13.6748</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">15.6525</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">16.9706</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">18.5472</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">19.6214</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">20.9284</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">22.1133</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">23.0217</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">24.0000</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">25.1595</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">26.4764</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">27.7669</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">28.7750</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">29.4958</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">30.0333</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">30.8058</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">32.6650</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">34.7275</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">35.7911</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.7417</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">4.2426</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">5.1962</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5.7446</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">7.2111</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">8.6603</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">10.2470</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">11.9164</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">13.7113</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">15.6844</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">17.0000</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">18.5742</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">19.6469</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">20.9523</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">22.1359</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">23.0434</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">24.0208</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">25.1794</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">26.4953</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">27.7849</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">28.7924</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">29.5127</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">30.0500</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">30.8221</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">32.6803</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">34.7419</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">35.8050</td></tr>
           </table>
         </div>
         <div class="graph_container">
@@ -17663,34 +17663,34 @@ impact_iterative_weighted_EM_index.html
         var data_iterative_weighted_EM_index = google.visualization.arrayToDataTable([
            ['Year', '<em>iw<sub>EM</sub></em>'],
            ['1997', 1.0],
-           ['1998', 3.0],
-           ['1999', 5.9],
-           ['2000', 8.733333333333334],
-           ['2001', 11.491269841269842],
-           ['2002', 14.657936507936508],
-           ['2003', 18.815426240426238],
-           ['2004', 24.914526933334987],
-           ['2005', 31.36974852333918],
-           ['2006', 36.09175959534251],
-           ['2007', 42.430313052996034],
-           ['2008', 48.365174217884885],
-           ['2009', 54.748934910662356],
-           ['2010', 58.72630147042795],
-           ['2011', 64.9946298841688],
-           ['2012', 71.98055575914084],
-           ['2013', 77.0317499822525],
-           ['2014', 80.93562938428111],
-           ['2015', 83.87748187379663],
-           ['2016', 86.46567082241758],
-           ['2017', 90.39468159380579],
-           ['2018', 92.80832925780663],
-           ['2019', 95.58767198103902],
-           ['2020', 98.82669417360265],
-           ['2021', 101.4538076471255],
-           ['2022', 104.9911718159049],
-           ['2023', 106.31174437394944],
-           ['2024', 109.25835580516687],
-           ['2025', 111.62994206595461],
+           ['1998', 3.5],
+           ['1999', 6.042857142857144],
+           ['2000', 8.876190476190477],
+           ['2001', 11.591269841269842],
+           ['2002', 14.757936507936508],
+           ['2003', 18.877926240426238],
+           ['2004', 24.962145980954034],
+           ['2005', 31.40974852333918],
+           ['2006', 36.12879663237955],
+           ['2007', 42.45662884246972],
+           ['2008', 48.38303136074203],
+           ['2009', 54.764807926535376],
+           ['2010', 58.73945936516479],
+           ['2011', 65.00653464607356],
+           ['2012', 71.99097242580751],
+           ['2013', 77.04118394451666],
+           ['2014', 80.94515319380493],
+           ['2015', 83.88700568332044],
+           ['2016', 86.4745203799397],
+           ['2017', 90.40225735138154],
+           ['2018', 92.8149959244733],
+           ['2019', 95.59376954201463],
+           ['2020', 98.83268219755475],
+           ['2021', 101.45998048663168],
+           ['2022', 104.99734465541108],
+           ['2023', 106.31648371044233],
+           ['2024', 109.26205950887058],
+           ['2025', 111.63324239598761],
 		]);
 
         var options_iterative_weighted_EM_index = {
@@ -17713,41 +17713,41 @@ impact_iterative_weighted_EM_index.html
       <h3>Description</h3>
       <p>The iterative weighted <em>EM-</em>index (Bihari <em>et al.</em> 2021) is a modification of the <a href="#EM_index"><em>EM-</em>index</a> which uses a weighted-sum of each successive element in the vector rather than the square-root of the sum. The index begins by creating a vector (<strong><em>E</em></strong>) which is equivalent to the upper/excess half of the <a href="#two_sided_h_index">two-sided <em>h-</em>index</a>, namely a series of <a href="#h_index"><em>h-</em>index</a> values calculated from the citation curve of just the core publications, stopping when one reaches only a single remaining publication, no citations remain, or all remaining publications have only a single citation. From this vector, <em>iw<sub>EM</sub></em> can be calculated as:</p>$$iw_{EM}=\sum\limits_{i=1}^{n}\frac{E_i}{i},$$<p>where <em>E<sub>i</sub></em> and <em>n</em> are the <em>i</em><sup>th</sup> element and length of <strong><em>E</em></strong>, respectively.</p>
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>53</td><td>20</td><td>10</td><td>5</td><td class="box">5</td><td>4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td class="box">5</td><td>6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>15</td><td class="box">5</td><td>0</td><td>0</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td class="box">12</td><td>2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>43</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>41</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>37</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>35</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p><em>iw<sub>EM</sub></em> is the sum of each component of <em>E</em> weighted by it's order, thus <em>iw<sub>EM</sub></em> = 6/1 + 5/2 + 3/3 + 2/4 + 2/5 + 2/6 + 2/7 + 2/8 + 2/9 = 11.4913
+      <p>Publications are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>53</td><td>20</td><td>10</td><td>5</td><td class="box">5</td><td>4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td class="box">5</td><td>6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>15</td><td class="box">5</td><td>0</td><td>0</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td class="box">12</td><td>2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>43</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>41</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>37</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>35</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p><em>iw<sub>EM</sub></em> is the sum of each component of <em>E</em> weighted by it's order, thus <em>iw<sub>EM</sub></em> = 6/1 + 5/2 + 3/3 + 2/4 + 2/5 + 2/6 + 2/7 + 2/8 + 2/9 = 11.5913
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>iw<sub>EM</sub></em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">3.0000</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">5.9000</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">8.7333</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">11.4913</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">14.6579</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">18.8154</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">24.9145</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">31.3697</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">36.0918</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">42.4303</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">48.3652</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">54.7489</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">58.7263</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">64.9946</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">71.9806</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">77.0317</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">80.9356</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">83.8775</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">86.4657</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">90.3947</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">92.8083</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">95.5877</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">98.8267</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">101.4538</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">104.9912</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">106.3117</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">109.2584</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">111.6299</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">3.5000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">6.0429</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">8.8762</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">11.5913</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">14.7579</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">18.8779</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">24.9621</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">31.4097</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">36.1288</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">42.4566</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">48.3830</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">54.7648</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">58.7395</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">65.0065</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">71.9910</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">77.0412</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">80.9452</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">83.8870</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">86.4745</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">90.4023</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">92.8150</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">95.5938</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">98.8327</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">101.4600</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">104.9973</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">106.3165</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">109.2621</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">111.6332</td></tr>
           </table>
         </div>
         <div class="graph_container">
