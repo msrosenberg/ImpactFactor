@@ -25,6 +25,7 @@ class Article:
         self.author_rank = 0  # position within author list
         self.coauthors = ""  # string containing all coauthor names
         self.rank = 0
+        self.primary_author = False
         self.title = ""
         self.citations = []
         self.self_cites = []
@@ -75,8 +76,8 @@ def read_data_file(filename: str) -> Tuple[list, list]:
             a += 1
             # header
             if a == 0:
-                # skip 1st 5 columns
-                for i in range(5):
+                # skip 1st 6 columns
+                for i in range(6):
                     line = line[line.find("\t")+1:]
                 tmp_list = line.split("\t")
                 for d in tmp_list:
@@ -94,6 +95,10 @@ def read_data_file(filename: str) -> Tuple[list, list]:
                 tstr = line[:line.find("\t")]
                 line = line[line.find("\t")+1:]
                 new_article.author_rank = int(tstr)
+                tstr = line[:line.find("\t")]
+                line = line[line.find("\t")+1:]
+                if tstr == "Y":
+                    new_article.primary_author = True
                 tstr = line[:line.find("\t")]
                 line = line[line.find("\t")+1:]
                 new_article.coauthors = tstr
@@ -133,6 +138,8 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
                     # skip authors
                     line = line[line.find("\t") + 1:]
                     # skip author rank
+                    line = line[line.find("\t") + 1:]
+                    # skip primary
                     line = line[line.find("\t") + 1:]
                     # skip coauthors
                     line = line[line.find("\t") + 1:]
