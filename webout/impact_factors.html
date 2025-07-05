@@ -7685,7 +7685,7 @@
         chart_multiple_h_index.draw(data_multiple_h_index, options_multiple_h_index);
 
         var data_hmaj_index = google.visualization.arrayToDataTable([
-           ['Year', '<em>h<sub>maj</sub>'],
+           ['Year', '<em>h<sub>maj</sub></em>'],
            ['1997', 1],
            ['1998', 2],
            ['1999', 2],
@@ -7725,6 +7725,170 @@
         var chart_hmaj_index = new google.visualization.LineChart(document.getElementById('chart_hmaj_index_div'));
         chart_hmaj_index.draw(data_hmaj_index, options_hmaj_index);
 
+        var data_total_pubs_frac = google.visualization.arrayToDataTable([
+           ['Year', '<em>P<sub>frac</sub></em>'],
+           ['1997', 3.1666666666666665],
+           ['1998', 4.666666666666666],
+           ['1999', 4.916666666666666],
+           ['2000', 7.749999999999999],
+           ['2001', 10.75],
+           ['2002', 12.17063492063492],
+           ['2003', 13.594877344877345],
+           ['2004', 15.094877344877345],
+           ['2005', 20.42821067821068],
+           ['2006', 20.92821067821068],
+           ['2007', 22.26154401154401],
+           ['2008', 22.794877344877342],
+           ['2009', 25.544877344877342],
+           ['2010', 27.109992784992784],
+           ['2011', 28.693326118326116],
+           ['2012', 29.026659451659448],
+           ['2013', 30.821897546897542],
+           ['2014', 32.821897546897546],
+           ['2015', 34.27189754689755],
+           ['2016', 34.89689754689755],
+           ['2017', 35.02189754689755],
+           ['2018', 36.639754689754696],
+           ['2019', 37.639754689754696],
+           ['2020', 38.639754689754696],
+           ['2021', 39.00642135642136],
+           ['2022', 39.93334443334445],
+           ['2023', 39.93334443334445],
+           ['2024', 41.10834443334445],
+           ['2025', 41.31157023979606],
+		]);
+
+        var options_total_pubs_frac = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_total_pubs_frac = new google.visualization.LineChart(document.getElementById('chart_total_pubs_frac_div'));
+        chart_total_pubs_frac.draw(data_total_pubs_frac, options_total_pubs_frac);
+
+        var data_total_pubs_prop = google.visualization.arrayToDataTable([
+           ['Year', '<em>P<sub>prop</sub></em>'],
+           ['1997', 3.0666666666666673],
+           ['1998', 4.4],
+           ['1999', 4.800000000000001],
+           ['2000', 7.700000000000001],
+           ['2001', 11.033333333333333],
+           ['2002', 12.281746031746032],
+           ['2003', 14.266594516594516],
+           ['2004', 15.866594516594516],
+           ['2005', 21.19992784992785],
+           ['2006', 21.53326118326118],
+           ['2007', 22.533261183261178],
+           ['2008', 22.999927849927843],
+           ['2009', 25.86659451659451],
+           ['2010', 27.402020202020193],
+           ['2011', 28.935353535353524],
+           ['2012', 29.268686868686856],
+           ['2013', 31.300624471314112],
+           ['2014', 33.30062447131411],
+           ['2015', 34.60062447131411],
+           ['2016', 35.40618002686966],
+           ['2017', 35.600624471314106],
+           ['2018', 37.11873413942378],
+           ['2019', 38.11873413942378],
+           ['2020', 39.11873413942378],
+           ['2021', 39.39492461561426],
+           ['2022', 40.23814805883771],
+           ['2023', 40.23814805883771],
+           ['2024', 41.33100520169486],
+           ['2025', 41.5994351709235],
+		]);
+
+        var options_total_pubs_prop = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_total_pubs_prop = new google.visualization.LineChart(document.getElementById('chart_total_pubs_prop_div'));
+        chart_total_pubs_prop.draw(data_total_pubs_prop, options_total_pubs_prop);
+
+        var data_total_pubs_geom = google.visualization.arrayToDataTable([
+           ['Year', '<em>P<sub>geom</sub></em>'],
+           ['1997', 2.980952380952381],
+           ['1998', 4.314285714285715],
+           ['1999', 4.847619047619048],
+           ['2000', 7.685714285714287],
+           ['2001', 11.019047619047619],
+           ['2002', 12.162861834051565],
+           ['2003', 14.317745868759731],
+           ['2004', 15.984412535426397],
+           ['2005', 21.270126821140682],
+           ['2006', 21.603460154474014],
+           ['2007', 22.555841106854963],
+           ['2008', 22.906071521601508],
+           ['2009', 25.70607152160151],
+           ['2010', 26.95717833300629],
+           ['2011', 28.376225952053908],
+           ['2012', 28.661940237768192],
+           ['2013', 31.065219232435638],
+           ['2014', 33.06521923243564],
+           ['2015', 34.26091815716683],
+           ['2016', 34.99032992187271],
+           ['2017', 35.24131031402957],
+           ['2018', 36.502335905599466],
+           ['2019', 37.502335905599466],
+           ['2020', 38.502335905599466],
+           ['2021', 38.630344098123786],
+           ['2022', 39.14876570694438],
+           ['2023', 39.14876570694438],
+           ['2024', 40.16445388880464],
+           ['2025', 40.42251840493367],
+		]);
+
+        var options_total_pubs_geom = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_total_pubs_geom = new google.visualization.LineChart(document.getElementById('chart_total_pubs_geom_div'));
+        chart_total_pubs_geom.draw(data_total_pubs_geom, options_total_pubs_geom);
+
+        var data_total_pubs_harm = google.visualization.arrayToDataTable([
+           ['Year', '<em>P<sub>harm</sub></em>'],
+           ['1997', 3.047272727272728],
+           ['1998', 4.380606060606061],
+           ['1999', 4.860606060606061],
+           ['2000', 7.726060606060607],
+           ['2001', 11.059393939393939],
+           ['2002', 12.295255656474676],
+           ['2003', 14.33961317366133],
+           ['2004', 15.979613173661331],
+           ['2005', 21.252340446388605],
+           ['2006', 21.585673779721937],
+           ['2007', 22.525067719115874],
+           ['2008', 22.907284042938038],
+           ['2009', 25.733950709604706],
+           ['2010', 27.12497131793305],
+           ['2011', 28.557698590660323],
+           ['2012', 28.830425863387596],
+           ['2013', 31.018220763359363],
+           ['2014', 33.018220763359366],
+           ['2015', 34.28420616481922],
+           ['2016', 35.04285706276052],
+           ['2017', 35.2268255253098],
+           ['2018', 36.61316372849429],
+           ['2019', 37.61316372849429],
+           ['2020', 38.61316372849429],
+           ['2021', 38.82469359591571],
+           ['2022', 39.46476649555973],
+           ['2023', 39.46476649555973],
+           ['2024', 40.54071838464762],
+           ['2025', 40.760397120013785],
+		]);
+
+        var options_total_pubs_harm = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_total_pubs_harm = new google.visualization.LineChart(document.getElementById('chart_total_pubs_harm_div'));
+        chart_total_pubs_harm.draw(data_total_pubs_harm, options_total_pubs_harm);
+
 		}
     </script>
   </head>
@@ -7732,7 +7896,7 @@
     <div>
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-04.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-05.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -7917,10 +8081,14 @@
         <li><a href="#partnership_ability">partnership ability</a></li>
         <li><a href="#cited_paper_percent"><em>P</em><sub>C</sub>%</a></li>
         <li><a href="#fractional_p_index"><em>p<sub>f</sub></em></a></li>
+        <li><a href="#total_pubs_frac"><em>P<sub>frac</sub></em></a></li>
+        <li><a href="#total_pubs_geom"><em>P<sub>geom</sub></em></a></li>
         <li><a href="#harmonic_p_index"><em>p<sub>h</sub></em></a></li>
         <li><a href="#ph_ratio"><em>ph-</em>ratio</a></li>
+        <li><a href="#total_pubs_harm"><em>P<sub>harm</sub></em></a></li>
         <li><a href="#platinum_h_index">platinum <em>h-</em>index</a></li>
         <li><a href="#position_weighted_h_index">position-weighted <em>h-</em>index</a></li>
+        <li><a href="#total_pubs_prop"><em>P<sub>prop</sub></em></a></li>
         <li><a href="#profit_adj_h_index">profit adjusted <em>h-</em>index</a></li>
         <li><a href="#profit_h_index">profit <em>h-</em>index</a></li>
         <li><a href="#profit_p_index">profit <em>p-</em>index</a></li>
@@ -7965,6 +8133,10 @@
         <li><a href="#total_cites">total citations</a></li>
         <li><a href="#total_collaborators">total collaborators</a></li>
         <li><a href="#total_pubs">total publications</a></li>
+        <li><a href="#total_pubs_frac">total publications (fractional counting)</a></li>
+        <li><a href="#total_pubs_geom">total publications (geometric counting)</a></li>
+        <li><a href="#total_pubs_harm">total publications (harmonic counting)</a></li>
+        <li><a href="#total_pubs_prop">total publications (proportional counting)</a></li>
         <li><a href="#total_self_cites">total self citations</a></li>
         <li><a href="#total_self_cite_rate">total self-citation rate</a></li>
         <li><a href="#academic_trace">tr(V)</a></li>
@@ -10624,6 +10796,82 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#total_pubs_frac">total publications (fractional counting)</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#total_pubs_geom">total publications (geometric counting)</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#total_pubs_harm">total publications (harmonic counting)</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#total_pubs_prop">total publications (proportional counting)</a></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
         <td></td>
         <td>⚫</td>
         <td></td>
@@ -14736,7 +14984,7 @@
       <h3>Description</h3>
       <p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on an author's impact. They use a harmonic weighting algorithm and information on author order (assuming that authors in the middle of an author list had the least impact) to estimate effort for each publication. The effort for the <em>i</em><sup>th</sup> publication is</p>$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$<p>where</p>$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ \frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$<p>The sum of <em>E<sub>i</sub></em> for all publications is the number of &ldquo;monograph equivalents&rdquo; (a monograph being defined as a single-authored publication). The profit adjusted <em>h-</em>index is calculated by weighting each publications citation count by this effort,</p>$$C^{*}_i=E_i C_i,$$<p>reranking the publications based upon these weighted counts, and calculating the index as</p>$$h_a=\underset{i}{\max}\left(i \leq E_iC_i\right)=\underset{i}{\max}\left(i \leq C^{*}_i\right).$$
       <h3>Example</h3>
-      <p>Publications are ordered by adjusted number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>11</td><td>16</td><td>11</td><td>3</td><td>10</td><td>4</td><td>1</td><td>1</td><td>3</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>4</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Position (<em>a<sub>i</sub></em>)</th><td>1</td><td>3</td><td>1</td><td>2</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>3</td><td>1</td><td>3</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>)</th><td>0.43</td><td>0.43</td><td>1.00</td><td>0.50</td><td>0.43</td><td>1.00</td><td>0.17</td><td>0.33</td><td>1.00</td><td>1.00</td><td>0.17</td><td>0.50</td><td>0.17</td><td>0.17</td><td>0.50</td><td>1.00</td><td>1.00</td><td>1.00</td></tr><tr class="top_row"><th>Adjusted Citations (\(C^*_i\))</th><td>25.29</td><td>11.14</td><td>11.00</td><td class="box">8.00</td><td>4.71</td><td>3.00</td><td>1.67</td><td>1.33</td><td>1.00</td><td>1.00</td><td>0.50</td><td>0.50</td><td>0.33</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td><em>h<sub>a</sub></em>&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where \(i \leq C^*_i\) is 4.</p>
+      <p>Publications are ordered by adjusted number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>11</td><td>11</td><td>16</td><td>26</td><td>3</td><td>4</td><td>10</td><td>1</td><td>1</td><td>1</td><td>3</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>1</td><td>3</td><td>2</td><td>3</td><td>1</td><td>4</td><td>4</td><td>1</td><td>1</td><td>2</td><td>4</td><td>4</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Position (<em>a<sub>i</sub></em>)</th><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>)</th><td>0.55</td><td>1.00</td><td>0.55</td><td>0.33</td><td>0.18</td><td>1.00</td><td>0.48</td><td>0.16</td><td>1.00</td><td>1.00</td><td>0.67</td><td>0.16</td><td>0.16</td><td>0.16</td><td>0.67</td><td>1.00</td><td>1.00</td><td>1.00</td></tr><tr class="top_row"><th>Adjusted Citations (\(C^*_i\))</th><td>32.18</td><td>11.00</td><td>6.00</td><td class="box">5.33</td><td>4.73</td><td>3.00</td><td>1.92</td><td>1.60</td><td>1.00</td><td>1.00</td><td>0.67</td><td>0.48</td><td>0.32</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td><em>h<sub>a</sub></em>&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where \(i \leq C^*_i\) is 4.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -19896,7 +20144,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th><em>h<sub>maj</sub></th></tr>
+            <tr><th>Year</th><th><em>h<sub>maj</sub></em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
@@ -19930,6 +20178,210 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
         <div class="graph_container">
           <div id="chart_hmaj_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="total_pubs_frac" class="metric_container">
+      <h2>total publications (fractional counting)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the fractional approach for assigning authorship credit, with each author of a publication getting an equal amount of credit. If <em>A<sub>i</sub></em>is the number of authors of the <em>i</em><sup>th</sup> publication, the total publications of an author with fractional authorship counting is</p>$$P_{frac} = \sum\limits_{i=1}^P\frac{1}{A_i}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>P<sub>frac</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">3.1667</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.6667</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.9167</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.7500</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">10.7500</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">12.1706</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">13.5949</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">15.0949</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">20.4282</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">20.9282</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">22.2615</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">22.7949</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25.5449</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">27.1100</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.6933</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">29.0267</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">30.8219</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">32.8219</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">34.2719</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">34.8969</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">35.0219</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">36.6398</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.6398</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.6398</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">39.0064</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">39.9333</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">39.9333</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">41.1083</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">41.3116</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_total_pubs_frac_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="total_pubs_prop" class="metric_container">
+      <h2>total publications (proportional counting)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the proportional approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{prop}=\sum\limits_{i=1}^P2\frac{A_i + 1 - a_i}{A_i\left(A_i + 1\right)}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>P<sub>prop</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">3.0667</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.4000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.8000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.7000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">11.0333</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">12.2817</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">14.2666</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">15.8666</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">21.1999</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">21.5333</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">22.5333</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">22.9999</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25.8666</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">27.4020</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.9354</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">29.2687</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">31.3006</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">33.3006</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">34.6006</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">35.4062</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">35.6006</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">37.1187</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">38.1187</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">39.1187</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">39.3949</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">40.2381</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">40.2381</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">41.3310</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">41.5994</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_total_pubs_prop_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="total_pubs_geom" class="metric_container">
+      <h2>total publications (geometric counting)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the geometric approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{geom}=\sum\limits_{i=1}^P\frac{2^{A_i - a_i}}{2^{A_i}-1}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>P<sub>geom</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">2.9810</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.3143</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.8476</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.6857</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">11.0190</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">12.1629</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">14.3177</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">15.9844</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">21.2701</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">21.6035</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">22.5558</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">22.9061</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25.7061</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">26.9572</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.3762</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">28.6619</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">31.0652</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">33.0652</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">34.2609</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">34.9903</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">35.2413</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">36.5023</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.5023</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.5023</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">38.6303</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">39.1488</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">39.1488</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">40.1645</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">40.4225</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_total_pubs_geom_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="total_pubs_harm" class="metric_container">
+      <h2>total publications (harmonic counting)</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Basic Statistic</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> All Publications</li>
+        </ul>
+      <h3>Description</h3>
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the harmonic approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{harm}=\sum\limits_{i=1}^P\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}\frac{1}{j}}.$$
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>P<sub>harm</sub></em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">3.0473</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">4.3806</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.8606</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">7.7261</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">11.0594</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">12.2953</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">14.3396</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">15.9796</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">21.2523</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">21.5857</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">22.5251</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">22.9073</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25.7340</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">27.1250</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">28.5577</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">28.8304</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">31.0182</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">33.0182</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">34.2842</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">35.0429</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">35.2268</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">36.6132</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">37.6132</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">38.6132</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">38.8247</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">39.4648</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">39.4648</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">40.5407</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">40.7604</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_total_pubs_harm_div" class="impact_chart"></div>
         </div>
       </div>
     </div>

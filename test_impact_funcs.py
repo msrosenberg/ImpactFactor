@@ -2017,7 +2017,23 @@ def test_calculate_multiple_h_index():
 
 def test_calculate_hmaj_index():
     assert Impact_Funcs.calculate_hmaj_index(TEST_CITATION_DATA, TEST_PRIMARY) == 4
-    # rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    # h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    # assert Impact_Funcs.calculate_hmaj_index(TEST_CITATION_DATA, h, TEST_PRIMARY) == [4, 6]
 
+
+def test_calculate_total_pubs_coauthor_adj_fractional():
+    assert Impact_Funcs.calculate_total_pubs_coauthor_adj("fractional", TEST_AUTHOR_CNT,
+                                                          TEST_AUTHOR_ORDER) == 8.75
+
+
+def test_calculate_total_pubs_coauthor_adj_proportional():
+    assert round(Impact_Funcs.calculate_total_pubs_coauthor_adj("proportional", TEST_AUTHOR_CNT,
+                                                                TEST_AUTHOR_ORDER), 3) == 9.033
+
+
+def test_calculate_total_pubs_coauthor_adj_geometric():
+    assert round(Impact_Funcs.calculate_total_pubs_coauthor_adj("geometric", TEST_AUTHOR_CNT,
+                                                                TEST_AUTHOR_ORDER), 3) == 9.019
+
+
+def test_calculate_total_pubs_coauthor_adj_harmonic():
+    assert round(Impact_Funcs.calculate_total_pubs_coauthor_adj("harmonic", TEST_AUTHOR_CNT,
+                                                                TEST_AUTHOR_ORDER), 3) == 9.059

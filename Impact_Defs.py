@@ -10720,15 +10720,6 @@ def metric_multiple_h_index() -> Metric:
     return m
 
 
-
-
-
-
-
-
-
-
-
 # hmaj-index (Hu et al 2010; Bucur et al 2015)
 def calculate_hmaj_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
@@ -10743,7 +10734,7 @@ def metric_hmaj_index() -> Metric:
     m.full_name = "hmajor-index"
     m.html_name = "<em>h<sub>major</sub>-</em>index"
     # m.html_name = "<em>h</em>(<em>p</em>,<em>t</em>)-index"
-    m.symbol = "<em>h<sub>maj</sub>"
+    m.symbol = "<em>h<sub>maj</sub></em>"
     m.synonyms = ["<em>h</em>(<em>p</em>,<em>t</em>)"]
     m.metric_type = INT
 
@@ -10772,6 +10763,173 @@ def metric_hmaj_index() -> Metric:
     m.properties["Core Citations"] = True
     m.properties["Coauthorship"] = True
     return m
+
+
+# fractional publication count
+def calculate_total_pubs_fractional(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_total_pubs_coauthor_adj("fractional", metric_set.author_counts(),
+                                                          metric_set.author_position())
+
+
+def metric_total_pubs_fractional() -> Metric:
+    m = Metric()
+    m.name = "total pubs frac"
+    m.full_name = "total publications (fractional counting)"
+    m.symbol = "<em>P<sub>frac</sub></em>"
+    m.synonyms = ["<em>P<sub>frac</sub></em>"]
+    m.metric_type = FLOAT
+    equation = r"$$P_{frac} = \sum\limits_{i=1}^P\frac{1}{A_i}.$$"
+    m.description = (f"<p>In just the same way one can account for coauthorship when calculating various "
+                     f"citation-based metrics, one could use the same approach for counting the total number of "
+                     f"publications of an author.</p><p>This version uses the fractional approach for assigning "
+                     f"authorship credit, with each author of a publication getting an equal amount of credit. If "
+                     f"<em>A<sub>i</sub></em>is the number of authors of the <em>i</em><sup>th</sup> publication, "
+                     f"the total publications of an author with fractional authorship counting is</p>{equation}")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_total_pubs_fractional
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# proportional publication count
+def calculate_total_pubs_proportional(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_total_pubs_coauthor_adj("proportional", metric_set.author_counts(),
+                                                          metric_set.author_position())
+
+
+def metric_total_pubs_proportional() -> Metric:
+    m = Metric()
+    m.name = "total pubs prop"
+    m.full_name = "total publications (proportional counting)"
+    m.symbol = "<em>P<sub>prop</sub></em>"
+    m.synonyms = ["<em>P<sub>prop</sub></em>"]
+    m.metric_type = FLOAT
+    equation = r"$$P_{prop}=\sum\limits_{i=1}^P2\frac{A_i + 1 - a_i}{A_i\left(A_i + 1\right)}.$$"
+    m.description = (f"<p>In just the same way one can account for coauthorship when calculating various "
+                     f"citation-based metrics, one could use the same approach for counting the total number of "
+                     f"publications of an author.</p><p>This version uses the proportional approach for assigning "
+                     f"authorship credit, with each author's contribution decliing with their subsequence position "
+                     f"within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the "
+                     f"<em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target "
+                     f"author within that publication's author list, the total publications of an author with "
+                     f"proportional authorship counting is</p>{equation}")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_total_pubs_proportional
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# geometric publication count
+def calculate_total_pubs_geometric(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_total_pubs_coauthor_adj("geometric", metric_set.author_counts(),
+                                                          metric_set.author_position())
+
+
+def metric_total_pubs_geometric() -> Metric:
+    m = Metric()
+    m.name = "total pubs geom"
+    m.full_name = "total publications (geometric counting)"
+    m.symbol = "<em>P<sub>geom</sub></em>"
+    m.synonyms = ["<em>P<sub>geom</sub></em>"]
+    m.metric_type = FLOAT
+    equation = r"$$P_{geom}=\sum\limits_{i=1}^P\frac{2^{A_i - a_i}}{2^{A_i}-1}.$$"
+    m.description = (f"<p>In just the same way one can account for coauthorship when calculating various "
+                     f"citation-based metrics, one could use the same approach for counting the total number of "
+                     f"publications of an author.</p><p>This version uses the geometric approach for assigning "
+                     f"authorship credit, with each author's contribution decliing with their subsequence position "
+                     f"within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the "
+                     f"<em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target "
+                     f"author within that publication's author list, the total publications of an author with "
+                     f"proportional authorship counting is</p>{equation}")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_total_pubs_geometric
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# harmonic publication count
+def calculate_total_pubs_harmonic(metric_set: MetricSet) -> float:
+    return Impact_Funcs.calculate_total_pubs_coauthor_adj("harmonic", metric_set.author_counts(),
+                                                          metric_set.author_position())
+
+
+def metric_total_pubs_harmonic() -> Metric:
+    m = Metric()
+    m.name = "total pubs harm"
+    m.full_name = "total publications (harmonic counting)"
+    m.symbol = "<em>P<sub>harm</sub></em>"
+    m.synonyms = ["<em>P<sub>harm</sub></em>"]
+    m.metric_type = FLOAT
+    equation = r"$$P_{harm}=\sum\limits_{i=1}^P\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}\frac{1}{j}}.$$"
+    m.description = (f"<p>In just the same way one can account for coauthorship when calculating various "
+                     f"citation-based metrics, one could use the same approach for counting the total number of "
+                     f"publications of an author.</p><p>This version uses the harmonic approach for assigning "
+                     f"authorship credit, with each author's contribution decliing with their subsequence position "
+                     f"within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the "
+                     f"<em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target "
+                     f"author within that publication's author list, the total publications of an author with "
+                     f"proportional authorship counting is</p>{equation}")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_total_pubs_harmonic
+    m.properties["Basic Statistic"] = True
+    m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Ab-index (Biswal 2013)
+# def calculate_ab_index(metric_set: MetricSet) -> float:
+    # citations = metric_set.citations
+    # # h = metric_set.metrics["h-index"].value
+    # primary = metric_set.primary_authorship()
+    # return Impact_Funcs.calculate_hmaj_index(citations, primary)
+
+
+# def metric_ab_index() -> Metric:
+#     m = Metric()
+#     m.name = "Ab-index"
+#     m.full_name = "absolute index"
+#     m.html_name = "absolute index"
+#     # m.html_name = "<em>h</em>(<em>p</em>,<em>t</em>)-index"
+#     m.symbol = "<em>Ab</em>"
+#     m.synonyms = ["<em>Ab</em>"]
+#     m.metric_type = FLOAT
+#
+#     m.description = (f"<p>The Absolute index (Biswal 2013) it not a citation-based measure, rather it is a substitute "
+#                      f"for __total pubs__ which uses a fractional counting scheme to account for coauthorship."
+#                      f"suggests reporting an <em>h-</em>index "
+#                      f"based only on those publications in which the author is a major contributor "
+#                      f"(lead author or corresponding author).</p><p><em>h<sub>maj</sub></em> is essentially "
+#                      f"identical to the primary author part of the <em>h</em>(<em>p</em>,<em>t</em>) index pair "
+#                      f"suggested by Bucur <em>et al.</em> (2015), with the only potential difference being subtleties "
+#                      f"in how one defines a major or primary author. This concept is very similar to a few other "
+#                      f"proposals, including the __stratified h-index__.</p>")
+#
+#     m.references = ["Biswal, A.K. (2013) An Absolute Index (Ab-index) to measure a researcher's useful contributions "
+#                     "and productivity. <em>PLoS ONE</em> 8(12):e84334."]
+#     m.graph_type = LINE_CHART
+#     m.calculate = calculate_ab_index
+#     m.properties["Basic Statistic"] = True
+#     m.properties["All Publications"] = True
+#     m.properties["Coauthorship"] = True
+#     return m
 
 
 
@@ -10952,7 +11110,12 @@ def load_all_metrics() -> list:
                    metric_platinum_h(),
                    metric_stochastic_h(),
                    metric_multiple_h_index(),
-                   metric_hmaj_index()
+                   metric_hmaj_index(),
+                   metric_total_pubs_fractional(),
+                   metric_total_pubs_proportional(),
+                   metric_total_pubs_geometric(),
+                   metric_total_pubs_harmonic()
+                   # metric_ab_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
                    ]

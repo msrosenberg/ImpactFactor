@@ -94,6 +94,10 @@ def author_effort(measure: str, n_authors: int, author_pos: int = 1) -> float:
     elif measure == "geometric":
         return 2**(n_authors - author_pos) / (2**n_authors - 1)
     elif measure == "harmonic":
+        n = 1 / author_pos
+        d = sum(1/(i+1) for i in range(n_authors))
+        return n/d
+    elif measure == "harmonic_aziz":
         if n_authors % 2 == 0:
             d = 0
         else:
@@ -460,11 +464,12 @@ def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: lis
     ph = 0
     nh = 0
     for i in range(len(citations)):
-        num = 1 / author_pos[i]
-        denom = 0
-        for j in range(n_authors[i]):
-            denom += 1 / (j + 1)
-        r = num / denom
+        # num = 1 / author_pos[i]
+        # denom = 0
+        # for j in range(n_authors[i]):
+        #     denom += 1 / (j + 1)
+        # r = num / denom
+        r = author_effort("harmonic", n_authors[i], author_pos[i])
         ph += r
         nh += citations[i] * r
     return (nh**2 / ph)**(1/3)
@@ -893,7 +898,7 @@ def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_p
 def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list) -> float:
     mon_equiv = []
     for i in range(len(citations)):
-        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
+        mon_equiv.append(author_effort("harmonic_aziz", n_authors[i], author_pos[i]))
     monograph_equiv = sum(mon_equiv)
     return 1 - monograph_equiv / len(citations)
 
@@ -903,7 +908,7 @@ def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: l
     n = len(citations)
     mon_equiv = []
     for i in range(n):
-        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
+        mon_equiv.append(author_effort("harmonic_aziz", n_authors[i], author_pos[i]))
     sc = [citations[i] * mon_equiv[i] for i in range(n)]
     _, tmporder = sort_and_rank(sc, n)
     profit_adj_h_index = 0
@@ -2153,6 +2158,13 @@ def calculate_hmaj_index(citations: list, primary: list) -> int:
         if tmporder[j] <= tmp_cites[j]:
             hp += 1
     return hp
+
+
+def calculate_total_pubs_coauthor_adj(measure: str, author_cnts: list, author_pos: list) -> float:
+    cnt = 0
+    for i, a in enumerate(author_cnts):
+        cnt += author_effort(measure, a, author_pos[i])
+    return cnt
 
 
 # only used for spot testing new functions
