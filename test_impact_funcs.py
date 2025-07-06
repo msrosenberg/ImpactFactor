@@ -714,31 +714,27 @@ def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_aut
         if cumulative_rank**2 <= cumulative_citations[i]:
             gf_paper = cumulative_rank
     return gf_paper
+"""
+
+def test_calculate_multidimensional_h_index():
+    # data and answers from original publication
+    citations = [42, 13, 11, 11, 10, 10, 10, 10, 9, 8, 7, 7, 7, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2,
+                 2, 2, 2, 2, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order,
+                                                           is_core, h) == [9, 5, 5, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1]
 
 
-# multidimensional h-index (Garcia-Perez 2009)
-def calculate_multidimensional_h_index(citations: list, rank_order: list, is_core: list, h: int) -> list:
-    multi_dim_h_index = [h]
-    multi_used = []
-    for i in range(len(citations)):
-        if is_core[i]:
-            multi_used.append(True)
-        else:
-            multi_used.append(False)
-    j = 0
-    tmph = -1
-    while tmph != 0:
-        nc = len(multi_dim_h_index)
-        j += multi_dim_h_index[nc-1]
-        tmph = 0
-        for i in range(len(citations)):
-            if not multi_used[i]:
-                if rank_order[i] - j <= citations[i]:
-                    multi_used[i] = True
-                    tmph += 1
-        if tmph > 0:
-            multi_dim_h_index.append(tmph)
-    return multi_dim_h_index
+def test_calculate_two_sided_h():
+    citations = [386, 282, 172, 113, 87, 83, 80, 69, 40, 38, 30, 28, 27, 24, 17, 14, 11, 11, 10, 7, 7, 4, 2, 1, 1,
+                 1, 0, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    mdh = Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
+    assert Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
+
+
 
 
 # two-sided h-index (Garcia-Perez 2012)
@@ -759,6 +755,7 @@ def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h:
         k += 1
     return two_sided_h
 
+"""
 
 # normalized hi-index/hf-index (Wohlin 2009)
 def calculate_normal_hi_index(citations: list, n_authors: list) -> int:

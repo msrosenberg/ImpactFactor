@@ -7,7 +7,7 @@ from generic data, without the reliance on the special class structure of the gr
 
 import math
 import datetime
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 import scipy
 import itertools
 
@@ -702,14 +702,20 @@ def calculate_multidimensional_h_index(citations: list, rank_order: list, is_cor
 
 
 # two-sided h-index (Garcia-Perez 2012)
-def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h: list) -> list:
+def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h: list,
+                          mk: Optional[int] = None) -> list:
     # only need to calculate the upper part of the index the center and tail are identical to multidimensional h
-    # auto-calculate for as many steps in core as equal to length of steps in tail
-    two_sided_h = [i for i in multidim_h]
+    # mk is the number of steps to match on either side of h; the default is to auto-calculate for as many steps in
+    # core as equal to length of steps in tail
+    if mk is None:
+        mk = len(multidim_h)
+    else:
+        mk += 1  # need to add 1 so number of steps works out correctly
+    two_sided_h = [i for i in multidim_h[:mk]]
     j = 0
     tmph = h
     k = 1
-    while k < len(multidim_h):
+    while k < mk:
         j += tmph
         tmph = 0
         for i in range(len(citations)):
