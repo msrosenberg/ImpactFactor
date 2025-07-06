@@ -289,7 +289,6 @@ def test_calculate_weighted_h_index():
     h = 4
     rank_order = [1, 2, 3, 4, 5]
     cumulative_cites = [10, 18, 25, 29, 32]
-
     assert Impact_Funcs.calculate_weighted_h_index(citations, cumulative_cites, rank_order, h) == 5
 
 
@@ -413,28 +412,40 @@ def calculate_pi_rate(total_pubs: int, pi_index: float) -> float:
     p_pi = math.floor(math.sqrt(total_pubs))
     c_pi = pi_index * 100
     return c_pi / p_pi
+"""
 
 
-# p-index (originally called mock hm-index) (Prathap 2010b, 2011)
-def calculate_prathap_p_index(total_cites: int, total_pubs: int) -> float:
-    return (total_cites**2 / total_pubs)**(1/3)
+def test_calculate_prathap_p_index():
+    # data and answers from original publication
+    assert round(Impact_Funcs.calculate_prathap_p_index(100, 10), 1) == 10
+    assert round(Impact_Funcs.calculate_prathap_p_index(250, 50), 1) == 10.8
+    assert round(Impact_Funcs.calculate_prathap_p_index(300, 50), 1) == 12.2
+    assert round(Impact_Funcs.calculate_prathap_p_index(250, 25), 1) == 13.6
 
 
-# ph-ratio (Prathap 2010b, 2011)
-def calculate_ph_ratio(p: float, h: int) -> float:
-    return p / h
+def test_calculate_ph_ratio():
+    # data and answers from original publication
+    citations = [79, 34, 32, 25, 16, 13, 12, 11, 11, 11, 8, 8, 8, 8, 7, 7, 6, 6, 5, 5]
+    total_citations = Impact_Funcs.calculate_total_cites(citations)
+    total_pubs = Impact_Funcs.calculate_total_pubs(citations)
+    p = Impact_Funcs.calculate_prathap_p_index(total_citations, total_pubs)
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_ph_ratio(p, h), 3) == 1.695
 
 
-# fractional p-index (pf) (Prathap 2010b, 2011)
-def calculate_fractional_p_index(citations: list, n_authors: list) -> float:
-    pf = 0
-    nf = 0
-    for i in range(len(citations)):
-        pf += 1 / n_authors[i]
-        nf += citations[i] / n_authors[i]
-    return (nf**2 / pf)**(1/3)
+def test_calculate_fractional_p_index():
+    # data and answers from original publication
+    citations = [79, 34, 32, 25, 16, 13, 12, 11, 11, 11, 8, 8, 8, 8, 7, 7, 6, 6, 5, 5]
+    n_authors = [3, 4, 4, 2, 4, 4, 10, 2, 3, 3, 3, 1, 2, 4, 2, 1, 2, 2, 2, 3]
+    assert round(Impact_Funcs.calculate_fractional_p_index(citations, n_authors), 2) == 11.51
+
+    citations = [42, 21, 16, 12, 12, 10, 9, 9, 9, 8, 8, 8, 8, 7, 7, 7, 5, 5, 4, 4]
+    n_authors = [4, 3, 4, 8, 3, 6, 3, 5, 4, 3, 3, 6, 4, 3, 8, 8, 4, 6, 3, 5]
+    assert round(Impact_Funcs.calculate_fractional_p_index(citations, n_authors), 2) == 8.30
 
 
+"""
 # harmonic p-index (Prathap 2011)
 def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: list) -> float:
     ph = 0
@@ -448,8 +459,10 @@ def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: lis
         ph += r
         nh += citations[i] * r
     return (nh**2 / ph)**(1/3)
+"""
 
 
+"""
 # hi-index (Batista et al 2006)
 def calculate_hi_index(is_core: list, n_authors: list, h: int) -> float:
     suma = 0
@@ -457,26 +470,81 @@ def calculate_hi_index(is_core: list, n_authors: list, h: int) -> float:
         if is_core[i]:
             suma += n_authors[i]
     return h**2 / suma
+"""
+
+def test_calculate_pure_h_index_frac():
+    # data and answers from original publication
+    citations = [10, 5, 2, 2]
+    n_authors = [1, 1, 2, 2]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h) == 2
+
+    citations = [30, 2, 1]
+    n_authors = [3, 2, 2]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h), 2) == 1.26
+
+    citations = [30, 2, 1, 1]
+    n_authors = [3, 3, 3, 2]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h), 2) == 1.15
+
+    citations = [2, 2, 1]
+    n_authors = [3, 2, 3]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h), 2) == 1.26
+
+    citations = [30, 2, 2, 1]
+    n_authors = [3, 3, 1, 3]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_frac(is_core, n_authors, h), 2) == 1.41
 
 
-# fractional pure h-index (Wan et al 2007)
-def calculate_pure_h_index_frac(is_core: list, n_authors: list, h: int) -> float:
-    suma = 0
-    for i in range(len(n_authors)):
-        if is_core[i]:
-            suma += n_authors[i]
-    return h / math.sqrt(suma / h)
+
+def test_calculate_pure_h_index_prop():
+    # data and answers from original publication
+    citations = [10, 5, 2, 2]
+    n_authors = [1, 1, 2, 2]
+    author_pos = [1, 1, 2, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h) == 2
+
+    citations = [30, 2, 1]
+    n_authors = [3, 2, 2]
+    author_pos = [3, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h), 2) == 1.03
+
+    citations = [30, 2, 1, 1]
+    n_authors = [3, 3, 3, 2]
+    author_pos = [1, 1, 1, 2]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h), 2) == 1.41
+
+    citations = [2, 2, 1]
+    n_authors = [3, 2, 3]
+    author_pos = [2, 2, 2]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h), 2) == 1.15
+
+    citations = [30, 2, 2, 1]
+    n_authors = [3, 3, 1, 3]
+    author_pos = [2, 3, 1, 3]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h), 2) == 1.41
 
 
-# proportional pure h-index (Wan et al 2007)
-def calculate_pure_h_index_prop(is_core: list, n_authors: list, author_pos: list, h: int) -> float:
-    sump = 0
-    for i in range(len(is_core)):
-        if is_core[i]:
-            sump += 1 / author_effort("proportional", n_authors[i], author_pos[i])
-    return h / math.sqrt(sump / h)
-
-
+"""
 # geometric pure h-index (Wan et al 2007)
 def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list, h: int) -> float:
     sumg = 0
@@ -484,7 +552,9 @@ def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list
         if is_core[i]:
             sumg += 1 / author_effort("geometric", n_authors[i], author_pos[i])
     return h / math.sqrt(sumg / h)
+"""
 
+"""
 
 # Tol's f-index (Tol 2007)
 def calculate_tol_f_index(citations: list) -> int:
@@ -607,19 +677,16 @@ def calculate_hpd_index(citations: list, pub_years: list, year: int) -> int:
         if tmporder[i] <= sc[i]:
             hpd_index += 1
     return hpd_index
+"""
 
+def test_calculate_specific_impact_s_index():
+    # data and answers from original publication
+    pub_years = [2004, 2005, 2005, 2006, 2006, 2007, 2007, 2008, 2008, 2008]
+    year = 2008
+    total_cites = 28
+    assert round(Impact_Funcs.calculate_specific_impact_s_index(pub_years, year, total_cites), 2) == 2
 
-# specific impact s-index (De Visscher 2010)
-def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: int) -> float:
-    pub_ages = publication_ages(year, pub_years)
-    specific_impact_s_index = 0
-    for i in range(len(pub_years)):
-        specific_impact_s_index += 1 - math.exp(-0.1 * pub_ages[i])
-    if specific_impact_s_index != 0:
-        specific_impact_s_index = total_cites / (10 * specific_impact_s_index)
-    return specific_impact_s_index
-
-
+"""
 # hm-index/hF-index (Schreiber 2008)
 def calculate_hm_index(citations: list, n_authors: list) -> float:
     hm_index = 0
