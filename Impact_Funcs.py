@@ -98,6 +98,7 @@ def author_effort(measure: str, n_authors: int, author_pos: int = 1) -> float:
         d = sum(1/(i+1) for i in range(n_authors))
         return n/d
     elif measure == "harmonic_aziz":
+        # this is a more complicated form of the harmonic that includes an additional factor
         if n_authors % 2 == 0:
             d = 0
         else:
@@ -636,7 +637,8 @@ def calculate_hpd_index(citations: list, pub_years: list, year: int) -> int:
 
 # specific impact s-index (De Visscher 2010)
 def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: int) -> float:
-    pub_ages = publication_ages(year, pub_years)
+    # uses a different measure of age of publication, allowing age to be zero
+    pub_ages = [year - y for y in pub_years]
     specific_impact_s_index = 0
     for i in range(len(pub_years)):
         specific_impact_s_index += 1 - math.exp(-0.1 * pub_ages[i])
