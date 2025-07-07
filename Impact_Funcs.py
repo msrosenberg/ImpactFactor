@@ -1402,20 +1402,25 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
+    year_pubs = {y: 0 for y in range(miny, maxy+1)}
     for i, c in enumerate(cites):
         year_cnts[pub_years[i]] += c
+        year_pubs[pub_years[i]] += 1
     data = []
     for y in year_cnts:
-        data.append([year_cnts[y], y])
+        if year_pubs[y] > 0:
+            data.append(year_cnts[y]/year_pubs[y])
+        else:
+            data.append(0)
     data.sort(reverse=True)
     h = 0
     for i in range(len(data)):
-        avg = data[i][0]
+        avg = data[i]
         if avg >= i + 1:
             h += 1
     if (h > 0) and (h < len(data)):
-        ch = data[h-1][0]
-        chp1 = data[h][0]
+        ch = data[h-1]
+        chp1 = data[h]
         hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
     else:
         hint = h
