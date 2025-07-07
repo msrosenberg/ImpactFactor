@@ -8693,7 +8693,8 @@ def metric_academic_trace() -> Metric:
     m.symbol = "<em>tr</em>(V)"
     m.example = write_academic_trace_example
     m.synonyms = ["tr(V)", "academic trace"]
-    equation = r"$$tr\left(V\right)=\frac{h^4+\left(C^h-h^2\right)^2}{C^P} + \frac{\left( P-h-P_z\right)^2-P_z^2}{P}.$$"
+    equation = (r"$$tr\left(V\right)=\frac{h^2}{P}+\frac{\left(C^P-C^h\right)^2}{C^P}+\frac{\left(C^h - "
+                r"h^2\right)^2}{C^P} -\frac{P_z^2}{P}.$$")
 
     m.metric_type = FLOAT
     m.description = "<p>The Academic Trace (Ye and Leydesdorff 2014; Ye <em>et al.</em> 2017) starts by taking " \
