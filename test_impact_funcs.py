@@ -1399,58 +1399,43 @@ def calculate_collaborative_coefficient(author_cnts: list) -> float:
     for a in range(1, maxa+1):
         cc += author_cnts.count(a) / a
     return 1 - cc / len(author_cnts)
+"""
+
+def test_calculate_i10_index():
+    assert Impact_Funcs.calculate_i10_index(TEST_CITATION_DATA) == 4
 
 
-# i10 index (Google Scholar)
-def calculate_i10_index(citations: list) -> int:
-    cnt = 0
-    for c in citations:
-        if c >= 10:
-            cnt += 1
-    return cnt
+def test_calculate_i100_index():
+    citations = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0, 100, 200, 1000, 1100]
+    assert Impact_Funcs.calculate_i100_index(citations) == 4
 
 
-# i100 index (Teixeira da Silva, 2021)
-def calculate_i100_index(citations: list) -> int:
-    cnt = 0
-    for c in citations:
-        if c >= 100:
-            cnt += 1
-    return cnt
+def test_calculate_i1000_index():
+    citations = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0, 100, 200, 1000, 1100]
+    assert Impact_Funcs.calculate_i1000_index(citations) == 2
 
 
-# i1000 index (Teixeira da Silva, 2021)
-def calculate_i1000_index(citations: list) -> int:
-    cnt = 0
-    for c in citations:
-        if c >= 1000:
-            cnt += 1
-    return cnt
+def test_calculate_p1_index():
+    assert Impact_Funcs.calculate_p1_index(TEST_CITATION_DATA) == 13
 
 
-# P1 index (van Eck and Waltman 2008)
-def calculate_p1_index(citations: list) -> int:
-    cnt = 0
-    for c in citations:
-        if c > 0:
-            cnt += 1
-    return cnt
+def test_ca():
+    assert Impact_Funcs.calculate_p1_index(TEST_CITATION_DATA) == 13
 
 
-# cited paper percent
-def calculate_cited_paper_percent(citations: list) -> float:
-    return 100 * calculate_p1_index(citations) / len(citations)
+def test_calculate_cited_paper_percent():
+    assert Impact_Funcs.calculate_cited_paper_percent(TEST_CITATION_DATA) == 100*13/16
 
 
-# uncitedness factor
-def calculate_uncitedness_factor(citations: list) -> int:
-    return len(citations) - calculate_p1_index(citations)
+def test_calculate_uncitedness_factor():
+    assert Impact_Funcs.calculate_uncitedness_factor(TEST_CITATION_DATA) == 3
 
 
-# uncited paper percent
-def calculate_uncited_paper_percent(citations: list) -> float:
-    return 100 - calculate_cited_paper_percent(citations)
+def test_calculate_uncited_paper_percent():
+    assert Impact_Funcs.calculate_uncited_paper_percent(TEST_CITATION_DATA) == 100*(1-13/16)
 
+
+"""
 
 # beauty coefficient (Ke et al 2015)
 def calculate_beauty_coefficient(pub_list: list) -> list:
@@ -1498,19 +1483,17 @@ def calculate_awakening_time(pub_list: list) -> list:
                     maxdt = dt
         ta_list.append(ta)
     return ta_list
+"""
+
+def test_calculate_academic_trace():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    total_core = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    assert round(Impact_Funcs.calculate_academic_trace(TEST_CITATION_DATA, total_cites, total_core, h), 4) == 57.0935
 
 
-# academic trace (Ye and Leydesdorff 2014)
-def calculate_academic_trace(citations: list, total_cites: int, core_cites: int, h: int) -> float:
-    # count pubs with zero citations
-    pz = 0
-    for c in citations:
-        if c == 0:
-            pz += 1
-    t = (h**4 + (core_cites - h**2)**2) / total_cites + ((len(citations) - h - pz)**2 - pz**2) / len(citations)
-    return t
-
-
+"""
 # scientific quality index (Pluskiewicz1 et al 2019)
 def calculate_scientific_quality_index(citations, self_citations) -> float:
     cnt = 0
@@ -1548,232 +1531,80 @@ def calculate_mikhailov_j_index(citations: list, rank_order: list) -> int:
         if math.trunc(rank_order[i]**(3/2)) <= citations[i]:
             j += 1
     return j
+"""
+
+def test_calculate_year_based_em_pub():
+    # data and answers from original publication
+    cnts_year = {2014: 41, 2015: 41, 2016: 38, 2013: 31, 2012: 29, 2008: 22, 2011: 18, 2007: 17, 2010: 17, 2017: 15,
+                 2009: 13, 2006: 9}
+    pub_years = []
+    for y in cnts_year:
+        for i in range(cnts_year[y]):
+            pub_years.append(y)
+    assert round(Impact_Funcs.calculate_year_based_em_pub(pub_years), 2) == 6.40
+
+    cnts_year = {2015: 26, 2016: 23, 2007: 16, 2014: 16, 2010: 15, 2012: 15, 2011: 13, 2013: 13, 2008: 11, 2017: 10,
+                 2009: 9, 2006: 3}
+    pub_years = []
+    for y in cnts_year:
+        for i in range(cnts_year[y]):
+            pub_years.append(y)
+    assert round(Impact_Funcs.calculate_year_based_em_pub(pub_years), 1) == 4.9
 
 
-# year-based EM-index by publications (Bihari and Tripathi 2018)
-def calculate_year_based_em_pub(pub_years: list) -> float:
-    def count_pubs(tmpc: list) -> int:
-        tcnt = 0
-        for c in tmpc:
-            if c > 0:
-                tcnt += 1
-        return tcnt
+def test_calculate_year_based_em_pycites():
+    # data and answers from original publication
+    citations = [80, 59, 48, 46, 30, 22, 11, 8, 3, 1, 0]
+    pub_years = [2006, 2009, 2011, 2008, 2012, 2013, 2007, 2010, 2014, 2016, 2015]
+    assert round(Impact_Funcs.calculate_year_based_em_pycites(pub_years, citations), 2) == 7.75
 
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_pubs = count_pubs(tmp_data)
-    if n_pubs == 1:
-        em_component = [1]
-    else:
-        while n_pubs > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_pubs = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_pubs = count_pubs(tmp_data)
-    return math.sqrt(sum(em_component))
+    citations = [81, 77, 61, 35, 34, 22, 20, 16, 4, 2, 1]
+    pub_years = [2010, 2011, 2006, 2012, 2014, 2009, 2008, 2013, 2016, 2015, 2007]
+    assert round(Impact_Funcs.calculate_year_based_em_pycites(pub_years, citations), 2) == 8.83
+
+def test_calculate_year_based_em_cites():
+    # data and answers from original publication
+
+    # this first example does not generate the same em component list as in the original publication; I have
+    # examined it closely and am confident they made an error in the paper
+    # cumulative_citations = [99, 172, 228, 281, 330, 369, 389, 400, 403, 405]
+    # assert round(Impact_Funcs.calculate_year_based_em_cites(cumulative_citations), 2) == 8.54
+
+    # the second example does work correctly
+    cumulative_citations = [27, 49, 70, 90, 110, 129, 146, 162, 173, 183, 190]
+    assert round(Impact_Funcs.calculate_year_based_em_cites(cumulative_citations), 2) == 4.80
 
 
-# year-based EM-index by publication year citations (Bihari and Tripathi 2018)
-def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: 0 for y in range(miny, maxy+1)}
-    for i, c in enumerate(cites):
-        year_cnts[pub_years[i]] += c
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
-
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
+def test_calculate_year_based_emp_pub():
+    # data and answers from original publication
+    cnts_year = {2014: 41, 2015: 41, 2016: 38, 2013: 31, 2012: 29, 2008: 22, 2011: 18, 2007: 17, 2010: 17, 2017: 15,
+                 2009: 13, 2006: 9}
+    pub_years = []
+    for y in cnts_year:
+        for i in range(cnts_year[y]):
+            pub_years.append(y)
+    assert round(Impact_Funcs.calculate_year_based_emp_pub(pub_years), 2) == 6.63
 
 
-# year-based EM-index by citations (Bihari and Tripathi 2018)
-def calculate_year_based_em_cites(total_cite_list: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
+def test_calculate_year_based_emp_pycites():
+    # based on the data provided in the original publication, the reported values in the tables do not match what
+    # they should be
 
-    total_cites_per_year = total_citations_each_year(total_cite_list)
-    total_cites_per_year.sort(reverse=True)
-
-    em_component = []
-    tmp_data = [d for d in total_cites_per_year]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
+    # worked out by hand
+    citations = [81, 77, 61, 35, 34, 22, 20, 16, 4, 2, 1]
+    pub_years = [2010, 2011, 2006, 2012, 2014, 2009, 2008, 2013, 2016, 2015, 2007]
+    assert round(Impact_Funcs.calculate_year_based_emp_pycites(pub_years, citations), 2) == 9
 
 
-# year-based EM'-index by publications (Bihari and Tripathi 2018)
-def calculate_year_based_emp_pub(pub_years: list) -> float:
-    def count_pubs(tmpc: list) -> int:
-        tcnt = 0
-        for c in tmpc:
-            if c > 0:
-                tcnt += 1
-        return tcnt
+def test_calculate_year_based_emp_cites():
+    # based on the data provided in the original publication, the reported values in the tables do not match what
+    # they should be
 
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_pubs = count_pubs(tmp_data)
-    if n_pubs == 1:
-        em_component = [1]
-    else:
-        while n_pubs > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_pubs = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                # subtract h only from top h years
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_pubs = count_pubs(tmp_data)
-    return math.sqrt(sum(em_component))
+    # worked out by hand
+    cumulative_citations = [27, 49, 70, 90, 110, 129, 146, 162, 173, 183, 190]
+    assert round(Impact_Funcs.calculate_year_based_emp_cites(cumulative_citations), 3) == 5.477
 
-
-# year-based EM'-index by publication year citations (Bihari and Tripathi 2018)
-def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: 0 for y in range(miny, maxy+1)}
-    for i, c in enumerate(cites):
-        year_cnts[pub_years[i]] += c
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
-
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
-
-
-# year-based EM'-index by citations (Bihari and Tripathi 2018)
-def calculate_year_based_emp_cites(total_cite_list: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
-    total_cites_per_year = total_citations_each_year(total_cite_list)
-    total_cites_per_year.sort(reverse=True)
-
-    em_component = []
-    tmp_data = [d for d in total_cites_per_year]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
-
+"""
 
 # h' index (Zhang 2012)
 def calculate_h_prime(h: int, e: float, t: float) -> float:
