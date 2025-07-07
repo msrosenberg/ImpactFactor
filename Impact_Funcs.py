@@ -76,6 +76,8 @@ def citations_per_year(citations: list, pub_ages: list) -> list:
 def total_citations_each_year(total_cite_list: list) -> list:
     """
     returns a list containing the total citations received (across all pubs) each year
+
+    input is a cumulative citation count
     """
     tcpy = [total_cite_list[0]]
     for i in range(1, len(total_cite_list)):
@@ -953,71 +955,61 @@ def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
 
 
 # subfunction from (Bihari and Tripathi 2017)
-def calculate_em_components(citations: list, rank_order: list) -> list:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
-
+def calculate_em_components(values: list, rank_order: list) -> list:
     em_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
+    tmp_values = [c for c in values]  # make a temporary copy of the citation counts
+    non_zero_values = count_non_zero(tmp_values)
+    while non_zero_values > 1:
+        if max(tmp_values) == 1:
             em_component.append(1)
-            n_cited = 0
+            non_zero_values = 0
         else:
-            h_index = 0
-            for i in range(len(citations)):
-                if rank_order[i] <= tmp_cites[i]:
-                    h_index += 1
-            em_component.append(h_index)
-            tmp_cites = [max(0, c-h_index) for c in tmp_cites]  # subtract previous h-index from citations
-            n_cited = count_cited_articles(tmp_cites)
+            h = 0
+            for i in range(len(values)):
+                if rank_order[i] <= tmp_values[i]:
+                    h += 1
+            em_component.append(h)
+            tmp_values = [max(0, c-h) for c in tmp_values]  # subtract previous h-index from citations
+            non_zero_values = count_non_zero(tmp_values)
 
+    # print(tmp_values)
+    # across the different papers and examples, the authors are inconsistent about what to do when there is a single
+    # publication left with one or more citation for it. Usually they add one more "1" onto the end of the em
+    # component list, but occasionally they do not. I assume this is due to errors in their generation of the data
     # the 2017 paper makes it sound like one should quit when there is only a single paper left, but the
     # example in the 2021 paper requires one last value added to the component list in this case
-    if (n_cited == 1) and max(tmp_cites) > 0:
+    if (non_zero_values == 1) and max(tmp_values) > 0:
         em_component.append(1)
     return em_component
 
 # subfunction from (Bihari and Tripathi 2017)
-def calculate_emp_components(citations: list, rank_order: list) -> list:
-    def count_cited_articles(tmpc: list) -> int:
-        cnt = 0
-        for c in tmpc:
-            if c > 0:
-                cnt += 1
-        return cnt
-
+def calculate_emp_components(values: list, rank_order: list) -> list:
     # EM'-index
     emp_component = []
-    tmp_cites = [c for c in citations]  # make a temporary copy of the citation counts
+    tmp_values = [c for c in values]  # make a temporary copy of the citation counts
     tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
-    n_cited = count_cited_articles(tmp_cites)
-    while n_cited > 1:
-        if max(tmp_cites) == 1:
+    non_zero_values = count_non_zero(tmp_values)
+    while non_zero_values > 1:
+        if max(tmp_values) == 1:
             emp_component.append(1)
-            n_cited = 0
+            non_zero_values = 0
         else:
-            h_index = 0
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    h_index += 1
-            emp_component.append(h_index)
+            h = 0
+            for i in range(len(values)):
+                if tmp_ranks[i] <= tmp_values[i]:
+                    h += 1
+            emp_component.append(h)
             # subtract h_index only from top h pubs
-            for i in range(len(citations)):
-                if tmp_ranks[i] <= tmp_cites[i]:
-                    tmp_cites[i] = max(0, tmp_cites[i]-h_index)
-            n_cited = count_cited_articles(tmp_cites)
+            for i in range(len(values)):
+                if tmp_ranks[i] <= tmp_values[i]:
+                    tmp_values[i] = max(0, tmp_values[i]-h)
+            non_zero_values = count_non_zero(tmp_values)
             # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_cites, len(citations))
+            _, tmp_ranks = sort_and_rank(tmp_values, len(values))
 
     # the 2017 paper makes it sound like one should quit when there is only a single paper left, but the em
     # example in the 2021 paper requires one last value added to the component list in this case
-    if (n_cited == 1) and max(tmp_cites) > 0:
+    if (non_zero_values == 1) and max(tmp_values) > 0:
         emp_component.append(1)
 
     return emp_component
@@ -1528,13 +1520,14 @@ def calculate_i1000_index(citations: list) -> int:
     return cnt
 
 
+def count_non_zero(x: list) -> int:
+    # support function to count the number of non-zero items in a list of numbers
+    return len(x) - x.count(0)
+
+
 # P1 index (van Eck and Waltman 2008)
 def calculate_p1_index(citations: list) -> int:
-    cnt = 0
-    for c in citations:
-        if c > 0:
-            cnt += 1
-    return cnt
+    return count_non_zero(citations)
 
 
 # cited paper percent
@@ -1652,49 +1645,19 @@ def calculate_mikhailov_j_index(citations: list, rank_order: list) -> int:
 
 # year-based EM-index by publications (Bihari and Tripathi 2018)
 def calculate_year_based_em_pub(pub_years: list) -> float:
-    def count_pubs(tmpc: list) -> int:
-        tcnt = 0
-        for c in tmpc:
-            if c > 0:
-                tcnt += 1
-        return tcnt
-
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_pubs = count_pubs(tmp_data)
-    if n_pubs == 1:
-        em_component = [1]
-    else:
-        while n_pubs > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_pubs = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_pubs = count_pubs(tmp_data)
+    rank_order = [i+1 for i in range(len(data))]
+
+    em_component = calculate_em_components(data, rank_order)
     return math.sqrt(sum(em_component))
 
 
 # year-based EM-index by publication year citations (Bihari and Tripathi 2018)
 def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
@@ -1702,111 +1665,37 @@ def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
         year_cnts[pub_years[i]] += c
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
+    rank_order = [i+1 for i in range(len(data))]
 
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_cites = count_cites(tmp_data)
+    em_component = calculate_em_components(data, rank_order)
     return math.sqrt(sum(em_component))
 
 
 # year-based EM-index by citations (Bihari and Tripathi 2018)
 def calculate_year_based_em_cites(total_cite_list: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
     total_cites_per_year = total_citations_each_year(total_cite_list)
     total_cites_per_year.sort(reverse=True)
+    rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
-    em_component = []
-    tmp_data = [d for d in total_cites_per_year]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                tmp_data = [max(0, d-h) for d in tmp_data]
-                n_cites = count_cites(tmp_data)
+    em_component = calculate_em_components(total_cites_per_year, rank_order)
     return math.sqrt(sum(em_component))
 
 
 # year-based EM'-index by publications (Bihari and Tripathi 2018)
 def calculate_year_based_emp_pub(pub_years: list) -> float:
-    def count_pubs(tmpc: list) -> int:
-        tcnt = 0
-        for c in tmpc:
-            if c > 0:
-                tcnt += 1
-        return tcnt
-
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_pubs = count_pubs(tmp_data)
-    if n_pubs == 1:
-        em_component = [1]
-    else:
-        while n_pubs > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_pubs = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                # subtract h only from top h years
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_pubs = count_pubs(tmp_data)
-    return math.sqrt(sum(em_component))
+    rank_order = [i+1 for i in range(len(data))]
+
+    emp_component = calculate_emp_components(data, rank_order)
+    return math.sqrt(sum(emp_component))
 
 
 # year-based EM'-index by publication year citations (Bihari and Tripathi 2018)
 def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
@@ -1814,65 +1703,20 @@ def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
         year_cnts[pub_years[i]] += c
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
+    rank_order = [i+1 for i in range(len(data))]
 
-    em_component = []
-    tmp_data = [d for d in data]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
+    emp_component = calculate_emp_components(data, rank_order)
+    return math.sqrt(sum(emp_component))
 
 
 # year-based EM'-index by citations (Bihari and Tripathi 2018)
 def calculate_year_based_emp_cites(total_cite_list: list) -> float:
-    def count_cites(tmpc: list) -> int:
-        tcnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                tcnt += 1
-        return tcnt
-
     total_cites_per_year = total_citations_each_year(total_cite_list)
     total_cites_per_year.sort(reverse=True)
+    rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
-    em_component = []
-    tmp_data = [d for d in total_cites_per_year]  # make a temporary copy of the data
-    n_cites = count_cites(tmp_data)
-    if n_cites == 1:
-        em_component = [1]
-    else:
-        while n_cites > 1:
-            if max(tmp_data) == 1:
-                em_component.append(1)
-                n_cites = 0
-            else:
-                h = 0
-                for i in range(len(tmp_data)):
-                    cnt = tmp_data[i]
-                    if cnt >= i + 1:
-                        h += 1
-                em_component.append(h)
-                for i in range(h):
-                    tmp_data[i] = max(0, tmp_data[i]-h)
-                tmp_data.sort(reverse=True)
-                n_cites = count_cites(tmp_data)
-    return math.sqrt(sum(em_component))
+    emp_component = calculate_emp_components(total_cites_per_year, rank_order)
+    return math.sqrt(sum(emp_component))
 
 
 # h' index (Zhang 2012)

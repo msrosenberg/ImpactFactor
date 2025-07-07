@@ -18322,13 +18322,13 @@ impact_Year_based_EM_index_by_publications.html
         var data_Year_based_EM_index_by_publications = google.visualization.arrayToDataTable([
            ['Year', '<em>Yp_EM</em>'],
            ['1997', 1.0],
-           ['1998', 1.4142135623730951],
-           ['1999', 1.4142135623730951],
-           ['2000', 2.23606797749979],
-           ['2001', 2.23606797749979],
-           ['2002', 2.23606797749979],
-           ['2003', 2.23606797749979],
-           ['2004', 2.23606797749979],
+           ['1998', 1.7320508075688772],
+           ['1999', 1.7320508075688772],
+           ['2000', 2.449489742783178],
+           ['2001', 2.449489742783178],
+           ['2002', 2.449489742783178],
+           ['2003', 2.449489742783178],
+           ['2004', 2.449489742783178],
            ['2005', 2.449489742783178],
            ['2006', 2.449489742783178],
            ['2007', 2.449489742783178],
@@ -18372,20 +18372,20 @@ impact_Year_based_EM_index_by_publications.html
       <h3>Description</h3>
       <p>The Year-based <em>EM</em>-index by publications (Bihari and S. Tripathi 2018) is an adapation of the <a href="#EM_index"><em>EM-</em>index</a> applied to the <a href="#career_years_h_index_by_pub">career years <em>h-</em>index by publications</a>. This metric is a measure of publication intensity or distribution, rather than citation intensity as captured by most <a href="#h_index"><em>h-</em>index</a> type indices. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by publication count. This list is then processed in the same multivariate manner as the EM-index.</p>
       <h3>Example</h3>
-      <p>Years are ordered by number of publications, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>2000</td><td>2001</td><td>1998</td><td>1999</td></tr><tr class="top_row"><th>Publications per Year (<em>P<sub>i</sub></em>)</th><td>6</td><td>5</td><td class="box">4</td><td>2</td><td>1</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Publications (<em>P<sub>i</sub></em>)</th><td>3</td><td class="box">2</td><td>1</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr></table><p>The sum of the 2 <em>E</em> values is 5. The Year-based <em>EM</em>-index by publications is the square-root of this sum, thus <em>Yp_EM</em>&nbsp;=&nbsp;2.2361.</p>
+      <p>Years are ordered by number of publications, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>2000</td><td>2001</td><td>1998</td><td>1999</td></tr><tr class="top_row"><th>Publications per Year (<em>P<sub>i</sub></em>)</th><td>6</td><td>5</td><td class="box">4</td><td>2</td><td>1</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Publications (<em>P<sub>i</sub></em>)</th><td>3</td><td class="box">2</td><td>1</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr></table><p>The sum of the 2 <em>E</em> values is 5. The Year-based <em>EM</em>-index by publications is the square-root of this sum, thus <em>Yp_EM</em>&nbsp;=&nbsp;2.4495.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>Yp_EM</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.4142</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">1.4142</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">2.2361</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">2.2361</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">2.2361</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">2.2361</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">2.2361</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">1.7321</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">2.4495</td></tr>
             <tr><td class="cell_year">2005</td><td class="cell_value">2.4495</td></tr>
             <tr><td class="cell_year">2006</td><td class="cell_value">2.4495</td></tr>
             <tr><td class="cell_year">2007</td><td class="cell_value">2.4495</td></tr>
@@ -18425,34 +18425,34 @@ impact_Year_based_EM_index_by_publication_year_citations.html
         var data_Year_based_EM_index_by_publication_year_citations = google.visualization.arrayToDataTable([
            ['Year', '<em>Ypc_EM</em>'],
            ['1997', 1.0],
-           ['1998', 1.7320508075688772],
-           ['1999', 2.23606797749979],
-           ['2000', 3.3166247903554],
-           ['2001', 4.123105625617661],
-           ['2002', 5.5677643628300215],
-           ['2003', 8.602325267042627],
-           ['2004', 11.74734012447073],
-           ['2005', 15.748015748023622],
-           ['2006', 19.235384061671343],
-           ['2007', 21.400934559032695],
-           ['2008', 23.430749027719962],
-           ['2009', 25.534290669607408],
-           ['2010', 28.0],
-           ['2011', 30.083217912982647],
-           ['2012', 32.155870381627054],
-           ['2013', 34.058772731852805],
-           ['2014', 36.318039594669756],
-           ['2015', 38.1051177665153],
-           ['2016', 39.7994974842648],
-           ['2017', 40.80441152620633],
-           ['2018', 41.7492514902962],
-           ['2019', 42.5440947723653],
-           ['2020', 43.3358973600409],
-           ['2021', 44.21538193886829],
-           ['2022', 44.8998886412873],
-           ['2023', 45.44227107000705],
-           ['2024', 45.91296113299599],
-           ['2025', 46.16275555033516],
+           ['1998', 2.0],
+           ['1999', 2.449489742783178],
+           ['2000', 3.4641016151377544],
+           ['2001', 4.242640687119285],
+           ['2002', 5.656854249492381],
+           ['2003', 8.660254037844387],
+           ['2004', 11.789826122551595],
+           ['2005', 15.7797338380595],
+           ['2006', 19.261360284258224],
+           ['2007', 21.42428528562855],
+           ['2008', 23.45207879911715],
+           ['2009', 25.553864678361276],
+           ['2010', 28.0178514522438],
+           ['2011', 30.099833886584822],
+           ['2012', 32.17141588429082],
+           ['2013', 34.07345007480164],
+           ['2014', 36.3318042491699],
+           ['2015', 38.118237105091836],
+           ['2016', 39.81205847478876],
+           ['2017', 40.8166632639171],
+           ['2018', 41.7612260356422],
+           ['2019', 42.555845661906424],
+           ['2020', 43.347433603386484],
+           ['2021', 44.22668877499196],
+           ['2022', 44.91102314577124],
+           ['2023', 45.45327270945405],
+           ['2024', 45.92385001282014],
+           ['2025', 46.17358552246078],
 		]);
 
         var options_Year_based_EM_index_by_publication_year_citations = {
@@ -18476,41 +18476,41 @@ impact_Year_based_EM_index_by_publication_year_citations.html
       <h3>Description</h3>
       <p>The Year-based <em>EM</em>-index by publication year citations (Bihari and S. Tripathi 2018) is an adapation of the <a href="#EM_index"><em>EM-</em>index</a> applied to the <a href="#career_years_h_index_by_cite">career years <em>h-</em>index by citations</a>. This metric is a measure of citation intensity or distribution by publication year, rather than by publication. Rather than create a list of publications ranked by citation count, one creates a list of years ranked by citation count for all publications from that year. This list is then processed in the same multivariate manner as the <em>EM-</em>index.</p>
       <h3>Example</h3>
-      <p>Years are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>2000</td><td>1998</td><td>1999</td><td>2001</td></tr><tr class="top_row"><th>Citations from Publication Year (<em>C<sub>i</sub></em>)</th><td>109</td><td>17</td><td>16</td><td class="box">4</td><td>2</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>105</td><td>13</td><td class="box">12</td><td>0</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>102</td><td>10</td><td class="box">9</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>99</td><td>7</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>96</td><td>4</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td class="box">93</td><td>1</td><td>0</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td class="box">1</td><td>2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;1</td><td></td><td></td><td></td><td></td></tr></table><p>The sum of the 6 <em>E</em> values is 17. Year-based <em>EM</em>-index by publication year citations is the square-root of this sum, thus <em>Ypc_EM</em>&nbsp;=&nbsp;4.1231.</p>
+      <p>Years are ordered by number of citations, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>2000</td><td>1998</td><td>1999</td><td>2001</td></tr><tr class="top_row"><th>Citations from Publication Year (<em>C<sub>i</sub></em>)</th><td>109</td><td>17</td><td>16</td><td class="box">4</td><td>2</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>105</td><td>13</td><td class="box">12</td><td>0</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>102</td><td>10</td><td class="box">9</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>99</td><td>7</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>96</td><td>4</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td class="box">93</td><td>1</td><td>0</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td class="box">1</td><td>2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;1</td><td></td><td></td><td></td><td></td></tr></table><p>The sum of the 6 <em>E</em> values is 17. Year-based <em>EM</em>-index by publication year citations is the square-root of this sum, thus <em>Ypc_EM</em>&nbsp;=&nbsp;4.2426.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>Ypc_EM</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">2.2361</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">3.3166</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">4.1231</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">5.5678</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">8.6023</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">11.7473</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">15.7480</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">19.2354</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">21.4009</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">23.4307</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">25.5343</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">28.0000</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">30.0832</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">32.1559</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">34.0588</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">36.3180</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">38.1051</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">39.7995</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">40.8044</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">41.7493</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">42.5441</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">43.3359</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">44.2154</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">44.8999</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">45.4423</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">45.9130</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">46.1628</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.4495</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3.4641</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4.2426</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5.6569</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">8.6603</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">11.7898</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">15.7797</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">19.2614</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">21.4243</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">23.4521</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">25.5539</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">28.0179</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">30.0998</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">32.1714</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">34.0735</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">36.3318</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">38.1182</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">39.8121</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">40.8167</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">41.7612</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">42.5558</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">43.3474</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">44.2267</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">44.9110</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">45.4533</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">45.9239</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">46.1736</td></tr>
           </table>
         </div>
         <div class="graph_container">
@@ -18529,34 +18529,34 @@ impact_Year_based_EM_index_by_citations.html
         var data_Year_based_EM_index_by_citations = google.visualization.arrayToDataTable([
            ['Year', '<em>Yc_EM</em>'],
            ['1997', 1.0],
-           ['1998', 1.4142135623730951],
-           ['1999', 3.7416573867739413],
-           ['2000', 5.291502622129181],
-           ['2001', 6.4031242374328485],
-           ['2002', 7.937253933193772],
-           ['2003', 10.488088481701515],
-           ['2004', 11.874342087037917],
-           ['2005', 15.491933384829668],
-           ['2006', 17.406895185529212],
-           ['2007', 20.223748416156685],
-           ['2008', 20.92844953645635],
-           ['2009', 21.517434791350013],
-           ['2010', 22.20360331117452],
-           ['2011', 24.657656011875904],
-           ['2012', 26.28687885618983],
-           ['2013', 26.514147167125703],
-           ['2014', 26.739483914241877],
-           ['2015', 26.870057685088806],
-           ['2016', 26.962937525425527],
-           ['2017', 26.962937525425527],
-           ['2018', 26.962937525425527],
-           ['2019', 26.962937525425527],
-           ['2020', 26.962937525425527],
-           ['2021', 27.0],
-           ['2022', 27.0],
-           ['2023', 27.0],
-           ['2024', 27.0],
-           ['2025', 27.0],
+           ['1998', 1.7320508075688772],
+           ['1999', 3.872983346207417],
+           ['2000', 5.385164807134504],
+           ['2001', 6.48074069840786],
+           ['2002', 8.0],
+           ['2003', 10.535653752852738],
+           ['2004', 11.916375287812984],
+           ['2005', 15.524174696260024],
+           ['2006', 17.435595774162696],
+           ['2007', 20.248456731316587],
+           ['2008', 20.952326839756964],
+           ['2009', 21.540659228538015],
+           ['2010', 22.22611077089287],
+           ['2011', 24.677925358506133],
+           ['2012', 26.30589287593181],
+           ['2013', 26.5329983228432],
+           ['2014', 26.758176320519304],
+           ['2015', 26.888659319497503],
+           ['2016', 26.981475126464083],
+           ['2017', 26.981475126464083],
+           ['2018', 26.981475126464083],
+           ['2019', 26.981475126464083],
+           ['2020', 26.981475126464083],
+           ['2021', 27.018512172212592],
+           ['2022', 27.018512172212592],
+           ['2023', 27.018512172212592],
+           ['2024', 27.018512172212592],
+           ['2025', 27.018512172212592],
 		]);
 
         var options_Year_based_EM_index_by_citations = {
@@ -18580,41 +18580,41 @@ impact_Year_based_EM_index_by_citations.html
       <h3>Description</h3>
       <p>The Year-based <em>EM</em>-index by citations (Bihari and S. Tripathi 2018) is an adapation of the <a href="#EM_index"><em>EM-</em>index</a> applied to the citation counts received in a year (to all publications), rather than citations clustered by year of publication. One creates a list of years ranked by citations received that year for all publications. This list is then processed in the same multivariate manner as the <em>EM-</em>index.</p>
       <h3>Example</h3>
-      <p>Years are ordered by number of citations received that year, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2001</td><td>2000</td><td>1999</td><td>1998</td><td>1997</td></tr><tr class="top_row"><th>Citations received in year (<em>C<sub>i</sub></em>)</th><td>63</td><td>41</td><td>28</td><td class="box">14</td><td>2</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>37</td><td>24</td><td class="box">10</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>55</td><td>33</td><td>20</td><td class="box">6</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>51</td><td>29</td><td class="box">16</td><td>2</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>26</td><td class="box">13</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td>23</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>20</td><td class="box">7</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td>17</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>36</td><td class="box">14</td><td>1</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>34</td><td class="box">12</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>10</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>32</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>11</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>30</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>12</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>28</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>13</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>26</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>14</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>24</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>15</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr></table><p>The sum of the 15 <em>E</em> values is 41. The Year-based <em>EM-</em>index by citations is the square-root of this sum, thus <em>Yc_EM</em>&nbsp;=&nbsp;6.4031.</p>
+      <p>Years are ordered by number of citations received that year, from highest to lowest. After each step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>2001</td><td>2000</td><td>1999</td><td>1998</td><td>1997</td></tr><tr class="top_row"><th>Citations received in year (<em>C<sub>i</sub></em>)</th><td>63</td><td>41</td><td>28</td><td class="box">14</td><td>2</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>1</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>37</td><td>24</td><td class="box">10</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>2</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>55</td><td>33</td><td>20</td><td class="box">6</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td></td><td><em>E</em><sub>3</sub>&nbsp;=&nbsp;4</td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>51</td><td>29</td><td class="box">16</td><td>2</td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>4</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>48</td><td>26</td><td class="box">13</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>5</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>45</td><td>23</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>6</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>42</td><td>20</td><td class="box">7</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>7</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>39</td><td>17</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td></td><td><em>E</em><sub>8</sub>&nbsp;=&nbsp;3</td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>36</td><td class="box">14</td><td>1</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td>3</td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>9</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>34</td><td class="box">12</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>10</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>32</td><td class="box">10</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>11</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>30</td><td class="box">8</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>12</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>28</td><td class="box">6</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>13</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>26</td><td class="box">4</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>14</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr><tr class="spacer_row"><th></th><td></td><td></td><td></td><td></td><td></td></tr><tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th><td>24</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td class="box">2</td><td class="light_box"></td><td class="light_box"></td><td class="light_box"></td></tr><tr><th></th><td></td><td><em>E</em><sub>15</sub>&nbsp;=&nbsp;2</td><td></td><td></td><td></td></tr></table><p>The sum of the 15 <em>E</em> values is 41. The Year-based <em>EM-</em>index by citations is the square-root of this sum, thus <em>Yc_EM</em>&nbsp;=&nbsp;6.4807.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>Yc_EM</em></th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.4142</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">3.7417</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">5.2915</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">6.4031</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">7.9373</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">10.4881</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">11.8743</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">15.4919</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">17.4069</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">20.2237</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">20.9284</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">21.5174</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">22.2036</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">24.6577</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">26.2869</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">26.5141</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">26.7395</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">26.8701</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">26.9629</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">26.9629</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">26.9629</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">26.9629</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">26.9629</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">27.0000</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">27.0000</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">27.0000</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">27.0000</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">27.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">3.8730</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.3852</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">6.4807</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">8.0000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">10.5357</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">11.9164</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">15.5242</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">17.4356</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">20.2485</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">20.9523</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">21.5407</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">22.2261</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">24.6779</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">26.3059</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">26.5330</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">26.7582</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">26.8887</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">26.9815</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">26.9815</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">26.9815</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">26.9815</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">26.9815</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">27.0185</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">27.0185</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">27.0185</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">27.0185</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">27.0185</td></tr>
           </table>
         </div>
         <div class="graph_container">
@@ -18633,7 +18633,7 @@ impact_Year_based_EMp_index_by_publications.html
         var data_Year_based_EMp_index_by_publications = google.visualization.arrayToDataTable([
            ['Year', '<em>Yp_EM</em>&prime;'],
            ['1997', 1.0],
-           ['1998', 1.4142135623730951],
+           ['1998', 1.7320508075688772],
            ['1999', 2.449489742783178],
            ['2000', 2.6457513110645907],
            ['2001', 2.6457513110645907],
@@ -18690,7 +18690,7 @@ impact_Year_based_EMp_index_by_publications.html
           <table class="impact_table">
             <tr><th>Year</th><th><em>Yp_EM</em>&prime;</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.4142</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">2.4495</td></tr>
             <tr><td class="cell_year">2000</td><td class="cell_value">2.6458</td></tr>
             <tr><td class="cell_year">2001</td><td class="cell_value">2.6458</td></tr>
@@ -18840,15 +18840,15 @@ impact_Year_based_EMp_index_by_citations.html
         var data_Year_based_EMp_index_by_citations = google.visualization.arrayToDataTable([
            ['Year', '<em>Yc_EM</em>&prime;'],
            ['1997', 1.0],
-           ['1998', 1.4142135623730951],
-           ['1999', 4.0],
-           ['2000', 5.656854249492381],
+           ['1998', 1.7320508075688772],
+           ['1999', 4.123105625617661],
+           ['2000', 5.744562646538029],
            ['2001', 7.937253933193772],
-           ['2002', 8.306623862918075],
+           ['2002', 8.366600265340756],
            ['2003', 11.874342087037917],
            ['2004', 15.491933384829668],
            ['2005', 17.406895185529212],
-           ['2006', 17.578395831246947],
+           ['2006', 17.60681686165901],
            ['2007', 20.92844953645635],
            ['2008', 21.517434791350013],
            ['2009', 22.20360331117452],
@@ -18898,15 +18898,15 @@ impact_Year_based_EMp_index_by_citations.html
           <table class="impact_table">
             <tr><th>Year</th><th><em>Yc_EM</em>&prime;</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">1.4142</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">4.0000</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">5.6569</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.7321</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.1231</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">5.7446</td></tr>
             <tr><td class="cell_year">2001</td><td class="cell_value">7.9373</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">8.3066</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">8.3666</td></tr>
             <tr><td class="cell_year">2003</td><td class="cell_value">11.8743</td></tr>
             <tr><td class="cell_year">2004</td><td class="cell_value">15.4919</td></tr>
             <tr><td class="cell_year">2005</td><td class="cell_value">17.4069</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">17.5784</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">17.6068</td></tr>
             <tr><td class="cell_year">2007</td><td class="cell_value">20.9284</td></tr>
             <tr><td class="cell_year">2008</td><td class="cell_value">21.5174</td></tr>
             <tr><td class="cell_year">2009</td><td class="cell_value">22.2036</td></tr>
