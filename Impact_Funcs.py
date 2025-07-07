@@ -1446,8 +1446,6 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
         avg = data[i]
         if avg >= i + 1:
             h += 1
-    print(h)
-    print(data)
     if (h > 0) and (h < len(data)):
         ch = data[h-1]
         chp1 = data[h]
@@ -1604,12 +1602,12 @@ def calculate_awakening_time(pub_list: list) -> list:
 
 # academic trace (Ye and Leydesdorff 2014)
 def calculate_academic_trace(citations: list, total_cites: int, core_cites: int, h: int) -> float:
-    # count pubs with zero citations
-    pz = 0
-    for c in citations:
-        if c == 0:
-            pz += 1
-    t = (h**4 + (core_cites - h**2)**2) / total_cites + ((len(citations) - h - pz)**2 - pz**2) / len(citations)
+    pz = citations.count(0)
+    p = len(citations)
+    x1 = h**2 / p
+    y2 = (total_cites - core_cites)**2 / total_cites
+    z3 = ((core_cites - h**2)**2 / total_cites) - (pz**2 / p)
+    t = x1 + y2 + z3
     return t
 
 

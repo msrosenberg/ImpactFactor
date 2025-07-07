@@ -17254,34 +17254,34 @@ impact_academic_trace.html
         var data_academic_trace = google.visualization.arrayToDataTable([
            ['Year', '<em>tr</em>(V)'],
            ['1997', -2.0],
-           ['1998', 5.4375],
-           ['1999', 20.992424242424242],
-           ['2000', 34.83613445378151],
-           ['2001', 73.66441441441441],
-           ['2002', 116.45384073291049],
-           ['2003', 175.53190668980142],
-           ['2004', 303.48529491122986],
-           ['2005', 472.9896875947831],
-           ['2006', 734.805740603668],
-           ['2007', 994.6057101087845],
-           ['2008', 1306.5249967508557],
-           ['2009', 1618.527140255009],
-           ['2010', 2010.5557621796108],
-           ['2011', 2447.972668997669],
-           ['2012', 2890.4927924403382],
-           ['2013', 3482.6885181177436],
-           ['2014', 4058.6487961476723],
-           ['2015', 4592.1852317812545],
-           ['2016', 5200.464955242134],
-           ['2017', 5659.286034946927],
-           ['2018', 6200.021311402534],
-           ['2019', 6741.916262003789],
-           ['2020', 7207.5655423803255],
-           ['2021', 7709.245748313892],
-           ['2022', 8206.177466873443],
-           ['2023', 8718.425843194076],
-           ['2024', 9177.367860073942],
-           ['2025', 9296.97208766323],
+           ['1998', 1.5625],
+           ['1999', 19.487373737373737],
+           ['2000', 29.80252100840336],
+           ['2001', 65.70570570570571],
+           ['2002', 103.96476391825229],
+           ['2003', 157.80441488336226],
+           ['2004', 281.55728239166797],
+           ['2005', 429.06135881104035],
+           ['2006', 700.8481988650382],
+           ['2007', 938.5980994969257],
+           ['2008', 1236.9477645886584],
+           ['2009', 1514.1555555555556],
+           ['2010', 1912.6361993649234],
+           ['2011', 2317.054500627578],
+           ['2012', 2688.5303688043577],
+           ['2013', 3286.0640364986984],
+           ['2014', 3859.4390900882822],
+           ['2015', 4392.727811603661],
+           ['2016', 5021.805381135451],
+           ['2017', 5451.080165303428],
+           ['2018', 6009.010797955101],
+           ['2019', 6566.83369444505],
+           ['2020', 7028.395984691637],
+           ['2021', 7525.717874276914],
+           ['2022', 7990.341720480916],
+           ['2023', 8517.17724037212],
+           ['2024', 8964.791776951504],
+           ['2025', 9044.111803447837],
 		]);
 
         var options_academic_trace = {
@@ -17304,41 +17304,41 @@ impact_academic_trace.html
       <h3>Description</h3>
       <p>The Academic Trace (Ye and Leydesdorff 2014; Ye <em>et al.</em> 2017) starts by taking the concept of the citation curve and describing it as three vectors of information. The first vector (<strong>X</strong>) separates publications into those in the core (X<sub>1</sub>), those in the tail with at least one citation (X<sub>2</sub>), and those with zero citations (X<sub>3</sub>). These three values are each calculated as the square of the count of publications in each category, divided by the total number of publications. The second vector (<strong>Y</strong>) separates citations into those in the core block (Y<sub>1</sub>), those in the tail (Y<sub>2</sub>), and the excess citations in the core above the core block (Y<sub>3</sub>). These values are calculated as the square of the count of citations within each category, divided by the total citation. The third vector (<strong>Z</strong>) contrasts particularly highly cited publications and those with zero citations, and is simply the difference of the corresponding values of the first two vectors, X<sub>1</sub> - Y<sub>1</sub>, X<sub>2</sub> - Y<sub>2</sub>, and X<sub>3</sub> - Y<sub>3</sub>. These vectors form a 3D matrix, the trace of which is a measure of academic performance. The trace can be determined as X<sub>1</sub> + Y<sub>2</sub> + Z<sub>3</sub>; a "shortcut" formula (Ding <em>et al.</em> 2020) is as follows:</p><p>$$tr\left(V\right)=\frac{h^4+\left(C^h-h^2\right)^2}{C^P} + \frac{\left( P-h-P_z\right)^2-P_z^2}{P}.$$</p><p>where <em>P<sub>z</sub></em> is the number of publications with zero citations and the rest of the values have been defined earlier.</p>
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The <em>h</em>-index is 6; the total number of citations (<em>C<sup>P</sup></em>) is 148; the number of citations in the top <em>h</em> publications (<em>C<sup>h</sup></em>) is 133; the total number of publications (P) is 18; and the number of publications with zero citations (<em>P<sub>z</sub></em>) is 5. Entered in the above formula, the academic trace is 73.6644.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The <em>h</em>-index is 6; the total number of citations (<em>C<sup>P</sup></em>) is 148; the number of citations in the top <em>h</em> publications (<em>C<sup>h</sup></em>) is 133; the total number of publications (P) is 18; and the number of publications with zero citations (<em>P<sub>z</sub></em>) is 5. Entered in the above formula, the academic trace is 65.7057.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th><em>tr</em>(V)</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">-2.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">5.4375</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">20.9924</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">34.8361</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">73.6644</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">116.4538</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">175.5319</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">303.4853</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">472.9897</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">734.8057</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">994.6057</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">1306.5250</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">1618.5271</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">2010.5558</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">2447.9727</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">2890.4928</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">3482.6885</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">4058.6488</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">4592.1852</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">5200.4650</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">5659.2860</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">6200.0213</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">6741.9163</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">7207.5655</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">7709.2457</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">8206.1775</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">8718.4258</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">9177.3679</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">9296.9721</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.5625</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">19.4874</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">29.8025</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">65.7057</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">103.9648</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">157.8044</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">281.5573</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">429.0614</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">700.8482</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">938.5981</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">1236.9478</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">1514.1556</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">1912.6362</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">2317.0545</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">2688.5304</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">3286.0640</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">3859.4391</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">4392.7278</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">5021.8054</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">5451.0802</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">6009.0108</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">6566.8337</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">7028.3960</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">7525.7179</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">7990.3417</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">8517.1772</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">8964.7918</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">9044.1118</td></tr>
           </table>
         </div>
         <div class="graph_container">
