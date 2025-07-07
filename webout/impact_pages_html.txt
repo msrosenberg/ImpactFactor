@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-06.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-07.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -15796,35 +15796,35 @@ impact_career_years_h_index_by_cite.html
 impact_career_years_h_index_by_avg_cite.html
         var data_career_years_h_index_by_avg_cite = google.visualization.arrayToDataTable([
            ['Year', 'Career years <em>h<sub>int</sub></em> by avg cites'],
-           ['1997', 1],
-           ['1998', 2],
-           ['1999', 2.6],
-           ['2000', 3.5],
-           ['2001', 4.0],
-           ['2002', 5.933333333333334],
+           ['1997', 0],
+           ['1998', 1.7],
+           ['1999', 2.2],
+           ['2000', 2.9999999999999996],
+           ['2001', 3.6250000000000004],
+           ['2002', 5.0],
            ['2003', 6.0],
-           ['2004', 7.0],
-           ['2005', 8.333333333333334],
-           ['2006', 9.333333333333334],
-           ['2007', 10.428571428571429],
-           ['2008', 11.52],
-           ['2009', 11.642857142857142],
-           ['2010', 12.724137931034482],
-           ['2011', 14.0],
-           ['2012', 14.583333333333334],
-           ['2013', 14.757575757575758],
-           ['2014', 15.545454545454545],
-           ['2015', 15.851063829787234],
-           ['2016', 16.0],
-           ['2017', 17.0],
-           ['2018', 17.285714285714285],
-           ['2019', 18.363636363636363],
-           ['2020', 18.75],
-           ['2021', 19.833333333333332],
-           ['2022', 19.941176470588236],
-           ['2023', 21.2],
-           ['2024', 23.0],
-           ['2025', 23.8],
+           ['2004', 6.999999999999999],
+           ['2005', 7.387096774193547],
+           ['2006', 8.23076923076923],
+           ['2007', 9.645569620253164],
+           ['2008', 9.866666666666667],
+           ['2009', 11.0],
+           ['2010', 11.651162790697676],
+           ['2011', 13.25],
+           ['2012', 13.5625],
+           ['2013', 13.748768472906406],
+           ['2014', 13.903225806451612],
+           ['2015', 14.490909090909094],
+           ['2016', 15.448275862068966],
+           ['2017', 16.125],
+           ['2018', 16.555555555555557],
+           ['2019', 16.794871794871796],
+           ['2020', 17.294117647058822],
+           ['2021', 18.666666666666668],
+           ['2022', 18.93406593406593],
+           ['2023', 19.333333333333332],
+           ['2024', 21.142857142857142],
+           ['2025', 22.137931034482758],
 		]);
 
         var options_career_years_h_index_by_avg_cite = {
@@ -15848,41 +15848,41 @@ impact_career_years_h_index_by_avg_cite.html
       <h3>Description</h3>
       <p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) is similar to the <a href="#career_years_h_index_by_cite">career years <em>h-</em>index by citations</a> and <a href="#career_years_h_index_by_pub">career years <em>h-</em>index by publications</a>, but is based on the average number of citations generated per publication per year, rather than on the total publications or total citations for each year. One creates a list of years ranked by average citation count per publication for all publications from that year. This list is then processed in the same manner as a typical <em>h-</em>type index, namely the career years <em>h-</em>index by average citations per year is the largest value <em>h</em> for which at least <em>h</em> years have publications with an average of <em>h</em> citations.</p>$$\text{career years }h\text{ by average citations per year}=\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$<p>Because the average number of citations will often not be an integer, the authors recommend interpolating between this and the next largest value, as with the real <em>h-</em>index, in order to more accurately estimate the metric.</p>$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$
       <h3>Example</h3>
-      <p>Years are ordered by average number of citations per publication from that year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>1998</td><td>1999</td><td>2000</td><td>2001</td></tr><tr><th>Publications (<em>P<sub>i</sub></em>)</th><td>6</td><td>2</td><td>1</td><td>5</td><td>4</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>109</td><td>16</td><td>4</td><td>17</td><td>2</td></tr><tr class="top_row"><th>Average Citations per Publication(<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em>)</th><td>18.17</td><td>8.00</td><td>4.00</td><td class="box">3.40</td><td>0.50</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td></tr><tr><th></th><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;4</td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em> is 4. The interpolated rank betweeen this and the next largest value is 4.00.</p>
+      <p>Years are ordered by average number of citations per publication from that year, from highest to lowest.</p><table class="example_table"><tr><th>Year (<em>y<sub>i</sub></em>)</th><td>1997</td><td>1998</td><td>1999</td><td>2000</td><td>2001</td></tr><tr><th>Publications (<em>P<sub>i</sub></em>)</th><td>6</td><td>2</td><td>1</td><td>5</td><td>4</td></tr><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>109</td><td>16</td><td>4</td><td>17</td><td>2</td></tr><tr class="top_row"><th>Average Citations per Publication(<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em>)</th><td>18.17</td><td>8.00</td><td class="box">4.00</td><td>3.40</td><td>0.50</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td class="box">3</td><td>4</td><td>5</td></tr><tr><th></th><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;3</td><td></td><td></td></tr></table><p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em> is 3. The interpolated rank betweeen this and the next largest value is 3.63.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
             <tr><th>Year</th><th>Career years <em>h<sub>int</sub></em> by avg cites</th></tr>
-            <tr><td class="cell_year">1997</td><td class="cell_value">1.0000</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">2.6000</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">3.5000</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">4.0000</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">5.9333</td></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.0000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">1.7000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2.2000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3.0000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">3.6250</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5.0000</td></tr>
             <tr><td class="cell_year">2003</td><td class="cell_value">6.0000</td></tr>
             <tr><td class="cell_year">2004</td><td class="cell_value">7.0000</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">8.3333</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">9.3333</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">10.4286</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">11.5200</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">11.6429</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">12.7241</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">14.0000</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">14.5833</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">14.7576</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">15.5455</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">15.8511</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">16.0000</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">17.0000</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">17.2857</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">18.3636</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">18.7500</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">19.8333</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">19.9412</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">21.2000</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">23.0000</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">23.8000</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">7.3871</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">8.2308</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">9.6456</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">9.8667</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">11.0000</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">11.6512</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">13.2500</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">13.5625</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">13.7488</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">13.9032</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">14.4909</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">15.4483</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">16.1250</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">16.5556</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">16.7949</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">17.2941</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">18.6667</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">18.9341</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">19.3333</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">21.1429</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">22.1379</td></tr>
           </table>
         </div>
         <div class="graph_container">
