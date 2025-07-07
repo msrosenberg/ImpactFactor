@@ -1429,6 +1429,9 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
 
 # career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
 def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_year: int) -> float:
+    # in the original paper they calculate ageas current year - pub year, rather than cy - py + 1. This would mean
+    # articles in the present year would have an age of zero and an infinite diffusion
+    #   this coded version adds the 1, so an article published this year has an age of 1 and lat year an age of 2
     miny = min(pub_years)
     maxy = max(pub_years)
     cite_cnts = {y: 0 for y in range(miny, maxy+1)}
@@ -1436,20 +1439,45 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
         cite_cnts[pub_years[i]] += c
     data = []
     for y in cite_cnts:
-        data.append([cite_cnts[y]/(cur_year - y + 1), y])
+        data.append(cite_cnts[y]/(cur_year - y + 1))
     data.sort(reverse=True)
     h = 0
     for i in range(len(data)):
-        avg = data[i][0]
+        avg = data[i]
         if avg >= i + 1:
             h += 1
+    print(h)
+    print(data)
     if (h > 0) and (h < len(data)):
-        ch = data[h-1][0]
-        chp1 = data[h][0]
+        ch = data[h-1]
+        chp1 = data[h]
         hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
     else:
         hint = h
     return hint
+
+
+    # miny = min(pub_years)
+    # maxy = max(pub_years)
+    # cite_cnts = {y: 0 for y in range(miny, maxy+1)}
+    # for i, c in enumerate(cites):
+    #     cite_cnts[pub_years[i]] += c
+    # data = []
+    # for y in cite_cnts:
+    #     data.append([cite_cnts[y]/(cur_year - y + 1), y])
+    # data.sort(reverse=True)
+    # h = 0
+    # for i in range(len(data)):
+    #     avg = data[i][0]
+    #     if avg >= i + 1:
+    #         h += 1
+    # if (h > 0) and (h < len(data)):
+    #     ch = data[h-1][0]
+    #     chp1 = data[h][0]
+    #     hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
+    # else:
+    #     hint = h
+    # return hint
 
 
 # collaborative index (Lawani 1980)

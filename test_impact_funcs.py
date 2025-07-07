@@ -735,26 +735,6 @@ def test_calculate_two_sided_h():
     assert Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
 
 
-
-
-# two-sided h-index (Garcia-Perez 2012)
-def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h: list) -> list:
-    # only need to calculate the upper part of the index the center and tail are identical to multidimensional h
-    # auto-calculate for as many steps in core as equal to length of steps in tail
-    two_sided_h = [i for i in multidim_h]
-    j = 0
-    tmph = h
-    k = 1
-    while k < len(multidim_h):
-        j += tmph
-        tmph = 0
-        for i in range(len(citations)):
-            if rank_order[i] <= citations[i] - j:
-                tmph += 1
-        two_sided_h.insert(0, tmph)
-        k += 1
-    return two_sided_h
-
 """
 
 # normalized hi-index/hf-index (Wohlin 2009)
@@ -1359,93 +1339,44 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
             q = 0
         q_index += q*s
     return q_index / len(citations)
+"""
+
+def test_calculate_career_years_h_index_pub():
+    # data and answer from original publication
+    data = [2003, 2005, 2005, 2005, 2006, 2006, 2006, 2006, 2006, 2006, 2009, 2009, 2009, 2009, 2009, 2009, 2012,
+            2012, 2012, 2012, 2012, 2012, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2007, 2007, 2007, 2007, 2007,
+            2007, 2007, 2007, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2008, 2008, 2008, 2008, 2008,
+            2008, 2008, 2008, 2008, 2008]
+    assert Impact_Funcs.calculate_career_years_h_index_pub(data) == 6
 
 
-# career years h-index by publications (Mahbuba and Rousseau 2013)
-def calculate_career_years_h_index_pub(pub_years: list) -> int:
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
-    data = []
-    for y in year_cnts:
-        data.append([year_cnts[y], y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        cnt = data[i][0]
-        if cnt >= i + 1:
-            h += 1
-    return h
+def test_calculate_career_years_h_index_cite():
+    assert Impact_Funcs.calculate_career_years_h_index_cite(TEST_YEAR_DATA, TEST_CITATION_DATA) == 3
+
+    # data and answer from original publication
+    citations = [24, 21, 19, 16, 15, 12, 11, 9, 8, 5]
+    pub_years = [1999, 2008, 2009, 1997, 1998, 2010, 2006, 2004, 2003, 1001]
+    assert Impact_Funcs.calculate_career_years_h_index_cite(pub_years, citations) == 8
 
 
-# career years h-index by citations (Mahbuba and Rousseau 2013)
-def calculate_career_years_h_index_cite(pub_years: list, cites: list) -> int:
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: 0 for y in range(miny, maxy+1)}
-    for i, c in enumerate(cites):
-        year_cnts[pub_years[i]] += c
-    data = []
-    for y in year_cnts:
-        data.append([year_cnts[y], y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        cnt = data[i][0]
-        if cnt >= i + 1:
-            h += 1
-    return h
+def test_calculate_career_years_h_index_avgcite():
+    assert round(Impact_Funcs.calculate_career_years_h_index_avgcite(TEST_YEAR_DATA, TEST_CITATION_DATA), 3) == 3.714
 
 
-# career years h-index by avg citations/year (Mahbuba and Rousseau 2013)
-def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> float:
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    year_cnts = {y: 0 for y in range(miny, maxy+1)}
-    for i, c in enumerate(cites):
-        year_cnts[pub_years[i]] += c
-    data = []
-    for y in year_cnts:
-        data.append([year_cnts[y], y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        avg = data[i][0]
-        if avg >= i + 1:
-            h += 1
-    if (h > 0) and (h < len(data)):
-        ch = data[h-1][0]
-        chp1 = data[h][0]
-        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
-    else:
-        hint = h
-    return hint
+def test_calculate_career_years_h_index_diffspeed():
+    # in the original paper they calculate ageas current year - pub year, rather than cy - py + 1. This would mean
+    # articles in the present year would have an age of zero and an infinite diffusion.
+    # the function has been tested using their published values and way of calculating the year, but the function
+    # is coded so as to use the +1 in th age of an article
+    # citations = [8, 16, 24, 18, 8, 19, 8, 8, 11, 5, 3, 2, 2]
+    # pub_years = [2010, 2009, 2007, 2008, 2006, 1999, 2003, 2004, 1998, 2001, 2002, 2005, 2000]
+    # year = 2011
+    # assert round(Impact_Funcs.calculate_career_years_h_index_diffspeed(pub_years, citations, year), 2) == 4.37
+    assert round(Impact_Funcs.calculate_career_years_h_index_diffspeed(TEST_YEAR_DATA,
+                                                                       TEST_CITATION_DATA, 2001), 3) == 3.000
 
 
-# career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
-def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_year: int) -> float:
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    cite_cnts = {y: 0 for y in range(miny, maxy+1)}
-    for i, c in enumerate(cites):
-        cite_cnts[pub_years[i]] += c
-    data = []
-    for y in cite_cnts:
-        data.append([cite_cnts[y]/(cur_year - y + 1), y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        avg = data[i][0]
-        if avg >= i + 1:
-            h += 1
-    if (h > 0) and (h < len(data)):
-        ch = data[h-1][0]
-        chp1 = data[h][0]
-        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
-    else:
-        hint = h
-    return hint
-
+"""
 
 # collaborative index (Lawani 1980)
 def calculate_collaborative_index(author_cnts: list) -> float:
