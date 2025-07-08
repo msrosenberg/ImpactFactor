@@ -836,8 +836,7 @@ def calculate_woeginger_w(citations: list, rank_order: list) -> int:
 def calculate_maxprod_index(citations: list, rank_order: list) -> int:
     maxprod_index = 0
     for i in range(len(citations)):
-        if citations[i] * rank_order[i] > maxprod_index:
-            maxprod_index = citations[i] * rank_order[i]
+        maxprod_index = max(maxprod_index, citations[i] * rank_order[i])
     return maxprod_index
 
 
@@ -1859,8 +1858,11 @@ def calculate_css(citations: list) -> float:
 # csr (Gagolewski et al 2022)
 def calculate_csr(citations: list) -> float:
     s = 0
-    for i, c in enumerate(citations):
+    tmpcites = sorted(citations)
+    tmpcites.reverse()
+    for i, c in enumerate(tmpcites):
         s += 2*(i+0.5)*c  # it is i + 0.5 rather than i - 0.5 because i is counting from 0
+        print(2*(i+0.5)*c)
     return s**(1/3)
 
 

@@ -8818,17 +8818,18 @@ def metric_first_author_h_index() -> Metric:
     m.html_name = "first-author <em>h-</em>index"
     m.metric_type = INT
     equation = r"$$h_{fa}=h \frac{P_h + P_{fa}}{P_h}=h + P_{fa}.$$"
-    m.description = "<p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale output" \
-                    "between large and small collaborative research teams under an assumption that larger teams " \
-                    "could produce more output per year just by the nature of being larger. It attempts to rescale " \
-                    "the __h-index__ based on the number of publications in the <em>h-</em>core that were " \
-                    "first-authored (<em>P<sub>fa</sub></em>).</p>" + equation + "<p>The authors did not seem to " \
-                    "realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal " \
-                    "to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of " \
-                    "<em>h</em> and the number of first-authored papers that make up h. This index ranges from equal " \
-                    "to the <em>h-</em>index if the investigator is never a first author of publications in the " \
-                    "<em>h-</em>core to double the <em>h-</em>index if they are the first author of every " \
-                    "publication in the core.</p>"
+    m.description = ("<p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale output" 
+                     "between large and small collaborative research teams under an assumption that larger teams " 
+                     "could produce more output per year just by the nature of being larger. It attempts to rescale " 
+                     "the __h-index__ based on the number of publications in the <em>h-</em>core that were " 
+                     "first-authored (<em>P<sub>fa</sub></em>).</p>" + equation + "<p>The authors did not seem to " 
+                     "realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal " 
+                     "to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of " 
+                     "<em>h</em> and the number of first-authored papers that make up h. This index ranges from equal " 
+                     "to the <em>h-</em>index if the investigator is never a first author of publications in the " 
+                     "<em>h-</em>core to double the <em>h-</em>index if they are the first author of every " 
+                     "publication in the core.</p><p>This is conceptually similar to some other metrics such as the "
+                     "__stratified h-index__ and the __hmaj-index__.</p>")
     m.symbol = "<em>h<sub>fa</sub></em>"
     m.synonyms = ["<em>h<sub>fa</sub></em>"]
     m.references = ["Butson, M.J., and P.K.N. Yu (2010) The first author h-index (h(fa)-index): levelling the field "
@@ -10564,7 +10565,7 @@ def metric_stratified_h() -> Metric:
                      "of importance. In theory, by viewing this set of indices, rather than a single value, one can "
                      "determine how much of an author's impact is based on &ldquo;primary&rdquo; contributions to "
                      "publications versus secondary.</p><p>This concept is very similar to a few other proposals, "
-                     "including the __hmaj-index__.</p>")
+                     "including the __hmaj-index__ and the __first-author h-index__.</p>")
     m.references = ["Würtz, M., and M. Schmidt (2016) The stratified H-index. <em>Annals of Epidemiology</em> "
                     "26(4):299-300."]
 
@@ -10745,7 +10746,7 @@ def metric_hmaj_index() -> Metric:
                      f"identical to the primary author part of the <em>h</em>(<em>p</em>,<em>t</em>) index pair "
                      f"suggested by Bucur <em>et al.</em> (2015), with the only potential difference being subtleties "
                      f"in how one defines a major or primary author. This concept is very similar to a few other "
-                     f"proposals, including the __stratified h-index__.</p>")
+                     f"proposals, including the __stratified h-index__ and the __first-author h-index__.</p>")
 
     m.references = ["Hu, X., R. Rousseau, and J. Chen (2010) In those fields where multiple authorship is the rule, "
                     "the h-index should be supllmeneted by role-based h-indices. <em>Journal of Information "
