@@ -1260,14 +1260,7 @@ def calculate_th_index(citations: list, years: list, total_cites: int) -> int:
 # DCI-index: discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
 def calculate_dci_index(total_citations: list, logbase: int) -> list:
     # create list of novel citation counts per year
-    yearly_cites = []
-    cold = None
-    for c in total_citations:
-        if cold is None:
-            yearly_cites.append(c)
-        else:
-            yearly_cites.append(c - cold)
-        cold = c
+    yearly_cites = total_citations_each_year(total_citations)
     y = len(yearly_cites)
     dci = []
     for i, c in enumerate(yearly_cites):
