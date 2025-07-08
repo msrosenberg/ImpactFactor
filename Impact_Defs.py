@@ -9767,8 +9767,7 @@ def calculate_h_prime_index(metric_set: MetricSet) -> float:
     core_cites = metric_set.metrics["h-core cites"].value
     h = metric_set.metrics["h-index"].value
     e = metric_set.metrics["e-index"].value
-    t = math.sqrt(total_cites - core_cites)
-    return Impact_Funcs.calculate_h_prime(h, e, t)
+    return Impact_Funcs.calculate_h_prime(h, e, total_cites, core_cites)
 
 
 def write_h_prime_index_desc_data(metric_set: MetricSet) -> list:
@@ -9870,10 +9869,11 @@ def metric_hc() -> Metric:
                      f"factor for the most cited publication of the author's record. This extra factor is the maximum "
                      f"power one can raise <em>h</em> to which is less than the __max cites__, which is then added to "
                      f"<em>h</em>, thus:</p>{equation2}<p>The original authors describe the calculation of <em>k</em> "
-                     f"through an algorithm, but it can directly be determined "
+                     f"through an algorithm, but as long as <em>h</em> &gt; 1 it can directly be determined "
                      f"as:</p>{equation}<p>which is the logarithm in base <em>h</em> of one "
                      f"less than the largest number of citations to a single paper, truncated to an integer. If "
-                     f"<em>h</em> &le; 1, then <em>h<sub>c</sub></em> = <em>h</em>.")
+                     f"<em>h</em> &le; 1, then <em>h<sub>c</sub></em> = 2 if the maximum citations is "
+                     f"greater than one, otherwise <em>h<sub>c</sub></em> = <em>h</em>.")
     m.graph_type = LINE_CHART
     m.calculate = calculate_hc
     m.properties["Core Property"] = True

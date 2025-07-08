@@ -1720,17 +1720,20 @@ def calculate_year_based_emp_cites(total_cite_list: list) -> float:
 
 
 # h' index (Zhang 2012)
-def calculate_h_prime(h: int, e: float, t: float) -> float:
+def calculate_h_prime(h: int, e: float, total_cites, core_cites) -> float:
+    t = math.sqrt(total_cites - core_cites)
     return e*h/t
 
 
 # hc index (Khurana and Sharma 2022)
 def calculate_hc(h: int, m: int) -> int:
-    if h <= 1:
-        return h
-    else:
+    if h > 1:
         k = math.trunc(math.log(m-1, h))
         return h + k
+    elif m > 1:
+        return 2
+    else:
+        return h
 
 
 # k index (Anania and Caruso 2013)
