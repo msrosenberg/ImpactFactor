@@ -839,17 +839,14 @@ def calculate_woeginger_w(citations: list, rank_order: list) -> int:
         if tmp_good:
             w = j
     return w
+"""
+
+def test_calculate_maxprod_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_maxprod_index(TEST_CITATION_DATA, rank_order) == 72
 
 
-# maxprod (Kosmulski 2007)
-def calculate_maxprod_index(citations: list, rank_order: list) -> int:
-    maxprod_index = 0
-    for i in range(len(citations)):
-        if citations[i] * rank_order[i] > maxprod_index:
-            maxprod_index = citations[i] * rank_order[i]
-    return maxprod_index
-
-
+"""
 # j-index (Todeschini 2011)
 def calculate_todeschini_j_index(citations: list, h: int) -> float:
     # constants for j-index
@@ -1376,8 +1373,19 @@ def test_calculate_career_years_h_index_diffspeed():
                                                                        TEST_CITATION_DATA, 2001), 3) == 3.000
 
 
-"""
+def test_calculate_collaborative_index():
+    pass
 
+
+def test_calculate_degree_of_collaboration():
+    pass
+
+
+def test_calculate_collaborative_coefficient():
+    pass
+
+
+"""
 # collaborative index (Lawani 1980)
 def calculate_collaborative_index(author_cnts: list) -> float:
     maxa = max(author_cnts)
@@ -1400,6 +1408,7 @@ def calculate_collaborative_coefficient(author_cnts: list) -> float:
         cc += author_cnts.count(a) / a
     return 1 - cc / len(author_cnts)
 """
+
 
 def test_calculate_i10_index():
     assert Impact_Funcs.calculate_i10_index(TEST_CITATION_DATA) == 4
@@ -1436,7 +1445,6 @@ def test_calculate_uncited_paper_percent():
 
 
 """
-
 # beauty coefficient (Ke et al 2015)
 def calculate_beauty_coefficient(pub_list: list) -> list:
     blist = []
@@ -1485,6 +1493,7 @@ def calculate_awakening_time(pub_list: list) -> list:
     return ta_list
 """
 
+
 def test_calculate_academic_trace():
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
@@ -1503,35 +1512,33 @@ def calculate_scientific_quality_index(citations, self_citations) -> float:
         if c >= 10:
             cnt += 1
     return total_cites/len(sharp_citations) + 100*cnt/len(sharp_citations)
+"""
 
 
-# first author h-index (Butson and Yu 2010)
-def calculate_first_author_h_index(h: int, author_pos: list, is_core: list) -> int:
-    cnt = 0
-    for i in range(len(author_pos)):
-        if (author_pos[i] == 1) and is_core[i]:
-            cnt += 1
-    return h + cnt
+def test_calculate_first_author_h_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_first_author_h_index(h, TEST_AUTHOR_ORDER, is_core) == 9
 
 
-# o-index (Dorogovtsev and Mendes 2015)
-def calculate_o_index(h: int, max_cites: int) -> float:
-    return math.sqrt(h * max_cites)
+def test_calculate_o_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    max_cites = Impact_Funcs.calculate_max_cites(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_o_index(h, max_cites), 4) == 15.8745
 
+"""
 
 # discounted h-index (Ferrara and Romero 2013)
 def calculate_discounted_h_index(h: int, total_cites: int, total_self: int) -> float:
     return h * math.sqrt((total_cites - total_self)/total_cites)
-
-
-# j-index (Mikhailov 2014)
-def calculate_mikhailov_j_index(citations: list, rank_order: list) -> int:
-    j = 0
-    for i in range(len(citations)):
-        if math.trunc(rank_order[i]**(3/2)) <= citations[i]:
-            j += 1
-    return j
 """
+
+
+def test_calculate_mikhailov_j_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_mikhailov_j_index(TEST_CITATION_DATA, rank_order) == 4
+
 
 def test_calculate_year_based_em_pub():
     # data and answers from original publication
@@ -1604,21 +1611,26 @@ def test_calculate_year_based_emp_cites():
     cumulative_citations = [27, 49, 70, 90, 110, 129, 146, 162, 173, 183, 190]
     assert round(Impact_Funcs.calculate_year_based_emp_cites(cumulative_citations), 3) == 5.477
 
-"""
 
-# h' index (Zhang 2012)
-def calculate_h_prime(h: int, e: float, t: float) -> float:
-    return e*h/t
+def test_calculate_h_prime():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    core_cites = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    e = Impact_Funcs.calculate_e_index(core_cites, h)
+    assert round(Impact_Funcs.calculate_h_prime(h, e, total_cites, core_cites), 3) == 15.969
 
 
-# hc index (Khurana and Sharma 2022)
-def calculate_hc(h: int, m: int) -> int:
-    if h <= 1:
-        return h
-    else:
-        k = math.trunc(math.log(m-1, h))
-        return h + k
-"""
+def test_calculate_hc():
+    # data and answers from original paper
+    assert Impact_Funcs.calculate_hc(0, 0) == 0
+    assert Impact_Funcs.calculate_hc(1, 1) == 1
+    assert Impact_Funcs.calculate_hc(1, 2) == 2
+    # the following one is calculated incorrectly in the original paper, they give the answer as 3, but it is clear
+    # from Table 1 in the paper that the answer should actually be 2
+    assert Impact_Funcs.calculate_hc(2, 2) == 2
+    assert Impact_Funcs.calculate_hc(1, 3) == 2
+
 
 def test_calculate_k_index_anania_caruso():
     # data and answers from original publication, Anania and Caruso 2013
@@ -1649,135 +1661,76 @@ def test_calculate_w_index_anania_caruso():
     total_cites = Impact_Funcs.calculate_total_cites(citations)
     assert round(Impact_Funcs.calculate_w_index_anania_caruso(h, total_cites), 2) == 6.33
 
-"""
-# h-norm index (Anania and Caruso 2013)
-def calculate_h_norm(citations: list, n_authors: list) -> int:
-    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
-    return hn
+
+def test_calculate_h_norm():
+    assert Impact_Funcs.calculate_h_norm(TEST_CITATION_DATA, TEST_AUTHOR_CNT) == 4
 
 
-# k-norm index (Anania and Caruso 2013)
-def calculate_k_norm_index(citations: list, n_authors: list) -> float:
-    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    normcore = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
-            normcore += sc[i]
-    try:
-        return hn + (1 - hn**2/normcore)
-    except ZeroDivisionError:
-        return 0
+def test_calculate_k_norm_index():
+    assert round(Impact_Funcs.calculate_k_norm_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT), 4) == 4.6049
 
 
-# w-norm index (Anania and Caruso 2013)
-def calculate_w_norm_index(citations: list, n_authors: list) -> float:
-    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
-    normtotal = sum(sc)
-    return hn + (1 - hn**2/normtotal)
+def test_calculate_w_norm_index():
+    assert round(Impact_Funcs.calculate_w_norm_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT), 4) == 4.7060
 
 
-# yearly h-index (Singh 2022)
-def calculate_yearly_h_index(citations: list, pub_years: list) -> float:
-    miny = min(pub_years)
-    maxy = max(pub_years)
-    havg = 0
-    yearcnt = 0
-    # calculate h only for papers published in a single  year
-    for year in range(miny, maxy+1):
-        # create citation count list for a single year
-        tmp_citations = []
-        for i, y in enumerate(pub_years):
-            if y == year:
-                tmp_citations.append(citations[i])
-        n = len(tmp_citations)
-        _, tmporder = sort_and_rank(tmp_citations, n)
-        # calculate h for the year
-        hy = 0
-        for i in range(n):
-            if tmporder[i] <= tmp_citations[i]:
-                hy += 1
-        havg += hy
-        yearcnt += 1
-    return havg / yearcnt  # average across all years
+def test_calculate_yearly_h_index():
+    assert Impact_Funcs.calculate_yearly_h_index(TEST_CITATION_DATA, TEST_YEAR_DATA) == 1.8
 
 
-# t-index (Singh 2022)
-def calculate_t_index_singh(citations, year_h, age: int, total_cites: int) -> float:
-    t_prime = math.log(10*age)
-    t = 0
-    for c in citations:
-        if c > 0:
-            t += -(c/total_cites) * math.log(c/total_cites)
-    return 4 * math.exp(t/t_prime) * year_h
+def test_calculate_t_index_singh():
+    yh = Impact_Funcs.calculate_yearly_h_index(TEST_CITATION_DATA, TEST_YEAR_DATA)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    age = max(TEST_YEAR_DATA) - min(TEST_YEAR_DATA) + 1
+    assert round(Impact_Funcs.calculate_t_index_singh(TEST_CITATION_DATA, yh, age, total_cites), 4) == 11.7336
 
 
-# fairness
-def calculate_fairness(total_cites: int, total_pubs: int, citations: list) -> float:
-    sumc2 = 0
-    for c in citations:
-        sumc2 += c**2
-    return total_cites**2 / (total_pubs * sumc2)
+def test_calculate_fairness():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_fairness(total_cites, total_pubs, TEST_CITATION_DATA), 4) == 0.3103
 
 
-# Zynergy (Prathap 2014)
-def calculate_zynergy(total_cites: int, total_pubs: int, fairness: float) -> float:
-    return ((fairness * total_cites**2) / total_pubs)**(1/3)
+def test_calculate_zynergy():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    fairness = Impact_Funcs.calculate_fairness(total_cites, total_pubs, TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_zynergy(total_cites, total_pubs, fairness), 4) == 7.0003
 
 
-# p20 (Gagolewski et al 2022)
-def calculate_p20(citations: list, total_cites: int, total_pubs: int) -> float:
-    sorted_cites = sorted(citations)
-    sorted_cites.reverse()
-    p = round(total_pubs / 5)  # index of top 20%
-    core = sum(sorted_cites[:p])
-    return core / total_cites
+def test_calculate_p20():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_p20(TEST_CITATION_DATA, total_cites, total_pubs), 4) == 0.6917
 
 
-# rmp (Gagolewski et al 2022)
-def calculate_rmp(mp: int) -> float:
-    return math.sqrt(mp)
+def test_rmp_calculate_rmp():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    mp = Impact_Funcs.calculate_maxprod_index(TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_rmp(mp), 4) == 8.4853
 
 
-# css (Gagolewski et al 2022)
-def calculate_css(citations: list) -> float:
-    s = sum(c**2 for c in citations)
-    return s**(1/3)
+def test_calculate_css():
+    assert round(Impact_Funcs.calculate_css(TEST_CITATION_DATA), 4) == 15.2735
 
 
-# csr (Gagolewski et al 2022)
-def calculate_csr(citations: list) -> float:
-    s = 0
-    for i, c in enumerate(citations):
-        s += 2*(i+0.5)*c  # it is i + 0.5 rather than i - 0.5 because i is counting from 0
-    return s**(1/3)
+def test_calculate_csr():
+    assert round(Impact_Funcs.calculate_csr(TEST_CITATION_DATA), 4) == 8.8237
 
 
-# slg (Gagolewski et al 2022)
-def calculate_slg(citations: list) -> float:
-    return sum(math.log10(c+1) for c in citations)
+def test_calculate_slg():
+    assert round(Impact_Funcs.calculate_slg(TEST_CITATION_DATA), 4) == 10.3935
 
 
-# 3DSI w/pr (Gagolewski et al 2022)
-def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
-    pr = (total_pubs - 2*csr**3/total_cites + 1) / (total_pubs - csr**3/total_cites)
-    return [total_pubs, total_cites, pr]
-"""
+def test_calculate_3dsi_pr():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    csr = Impact_Funcs.calculate_csr(TEST_CITATION_DATA)
+    v1, v2, v3 = Impact_Funcs.calculate_3dsi_pr(total_pubs, total_cites, csr)
+    assert v1 == total_pubs
+    assert v2 == total_cites
+    assert round(v3, 4) == 0.6155
+
 
 def test_calculate_total_collaborators():
     assert Impact_Funcs.calculate_total_collaborators(TEST_COAUTHORS) == 7

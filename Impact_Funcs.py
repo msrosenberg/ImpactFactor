@@ -1862,7 +1862,6 @@ def calculate_csr(citations: list) -> float:
     tmpcites.reverse()
     for i, c in enumerate(tmpcites):
         s += 2*(i+0.5)*c  # it is i + 0.5 rather than i - 0.5 because i is counting from 0
-        print(2*(i+0.5)*c)
     return s**(1/3)
 
 
