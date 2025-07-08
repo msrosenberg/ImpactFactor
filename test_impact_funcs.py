@@ -58,16 +58,14 @@ def test_citations_per_year():
     ages = Impact_Funcs.publication_ages(2018, TEST_YEAR_DATA)
     assert Impact_Funcs.citations_per_year(TEST_CITATION_DATA, ages) == answer
 
+
+def test_total_citations_each_year():
+    data = [0, 3, 13, 17, 26, 32, 41, 48, 53, 71, 83, 107]
+    answer = [0, 3, 10, 4, 9, 6, 9, 7, 5, 18, 12, 24]
+    assert Impact_Funcs.total_citations_each_year(data) == answer
+
+
 """
-
-
-def total_citations_each_year(total_cite_list: list) -> list:
-    tcpy = [total_cite_list[0]]
-    for i in range(1, len(total_cite_list)):
-        tcpy.append(total_cite_list[i] - total_cite_list[i - 1])
-    return tcpy
-
-
 def author_effort(measure: str, n_authors: int, author_pos: int = 1) -> float:
     if measure == "fractional":
         return 1 / n_authors
@@ -1241,74 +1239,77 @@ def calculate_th_index(citations: list, years: list, total_cites: int) -> int:
             if y == cur_y:
                 cite_sum += citations[i]
     return maxy - cur_y + 1
+"""
 
 
-# DCI-index: discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
-def calculate_dci_index(total_citations: list, logbase: int) -> list:
-    # create list of novel citation counts per year
-    yearly_cites = []
-    cold = None
-    for c in total_citations:
-        if cold is None:
-            yearly_cites.append(c)
-        else:
-            yearly_cites.append(c - cold)
-        cold = c
-    y = len(yearly_cites)
-    dci = []
-    for i, c in enumerate(yearly_cites):
-        if (i == 0) and (y == 1):
-            d = c
-        elif i == 0:
-            d = c / max(1.0, math.log(y-1, logbase))
-        elif i + 1 == y:
-            d = dci[i-1] + c
-        else:
-            d = dci[i-1] + c / max(1.0, math.log(y-(i+1), logbase))
-        dci.append(d)
-    return dci
+def test_calculate_dci_index():
+    cumulative_citations_per_year = [0, 3, 13, 17, 26, 32, 41, 48, 53, 71, 83, 107]
+    answer = [0, 0.903089987, 4.057738755, 5.391072088, 8.596936772, 10.91805362, 14.79414264, 18.29414264,
+              21.44879141, 39.44879141, 51.44879141, 75.44879141]
+    dci = Impact_Funcs.calculate_dci_index(cumulative_citations_per_year, 2)
+    for i, d in enumerate(dci):
+        assert round(d, 4) == round(answer[i], 4)
 
 
-# dDCI-index: dynamic discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
-def calculate_ddci_index(dci: list) -> float:
-    return dci[len(dci)-1]
+def test_calculate_ddci_index():
+    cumulative_citations_per_year = [0, 3, 13, 17, 26, 32, 41, 48, 53, 71, 83, 107]
+    dci = Impact_Funcs.calculate_dci_index(cumulative_citations_per_year, 2)
+    assert round(Impact_Funcs.calculate_ddci_index(dci), 4) == 75.4488
 
 
-# history h-index (Randic 2009)
-def calculate_history_h_index(citations: list, h: int) -> int:
-    tmp_cites = sorted(citations, reverse=True)
-    max_cites = max(tmp_cites)
-    hklist = [h]
-    k = 0
-    while max_cites > 2**k:
-        hk = 0
-        k += 1
-        for i, c in enumerate(tmp_cites):
-            if c >= (i+1) * 2**k:
-                hk = i+1
-        if hk != 0:
-            hklist.append(hk)
-    return sum(hklist)
+def test_calculate_history_h_index():
+    # data and answers from original publication
+    # the original paper has an error in their first example, with an extra 1 tacked onto the end of the vector
+    #  (this is clearly seen by comparing the values in Table 1 to the text on p. 814)
+    # the sum of values in the vector should be 77 and not 78
+    citations = [850, 444, 430, 270, 218, 106, 101, 96, 90, 84, 82, 50, 45, 44, 31, 27, 23, 23, 21, 20]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert Impact_Funcs.calculate_history_h_index(citations, h) == 77
+
+    citations = [20 for _ in range(20)]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert Impact_Funcs.calculate_history_h_index(citations, h) == 38
 
 
-# quality quotient (Randic 2009)
-def calculate_quality_quotient(h: int, history_h: int) -> float:
-    return history_h / h
+def test_calculate_quality_quotient():
+    # data and answers from original publication
+    # the original paper has an error in their first example, with an extra 1 tacked onto the end of the vector
+    #  (this is clearly seen by comparing the values in Table 1 to the text on p. 814)
+    # the sum of values in the vector should be 77 and not 78, making the quotient 3.85 and not 3.90
+    citations = [850, 444, 430, 270, 218, 106, 101, 96, 90, 84, 82, 50, 45, 44, 31, 27, 23, 23, 21, 20]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    hhist = Impact_Funcs.calculate_history_h_index(citations, h)
+    assert Impact_Funcs.calculate_quality_quotient(h, hhist) == 3.85
+
+    citations = [20 for _ in range(20)]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    hhist = Impact_Funcs.calculate_history_h_index(citations, h)
+    assert Impact_Funcs.calculate_quality_quotient(h, hhist) == 1.9
 
 
-# scientist's level (Mitropoulos 2009)
-def calculate_scientist_level(total_cites: int, total_pubs: int) -> list:
-    n = total_cites + total_pubs
-    v = math.floor(math.log10(n))
-    level = math.floor(n / 10**v)
-    return [v, level]
+def test_calculate_scientist_level():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    v, l = Impact_Funcs.calculate_scientist_level(total_cites, total_pubs)
+    assert v == 2
+    assert l == 1
+
+    # data and answers from original publication
+    v, l = Impact_Funcs.calculate_scientist_level(2288, 88)
+    assert v == 3
+    assert l == 2
 
 
-# non-integer scientist's level (Todeschini and Baccini 2016)
-def calculate_scientist_level_nonint(total_cites: int, total_pubs: int) -> float:
-    return math.log(math.sqrt(total_cites) + total_pubs)
+def test_calculate_scientist_level_nonint():
+    # data and answers from original publication
+    assert round(Impact_Funcs.calculate_scientist_level_nonint(2288, 91), 3) == 4.933
 
 
+"""
 # q-index (Bartneck and Kokkelmans 2011)
 def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
     data = []
@@ -1337,6 +1338,7 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
         q_index += q*s
     return q_index / len(citations)
 """
+
 
 def test_calculate_career_years_h_index_pub():
     # data and answer from original publication
@@ -1374,40 +1376,15 @@ def test_calculate_career_years_h_index_diffspeed():
 
 
 def test_calculate_collaborative_index():
-    pass
+    assert Impact_Funcs.calculate_collaborative_index(TEST_AUTHOR_CNT) == 2.5
 
 
 def test_calculate_degree_of_collaboration():
-    pass
+    assert Impact_Funcs.calculate_degree_of_collaboration(TEST_AUTHOR_CNT) == 0.6875
 
 
 def test_calculate_collaborative_coefficient():
-    pass
-
-
-"""
-# collaborative index (Lawani 1980)
-def calculate_collaborative_index(author_cnts: list) -> float:
-    maxa = max(author_cnts)
-    ci = 0
-    for a in range(1, maxa+1):
-        ci += a * author_cnts.count(a)
-    return ci / len(author_cnts)
-
-
-# degree of collaboration (Subramanyam 1983)
-def calculate_degree_of_collaboration(author_cnts: list) -> float:
-    return 1 - author_cnts.count(1)/len(author_cnts)
-
-
-# collaborative coefficient (Ajiferuke et al 1988)
-def calculate_collaborative_coefficient(author_cnts: list) -> float:
-    maxa = max(author_cnts)
-    cc = 0
-    for a in range(1, maxa+1):
-        cc += author_cnts.count(a) / a
-    return 1 - cc / len(author_cnts)
-"""
+    assert round(Impact_Funcs.calculate_collaborative_coefficient(TEST_AUTHOR_CNT), 4) == 0.4531
 
 
 def test_calculate_i10_index():
