@@ -579,9 +579,8 @@ def calculate_wu_wq(citations: list, rank_order: list, w: int) -> int:
         if citations[i] >= 10 * rank_order[i]:
             if citations[i] < 10 * (w + 1):
                 j += (10 * (w + 1) - citations[i])
-        else:
-            if rank_order[i] == w + 1:
-                j += 10 * (w + 1) - citations[i]
+        elif rank_order[i] == w + 1:
+            j += 10 * (w + 1) - citations[i]
     return j
 
 
