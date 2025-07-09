@@ -1161,8 +1161,8 @@ def calculate_indifference(total_cites: int, total_pubs: int) -> float:
 
 
 # impact vitality (Rons and Amez 2008, 2009)
-def calculate_impact_vitality(total_cite_list: list) -> Union[str, float]:
-    w = 5  # fix at a 5 year window
+def calculate_impact_vitality(total_cite_list: list, w: int = 5) -> Union[str, float]:
+    # w is the window to calculate over in years
     n = len(total_cite_list)
     if n < w:
         return "n/a"
