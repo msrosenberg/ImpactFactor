@@ -348,7 +348,7 @@ def calculate_chi_index(rec: int) -> float:
 
 
 # rec-index (Levene et al 2019)
-def calculate_rec_index(citations: list) -> float:
+def calculate_rec_index(citations: list) -> int:
     sorted_citations = sorted(citations, reverse=True)
     rec = 0
     for i, c in enumerate(sorted_citations):
@@ -831,11 +831,11 @@ def calculate_woeginger_w(citations: list, rank_order: list) -> int:
 
 
 # maxprod (Kosmulski 2007)
-def calculate_maxprod_index(citations: list, rank_order: list) -> int:
-    maxprod_index = 0
-    for i in range(len(citations)):
-        maxprod_index = max(maxprod_index, citations[i] * rank_order[i])
-    return maxprod_index
+# def calculate_maxprod_index(citations: list, rank_order: list) -> int:
+#     maxprod_index = 0
+#     for i in range(len(citations)):
+#         maxprod_index = max(maxprod_index, citations[i] * rank_order[i])
+#     return maxprod_index
 
 
 # j-index (Todeschini 2011)
