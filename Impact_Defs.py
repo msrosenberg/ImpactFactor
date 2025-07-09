@@ -8303,8 +8303,7 @@ def metric_apparent_h_index() -> Metric:
 
 # rec index (Levene et al 2019)
 def calculate_rec_index(metric_set: MetricSet) -> float:
-    sorted_citations = sorted(metric_set.citations, reverse=True)
-    return Impact_Funcs.calculate_rec_index(sorted_citations)
+    return Impact_Funcs.calculate_rec_index(metric_set.citations)
 
 
 def write_rec_index_desc_data(metric_set: MetricSet) -> list:

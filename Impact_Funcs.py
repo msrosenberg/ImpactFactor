@@ -348,7 +348,8 @@ def calculate_chi_index(rec: int) -> float:
 
 
 # rec-index (Levene et al 2019)
-def calculate_rec_index(sorted_citations: list) -> float:
+def calculate_rec_index(citations: list) -> float:
+    sorted_citations = sorted(citations, reverse=True)
     rec = 0
     for i, c in enumerate(sorted_citations):
         rec = max(rec, (i+1)*c)
