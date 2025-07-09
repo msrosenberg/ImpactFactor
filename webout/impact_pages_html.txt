@@ -1,6 +1,6 @@
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span class="fab fa-github"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-08.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2025-07-09.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -159,7 +159,7 @@
         <li><a href="impact_h_rate.html"><em>m-</em>quotient</a></li>
         <li><a href="impact_h_rate.html"><em>m-</em>ratio index</a></li>
         <li><a href="impact_max_cites.html">maximum citations</a></li>
-        <li><a href="impact_maxprod_index.html">maxprod-index</a></li>
+        <li><a href="impact_rec_index.html">maxprod-index</a></li>
         <li><a href="impact_c_p.html"><em>MCR</em></a></li>
         <li><a href="impact_c_p.html">mean citation rate</a></li>
         <li><a href="impact_c_p.html">mean citations per publication</a></li>
@@ -1936,25 +1936,6 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        </tr>
-        <tr>
-          <td class="first_col"><a href="impact_maxprod_index.html">maxprod-index</a></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>⚫</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>⚫</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>⚫</td>
         <td></td>
         <td></td>
         </tr>
@@ -7581,107 +7562,6 @@ impact_e_index.html
       <h2>References</h2>
       <ul>
         <li>Zhang, C.-T. (2009) The <em>e-</em>index, complementing the <em>h-</em>index for excess citations. <em>PLoS ONE</em> 4(5):e5429.</li>
-      </ul>
-    </div>
-@@@@
-impact_maxprod_index.html
-        var data_maxprod_index = google.visualization.arrayToDataTable([
-           ['Year', 'MP'],
-           ['1997', 2],
-           ['1998', 9],
-           ['1999', 26],
-           ['2000', 35],
-           ['2001', 60],
-           ['2002', 100],
-           ['2003', 128],
-           ['2004', 256],
-           ['2005', 360],
-           ['2006', 580],
-           ['2007', 770],
-           ['2008', 924],
-           ['2009', 1080],
-           ['2010', 1266],
-           ['2011', 1507],
-           ['2012', 1800],
-           ['2013', 2106],
-           ['2014', 2376],
-           ['2015', 2678],
-           ['2016', 3003],
-           ['2017', 3224],
-           ['2018', 3341],
-           ['2019', 3584],
-           ['2020', 3870],
-           ['2021', 4170],
-           ['2022', 4200],
-           ['2023', 4438],
-           ['2024', 4620],
-           ['2025', 4676],
-		]);
-
-        var options_maxprod_index = {
-		     legend: {position: 'none'},
-		     hAxis: {slantedText: true},
-        };
-
-        var chart_maxprod_index = new google.visualization.LineChart(document.getElementById('chart_maxprod_index_div'));
-        chart_maxprod_index.draw(data_maxprod_index, options_maxprod_index);
-
-@@
-    <div id="maxprod_index" class="metric_container">
-      <h2>maxprod-index</h2>
-      <h3>Properties</h3>
-        <ul>
-          <li><strong>Metric Type:</strong> Alternative Metric</li>
-          <li><strong>Publication Focus:</strong> All Publications</li>
-          <li><strong>Citation Focus:</strong> All Citations</li>
-        </ul>
-      <h3>Description</h3>
-      <p>The maxprod index (Kosmulski 2007) is the maximum value for the product between the number of citations for a publication and its rank, or,</p>$$MP=\max\left(i \times C_i\right).$$
-      <h3>History</h3>
-      <div class="metric_data_container">
-        <div class="table_container">
-          <table class="impact_table">
-            <tr><th>Year</th><th>MP</th></tr>
-            <tr><td class="cell_year">1997</td><td class="cell_value">2</td></tr>
-            <tr><td class="cell_year">1998</td><td class="cell_value">9</td></tr>
-            <tr><td class="cell_year">1999</td><td class="cell_value">26</td></tr>
-            <tr><td class="cell_year">2000</td><td class="cell_value">35</td></tr>
-            <tr><td class="cell_year">2001</td><td class="cell_value">60</td></tr>
-            <tr><td class="cell_year">2002</td><td class="cell_value">100</td></tr>
-            <tr><td class="cell_year">2003</td><td class="cell_value">128</td></tr>
-            <tr><td class="cell_year">2004</td><td class="cell_value">256</td></tr>
-            <tr><td class="cell_year">2005</td><td class="cell_value">360</td></tr>
-            <tr><td class="cell_year">2006</td><td class="cell_value">580</td></tr>
-            <tr><td class="cell_year">2007</td><td class="cell_value">770</td></tr>
-            <tr><td class="cell_year">2008</td><td class="cell_value">924</td></tr>
-            <tr><td class="cell_year">2009</td><td class="cell_value">1080</td></tr>
-            <tr><td class="cell_year">2010</td><td class="cell_value">1266</td></tr>
-            <tr><td class="cell_year">2011</td><td class="cell_value">1507</td></tr>
-            <tr><td class="cell_year">2012</td><td class="cell_value">1800</td></tr>
-            <tr><td class="cell_year">2013</td><td class="cell_value">2106</td></tr>
-            <tr><td class="cell_year">2014</td><td class="cell_value">2376</td></tr>
-            <tr><td class="cell_year">2015</td><td class="cell_value">2678</td></tr>
-            <tr><td class="cell_year">2016</td><td class="cell_value">3003</td></tr>
-            <tr><td class="cell_year">2017</td><td class="cell_value">3224</td></tr>
-            <tr><td class="cell_year">2018</td><td class="cell_value">3341</td></tr>
-            <tr><td class="cell_year">2019</td><td class="cell_value">3584</td></tr>
-            <tr><td class="cell_year">2020</td><td class="cell_value">3870</td></tr>
-            <tr><td class="cell_year">2021</td><td class="cell_value">4170</td></tr>
-            <tr><td class="cell_year">2022</td><td class="cell_value">4200</td></tr>
-            <tr><td class="cell_year">2023</td><td class="cell_value">4438</td></tr>
-            <tr><td class="cell_year">2024</td><td class="cell_value">4620</td></tr>
-            <tr><td class="cell_year">2025</td><td class="cell_value">4676</td></tr>
-          </table>
-        </div>
-        <div class="graph_container">
-          <div id="chart_maxprod_index_div" class="impact_chart"></div>
-        </div>
-      </div>
-    </div>
-    <div id="references">
-      <h2>References</h2>
-      <ul>
-        <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
       </ul>
     </div>
 @@@@
@@ -16983,7 +16863,7 @@ impact_rec_index.html
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of the largest square.</p><div id="chart_rec_index_desc_div" class="proportional_chart"></div>
+      <p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of the largest square. This index is identical to the maxprod-index previously suggested by Kosmulski (2007)</p><div id="chart_rec_index_desc_div" class="proportional_chart"></div>
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>59</td><td>26</td><td>16</td><td>11</td><td>11</td><td>10</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>59</td><td>52</td><td>48</td><td>44</td><td>55</td><td class="box">60</td><td>28</td><td>24</td><td>27</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></table><p>The largest rectangle which can fit under the citation curve has an area of 60.</p>
       <h3>History</h3>
@@ -17030,6 +16910,7 @@ impact_rec_index.html
     <div id="references">
       <h2>References</h2>
       <ul>
+        <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2019) Characterisation of the <em>χ</em>-index and the <em>rec-index</em>. <em>Scientometrics</em> 120:885-896.</li>
       </ul>
     </div>
@@ -20292,7 +20173,7 @@ impact_rmp_index.html
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. The <em>rmp</em>-index is simply the square-root of the <a href="#maxprod_index">maxprod-index</a>.
+      <p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to approximate the distribution of an author's citation vector, some of which were novel in a bibliometric context. The <em>rmp</em>-index is simply the square-root of the maxprod-index, a.k.a., the <a href="#rec_index"><em>rec-</em>index</a>.
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
