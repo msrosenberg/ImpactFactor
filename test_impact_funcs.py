@@ -12,7 +12,24 @@ TEST_COAUTHORS = ["Adams, D.C.;Gurevitch, J.", ".", "Adams, D.C.;Gurevitch, J.",
                   "Adams, D.C.", ".", "DiGiovanni, D.;Oden, N.L.;Sokal, R.R.", ".", "Adams, D.C.;Gurevitch, J.",
                   ".", "Oden, N.L.;Sokal, R.R.;Thomson, B.A.", "Oden, N.L.;Sokal, R.R.;Thomson, B.A.", ".",
                   "Kumar, S.", ".", "Kumar, S."]
-
+TEST_YEARLY_PUBCITE_DATA = [[0, 3, 13, 17, 26],  # cumulative citations each year for each publication
+                            [0, 1, 2, 7, 11],
+                            [1, 7, 19, 32, 59],
+                            [0, 0, 0, 0, 0],
+                            [1, 2, 2, 3, 3],
+                            [0, 0, 2, 8, 10],
+                            [None, 3, 5, 11, 16],
+                            [None, 0, 0, 0, 0],
+                            [None, None, 1, 3, 4],
+                            [None, None, None, 0, 3],
+                            [None, None, None, 4, 11],
+                            [None, None, None, 0, 1],
+                            [None, None, None, 0, 2],
+                            [None, None, None, 0, 0],
+                            [None, None, None, None, 0],
+                            [None, None, None, None, 1],
+                            [None, None, None, None, 1],
+                            [None, None, None, None, 0]]
 
 
 def test_rank():
@@ -65,40 +82,41 @@ def test_total_citations_each_year():
     assert Impact_Funcs.total_citations_each_year(data) == answer
 
 
-"""
-def author_effort(measure: str, n_authors: int, author_pos: int = 1) -> float:
-    if measure == "fractional":
-        return 1 / n_authors
-    elif measure == "proportional":
-        return 2*(n_authors + 1 - author_pos) / (n_authors*(n_authors + 1))
-    elif measure == "geometric":
-        return 2**(n_authors - author_pos) / (2**n_authors - 1)
-    elif measure == "harmonic":
-        if n_authors % 2 == 0:
-            d = 0
-        else:
-            d = 1 / (2*n_authors)
-        return (1 + abs(n_authors + 1 - 2*author_pos)) / ((n_authors**2)/2 + n_authors*(1 - d))
-    else:
-        return 1
+def test_author_effort():
+    assert Impact_Funcs.author_effort("fractional", 5) == 0.2
+    assert round(Impact_Funcs.author_effort("proportional", 5, 1), 4) == 0.3333
+    assert Impact_Funcs.author_effort("fractional", 5, 3) == 0.2
+    assert round(Impact_Funcs.author_effort("geometric", 5, 1), 4) == 0.5161
+    assert round(Impact_Funcs.author_effort("geometric", 5, 3), 4) == 0.1290
+    assert round(Impact_Funcs.author_effort("harmonic", 5, 1), 4) == 0.4380
+    assert round(Impact_Funcs.author_effort("harmonic", 5, 3), 4) == 0.1460
+    assert round(Impact_Funcs.author_effort("harmonic_aziz", 5, 1), 4) == 0.2941
+    assert round(Impact_Funcs.author_effort("harmonic_aziz", 5, 3), 4) == 0.0588
 
 
-def citations_per_pub_per_year(pub_list: list) -> list:
-    def convert_none(x) -> int:
-        if x is None:
-            return 0
-        else:
-            return x
-
-    # take total citations for each pub at each year and convert to yearly only totals
-    pub_cites = []
-    for p in pub_list:
-        cites = [convert_none(p[0])]
-        for i in range(1, len(p)):
-            cites.append(convert_none(p[i]) - convert_none(p[i-1]))
-        pub_cites.append(cites)
-    return pub_cites
-"""
+def test_citations_per_pub_per_year():
+    answer = [[0, 3, 10, 4, 9],  # citations each year for each publication
+              [0, 1, 1, 5, 4],
+              [1, 6, 12, 13, 27],
+              [0, 0, 0, 0, 0],
+              [1, 1, 0, 1, 0],
+              [0, 0, 2, 6, 2],
+              [0, 3, 2, 6, 5],
+              [0, 0, 0, 0, 0],
+              [0, 0, 1, 2, 1],
+              [0, 0, 0, 0, 3],
+              [0, 0, 0, 4, 7],
+              [0, 0, 0, 0, 1],
+              [0, 0, 0, 0, 2],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 1],
+              [0, 0, 0, 0, 1],
+              [0, 0, 0, 0, 0]]
+    x = Impact_Funcs.citations_per_pub_per_year(TEST_YEARLY_PUBCITE_DATA)
+    for r, row in enumerate(x):
+        for c, col in enumerate(row):
+            assert col == answer[r][c]
 
 
 def test_calculate_total_pubs():
@@ -161,11 +179,7 @@ def test_calculate_hg_index():
     assert round(Impact_Funcs.calculate_hg_index(h, g), 3) == 8.124
 
 
-
-
 """
-
-
 # total self citations
 def calculate_total_self_cites(self_citations: list) -> int:
     return sum(self_citations)
@@ -199,22 +213,20 @@ def calculate_sharpened_h_index(self_citations: list, all_citations: list) -> in
 # b-index (Brown 2009)
 def calculate_b_index(h: int, avg_rate: float) -> float:
     return h * avg_rate**0.75
-
-
-# real h-index (hr-index) (Guns and Rousseau 2009)
-def calculate_real_h_index(citations: list, rank_order: list, h: int) -> Number:
-    j = -1
-    k = -1
-    for i in range(len(citations)):
-        if rank_order[i] == h:
-            j = i
-        elif rank_order[i] == h + 1:
-            k = i
-    if (k != -1) and (j != -1):
-        return ((h + 1) * citations[j] - h * citations[k]) / (1 - citations[k] + citations[j])
-    else:
-        return h
 """
+
+
+def test_calculate_real_h_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_real_h_index(TEST_CITATION_DATA, rank_order, h), 4) == 6.4286
+
+    # data and answer from original publication
+    citations = [9, 7, 6, 5, 3, 0]
+    rank_order = [1, 2, 3, 4, 5, 6]
+    h = 4
+    assert round(Impact_Funcs.calculate_real_h_index(citations, rank_order, h), 2) == 4.33
+
 
 def test_calculate_a_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
@@ -236,18 +248,10 @@ def test_calculate_rm_index():
     assert round(Impact_Funcs.calculate_rm_index(TEST_CITATION_DATA, core), 4) == 5.0536
 
 
-"""
-
-# ar-index (Jin 2007; Jin et al 2007)
-def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: int) -> float:
-    pub_ages = publication_ages(year, pub_years)
-    cites_per_year = citations_per_year(citations, pub_ages)
-    ar_index = 0
-    for i in range(len(citations)):
-        if is_core[i]:
-            ar_index += cites_per_year[i]
-    return math.sqrt(ar_index)
-"""
+def test_calculate_ar_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    _, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_ar_index(TEST_CITATION_DATA, TEST_YEAR_DATA, core, 2001), 4) == 5.9624
 
 
 def test_calculate_m_index():
@@ -256,11 +260,12 @@ def test_calculate_m_index():
     assert Impact_Funcs.calculate_m_index(TEST_CITATION_DATA, core) == 12.5
 
 
-"""
-# q2-index (Cabrerizo et al 2010)
-def calculate_q2_index(h: int, m: float) -> float:
-    return math.sqrt(h * m)
-"""
+def test_calculate_q2_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    m = Impact_Funcs.calculate_m_index(TEST_CITATION_DATA, is_core)
+    assert round(Impact_Funcs.calculate_q2_index(h, m), 4) == 8.6603
+
 
 def test_calculate_k_index():
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
@@ -290,44 +295,28 @@ def test_calculate_weighted_h_index():
     assert Impact_Funcs.calculate_weighted_h_index(citations, cumulative_cites, rank_order, h) == 5
 
 
-"""
-# normalized h-index (Sidiropoulos et al 2007)
-def calculate_normalized_h_index(h: int, total_pubs: int) -> float:
-    return h / total_pubs
+def test_calculate_normalized_h_index():
+    assert Impact_Funcs.calculate_normalized_h_index(6, 16) == 6/16
 
 
-# apparent h-index (Mohammed et al 2020)
-def calculate_apparent_h_index(citations: list, h: int) -> float:
-    non_zero_cnt = 0
-    for i in range(len(citations)):
-        if citations[i] > 0:
-            non_zero_cnt += 1
-    return h * non_zero_cnt / len(citations)
+def test_calculate_apparent_h_index():
+    assert Impact_Funcs.calculate_apparent_h_index(TEST_CITATION_DATA, 6) == 6*13/16
 
 
-# chi-index (Fenner et al 2018)
-def calculate_chi_index(rec: int) -> float:
-    return math.sqrt(rec)
+def test_calculate_chi_index():
+    rec = Impact_Funcs.calculate_rec_index(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_chi_index(rec), 4) == 8.4853
 
 
-# rec-index (Levene et al 2019)
-def calculate_rec_index(sorted_citations: list) -> float:
-    rec = 0
-    for i, c in enumerate(sorted_citations):
-        rec = max(rec, (i+1)*c)
-    return rec
+def test_calculate_rec_index():
+    assert Impact_Funcs.calculate_rec_index(TEST_CITATION_DATA) == 72
 
 
-# reci-recp (Levene et al 2020)
-def calculate_reci_recp(sorted_citations: list, h: int) -> list:
-    reci, recp = h**2, h**2
-    for i, c in enumerate(sorted_citations):
-        if i + 1 <= h:
-            reci = max(reci, (i + 1)*c)
-        if i + 1 >= h:
-            recp = max(recp, (i + 1)*min(c, h))
-    return [reci, recp]
-"""
+def test_calculate_reci_recp():
+    reci, recp = Impact_Funcs.calculate_reci_recp(TEST_CITATION_DATA, 6)
+    assert reci == 72
+    assert recp == 36
+
 
 def test_calculate_v_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
@@ -343,35 +332,22 @@ def test_calculate_e_index():
     assert round(Impact_Funcs.calculate_e_index(core_total, h), 4) == 9.2195
 
 
-"""
-
-# rational h-index (Ruane and Tol 2008)
-def calculate_rational_h(citations: list, rank_order: list, is_core: list, h: int) -> float:
-    j = 0
-    for i in range(len(citations)):
-        if is_core[i]:
-            if citations[i] == h:
-                j += 1
-        else:
-            if rank_order[i] == h + 1:
-                j += (h + 1 - citations[i])
-    return h + 1 - j/(2*h + 1)
+def test_calculate_rational_h():
+    # data and answer from Guns and Rousseau 2009
+    citations = [9, 7, 6, 5, 3, 0]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_rational_h(citations, rank_order, is_core, h), 2) == 4.78
 
 
-# h2-upper index (Bornmann et al 2010)
-def calculate_h2_upper_index(total_cites: int, core_cites: int, h: int) -> float:
-    return 100 * (core_cites - h**2) / total_cites
-
-
-# h2-center index (Bornmann et al 2010)
-def calculate_h2_center_index(total_cites: int, h: int) -> float:
-    return 100 * h**2 / total_cites
-
-
-# h2-tail index (Bornmann et al 2010)
-def calculate_h2_tail_index(total_cites: int, core_cites: int) -> float:
-    return 100 * (total_cites - core_cites) / total_cites
-"""
+def test_h2_regions():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    core_cites = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    assert round(Impact_Funcs.calculate_h2_upper_index(total_cites, core_cites, h), 4) == 63.9098
+    assert round(Impact_Funcs.calculate_h2_center_index(total_cites, h), 4) == 27.0677
+    assert round(Impact_Funcs.calculate_h2_tail_index(total_cites, core_cites), 4) == 9.0226
 
 
 def test_calculate_tapered_h_index():
@@ -394,23 +370,17 @@ def test_calculate_tapered_h_index():
     assert round(Impact_Funcs.calculate_tapered_h_index(citations, rank), 2) == 12.46
 
 
-"""
-# pi-index (Vinkler 2009)
-def calculate_pi_index(total_pubs: int, citations: list, rank_order: list) -> float:
-    p_pi = math.floor(math.sqrt(total_pubs))
-    pi_index = 0
-    for i in range(len(citations)):
-        if rank_order[i] <= p_pi:
-            pi_index += citations[i]
-    return pi_index / 100
+def test_calculate_pi_index_rate():
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_pi_index(total_pubs, TEST_CITATION_DATA, rank_order) == 1.03
 
 
-# pi-rate
-def calculate_pi_rate(total_pubs: int, pi_index: float) -> float:
-    p_pi = math.floor(math.sqrt(total_pubs))
-    c_pi = pi_index * 100
-    return c_pi / p_pi
-"""
+def test_calculate_pi_rate():
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    pi_index = Impact_Funcs.calculate_pi_index(total_pubs, TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_pi_rate(total_pubs, pi_index), 4) == 25.75
 
 
 def test_calculate_prathap_p_index():
@@ -443,32 +413,16 @@ def test_calculate_fractional_p_index():
     assert round(Impact_Funcs.calculate_fractional_p_index(citations, n_authors), 2) == 8.30
 
 
-"""
-# harmonic p-index (Prathap 2011)
-def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: list) -> float:
-    ph = 0
-    nh = 0
-    for i in range(len(citations)):
-        num = 1 / author_pos[i]
-        denom = 0
-        for j in range(n_authors[i]):
-            denom += 1 / (j + 1)
-        r = num / denom
-        ph += r
-        nh += citations[i] * r
-    return (nh**2 / ph)**(1/3)
-"""
+def test_calculate_harmonic_p_index():
+    assert round(Impact_Funcs.calculate_harmonic_p_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                         TEST_AUTHOR_ORDER), 4) == 7.8709
 
 
-"""
-# hi-index (Batista et al 2006)
-def calculate_hi_index(is_core: list, n_authors: list, h: int) -> float:
-    suma = 0
-    for i in range(len(n_authors)):
-        if is_core[i]:
-            suma += n_authors[i]
-    return h**2 / suma
-"""
+def test_calculate_hi_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_hi_index(is_core, TEST_AUTHOR_CNT, h) == 2.25
+
 
 def test_calculate_pure_h_index_frac():
     # data and answers from original publication
@@ -542,140 +496,47 @@ def test_calculate_pure_h_index_prop():
     assert round(Impact_Funcs.calculate_pure_h_index_prop(is_core, n_authors, author_pos, h), 2) == 1.41
 
 
-"""
-# geometric pure h-index (Wan et al 2007)
-def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list, h: int) -> float:
-    sumg = 0
-    for i in range(len(is_core)):
-        if is_core[i]:
-            sumg += 1 / author_effort("geometric", n_authors[i], author_pos[i])
-    return h / math.sqrt(sumg / h)
-"""
-
-"""
-
-# Tol's f-index (Tol 2007)
-def calculate_tol_f_index(citations: list) -> int:
-    n = len(citations)
-    harmonic_means = [0 for _ in range(n)]
-    tmp_index, rank_order = sort_and_rank(citations, n)
-    for i in range(n):
-        if citations[tmp_index[n - i - 1]] > 0:
-            harmonic_means[i] = harmonic_means[i - 1] + 1 / citations[tmp_index[n - i - 1]]
-        else:
-            harmonic_means[i] = harmonic_means[i - 1]
-    f = 0
-    for i in range(n):
-        if rank_order[i] / harmonic_means[rank_order[i]-1] >= rank_order[i]:
-            if rank_order[i] > f:
-                f = rank_order[i]
-    return f
+def test_calculate_pure_h_index_geom():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert round(Impact_Funcs.calculate_pure_h_index_geom(is_core, TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER, h), 4) == 3.1334
 
 
-# Tol's t-index (Tol 2007)
-def calculate_tol_t_index(citations: list) -> int:
-    n = len(citations)
-    geometric_means = [0 for _ in range(n)]
-    tmp_index, rank_order = sort_and_rank(citations, n)
-    for i in range(n):
-        if citations[tmp_index[n - i - 1]] > 0:
-            geometric_means[i] = geometric_means[i - 1] + math.log(citations[tmp_index[n - i - 1]])
-        else:
-            geometric_means[i] = geometric_means[i - 1]
-    t = 0
-    for i in range(n):
-        if math.exp(geometric_means[rank_order[i]-1]/rank_order[i]) >= rank_order[i]:
-            if rank_order[i] > t:
-                t = rank_order[i]
-    return t
+def test_calculate_tol_f_index():
+    assert Impact_Funcs.calculate_tol_f_index(TEST_CITATION_DATA) == 7
 
 
-# mu-index (Glanzel and Schubert 2010)
-def calculate_mu_index(citations: list) -> int:
-    n = len(citations)
-    tmp_cites = [c for c in citations]
-    tmp_cites.sort(reverse=True)
-    # calculate medians
-    median_list = [calculate_median(tmp_cites[:i+1]) for i in range(0, n)]
-    mu_index = 0
-    for i in range(n):
-        if median_list[i] >= i+1:
-            mu_index = i+1
-    return mu_index
+def test_calculate_tol_t_index():
+    assert Impact_Funcs.calculate_tol_t_index(TEST_CITATION_DATA) == 8
 
 
-# Wu w-index (Wu 2010)
-def calculate_wu_w_index(citations: list, rank_order: list) -> int:
-    w = 0
-    for i in range(len(citations)):
-        if citations[i] >= 10 * rank_order[i]:
-            w += 1
-    return w
+def test_calculate_mu_index():
+    assert Impact_Funcs.calculate_mu_index(TEST_CITATION_DATA) == 9
 
 
-# Wu w-index (Wu 2010)
-def calculate_wu_wq(citations: list, rank_order: list, w: int) -> int:
-    j = 0
-    for i in range(len(citations)):
-        if citations[i] >= 10 * rank_order[i]:
-            if citations[i] < 10 * (w + 1):
-                j += (10 * (w + 1) - citations[i])
-        else:
-            if rank_order[i] == w + 1:
-                j += 10 * (w + 1) - citations[i]
-    return j
+def test_calculate_wu_w_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA, rank_order) == 2
 
 
-# Wohlin w-index (Wohlin 2009)
-def calculate_wohlin_w(citations: list, max_cites: int) -> float:
-    j = 5
-    nc = 1
-    while max_cites > j-1:
-        j *= 2
-        nc += 1
-    wval = []
-    wclass = []
-    for i in range(nc):
-        if i + 1 == 1:
-            wval.append(5)
-        else:
-            wval.append(2 * wval[i-1])
-        wclass.append(0)
-        for j in range(len(citations)):
-            if citations[j] >= wval[i]:
-                wclass[i] += 1
-    wohlin_w_index = 0
-    for i in range(nc):
-        wohlin_w_index += math.log(wval[i]) * wclass[i]
-    return wohlin_w_index
+def test_calculate_wu_wq():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    w = Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_wu_wq(TEST_CITATION_DATA, rank_order, w) == 16
 
 
-# contemporary h-index (Sidiropoulos et al 2007)
-def calculate_contemporary_h_index(citations: list, pub_years: list, year: int) -> int:
-    n = len(citations)
-    pub_ages = publication_ages(year, pub_years)
-    sc = [4*citations[i]/pub_ages[i] for i in range(n)]
-    _, tmporder = sort_and_rank(sc, n)
-    contemp_h_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            contemp_h_index += 1
-    return contemp_h_index
+def test_calculate_wohlin_w():
+    maxv = max(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_wohlin_w(TEST_CITATION_DATA, maxv), 4) == 28.5473
 
 
-# hpd-index (Kosmulski 2009)
-def calculate_hpd_index(citations: list, pub_years: list, year: int) -> int:
-    n = len(citations)
-    pub_ages = publication_ages(year, pub_years)
-    cites_per_year = citations_per_year(citations, pub_ages)
-    sc = [10*c for c in cites_per_year]
-    _, tmporder = sort_and_rank(sc, n)
-    hpd_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hpd_index += 1
-    return hpd_index
-"""
+def test_calculate_contemporary_h_index():
+    assert Impact_Funcs.calculate_contemporary_h_index(TEST_CITATION_DATA,TEST_YEAR_DATA, 2001) == 7
+
+
+def test_calculate_hpd_index():
+    assert Impact_Funcs.calculate_hpd_index(TEST_CITATION_DATA,TEST_YEAR_DATA, 2001) == 9
+
 
 def test_calculate_specific_impact_s_index():
     # data and answers from original publication
@@ -839,9 +700,6 @@ def calculate_woeginger_w(citations: list, rank_order: list) -> int:
     return w
 """
 
-def test_calculate_maxprod_index():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_maxprod_index(TEST_CITATION_DATA, rank_order) == 72
 
 
 """
@@ -1682,8 +1540,7 @@ def test_calculate_p20():
 
 
 def test_rmp_calculate_rmp():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    mp = Impact_Funcs.calculate_maxprod_index(TEST_CITATION_DATA, rank_order)
+    mp = Impact_Funcs.calculate_rec_index(TEST_CITATION_DATA)
     assert round(Impact_Funcs.calculate_rmp(mp), 4) == 8.4853
 
 
