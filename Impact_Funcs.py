@@ -338,10 +338,7 @@ def calculate_normalized_h_index(h: int, total_pubs: int) -> float:
 
 # apparent h-index (Mohammed et al 2020)
 def calculate_apparent_h_index(citations: list, h: int) -> float:
-    non_zero_cnt = 0
-    for i in range(len(citations)):
-        if citations[i] > 0:
-            non_zero_cnt += 1
+    non_zero_cnt = count_non_zero(citations)
     return h * non_zero_cnt / len(citations)
 
 
