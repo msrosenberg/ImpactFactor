@@ -2534,33 +2534,33 @@ def metric_e_index() -> Metric:
     m.properties["Core Publications"] = True
     return m
 
-
-# maxprod (Kosmulski 2007)
-def calculate_maxprod_index(metric_set: MetricSet) -> int:
-    citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_maxprod_index(citations, rank_order)
-
-
-def metric_maxprod_index() -> Metric:
-    m = Metric()
-    m.name = "maxprod-index"
-    m.full_name = "maxprod-index"
-    m.symbol = "MP"
-    m.metric_type = INT
-    equation = r"$$MP=\max\left(i \times C_i\right).$$"
-    m.description = "<p>The maxprod index (Kosmulski 2007) is the maximum value for the product between the number " \
-                    "of citations for a publication and its rank, or,</p>" + equation
-    m.references = ["Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an "
-                    "individual, and a comparison with the <em>h-</em>index. <em>International Journal of "
-                    "Scientometrics, Informetrics and Bibliometrics</em> 11(1):5."]
-    m.graph_type = LINE_CHART
-    m.calculate = calculate_maxprod_index
-    m.properties["Alternative Metric"] = True
-    m.properties["All Publications"] = True
-    m.properties["All Citations"] = True
-    return m
-
+#
+# # maxprod (Kosmulski 2007)
+# def calculate_maxprod_index(metric_set: MetricSet) -> int:
+#     citations = metric_set.citations
+#     rank_order = metric_set.rank_order
+#     return Impact_Funcs.calculate_maxprod_index(citations, rank_order)
+#
+#
+# def metric_maxprod_index() -> Metric:
+#     m = Metric()
+#     m.name = "maxprod-index"
+#     m.full_name = "maxprod-index"
+#     m.symbol = "MP"
+#     m.metric_type = INT
+#     equation = r"$$MP=\max\left(i \times C_i\right).$$"
+#     m.description = "<p>The maxprod index (Kosmulski 2007) is the maximum value for the product between the number " \
+#                     "of citations for a publication and its rank, or,</p>" + equation
+#     m.references = ["Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an "
+#                     "individual, and a comparison with the <em>h-</em>index. <em>International Journal of "
+#                     "Scientometrics, Informetrics and Bibliometrics</em> 11(1):5."]
+#     m.graph_type = LINE_CHART
+#     m.calculate = calculate_maxprod_index
+#     m.properties["Alternative Metric"] = True
+#     m.properties["All Publications"] = True
+#     m.properties["All Citations"] = True
+#     return m
+#
 
 # h2-upper index (Bornmann et al 2010)
 def calculate_h2_upper_index(metric_set: MetricSet) -> float:
@@ -8404,14 +8404,17 @@ def metric_rec_index() -> Metric:
     graph.name = "rec_index_desc"
     graph.data = write_rec_index_desc_data
     m.example = write_rec_index_example
-    m.synonyms = ["<em>rec-</em>index"]
+    m.synonyms = ["<em>rec-</em>index", "maxprod-index"]
     m.metric_type = INT
-    m.description = "<p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle " \
-                    "which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of " \
-                    "the largest square.</p><div id=\"chart_" + graph.name + "_div\" " \
-                    "class=\"proportional_chart\"></div>"
+    m.description = ('<p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle ' 
+                     'which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of ' 
+                     'the largest square. This index is identical to the maxprod-index previously suggested by '
+                     'Kosmulski (2007)</p><div id="chart_' + graph.name + '_div" class="proportional_chart"></div>')
     m.references = ["Levene, M., T. Fenner, and J. Bar-Ilan (2019) Characterisation of the <em>χ</em>-index and the "
-                    "<em>rec-index</em>. <em>Scientometrics</em> 120:885-896."]
+                    "<em>rec-index</em>. <em>Scientometrics</em> 120:885-896.",
+                    "Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an "
+                    "individual, and a comparison with the <em>h-</em>index. <em>International Journal of "
+                    "Scientometrics, Informetrics and Bibliometrics</em> 11(1):5."]
     m.graph_type = LINE_CHART
     m.calculate = calculate_rec_index
     m.properties["Alternative Metric"] = True
@@ -10323,7 +10326,7 @@ def metric_p20() -> Metric:
 
 # rmp (Gagolewski et al 2022)
 def calculate_rmp(metric_set: MetricSet) -> float:
-    mp = metric_set.metrics["maxprod-index"].value
+    mp = metric_set.metrics["rec-index"].value  # rec-index is equal to maxprod
     return Impact_Funcs.calculate_rmp(mp)
 
 
@@ -10336,8 +10339,8 @@ def metric_rmp() -> Metric:
     m.metric_type = FLOAT
     m.description = (f"<p>Gagolewski <em>et al.</em> (2022) suggested a variety of metrics that might be used to "
                      f"approximate the distribution of an author's citation vector, some of which were novel in "
-                     f"a bibliometric context. The <em>rmp</em>-index is simply the square-root of the "
-                     f"__maxprod-index__.")
+                     f"a bibliometric context. The <em>rmp</em>-index is simply the square-root of the maxprod-index, "
+                     f"a.k.a., the __rec-index__.")
 
     m.references = ["Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
                     "impact. <em>Scientometrics</em> 127:2829-2845."]
@@ -10976,7 +10979,7 @@ def load_all_metrics() -> list:
                    metric_pi_rate(),
                    metric_q2_index(),
                    metric_e_index(),
-                   metric_maxprod_index(),
+                   # metric_maxprod_index(),
                    metric_h2_upper_index(),
                    metric_h2_center_index(),
                    metric_h2_tail_index(),
