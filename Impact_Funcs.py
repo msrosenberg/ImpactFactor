@@ -357,7 +357,8 @@ def calculate_rec_index(citations: list) -> int:
 
 
 # reci-recp (Levene et al 2020)
-def calculate_reci_recp(sorted_citations: list, h: int) -> list:
+def calculate_reci_recp(citations: list, h: int) -> list:
+    sorted_citations = sorted(citations, reverse=True)
     reci, recp = h**2, h**2
     for i, c in enumerate(sorted_citations):
         if i + 1 <= h:

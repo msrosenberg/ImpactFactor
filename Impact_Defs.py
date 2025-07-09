@@ -8548,8 +8548,7 @@ def metric_chi_index() -> Metric:
 # rec index (Levene et al 2020)
 def calculate_reci_recp(metric_set: MetricSet) -> list:
     h = metric_set.metrics["h-index"].value
-    sorted_citations = sorted(metric_set.citations, reverse=True)
-    return Impact_Funcs.calculate_reci_recp(sorted_citations, h)
+    return Impact_Funcs.calculate_reci_recp(metric_set.citations, h)
 
 
 def write_reci_recp_example(metric_set: MetricSet) -> str:
