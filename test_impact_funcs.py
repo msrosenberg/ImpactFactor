@@ -545,35 +545,27 @@ def test_calculate_specific_impact_s_index():
     total_cites = 28
     assert round(Impact_Funcs.calculate_specific_impact_s_index(pub_years, year, total_cites), 2) == 2
 
-"""
-# hm-index/hF-index (Schreiber 2008)
-def calculate_hm_index(citations: list, n_authors: list) -> float:
-    hm_index = 0
-    cumulative_rank = 0
-    data = []
-    for i in range(len(citations)):
-        data.append([citations[i], n_authors[i]])
-    data.sort(reverse=True)
-    for d in data:
-        c = d[0]
-        a = d[1]
-        e = 1/a
-        cumulative_rank += e
-        if cumulative_rank <= c:
-            hm_index = cumulative_rank
-    return hm_index
+
+def test_calculate_hm_index():
+    # data and answers from Egghe 2008
+    citations = [10, 5, 3, 2, 1, 1]
+    nauthors = [2, 1, 3, 1, 1, 1]
+    assert round(Impact_Funcs.calculate_hm_index(citations, nauthors), 4) == 1.8333
+
+    assert Impact_Funcs.calculate_hm_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT) == 3
 
 
-# gF-index (fractional paper) (Egghe 2008)
-def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list, ) -> float:
-    gf_paper = 0
-    cumulative_rank = 0
-    for i in range(len(cumulative_citations)):
-        cumulative_rank += 1/n_authors[rank_order[i]-1]
-        if cumulative_rank**2 <= cumulative_citations[i]:
-            gf_paper = cumulative_rank
-    return gf_paper
-"""
+def test_calculate_gf_paper_index():
+    # data and answers from original publication
+    rank_order = [1, 2, 3, 4, 5, 6]
+    # citations = [10, 5, 3, 2, 1, 1]
+    nauthors = [2, 1, 3, 1, 1, 1]
+    cumulative = [10, 15, 18, 20, 21, 22]
+    assert round(Impact_Funcs.calculate_gf_paper_index(cumulative, rank_order, nauthors), 4) == 3.8333
+
+    rank_order, cumulative = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_gf_paper_index(cumulative, rank_order, TEST_AUTHOR_CNT), 2) == 8.75
+
 
 def test_calculate_multidimensional_h_index():
     # data and answers from original publication
@@ -594,175 +586,122 @@ def test_calculate_two_sided_h():
     assert Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
 
 
+def test_calculate_normal_hi_index():
+    assert Impact_Funcs.calculate_normal_hi_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT) == 4
+
+
+def test_calculate_gf_cite_index():
+    assert Impact_Funcs.calculate_gf_cite_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT) == 7
+
+
+def test_calculate_position_weighted_h_index():
+    assert Impact_Funcs.calculate_position_weighted_h_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                            TEST_AUTHOR_ORDER) == 3
+
+
+def test_calculate_prop_weight_cite_agg():
+    assert round(Impact_Funcs.calculate_prop_weight_cite_agg(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                             TEST_AUTHOR_ORDER), 4) == 63.0667
+
+
+def test_calculate_prop_weight_cite_h_cut():
+    assert round(Impact_Funcs.calculate_prop_weight_cite_h_cut(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                               TEST_AUTHOR_ORDER), 4) == 48
+
+
+def test_calculate_frac_weight_cite_agg():
+    assert round(Impact_Funcs.calculate_frac_weight_cite_agg(TEST_CITATION_DATA, TEST_AUTHOR_CNT), 4) == 54.4167
+
+
+
+def test_calculate_frac_weight_cite_h_cut():
+    assert round(Impact_Funcs.calculate_frac_weight_cite_h_cut(TEST_CITATION_DATA, TEST_AUTHOR_CNT), 4) == 40.5
+
+
+def test_calculate_woeginger_w():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_woeginger_w(TEST_CITATION_DATA, rank_order) == 9
+
+
+def test_calculate_todeschini_j_index():
+    # data and answers from original publication
+    citations = [10, 7, 6, 4]
+    h = 4
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 4) == 4.2007
+
+    citations = [15, 4, 4, 4]
+    h = 4
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 4) == 4.1242
+
+    h = 1
+    citations = [1]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 1.00
+    citations = [2]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 1.09
+    citations = [10]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 1.26
+    citations = [100]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 1.52
+    citations = [1000]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.00
+
+    h = 2
+    citations = [2, 2]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.00
+    citations = [4, 2]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.09
+    citations = [98, 2]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.33
+    citations = [75, 25]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.59
+    citations = [50, 50]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 2.66
+
+    h = 5
+    citations = [5, 5, 5, 5, 5]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.00
+    citations = [100, 5, 5, 5, 5]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.26
+    citations = [60, 15, 15, 15, 15]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.76
+    citations = [24, 24, 24, 24, 24]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.82
+    citations = [45, 30, 20, 15, 10]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.80
+
+    citations = [10000, 5, 5, 5, 5, 4, 3, 2, 1, 0]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 6.00
+    citations = [10, 5, 5, 5, 5, 4, 3, 2, 1, 0]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.09
+    citations = [10, 5, 5, 5, 5, 0 , 0 , 0, 0, 0]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.09
+    citations = [30, 30, 30, 30, 30, 4, 4, 2, 0, 0]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 6.05
+    citations = [50, 30, 20, 15, 5, 4, 4, 2, 0, 0]
+    assert round(Impact_Funcs.calculate_todeschini_j_index(citations, h), 2) == 5.76
+
+
+def test_calculate_adapt_pure_h_index_frac():
+    # data and answers from original publication
+    citations = [10, 10, 8, 8, 6, 6, 5, 5, 4, 4, 4]
+    n_authors = [7, 7, 5, 5, 4, 4, 1, 1, 1, 2, 2]
+    assert round(Impact_Funcs.calculate_adapt_pure_h_index_frac(citations, n_authors), 2) == 3.82
+
+
+def test_calculate_adapt_pure_h_index_prop():
+    # data and answers from original publication
+    citations = [10, 10, 8, 8, 6, 6, 5, 5, 4, 4, 4]
+    n_authors = [5, 4, 3, 4, 3, 4, 1, 1, 1, 3, 3]
+    a_pos = [4, 4, 3, 4, 3, 4, 1, 1, 1, 2, 3]
+    assert round(Impact_Funcs.calculate_adapt_pure_h_index_prop(citations, n_authors, a_pos), 2) == 3.74
+
+
+def test_calculate_adapt_pure_h_index_geom():
+    assert round(Impact_Funcs.calculate_adapt_pure_h_index_geom(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                                TEST_AUTHOR_ORDER), 4) == 5.0970
+
+
 """
-
-# normalized hi-index/hf-index (Wohlin 2009)
-def calculate_normal_hi_index(citations: list, n_authors: list) -> int:
-    n = len(citations)
-    sc = [citations[i] / n_authors[i] for i in range(n)]
-    _, tmporder = sort_and_rank(sc, n)
-    hi_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hi_index += 1
-    return hi_index
-
-
-# gf-index (Egghe 2008)
-def calculate_gf_cite_index(citations: list, n_authors: list) -> int:
-    n = len(citations)
-    sc = [citations[i] / n_authors[i] for i in range(n)]
-    tmpindex, tmporder = sort_and_rank(sc, n)
-    acum = [sc[tmpindex[n-1]]]
-    for i in range(1, n):
-        acum.append(acum[i-1] + sc[tmpindex[n-i-1]])
-    gf_cite = 0
-    for i in range(n):
-        if tmporder[i]**2 <= acum[tmporder[i]-1]:
-            gf_cite += 1
-    return gf_cite
-
-
-# position-weighted h-index (Abbas 2011)
-def calculate_position_weighted_h_index(citations: list, n_authors: list, author_pos: list) -> int:
-    n = len(citations)
-    sc = []
-    totalsum = 0
-    for i in range(n):
-        w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
-        sc.append(citations[i] * w)
-        totalsum += citations[i] * w
-    _, tmporder = sort_and_rank(sc, n)
-    wh = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            wh += 1
-    return wh
-
-
-# proportional weighted citation aggregate (Abbas 2011)
-def calculate_prop_weight_cite_agg(citations: list, n_authors: list, author_pos: list) -> float:
-    weighted_aggregate = 0
-    for i in range(len(citations)):
-        w = author_effort("proportional", n_authors[i], author_pos[i])
-        weighted_aggregate += citations[i] * w
-    return weighted_aggregate
-
-
-# proportional weighted citation h-cut (Abbas 2011)
-def calculate_prop_weight_cite_h_cut(citations: list, n_authors: list, author_pos: list) -> float:
-    n = len(citations)
-    sc = []
-    for i in range(n):
-        w = author_effort("proportional", n_authors[i], author_pos[i])
-        sc.append(citations[i] * w)
-    _, tmporder = sort_and_rank(sc, n)
-    hcut = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hcut += sc[i]
-    return hcut
-
-
-# fractional weighted citation aggregate (Abbas 2011)
-def calculate_frac_weight_cite_agg(citations: list, n_authors: list) -> float:
-    weighted_aggregate = 0
-    for i in range(len(citations)):
-        weighted_aggregate += citations[i] / n_authors[i]
-    return weighted_aggregate
-
-
-# fractional weighted citation h-cut (Abbas 2011)
-def calculate_frac_weight_cite_h_cut(citations: list, n_authors: list) -> float:
-    n = len(citations)
-    sc = []
-    for i in range(n):
-        sc.append(citations[i] / n_authors[i])
-    _, tmporder = sort_and_rank(sc, n)
-    hcut = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hcut += sc[i]
-    return hcut
-
-
-# Woeginger w-index (Woeginger 2008)
-def calculate_woeginger_w(citations: list, rank_order: list) -> int:
-    w = 0
-    for j in range(len(citations)):
-        tmp_good = True
-        for i in range(len(rank_order)):
-            if rank_order[i] <= j:
-                if citations[i] < j - rank_order[i] + 1:
-                    tmp_good = False
-        if tmp_good:
-            w = j
-    return w
-"""
-
-
-
-"""
-# j-index (Todeschini 2011)
-def calculate_todeschini_j_index(citations: list, h: int) -> float:
-    # constants for j-index
-    ndhk = 12
-    dhk = (500, 250, 100, 50, 25, 10, 5, 4, 3, 2, 1.5, 1.25)
-
-    sumw = 0
-    sumwdhk = 0
-    for j in range(ndhk):
-        sumw += 1 / (j + 1)
-        c = 0
-        for i in range(len(citations)):
-            if citations[i] >= h * dhk[j]:
-                c += 1
-        sumwdhk += c / (j + 1)
-    return h + sumwdhk/sumw
-
-
-# (general) adapted pure h-index (Chai et al 2008)
-def calculate_adapt_pure_h_index(sc: list) -> float:
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    j = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            j += 1
-    cite_e = 0
-    cite_e1 = 0
-    for i in range(n):
-        if tmporder[i] == j:
-            cite_e = sc[i]
-        elif tmporder[i] == j + 1:
-            cite_e1 = sc[i]
-    return (((j + 1)*cite_e) - (j*cite_e1)) / (cite_e - cite_e1 + 1)
-
-
-# fractional adapted pure h-index (Chai et al 2008)
-def calculate_adapt_pure_h_index_frac(citations: list, n_authors: list) -> float:
-    sc = [citations[i] / math.sqrt(n_authors[i]) for i in range(len(citations))]
-    return calculate_adapt_pure_h_index(sc)
-
-
-# adapted pure h-index w/proportional author credit (Chai et al 2008)
-def calculate_adapt_pure_h_index_prop(citations: list, n_authors: list, author_pos: list) -> float:
-    sc = []
-    for i in range(len(citations)):
-        ea = author_effort("proportional", n_authors[i], author_pos[i])
-        sc.append(citations[i] / math.sqrt(1/ea))
-    return calculate_adapt_pure_h_index(sc)
-
-
-# adapted pure h-index w/geometric author credit (Chai et al 2008)
-def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_pos: list) -> float:
-    sc = []
-    for i in range(len(citations)):
-        ea = author_effort("geometric", n_authors[i], author_pos[i])
-        sc.append(citations[i] / math.sqrt(1/ea))
-    return calculate_adapt_pure_h_index(sc)
-
-
 # profit p-index (Aziz and Rozing 2013)
 def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list) -> float:
     mon_equiv = []
