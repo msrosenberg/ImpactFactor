@@ -5949,9 +5949,9 @@ def calculate_dynamic_h_type_index(metric_set: MetricSet) -> float:
     metric_list = metric_set.parent_list
     metric_pos = metric_list.index(metric_set)
     rational_h_list = [m.metrics["rational h-index"].value for m in metric_list[:metric_pos + 1]]
-    date_list = [m.date for m in metric_list[:metric_pos + 1]]
+    year_list = [m.year() for m in metric_list[:metric_pos + 1]]
     r = metric_set.metrics["R-index"].value
-    return Impact_Funcs.calculate_dynamic_h_type_index(rational_h_list, date_list, r)
+    return Impact_Funcs.calculate_dynamic_h_type_index(rational_h_list, year_list, r)
 
 
 def metric_dynamic_h_type_index() -> Metric:

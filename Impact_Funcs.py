@@ -1192,27 +1192,67 @@ def calculate_least_squares_h_rate(years: list, hs: list) -> float:
 
 
 # dynamic h-type-index (Rousseau and Ye 2008)
-def calculate_dynamic_h_type_index(rational_h_list: list, date_list: list, r: float) -> Union[str, float]:
-    def date_to_int(dd: datetime.date) -> int:
-        return datetime.date.toordinal(dd)
-
+def calculate_dynamic_h_type_index(rational_h_list: list, year_list: list, r: float) -> Union[str, float]:
     if len(rational_h_list) == 1:
         return "n/a"
     else:
         n = len(rational_h_list)
         avg_h = sum(rational_h_list) / n
-        avg_d = 0
-        for d in date_list:
-            avg_d += date_to_int(d)
-        avg_d /= n
+        avg_y = sum(year_list)/n
+
         sumxy = 0
         sumx2 = 0
         for i in range(n):
-            d = date_to_int(date_list[i]) - avg_d
-            sumxy += (rational_h_list[i] - avg_h)*d
-            sumx2 += d**2
-        return 365 * r * (sumxy / sumx2)
+            y = year_list[i] - avg_y
+            sumxy += (rational_h_list[i] - avg_h)*y
+            sumx2 += y**2
+        return r * (sumxy / sumx2)
 
+
+"""
+
+There's the obvious approach of proceeding based on taking the logarithm of both sides of your regression formula:
+
+lny=ln(axb)
+
+lny=lna+blnx
+
+which can be seen to be an expression of the form
+
+v=k+bu
+
+where v=lny
+, u=lnx
+, and k=lna
+.
+
+Now a linear regression in the variables v
+ and u
+ applies.
+
+"""
+
+
+# def calculate_dynamic_h_type_index(rational_h_list: list, date_list: list, r: float) -> Union[str, float]:
+#     def date_to_int(dd: datetime.date) -> int:
+#         return datetime.date.toordinal(dd)
+#
+#     if len(rational_h_list) == 1:
+#         return "n/a"
+#     else:
+#         n = len(rational_h_list)
+#         avg_h = sum(rational_h_list) / n
+#         avg_d = 0
+#         for d in date_list:
+#             avg_d += date_to_int(d)
+#         avg_d /= n
+#         sumxy = 0
+#         sumx2 = 0
+#         for i in range(n):
+#             d = date_to_int(date_list[i]) - avg_d
+#             sumxy += (rational_h_list[i] - avg_h)*d
+#             sumx2 += d**2
+#         return 365 * r * (sumxy / sumx2)
 
 # trend h-index
 def calculate_trend_h_index(pub_list: list) -> int:
