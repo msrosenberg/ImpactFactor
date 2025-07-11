@@ -151,7 +151,7 @@ def test_calculate_h_index():
 def test_calculate_h_core():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     _, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    assert Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, core) == sum((9, 9, 11, 14, 36, 42))  # 121
+    assert Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, core) == sum((9, 9, 11, 14, 36, 42))  # 121
 
 
 def test_calculate_hirsch_min_const():
@@ -222,14 +222,14 @@ def test_calculate_real_h_index():
 def test_calculate_a_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, core)
+    core_total = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, core)
     assert Impact_Funcs.calculate_a_index(core_total, h) == 121/6
 
 
 def test_calculate_r_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, core)
+    core_total = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, core)
     assert Impact_Funcs.calculate_r_index(core_total) == 11  # square-root of 121
 
 
@@ -263,7 +263,7 @@ def test_calculate_k_index():
     total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     _, core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_cites = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, core)
+    core_cites = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, core)
     assert round(Impact_Funcs.calculate_k_index(total_cites, core_cites, total_pubs), 5) == 83.81771
 
     # data and answer from original paper by Ye and Rousseau (2010)
@@ -319,7 +319,7 @@ def test_calculate_v_index():
 def test_calculate_e_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    core_total = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
     assert round(Impact_Funcs.calculate_e_index(core_total, h), 4) == 9.2195
 
 
@@ -335,7 +335,7 @@ def test_h2_regions():
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_cites = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    core_cites = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
     assert round(Impact_Funcs.calculate_h2_upper_index(total_cites, core_cites, h), 4) == 63.9098
     assert round(Impact_Funcs.calculate_h2_center_index(total_cites, h), 4) == 27.0677
     assert round(Impact_Funcs.calculate_h2_tail_index(total_cites, core_cites), 4) == 9.0226
@@ -506,14 +506,12 @@ def test_calculate_mu_index():
 
 
 def test_calculate_wu_w_index():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA, rank_order) == 2
+    assert Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA) == 2
 
 
 def test_calculate_wu_wq():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    w = Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA, rank_order)
-    assert Impact_Funcs.calculate_wu_wq(TEST_CITATION_DATA, rank_order, w) == 16
+    w = Impact_Funcs.calculate_wu_w_index(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_wu_wq(TEST_CITATION_DATA, w) == 16
 
 
 def test_calculate_wohlin_w():
@@ -865,7 +863,7 @@ def test_calculate_t_index_h_mixed():
     total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     cites_per_pub = Impact_Funcs.calculate_mean_cites(total_cites, total_pubs)
-    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    core_total = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
     r = Impact_Funcs.calculate_r_index(core_total)
     assert round(Impact_Funcs.calculate_t_index_h_mixed(h, cites_per_pub, r), 4) == 273.9276
 
@@ -1149,7 +1147,7 @@ def test_calculate_academic_trace():
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    total_core = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    total_core = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
     assert round(Impact_Funcs.calculate_academic_trace(TEST_CITATION_DATA, total_cites, total_core, h), 4) == 57.0935
 
 
@@ -1259,7 +1257,7 @@ def test_calculate_year_based_emp_cites():
 def test_calculate_h_prime():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    core_cites = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    core_cites = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
     total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     e = Impact_Funcs.calculate_e_index(core_cites, h)
     assert round(Impact_Funcs.calculate_h_prime(h, e, total_cites, core_cites), 3) == 15.969
@@ -1281,13 +1279,13 @@ def test_calculate_k_index_anania_caruso():
     citations = [20, 16, 15, 15, 15, 10, 6, 6, 6, 2, 2, 2, 1, 1, 0, 0]
     rank_order, _ = Impact_Funcs.calculate_ranks(citations)
     h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    core_total = Impact_Funcs.calculate_h_core(citations, is_core)
+    core_total = Impact_Funcs.calculate_sum_h_core(citations, is_core)
     assert round(Impact_Funcs.calculate_k_index_anania_caruso(h, core_total), 2) == 6.60
 
     citations = [9, 8, 8, 7, 7, 6, 3, 2, 2, 1, 1, 0]
     rank_order, _ = Impact_Funcs.calculate_ranks(citations)
     h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    core_total = Impact_Funcs.calculate_h_core(citations, is_core)
+    core_total = Impact_Funcs.calculate_sum_h_core(citations, is_core)
     assert round(Impact_Funcs.calculate_k_index_anania_caruso(h, core_total), 2) == 6.20
 
 

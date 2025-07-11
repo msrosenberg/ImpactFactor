@@ -591,7 +591,7 @@ def metric_h_index() -> Metric:
 def calculate_h_core(metric_set: MetricSet) -> int:
     citations = metric_set.citations
     is_core = metric_set.is_core
-    return Impact_Funcs.calculate_h_core(citations, is_core)
+    return Impact_Funcs.calculate_sum_h_core(citations, is_core)
 
 
 def write_h_core_example(metric_set: MetricSet) -> str:
@@ -1329,8 +1329,7 @@ def metric_woeginger_w_index() -> Metric:
 # Wu w-index (Wu 2010)
 def calculate_wu_w_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_wu_w_index(citations, rank_order)
+    return Impact_Funcs.calculate_wu_w_index(citations)
 
 
 def write_wu_w_index_desc_data(metric_set: MetricSet) -> list:
@@ -1446,9 +1445,8 @@ def metric_wu_w_index() -> Metric:
 # Wu w(q) (Wu 2010)
 def calculate_wu_wq(metric_set: MetricSet) -> int:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
     w = metric_set.metrics["Wu w-index"].value
-    return Impact_Funcs.calculate_wu_wq(citations, rank_order, w)
+    return Impact_Funcs.calculate_wu_wq(citations, w)
 
 
 def metric_wu_wq() -> Metric:

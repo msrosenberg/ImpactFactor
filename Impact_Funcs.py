@@ -6,7 +6,6 @@ from generic data, without the reliance on the special class structure of the gr
 """
 
 import math
-import datetime
 from typing import Tuple, Union, Optional
 import scipy
 import itertools
@@ -28,9 +27,7 @@ def sort_and_rank(sort_list: list, n: int) -> Tuple[list, list]:
     tmprank = rank(n, tmpindex)
     # reverse so #1 is largest
     # NOTE: the ranks in rank_order go from 1 to n, rather than 0 to n-1
-    rank_order = []
-    for i in range(n):
-        rank_order.append(n - tmprank[i])
+    rank_order = [n - tmprank[i] for i in range(n)]
     return tmpindex, rank_order
 
 
@@ -48,7 +45,6 @@ def calculate_median(values: list) -> Number:
 def calculate_ranks(citations: list) -> Tuple[list, list]:
     n = len(citations)
     cumulative_citations = [0 for _ in range(n)]
-
     # sort by number of citations
     tmp_index, rank_order = sort_and_rank(citations, n)
     for i in range(n):
@@ -140,7 +136,7 @@ def calculate_total_cites(citations: list) -> int:
 
 
 # Maximum Citations
-def calculate_max_cites(citations) -> int:
+def calculate_max_cites(citations: list) -> int:
     return max(citations)
 
 
@@ -171,7 +167,7 @@ def calculate_h_index(citations: list, rank_order: list) -> Tuple[int, list]:
 
 # Hirsch core citations (Hirsch )
 # this is the sum of the citations within the core
-def calculate_h_core(citations: list, is_core: list) -> int:
+def calculate_sum_h_core(citations: list, is_core: list) -> int:
     core_cites = 0
     for i in range(len(citations)):
         if is_core[i]:
@@ -418,9 +414,7 @@ def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
             ht[i] = rank_order[i] / (2*rank_order[i] - 1)
             for j in range(rank_order[i]+1, citations[i]+1):
                 ht[i] += 1 / (2*j - 1)
-    tapered_h_index = 0
-    for i in range(n):
-        tapered_h_index += ht[i]
+    tapered_h_index = sum(ht)
     return tapered_h_index
 
 
@@ -466,11 +460,6 @@ def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: lis
     ph = 0
     nh = 0
     for i in range(len(citations)):
-        # num = 1 / author_pos[i]
-        # denom = 0
-        # for j in range(n_authors[i]):
-        #     denom += 1 / (j + 1)
-        # r = num / denom
         r = author_effort("harmonic", n_authors[i], author_pos[i])
         ph += r
         nh += citations[i] * r
@@ -536,7 +525,11 @@ def calculate_tol_t_index(citations: list) -> int:
     n = len(citations)
     geometric_means = [0 for _ in range(n)]
     tmp_index, rank_order = sort_and_rank(citations, n)
-    for i in range(n):
+    if citations[tmp_index[n - 1]] > 0:
+        geometric_means[0] = math.log(citations[tmp_index[n - 1]])
+    else:
+        geometric_means[0] = 0
+    for i in range(1, n):
         if citations[tmp_index[n - i - 1]] > 0:
             geometric_means[i] = geometric_means[i - 1] + math.log(citations[tmp_index[n - i - 1]])
         else:
@@ -564,23 +557,25 @@ def calculate_mu_index(citations: list) -> int:
 
 
 # Wu w-index (Wu 2010)
-def calculate_wu_w_index(citations: list, rank_order: list) -> int:
+def calculate_wu_w_index(citations: list) -> int:
+    sorted_citations = sorted(citations, reverse=True)
     w = 0
-    for i in range(len(citations)):
-        if citations[i] >= 10 * rank_order[i]:
+    for i in range(len(sorted_citations)):
+        if sorted_citations[i] >= 10 * (i+1):
             w += 1
     return w
 
 
 # Wu w-index (Wu 2010)
-def calculate_wu_wq(citations: list, rank_order: list, w: int) -> int:
+def calculate_wu_wq(citations: list, w: int) -> int:
+    sorted_citations = sorted(citations, reverse=True)
     j = 0
-    for i in range(len(citations)):
-        if citations[i] >= 10 * rank_order[i]:
-            if citations[i] < 10 * (w + 1):
-                j += (10 * (w + 1) - citations[i])
-        elif rank_order[i] == w + 1:
-            j += 10 * (w + 1) - citations[i]
+    for i in range(len(sorted_citations)):
+        if sorted_citations[i] >= 10 * (i+1):
+            if sorted_citations[i] < 10 * (w + 1):
+                j += (10 * (w + 1) - sorted_citations[i])
+        elif i == w:
+            j += 10 * (w + 1) - sorted_citations[i]
     return j
 
 
