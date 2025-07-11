@@ -1316,17 +1316,14 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
     for i, d in enumerate(data):
         c = d[0]
         s = d[1]
-        if c <= h:
-            if i + 1 <= h:
+        if i+1 >= h:
+            if i + 1 == h:
                 a = 0
             elif c == data[i-1][0]:
                 a = prev_a + 1
             else:
                 a = prev_a
-            if i + 1 < h:
-                q = 0
-            else:
-                q = 1 / ((i+1) + 1 - a - h)
+            q = 1 / ((i + 1) + 1 - a - h)
             prev_a = a
         else:
             q = 0
