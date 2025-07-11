@@ -1124,7 +1124,7 @@ def calculate_s_index_h_mixed(h: int, cpp: float) -> float:
 
 
 # h-mixed synthetic indices (S-index and T-index) - Ye (2010)
-def calculate_t_index_h_mixed(h: int, cpp: float, r: int) -> float:
+def calculate_t_index_h_mixed(h: int, cpp: float, r: float) -> float:
     return 100 * math.log10(h * cpp * r)
 
 
@@ -1165,16 +1165,13 @@ def calculate_impact_vitality(total_cite_list: list, w: int = 5) -> Union[str, f
         return "n/a"
     else:
         # calculate denominator of equation
-        d = 0
-        for i in range(1, w+1):
-            d += 1 / i
-        d -= 1
+        d = sum(1/i for i in range(1, w+1)) - 1
 
         # calculate numerator and denominator of numerator of equation
         total_cites_per_year = total_citations_each_year(total_cite_list)
         nn = 0
         nd = 0
-        for i in range(1, w+1):
+        for i in range(1, w+1):  # sum over the last w years
             nd += total_cites_per_year[n - i]
             nn += total_cites_per_year[n - i] / i
 
