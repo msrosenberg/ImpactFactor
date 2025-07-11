@@ -701,57 +701,37 @@ def test_calculate_adapt_pure_h_index_geom():
                                                                 TEST_AUTHOR_ORDER), 4) == 5.0970
 
 
-"""
-# profit p-index (Aziz and Rozing 2013)
-def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list) -> float:
-    mon_equiv = []
-    for i in range(len(citations)):
-        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
-    monograph_equiv = sum(mon_equiv)
-    return 1 - monograph_equiv / len(citations)
+def test_calculate_profit_p_index():
+    assert round(Impact_Funcs.calculate_profit_p_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT,
+                                                       TEST_AUTHOR_ORDER), 4) == 0.4509
 
 
-# profit adjusted h-index (Aziz and Rozing 2013)
-def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: list) -> int:
-    n = len(citations)
-    mon_equiv = []
-    for i in range(n):
-        mon_equiv.append(author_effort("harmonic", n_authors[i], author_pos[i]))
-    sc = [citations[i] * mon_equiv[i] for i in range(n)]
-    _, tmporder = sort_and_rank(sc, n)
-    profit_adj_h_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            profit_adj_h_index += 1
-    return profit_adj_h_index
+def test_calculate_profit_adj_h_index():
+    assert Impact_Funcs.calculate_profit_adj_h_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER) == 5
 
 
-# profit h-index (Aziz and Rozing 2013)
-def calculate_profit_h_index(profit_adj_h: int, h: int) -> float:
-    return 1 - profit_adj_h / h
+def test_calculate_profit_h_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    ha = Impact_Funcs.calculate_profit_adj_h_index(TEST_CITATION_DATA, TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER)
+    assert round(Impact_Funcs.calculate_profit_h_index(ha, h), 4) == 0.1667
 
 
-# hj-indices (Dorta-Gonzalez and Dorta-Gonzalez 2010)
-def calculate_hj_indices(total_pubs: int, h: int, sorted_citations: list) -> list:
-    if total_pubs < 2 * h - 1:
-        j = total_pubs - h
-    else:
-        j = h - 1
-    hj_index = [h**2]
-    for i in range(1, j+1):
-        hj_index.append(hj_index[i-1] + (h-i)*(sorted_citations[h-i-1] - sorted_citations[h-i])
-                        + sorted_citations[h+i-1])
-    return hj_index
+def test_calculate_hj_indices():
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    assert Impact_Funcs.calculate_hj_indices(total_pubs, h, TEST_CITATION_DATA) == [36, 39, 49, 60, 106, 113]
 
 
-# iteratively weighted h-index (Todeschini and Baccini 2016)
-def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
-    iteratively_weighted_h_index = 0
-    for p, h in enumerate(multidim_h_index):
-        iteratively_weighted_h_index += h / (p + 1)
-    return iteratively_weighted_h_index
+def test_calculate_iteratively_weighted_h_index():
+    citations = [42, 13, 11, 11, 10, 10, 10, 10, 9, 8, 7, 7, 7, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2,
+                 2, 2, 2, 2, 1, 1, 1, 1]
+    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
+    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
+    md = Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
+    assert round(Impact_Funcs.calculate_iteratively_weighted_h_index(md), 4) == 16.2091
 
-"""
 
 def test_calculate_em_components():
     # data and answer from original paper, Bihari Tripathi 2017
@@ -823,149 +803,105 @@ def test_calculate_iterative_weighted_emp_index():
     assert round(Impact_Funcs.calculate_iterative_weighted_emp_index(citations, rank_order), 2) == 20.57
 
 
+def test_calculate_alpha_index():
+    assert round(Impact_Funcs.calculate_alpha_index(5, 1), 4) == 5
+    assert round(Impact_Funcs.calculate_alpha_index(5, 10), 4) == 5
+    assert round(Impact_Funcs.calculate_alpha_index(5, 11), 4) == 2.5
+    assert round(Impact_Funcs.calculate_alpha_index(5, 22), 4) == 1.6667
+
+
+def test_calculate_h_rate():
+    assert round(Impact_Funcs.calculate_h_rate(6, 5), 4) == 1.2
+
+
+def test_calculate_time_scaled_h_index():
+    assert round(Impact_Funcs.calculate_time_scaled_h_index(6, 5), 4) == 2.6833
+
+
+def test_calculate_pubs_per_year():
+    assert round(Impact_Funcs.calculate_pubs_per_year(16, 5), 4) == 3.2
+
+
+def test_calculate_cites_per_year():
+    assert round(Impact_Funcs.calculate_cites_per_year(133, 5), 4) == 26.6
+
+
+def test_calculate_annual_h_index():
+    nh = Impact_Funcs.calculate_normalized_h_index(6, 16)
+    assert round(Impact_Funcs.calculate_annual_h_index(nh, 5), 4) == 0.075
+
+
+def test_calculate_cds_index():
+    assert Impact_Funcs.calculate_cds_index(TEST_CITATION_DATA) == 42
+
+
+def test_calculate_cdr_index():
+    cds = Impact_Funcs.calculate_cds_index(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_cdr_index(16, cds), 4) == 18.75
+
+
+def test_calculate_circ_cite_area_radius():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_circ_cite_area_radius(total_cites), 4) == 6.5066
+
+
+def test_calculate_citation_acceleration():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_citation_acceleration(total_cites, 5), 4) == 5.32
+
+
+def test_calculate_redner_index():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_redner_index(total_cites), 4) == 11.5326
+
+
+def test_calculate_levene_j_index():
+    assert round(Impact_Funcs.calculate_levene_j_index(TEST_CITATION_DATA), 4) == 34.5137
+
+
+def test_calculate_s_index_h_mixed():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    cites_per_pub = Impact_Funcs.calculate_mean_cites(total_cites, total_pubs)
+    assert round(Impact_Funcs.calculate_s_index_h_mixed(h, cites_per_pub), 4) == 169.7883
+
+
+def test_calculate_t_index_h_mixed():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    cites_per_pub = Impact_Funcs.calculate_mean_cites(total_cites, total_pubs)
+    core_total = Impact_Funcs.calculate_h_core(TEST_CITATION_DATA, is_core)
+    r = Impact_Funcs.calculate_r_index(core_total)
+    assert round(Impact_Funcs.calculate_t_index_h_mixed(h, cites_per_pub, r), 4) == 273.9276
+
+
+def test_calculate_citation_entropy():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_citation_entropy(total_cites, TEST_CITATION_DATA), 4) == 5.7428
+
+
+def test_calculate_cq_index():
+    assert round(Impact_Funcs.calculate_cq_index(133, 16), 4) == 383.4577
+
+
+def test_calculate_cq04_index():
+    assert round(Impact_Funcs.calculate_cq04_index(133, 16), 4) == 10.8016
+
+
+def test_calculate_indifference():
+    assert round(Impact_Funcs.calculate_indifference(133, 16), 4) == 0.1203
+
+
+def test_calculate_impact_vitality():
+    data = [0, 3, 13, 17, 26, 32, 41, 48, 53, 71, 83, 107]
+    assert round(Impact_Funcs.calculate_impact_vitality(data), 4) == 1.5024
+
+
 """
-
-# alpha-index
-def calculate_alpha_index(h: int, age: int) -> float:
-    ndecades = math.ceil(age/10)
-    return h / ndecades
-
-
-# h-rate / m-quotient
-def calculate_h_rate(h: int, age: int) -> float:
-    return h / age
-
-
-# time-scaled h-index (Todeschini and Baccini 2016)
-def calculate_time_scaled_h_index(h: int, age: int) -> float:
-    return h / math.sqrt(age)
-
-
-# pubs per year (time-scaled)(Todeschini and Baccini 2016)
-def calculate_pubs_per_year(total_pubs: int, age: int) -> float:
-    return total_pubs / age
-
-
-# citations per year (time-scaled)(Todeschini and Baccini 2016)
-def calculate_cites_per_year(total_cites: int, age: int) -> float:
-    return total_cites / age
-
-
-# annual h-index (hIa) (Harzing et al 2014)
-def calculate_annual_h_index(norm_h: int, age: int) -> float:
-    return norm_h / age
-
-
-# CDS-index (Vinkler 2011, 2013)
-def calculate_cds_index(citations: list) -> int:
-    maxg = 14  # largest category = more than 8192 citations
-    cds = 0
-    for c in citations:
-        if c < 2:
-            cds += 1
-        else:
-            g = 2
-            while c > 2**g:
-                g += 1
-            if g > maxg:
-                g = maxg
-            cds += g
-    return cds
-
-
-# CDR-index (Vinkler 2011, 2013)
-def calculate_cdr_index(total_pubs: int, cds: int) -> float:
-    maxg = 14  # largest category = more than 8192 citations
-    return 100 * cds / (maxg * total_pubs)
-
-
-# Sangwal 2012
-def calculate_circ_cite_area_radius(total_cites: int) -> float:
-    return math.sqrt(total_cites / math.pi)
-
-
-# Sangwal 2012
-def calculate_citation_acceleration(total_cites: int, age: int) -> float:
-    return total_cites / age**2
-
-
-# Render index - Redner (2010)
-def calculate_redner_index(total_cites: int) -> float:
-    return math.sqrt(total_cites)
-
-
-# Levene j-index - Levene et al (2012)
-def calculate_levene_j_index(citations: list) -> float:
-    j = 0
-    for c in citations:
-        j += math.sqrt(c)
-    return j
-
-
-# h-mixed synthetic indices (S-index and T-index) - Ye (2010)
-def calculate_s_index_h_mixed(h: int, cpp: float) -> float:
-    return 100 * math.log10(h * cpp)
-
-
-# h-mixed synthetic indices (S-index and T-index) - Ye (2010)
-def calculate_t_index_h_mixed(h: int, cpp: float, r: int) -> float:
-    return 100 * math.log10(h * cpp * r)
-
-
-# s-index / citation entropy p - Silagadze (2009)
-def calculate_citation_entropy(total_cites: int, citations: list) -> float:
-    # calculate Shannon entropy
-    h = 0
-    for c in citations:
-        if c != 0:
-            p = c / total_cites
-            h += p * math.log(p, 2)
-    h = -h
-    # standardize Shannon entropy
-    hstar = h / math.log(len(citations), 2)
-    return 0.25 * math.sqrt(total_cites) * math.exp(hstar)
-
-
-# Corrected Quality ratios - Lindsay (1978)
-def calculate_cq_index(total_cites: int, total_pubs: int) -> float:
-    return (total_cites / total_pubs) * math.sqrt(total_cites * total_pubs)
-
-
-# Corrected Quality ratios / 60:40 (Lindsay 1978)
-def calculate_cq04_index(total_cites: int, total_pubs: int) -> float:
-    return math.pow(total_cites / total_pubs, 0.6) * math.pow(total_pubs, 0.4)
-
-
-# Indifference (Egghe and Rousseau 1996)
-def calculate_indifference(total_cites: int, total_pubs: int) -> float:
-    return total_pubs / total_cites
-
-
-# impact vitality (Rons and Amez 2008, 2009)
-def calculate_impact_vitality(total_cite_list: list) -> Union[str, float]:
-    w = 5  # fix at a 5 year window
-    n = len(total_cite_list)
-    if n < w:
-        return "n/a"
-    else:
-        # calculate denominator of equation
-        d = 0
-        for i in range(1, w+1):
-            d += 1 / i
-        d -= 1
-
-        # calculate numerator and denominator of numerator of equation
-        total_cites_per_year = total_citations_each_year(total_cite_list)
-        nn = 0
-        nd = 0
-        for i in range(1, w+1):
-            nd += total_cites_per_year[n - i]
-            nn += total_cites_per_year[n - i] / i
-
-        # calculate value
-        return (w * (nn / nd) - 1) / d
-
-
 # least-squares h-rate (Burrell 2007)
 def calculate_least_squares_h_rate(years: list, hs: list) -> float:
     first_year = min(years)
