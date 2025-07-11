@@ -8641,10 +8641,9 @@ def metric_reci_recp() -> Metric:
 # academic trace (Ye and Leydesdorff 2014)
 def calculate_academic_trace(metric_set: MetricSet) -> float:
     h = metric_set.metrics["h-index"].value
-    total_cites = metric_set.metrics["total cites"].value
     core_cites = metric_set.metrics["h-core cites"].value
     citations = metric_set.citations
-    return Impact_Funcs.calculate_academic_trace(citations, total_cites, core_cites, h)
+    return Impact_Funcs.calculate_academic_trace(citations, core_cites, h)
 
 
 def write_academic_trace_example(metric_set: MetricSet) -> str:
@@ -8912,8 +8911,7 @@ def metric_discounted_h_index() -> Metric:
 # j-index (Mikhailov 2014)
 def calculate_mikhailov_j_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_mikhailov_j_index(citations, rank_order)
+    return Impact_Funcs.calculate_mikhailov_j_index(citations)
 
 
 def write_mikhailov_j_index_desc_data(metric_set: MetricSet) -> list:

@@ -719,7 +719,6 @@ def calculate_normal_hi_index(citations: list, n_authors: list) -> int:
     n = len(citations)
     sc = [citations[i] / n_authors[i] for i in range(n)]
     sc.sort(reverse=True)
-    print(sc)
     for i, x in enumerate(sc):
         if x < i+1:
             return i
@@ -1264,9 +1263,7 @@ def calculate_scientist_level_nonint(total_cites: int, total_pubs: int) -> float
 
 # q-index (Bartneck and Kokkelmans 2011)
 def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
-    data = []
-    for i in range(len(citations)):
-        data.append([citations[i], self_citations[i]])
+    data = [[citations[i], self_citations[i]] for i in range(len(citations))]
     data.sort(reverse=True)
     prev_a = 0
     q_index = 0
@@ -1292,17 +1289,12 @@ def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
 def calculate_career_years_h_index_pub(pub_years: list) -> int:
     miny = min(pub_years)
     maxy = max(pub_years)
-    year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
-    data = []
-    for y in year_cnts:
-        data.append([year_cnts[y], y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        cnt = data[i][0]
-        if cnt >= i + 1:
-            h += 1
-    return h
+    year_cnts = [pub_years.count(y) for y in range(miny, maxy+1)]
+    year_cnts.sort(reverse=True)
+    for i, x in enumerate(year_cnts):
+        if x < i+1:
+            return i
+    return len(year_cnts)
 
 
 # career years h-index by citations (Mahbuba and Rousseau 2013)
@@ -1312,16 +1304,11 @@ def calculate_career_years_h_index_cite(pub_years: list, cites: list) -> int:
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
     for i, c in enumerate(cites):
         year_cnts[pub_years[i]] += c
-    data = []
-    for y in year_cnts:
-        data.append([year_cnts[y], y])
-    data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        cnt = data[i][0]
-        if cnt >= i + 1:
-            h += 1
-    return h
+    data = sorted(year_cnts.values(), reverse=True)
+    for i, x in enumerate(data):
+        if x < i+1:
+            return i
+    return len(data)
 
 
 # career years h-index by avg citations/year (Mahbuba and Rousseau 2013)
@@ -1329,10 +1316,9 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
     miny = min(pub_years)
     maxy = max(pub_years)
     year_cnts = {y: 0 for y in range(miny, maxy+1)}
-    year_pubs = {y: 0 for y in range(miny, maxy+1)}
     for i, c in enumerate(cites):
         year_cnts[pub_years[i]] += c
-        year_pubs[pub_years[i]] += 1
+    year_pubs = {y: pub_years.count(y) for y in range(miny, maxy+1)}
     data = []
     for y in year_cnts:
         if year_pubs[y] > 0:
@@ -1364,9 +1350,7 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
     cite_cnts = {y: 0 for y in range(miny, maxy+1)}
     for i, c in enumerate(cites):
         cite_cnts[pub_years[i]] += c
-    data = []
-    for y in cite_cnts:
-        data.append(cite_cnts[y]/(cur_year - y + 1))
+    data = [cite_cnts[y]/(cur_year - y + 1) for y in cite_cnts]
     data.sort(reverse=True)
     h = 0
     for i in range(len(data)):
@@ -1382,29 +1366,6 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
     return hint
 
 
-    # miny = min(pub_years)
-    # maxy = max(pub_years)
-    # cite_cnts = {y: 0 for y in range(miny, maxy+1)}
-    # for i, c in enumerate(cites):
-    #     cite_cnts[pub_years[i]] += c
-    # data = []
-    # for y in cite_cnts:
-    #     data.append([cite_cnts[y]/(cur_year - y + 1), y])
-    # data.sort(reverse=True)
-    # h = 0
-    # for i in range(len(data)):
-    #     avg = data[i][0]
-    #     if avg >= i + 1:
-    #         h += 1
-    # if (h > 0) and (h < len(data)):
-    #     ch = data[h-1][0]
-    #     chp1 = data[h][0]
-    #     hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
-    # else:
-    #     hint = h
-    # return hint
-
-
 # collaborative index (Lawani 1980)
 def calculate_collaborative_index(author_cnts: list) -> float:
     return sum(author_cnts) / len(author_cnts)
@@ -1418,9 +1379,7 @@ def calculate_degree_of_collaboration(author_cnts: list) -> float:
 # collaborative coefficient (Ajiferuke et al 1988)
 def calculate_collaborative_coefficient(author_cnts: list) -> float:
     maxa = max(author_cnts)
-    cc = 0
-    for a in range(1, maxa+1):
-        cc += author_cnts.count(a) / a
+    cc = sum(author_cnts.count(a) / a for a in range(1, maxa+1))
     return 1 - cc / len(author_cnts)
 
 
@@ -1476,56 +1435,57 @@ def calculate_uncited_paper_percent(citations: list) -> float:
     return 100 - calculate_cited_paper_percent(citations)
 
 
-# beauty coefficient (Ke et al 2015)
-def calculate_beauty_coefficient(pub_list: list) -> list:
-    blist = []
-    for p in pub_list:
-        yearly_cites = []
-        for i, n in enumerate(p):
-            if n is not None:
-                if len(yearly_cites) == 0:
-                    yearly_cites.append(n)
-                else:
-                    yearly_cites.append(n - p[i-1])
-        maxc = max(yearly_cites)
-        tm = yearly_cites.index(maxc)
-        c0 = yearly_cites[0]
-        b = 0
-        if tm != 0:
-            for t in range(tm+1):
-                b += (((maxc - c0)/tm)*t + c0 - yearly_cites[t]) / max(1, yearly_cites[t])
-        blist.append(b)
-    return blist
-
-
-# awakening_time (Ke et al 2015)
-def calculate_awakening_time(pub_list: list) -> list:
-    ta_list = []
-    for p in pub_list:
-        yearly_cites = []
-        for i, n in enumerate(p):
-            if n is not None:
-                if len(yearly_cites) == 0:
-                    yearly_cites.append(n)
-                else:
-                    yearly_cites.append(n - p[i-1])
-        maxc = max(yearly_cites)
-        tm = yearly_cites.index(maxc)
-        c0 = yearly_cites[0]
-        ta = 0
-        maxdt = 0
-        if tm != 0:
-            for t in range(tm+1):
-                dt = abs((maxc-c0)*t - tm*yearly_cites[t] + tm*c0) / math.sqrt((maxc-c0)**2 + tm**2)
-                if dt > maxdt:
-                    ta = t
-                    maxdt = dt
-        ta_list.append(ta)
-    return ta_list
+# # beauty coefficient (Ke et al 2015)
+# def calculate_beauty_coefficient(pub_list: list) -> list:
+#     blist = []
+#     for p in pub_list:
+#         yearly_cites = []
+#         for i, n in enumerate(p):
+#             if n is not None:
+#                 if len(yearly_cites) == 0:
+#                     yearly_cites.append(n)
+#                 else:
+#                     yearly_cites.append(n - p[i-1])
+#         maxc = max(yearly_cites)
+#         tm = yearly_cites.index(maxc)
+#         c0 = yearly_cites[0]
+#         b = 0
+#         if tm != 0:
+#             for t in range(tm+1):
+#                 b += (((maxc - c0)/tm)*t + c0 - yearly_cites[t]) / max(1, yearly_cites[t])
+#         blist.append(b)
+#     return blist
+#
+#
+# # awakening_time (Ke et al 2015)
+# def calculate_awakening_time(pub_list: list) -> list:
+#     ta_list = []
+#     for p in pub_list:
+#         yearly_cites = []
+#         for i, n in enumerate(p):
+#             if n is not None:
+#                 if len(yearly_cites) == 0:
+#                     yearly_cites.append(n)
+#                 else:
+#                     yearly_cites.append(n - p[i-1])
+#         maxc = max(yearly_cites)
+#         tm = yearly_cites.index(maxc)
+#         c0 = yearly_cites[0]
+#         ta = 0
+#         maxdt = 0
+#         if tm != 0:
+#             for t in range(tm+1):
+#                 dt = abs((maxc-c0)*t - tm*yearly_cites[t] + tm*c0) / math.sqrt((maxc-c0)**2 + tm**2)
+#                 if dt > maxdt:
+#                     ta = t
+#                     maxdt = dt
+#         ta_list.append(ta)
+#     return ta_list
 
 
 # academic trace (Ye and Leydesdorff 2014)
-def calculate_academic_trace(citations: list, total_cites: int, core_cites: int, h: int) -> float:
+def calculate_academic_trace(citations: list, core_cites: int, h: int) -> float:
+    total_cites = sum(citations)
     pz = citations.count(0)
     p = len(citations)
     x1 = h**2 / p
@@ -1566,12 +1526,12 @@ def calculate_discounted_h_index(h: int, total_cites: int, total_self: int) -> f
 
 
 # j-index (Mikhailov 2014)
-def calculate_mikhailov_j_index(citations: list, rank_order: list) -> int:
-    j = 0
-    for i in range(len(citations)):
-        if math.trunc(rank_order[i]**(3/2)) <= citations[i]:
-            j += 1
-    return j
+def calculate_mikhailov_j_index(citations: list) -> int:
+    sorted_citations = sorted(citations, reverse=True)
+    for i, x in enumerate(sorted_citations):
+        if x < math.trunc((i + 1)**(3/2)):
+            return i
+    return len(sorted_citations)
 
 
 # year-based EM-index by publications (Bihari and Tripathi 2018)

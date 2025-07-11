@@ -1143,11 +1143,10 @@ def calculate_awakening_time(pub_list: list) -> list:
 
 
 def test_calculate_academic_trace():
-    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, is_core = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
     total_core = Impact_Funcs.calculate_sum_h_core(TEST_CITATION_DATA, is_core)
-    assert round(Impact_Funcs.calculate_academic_trace(TEST_CITATION_DATA, total_cites, total_core, h), 4) == 57.0935
+    assert round(Impact_Funcs.calculate_academic_trace(TEST_CITATION_DATA, total_core, h), 4) == 57.0935
 
 
 def test_calculate_scientific_quality_index():
@@ -1177,8 +1176,7 @@ def test_calculate_discounted_h_index():
 
 
 def test_calculate_mikhailov_j_index():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_mikhailov_j_index(TEST_CITATION_DATA, rank_order) == 4
+    assert Impact_Funcs.calculate_mikhailov_j_index(TEST_CITATION_DATA) == 4
 
 
 def test_calculate_year_based_em_pub():
