@@ -2,6 +2,7 @@ import Impact_Funcs
 
 # common data for conducting many of the tests
 TEST_CITATION_DATA = [9, 14, 3, 9, 11, 2, 1, 2, 0, 1, 0, 42, 36, 2, 1, 0]
+TEST_SELF_CITATION_DATA = [1, 2, 0, 1, 3, 0, 0, 1, 0, 0, 0, 3, 2, 0, 0, 0]
 TEST_YEAR_DATA = [1997, 1997, 1997, 1997, 1998, 1999, 2000, 2000, 2001, 2001, 2001, 1997, 2000, 2001, 2000, 2000]
 TEST_AUTHOR_CNT = [1, 3, 4, 4, 2, 4, 4, 1, 1, 2, 2, 3, 3, 1, 1, 4]
 TEST_AUTHOR_ORDER = [1, 3, 3, 3, 2, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 3]
@@ -179,41 +180,31 @@ def test_calculate_hg_index():
     assert round(Impact_Funcs.calculate_hg_index(h, g), 3) == 8.124
 
 
-"""
-# total self citations
-def calculate_total_self_cites(self_citations: list) -> int:
-    return sum(self_citations)
+def test_calculate_total_self_cites():
+    assert Impact_Funcs.calculate_total_self_cites(TEST_SELF_CITATION_DATA) == 13
 
 
-# total self-citation rate
-def calculate_total_self_cite_rate(total_self_cites: int, total_cites: int) -> float:
-    return total_self_cites/total_cites
+def test_calculate_total_self_cite_rate():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_self_cites = Impact_Funcs.calculate_total_self_cites(TEST_SELF_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_total_self_cite_rate(total_self_cites, total_cites), 4) == 0.0977
 
 
-# mean self-citation rate
-def calculate_mean_self_cite_rate(self_citations: list, all_citations: list) -> float:
-    mean_rate = 0
-    for i in range(len(self_citations)):
-        if all_citations[i] != 0:
-            mean_rate += self_citations[i] / all_citations[i]
-    return mean_rate / len(self_citations)
+def test_calculate_mean_self_cite_rate():
+    assert round(Impact_Funcs.calculate_mean_self_cite_rate(TEST_SELF_CITATION_DATA, TEST_CITATION_DATA), 4) == 0.0790
 
 
-# sharpened h-index (Schreiber 2007)
-def calculate_sharpened_h_index(self_citations: list, all_citations: list) -> int:
-    sharp_citations = [all_citations[i] - self_citations[i] for i in range(len(self_citations))]
-    _, tmprank = sort_and_rank(sharp_citations, len(sharp_citations))
-    sharp_h_index = 0
-    for i in range(len(sharp_citations)):
-        if tmprank[i] <= sharp_citations[i]:
-            sharp_h_index += 1
-    return sharp_h_index
+def test_calculate_sharpened_h_index():
+    assert Impact_Funcs.calculate_sharpened_h_index(TEST_SELF_CITATION_DATA, TEST_CITATION_DATA) == 6
 
 
-# b-index (Brown 2009)
-def calculate_b_index(h: int, avg_rate: float) -> float:
-    return h * avg_rate**0.75
-"""
+def test_calculate_b_index():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_self_cites = Impact_Funcs.calculate_total_self_cites(TEST_SELF_CITATION_DATA)
+    r1 = Impact_Funcs.calculate_total_self_cite_rate(total_self_cites, total_cites)
+    r2 = Impact_Funcs.calculate_mean_self_cite_rate(TEST_SELF_CITATION_DATA, TEST_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_b_index(6, r1), 4) == 1.0489
+    assert round(Impact_Funcs.calculate_b_index(6, r2), 4) == 0.8945
 
 
 def test_calculate_real_h_index():
@@ -899,80 +890,57 @@ def test_calculate_indifference():
 def test_calculate_impact_vitality():
     data = [0, 3, 13, 17, 26, 32, 41, 48, 53, 71, 83, 107]
     assert round(Impact_Funcs.calculate_impact_vitality(data), 4) == 1.5024
+    # too few years for given window
+    assert Impact_Funcs.calculate_impact_vitality([1, 2, 3]) == "n/a"
 
 
-"""
-# least-squares h-rate (Burrell 2007)
-def calculate_least_squares_h_rate(years: list, hs: list) -> float:
-    first_year = min(years)
-    years = [y - first_year + 1 for y in years]  # shift year list to years since start
-    sumxy = 0
-    sumx2 = 0
-    for i in range(len(years)):
-        sumxy += hs[i] * years[i]
-        sumx2 += years[i]**2
-    return sumxy/sumx2
+def test_calculate_least_squares_h_rate():
+    # data and answer from Burrell 2007
+    h_list = [3, 5, 6, 6, 10, 13, 16, 21, 24, 27, 31, 34, 36, 40, 43, 49, 51, 54, 56]
+    years = [i+2000 for i in range(len(h_list))]  # arbitrarily make years from 2000 to 200x
+    return round(Impact_Funcs.calculate_least_squares_h_rate(years, h_list), 4) == 2.8575
 
 
-# dynamic h-type-index (Rousseau and Ye 2008)
-def calculate_dynamic_h_type_index(rational_h_list: list, date_list: list, r: float) -> Union[str, float]:
-    def date_to_int(dd: datetime.date) -> int:
-        return datetime.date.toordinal(dd)
 
-    if len(rational_h_list) == 1:
-        return "n/a"
-    else:
-        n = len(rational_h_list)
-        avg_h = sum(rational_h_list) / n
-        avg_d = 0
-        for d in date_list:
-            avg_d += date_to_int(d)
-        avg_d /= n
-        sumxy = 0
-        sumx2 = 0
-        for i in range(n):
-            d = date_to_int(date_list[i]) - avg_d
-            sumxy += (rational_h_list[i] - avg_h)*d
-            sumx2 += d**2
-        return 365 * r * (sumxy / sumx2)
+def test_calculate_dynamic_h_type_index():
+    years = [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008]
+    hrat_list = [0, 1.67, 2.6, 3.86, 5.82, 5.91, 6.92, 7.87]
+    r = 10.91
+    assert round(Impact_Funcs.calculate_dynamic_h_type_index(hrat_list, years, r), 4) == 12.1088
+    assert Impact_Funcs.calculate_dynamic_h_type_index([1], [2000], 1) == "n/a"
 
 
-# trend h-index
-def calculate_trend_h_index(pub_list: list) -> int:
-    pub_cites = citations_per_pub_per_year(pub_list)
-    ny = len(pub_list[0])
-    sc = [0 for _ in pub_list]
-    for i, p in enumerate(pub_cites):
-        for y, c in enumerate(p):
-            sc[i] += c * (1 / (ny - y))
-        sc[i] *= 4
+def test_calculate_trend_h_index():
+    data = [[0, 3, 10, 4, 9],  # citations each year for each publication
+            [0, 1, 1, 5, 4],
+            [1, 6, 12, 13, 27],
+            [0, 0, 0, 0, 0],
+            [1, 1, 0, 1, 0],
+            [0, 0, 2, 6, 2],
+            [0, 3, 2, 6, 5],
+            [0, 0, 0, 0, 0],
+            [0, 0, 1, 2, 1],
+            [0, 0, 0, 0, 3],
+            [0, 0, 0, 4, 7],
+            [0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 2],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0]]
+    assert Impact_Funcs.calculate_trend_h_index(data) == 5
 
-    _, tmporder = sort_and_rank(sc, len(pub_list))
-    trend_h_index = 0
-    for i in range(len(pub_list)):
-        if tmporder[i] <= sc[i]:
-            trend_h_index += 1
-    return trend_h_index
+
+def test_calculate_mean_at_index():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    th = Impact_Funcs.calculate_th_index(TEST_CITATION_DATA, TEST_YEAR_DATA, total_cites)
+    assert Impact_Funcs.calculate_mean_at_index(total_cites, th) == 13.3
 
 
-# average activity, at (Popov 2005)
-def calculate_mean_at_index(total_cites: int, th: int) -> float:
-    return total_cites / (2 * th)
-
-
-# characteristic times scale, th (Popov 2005)
-def calculate_th_index(citations: list, years: list, total_cites: int) -> int:
-    target = total_cites / 2
-    cite_sum = 0
-    maxy = max(years)
-    cur_y = maxy + 1
-    while cite_sum < target:
-        cur_y -= 1
-        for i, y in enumerate(years):
-            if y == cur_y:
-                cite_sum += citations[i]
-    return maxy - cur_y + 1
-"""
+def test_calculate_th_index():
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_th_index(TEST_CITATION_DATA, TEST_YEAR_DATA, total_cites) == 5
 
 
 def test_calculate_dci_index():
@@ -1041,6 +1009,9 @@ def test_calculate_scientist_level_nonint():
     # data and answers from original publication
     assert round(Impact_Funcs.calculate_scientist_level_nonint(2288, 91), 3) == 4.933
 
+
+def test_calculate_q_index():
+    assert round(Impact_Funcs.calculate_q_index(TEST_CITATION_DATA, TEST_SELF_CITATION_DATA, 6), 4) == 0.0833
 
 """
 # q-index (Bartneck and Kokkelmans 2011)
