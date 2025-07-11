@@ -1959,8 +1959,7 @@ def metric_todeschini_j_index() -> Metric:
 # Wohlin w-index (Wohlin 2009)
 def calculate_wohlin_w_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    max_cites = metric_set.metrics["max cites"].value
-    return Impact_Funcs.calculate_wohlin_w(citations, max_cites)
+    return Impact_Funcs.calculate_wohlin_w(citations)
 
 
 def write_wohlin_j_index_example(metric_set: MetricSet) -> str:
@@ -2073,10 +2072,10 @@ def metric_wohlin_w_index() -> Metric:
 # hj-indices (Dorta-Gonzalez and Dorta-Gonzalez 2010)
 def calculate_hj_indices(metric_set: MetricSet) -> list:
     citations = metric_set.citations
-    total_pubs = metric_set.metrics["total pubs"].value
+    # total_pubs = metric_set.metrics["total pubs"].value
     h = metric_set.metrics["h-index"].value
     # sorted_citations = metric_set.sorted_citations()
-    return Impact_Funcs.calculate_hj_indices(total_pubs, h, citations)
+    return Impact_Funcs.calculate_hj_indices(h, citations)
 
 
 def metric_hj_indices() -> Metric:

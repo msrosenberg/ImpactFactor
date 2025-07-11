@@ -580,7 +580,8 @@ def calculate_wu_wq(citations: list, w: int) -> int:
 
 
 # Wohlin w-index (Wohlin 2009)
-def calculate_wohlin_w(citations: list, max_cites: int) -> float:
+def calculate_wohlin_w(citations: list) -> float:
+    max_cites = max(citations)
     j = 5
     nc = 1
     while max_cites > j-1:
@@ -635,9 +636,7 @@ def calculate_hpd_index(citations: list, pub_years: list, year: int) -> int:
 def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: int) -> float:
     # uses a different measure of age of publication, allowing age to be zero
     pub_ages = [year - y for y in pub_years]
-    specific_impact_s_index = 0
-    for i in range(len(pub_years)):
-        specific_impact_s_index += 1 - math.exp(-0.1 * pub_ages[i])
+    specific_impact_s_index = sum(1 - math.exp(-0.1 * pub_ages[i]) for i in range(len(pub_years)))
     if specific_impact_s_index != 0:
         specific_impact_s_index = total_cites / (10 * specific_impact_s_index)
     return specific_impact_s_index
@@ -647,9 +646,7 @@ def calculate_specific_impact_s_index(pub_years: list, year: int, total_cites: i
 def calculate_hm_index(citations: list, n_authors: list) -> float:
     hm_index = 0
     cumulative_rank = 0
-    data = []
-    for i in range(len(citations)):
-        data.append([citations[i], n_authors[i]])
+    data = [[citations[i], n_authors[i]] for i in range(len(citations))]
     data.sort(reverse=True)
     for d in data:
         c = d[0]
@@ -662,7 +659,7 @@ def calculate_hm_index(citations: list, n_authors: list) -> float:
 
 
 # gF-index (fractional paper) (Egghe 2008)
-def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list, ) -> float:
+def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list) -> float:
     gf_paper = 0
     cumulative_rank = 0
     for i in range(len(cumulative_citations)):
@@ -675,12 +672,7 @@ def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_aut
 # multidimensional h-index (Garcia-Perez 2009)
 def calculate_multidimensional_h_index(citations: list, rank_order: list, is_core: list, h: int) -> list:
     multi_dim_h_index = [h]
-    multi_used = []
-    for i in range(len(citations)):
-        if is_core[i]:
-            multi_used.append(True)
-        else:
-            multi_used.append(False)
+    multi_used = [c for c in is_core]
     j = 0
     tmph = -1
     while tmph != 0:
@@ -726,12 +718,12 @@ def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h:
 def calculate_normal_hi_index(citations: list, n_authors: list) -> int:
     n = len(citations)
     sc = [citations[i] / n_authors[i] for i in range(n)]
-    _, tmporder = sort_and_rank(sc, n)
-    hi_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hi_index += 1
-    return hi_index
+    sc.sort(reverse=True)
+    print(sc)
+    for i, x in enumerate(sc):
+        if x < i+1:
+            return i
+    return len(sc)
 
 
 # gf-index (Egghe 2008)
@@ -758,12 +750,11 @@ def calculate_position_weighted_h_index(citations: list, n_authors: list, author
         w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
         sc.append(citations[i] * w)
         totalsum += citations[i] * w
-    _, tmporder = sort_and_rank(sc, n)
-    wh = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            wh += 1
-    return wh
+    sc.sort(reverse=True)
+    for i, x in enumerate(sc):
+        if x < i+1:
+            return i
+    return n
 
 
 # proportional weighted citation aggregate (Abbas 2011)
@@ -792,10 +783,7 @@ def calculate_prop_weight_cite_h_cut(citations: list, n_authors: list, author_po
 
 # fractional weighted citation aggregate (Abbas 2011)
 def calculate_frac_weight_cite_agg(citations: list, n_authors: list) -> float:
-    weighted_aggregate = 0
-    for i in range(len(citations)):
-        weighted_aggregate += citations[i] / n_authors[i]
-    return weighted_aggregate
+    return sum(citations[i] / n_authors[i] for i in range(len(citations)))
 
 
 # fractional weighted citation h-cut (Abbas 2011)
@@ -824,14 +812,6 @@ def calculate_woeginger_w(citations: list, rank_order: list) -> int:
         if tmp_good:
             w = j
     return w
-
-
-# maxprod (Kosmulski 2007)
-# def calculate_maxprod_index(citations: list, rank_order: list) -> int:
-#     maxprod_index = 0
-#     for i in range(len(citations)):
-#         maxprod_index = max(maxprod_index, citations[i] * rank_order[i])
-#     return maxprod_index
 
 
 # j-index (Todeschini 2011)
@@ -899,26 +879,19 @@ def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_p
 
 # profit p-index (Aziz and Rozing 2013)
 def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list) -> float:
-    mon_equiv = []
-    for i in range(len(citations)):
-        mon_equiv.append(author_effort("harmonic_aziz", n_authors[i], author_pos[i]))
-    monograph_equiv = sum(mon_equiv)
+    monograph_equiv = sum(author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i in range(len(citations)))
     return 1 - monograph_equiv / len(citations)
 
 
 # profit adjusted h-index (Aziz and Rozing 2013)
 def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: list) -> int:
     n = len(citations)
-    mon_equiv = []
-    for i in range(n):
-        mon_equiv.append(author_effort("harmonic_aziz", n_authors[i], author_pos[i]))
-    sc = [citations[i] * mon_equiv[i] for i in range(n)]
-    _, tmporder = sort_and_rank(sc, n)
-    profit_adj_h_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            profit_adj_h_index += 1
-    return profit_adj_h_index
+    sc = [citations[i] * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i in range(n)]
+    sc.sort(reverse=True)
+    for i, x in enumerate(sc):
+        if x < i+1:
+            return i
+    return n
 
 
 # profit h-index (Aziz and Rozing 2013)
@@ -927,7 +900,8 @@ def calculate_profit_h_index(profit_adj_h: int, h: int) -> float:
 
 
 # hj-indices (Dorta-Gonzalez and Dorta-Gonzalez 2010)
-def calculate_hj_indices(total_pubs: int, h: int, citations: list) -> list:
+def calculate_hj_indices(h: int, citations: list) -> list:
+    total_pubs = len(citations)
     sorted_citations = sorted(citations, reverse=True)
     if total_pubs < 2 * h - 1:
         j = total_pubs - h
@@ -942,10 +916,7 @@ def calculate_hj_indices(total_pubs: int, h: int, citations: list) -> list:
 
 # iteratively weighted h-index (Todeschini and Baccini 2016)
 def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
-    iteratively_weighted_h_index = 0
-    for p, h in enumerate(multidim_h_index):
-        iteratively_weighted_h_index += h / (p + 1)
-    return iteratively_weighted_h_index
+    return sum(h/(p + 1) for p, h in enumerate(multidim_h_index))
 
 
 # subfunction from (Bihari and Tripathi 2017)
@@ -966,7 +937,6 @@ def calculate_em_components(values: list, rank_order: list) -> list:
             tmp_values = [max(0, c-h) for c in tmp_values]  # subtract previous h-index from citations
             non_zero_values = count_non_zero(tmp_values)
 
-    # print(tmp_values)
     # across the different papers and examples, the authors are inconsistent about what to do when there is a single
     # publication left with one or more citation for it. Usually they add one more "1" onto the end of the em
     # component list, but occasionally they do not. I assume this is due to errors in their generation of the data
@@ -1164,11 +1134,8 @@ def calculate_impact_vitality(total_cite_list: list, w: int = 5) -> Union[str, f
 
         # calculate numerator and denominator of numerator of equation
         total_cites_per_year = total_citations_each_year(total_cite_list)
-        nn = 0
-        nd = 0
-        for i in range(1, w+1):  # sum over the last w years
-            nd += total_cites_per_year[n - i]
-            nn += total_cites_per_year[n - i] / i
+        nd = sum(total_cites_per_year[n - i] for i in range(1, w+1))
+        nn = sum(total_cites_per_year[n - i]/i for i in range(1, w+1))
 
         # calculate value
         return (w * (nn / nd) - 1) / d
@@ -1178,11 +1145,8 @@ def calculate_impact_vitality(total_cite_list: list, w: int = 5) -> Union[str, f
 def calculate_least_squares_h_rate(years: list, hs: list) -> float:
     first_year = min(years)
     years = [y - first_year + 1 for y in years]  # shift year list to years since start
-    sumxy = 0
-    sumx2 = 0
-    for i in range(len(years)):
-        sumxy += hs[i] * years[i]
-        sumx2 += years[i]**2
+    sumxy = sum(hs[i]*years[i] for i in range(len(years)))
+    sumx2 = sum(years[i]**2 for i in range(len(years)))
     return sumxy/sumx2
 
 
@@ -1213,13 +1177,11 @@ def calculate_trend_h_index(pub_list: list) -> int:
         for y, c in enumerate(p):
             sc[i] += c * (1 / (ny - y))
         sc[i] *= 4
-
-    _, tmporder = sort_and_rank(sc, len(pub_list))
-    trend_h_index = 0
-    for i in range(len(pub_list)):
-        if tmporder[i] <= sc[i]:
-            trend_h_index += 1
-    return trend_h_index
+    sc.sort(reverse=True)
+    for i, x in enumerate(sc):
+        if x < i+1:
+            return i
+    return len(sc)
 
 
 # average activity, at (Popov 2005)
@@ -1262,7 +1224,7 @@ def calculate_dci_index(total_citations: list, logbase: int = 2) -> list:
 
 # dDCI-index: dynamic discounted cumulated impact (Jarvelin and Pearson, 2008; Ahlgren and Jarvelin 2010)
 def calculate_ddci_index(dci: list) -> float:
-    return dci[len(dci)-1]
+    return dci[-1]
 
 
 # history h-index (Randic 2009)

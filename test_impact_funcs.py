@@ -515,8 +515,7 @@ def test_calculate_wu_wq():
 
 
 def test_calculate_wohlin_w():
-    maxv = max(TEST_CITATION_DATA)
-    assert round(Impact_Funcs.calculate_wohlin_w(TEST_CITATION_DATA, maxv), 4) == 28.5473
+    assert round(Impact_Funcs.calculate_wohlin_w(TEST_CITATION_DATA), 4) == 28.5473
 
 
 def test_calculate_contemporary_h_index():
@@ -707,10 +706,10 @@ def test_calculate_profit_h_index():
 
 
 def test_calculate_hj_indices():
-    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
+    # total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    assert Impact_Funcs.calculate_hj_indices(total_pubs, h, TEST_CITATION_DATA) == [36, 39, 49, 60, 106, 113]
+    assert Impact_Funcs.calculate_hj_indices(h, TEST_CITATION_DATA) == [36, 39, 49, 60, 106, 113]
 
 
 def test_calculate_iteratively_weighted_h_index():
