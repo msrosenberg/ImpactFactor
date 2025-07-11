@@ -1209,52 +1209,7 @@ def calculate_dynamic_h_type_index(rational_h_list: list, year_list: list, r: fl
         return r * (sumxy / sumx2)
 
 
-"""
-
-There's the obvious approach of proceeding based on taking the logarithm of both sides of your regression formula:
-
-lny=ln(axb)
-
-lny=lna+blnx
-
-which can be seen to be an expression of the form
-
-v=k+bu
-
-where v=lny
-, u=lnx
-, and k=lna
-.
-
-Now a linear regression in the variables v
- and u
- applies.
-
-"""
-
-
-# def calculate_dynamic_h_type_index(rational_h_list: list, date_list: list, r: float) -> Union[str, float]:
-#     def date_to_int(dd: datetime.date) -> int:
-#         return datetime.date.toordinal(dd)
-#
-#     if len(rational_h_list) == 1:
-#         return "n/a"
-#     else:
-#         n = len(rational_h_list)
-#         avg_h = sum(rational_h_list) / n
-#         avg_d = 0
-#         for d in date_list:
-#             avg_d += date_to_int(d)
-#         avg_d /= n
-#         sumxy = 0
-#         sumx2 = 0
-#         for i in range(n):
-#             d = date_to_int(date_list[i]) - avg_d
-#             sumxy += (rational_h_list[i] - avg_h)*d
-#             sumx2 += d**2
-#         return 365 * r * (sumxy / sumx2)
-
-# trend h-index
+# trend h-index (Sidiropoulos et al 2007)
 def calculate_trend_h_index(pub_list: list) -> int:
     pub_cites = citations_per_pub_per_year(pub_list)
     ny = len(pub_list[0])
