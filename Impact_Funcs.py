@@ -1071,7 +1071,7 @@ def calculate_cites_per_year(total_cites: int, age: int) -> float:
 
 
 # annual h-index (hIa) (Harzing et al 2014)
-def calculate_annual_h_index(norm_h: int, age: int) -> float:
+def calculate_annual_h_index(norm_h: float, age: int) -> float:
     return norm_h / age
 
 
@@ -1115,10 +1115,7 @@ def calculate_redner_index(total_cites: int) -> float:
 
 # Levene j-index - Levene et al (2012)
 def calculate_levene_j_index(citations: list) -> float:
-    j = 0
-    for c in citations:
-        j += math.sqrt(c)
-    return j
+    return sum(math.sqrt(c) for c in citations)
 
 
 # h-mixed synthetic indices (S-index and T-index) - Ye (2010)
