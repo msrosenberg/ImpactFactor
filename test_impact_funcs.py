@@ -1013,36 +1013,6 @@ def test_calculate_scientist_level_nonint():
 def test_calculate_q_index():
     assert round(Impact_Funcs.calculate_q_index(TEST_CITATION_DATA, TEST_SELF_CITATION_DATA, 6), 4) == 0.0833
 
-"""
-# q-index (Bartneck and Kokkelmans 2011)
-def calculate_q_index(citations: list, self_citations: list, h: int) -> float:
-    data = []
-    for i in range(len(citations)):
-        data.append([citations[i], self_citations[i]])
-    data.sort(reverse=True)
-    prev_a = 0
-    q_index = 0
-    for i, d in enumerate(data):
-        c = d[0]
-        s = d[1]
-        if c <= h:
-            if i + 1 <= h:
-                a = 0
-            elif c == data[i-1][0]:
-                a = prev_a + 1
-            else:
-                a = prev_a
-            if i + 1 < h:
-                q = 0
-            else:
-                q = 1 / ((i+1) + 1 - a - h)
-            prev_a = a
-        else:
-            q = 0
-        q_index += q*s
-    return q_index / len(citations)
-"""
-
 
 def test_calculate_career_years_h_index_pub():
     # data and answer from original publication
@@ -1183,17 +1153,9 @@ def test_calculate_academic_trace():
     assert round(Impact_Funcs.calculate_academic_trace(TEST_CITATION_DATA, total_cites, total_core, h), 4) == 57.0935
 
 
-"""
-# scientific quality index (Pluskiewicz1 et al 2019)
-def calculate_scientific_quality_index(citations, self_citations) -> float:
-    cnt = 0
-    sharp_citations = [citations[i] - self_citations[i] for i in range(len(self_citations))]
-    total_cites = sum(sharp_citations)
-    for c in sharp_citations:
-        if c >= 10:
-            cnt += 1
-    return total_cites/len(sharp_citations) + 100*cnt/len(sharp_citations)
-"""
+def test_calculate_scientific_quality_index():
+    assert round(Impact_Funcs.calculate_scientific_quality_index(TEST_CITATION_DATA,
+                                                                 TEST_SELF_CITATION_DATA), 2) == 26.25
 
 
 def test_calculate_first_author_h_index():
@@ -1208,12 +1170,13 @@ def test_calculate_o_index():
     max_cites = Impact_Funcs.calculate_max_cites(TEST_CITATION_DATA)
     assert round(Impact_Funcs.calculate_o_index(h, max_cites), 4) == 15.8745
 
-"""
 
-# discounted h-index (Ferrara and Romero 2013)
-def calculate_discounted_h_index(h: int, total_cites: int, total_self: int) -> float:
-    return h * math.sqrt((total_cites - total_self)/total_cites)
-"""
+def test_calculate_discounted_h_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    total_self = Impact_Funcs.calculate_total_self_cites(TEST_SELF_CITATION_DATA)
+    assert round(Impact_Funcs.calculate_discounted_h_index(h, total_cites, total_self), 4) == 5.6992
 
 
 def test_calculate_mikhailov_j_index():
