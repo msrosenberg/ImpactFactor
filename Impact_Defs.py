@@ -173,11 +173,11 @@ class MetricSet:
         else:
             return self.date.year - self.first_pub_year + 1
 
-    def sorted_citations(self) -> list:
-        """
-        returns the citation counts sorted from highest to lowest (rather than by pub order)
-        """
-        return sorted(self.citations, reverse=True)
+    # def sorted_citations(self) -> list:
+    #     """
+    #     returns the citation counts sorted from highest to lowest (rather than by pub order)
+    #     """
+    #     return sorted(self.citations, reverse=True)
 
     def self_coauthor_citations(self) -> list:
         """
@@ -2074,11 +2074,11 @@ def metric_wohlin_w_index() -> Metric:
 
 # hj-indices (Dorta-Gonzalez and Dorta-Gonzalez 2010)
 def calculate_hj_indices(metric_set: MetricSet) -> list:
-    # citations = metric_set.citations
+    citations = metric_set.citations
     total_pubs = metric_set.metrics["total pubs"].value
     h = metric_set.metrics["h-index"].value
-    sorted_citations = metric_set.sorted_citations()
-    return Impact_Funcs.calculate_hj_indices(total_pubs, h, sorted_citations)
+    # sorted_citations = metric_set.sorted_citations()
+    return Impact_Funcs.calculate_hj_indices(total_pubs, h, citations)
 
 
 def metric_hj_indices() -> Metric:

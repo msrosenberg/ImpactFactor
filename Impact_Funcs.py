@@ -932,7 +932,8 @@ def calculate_profit_h_index(profit_adj_h: int, h: int) -> float:
 
 
 # hj-indices (Dorta-Gonzalez and Dorta-Gonzalez 2010)
-def calculate_hj_indices(total_pubs: int, h: int, sorted_citations: list) -> list:
+def calculate_hj_indices(total_pubs: int, h: int, citations: list) -> list:
+    sorted_citations = sorted(citations, reverse=True)
     if total_pubs < 2 * h - 1:
         j = total_pubs - h
     else:
