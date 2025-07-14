@@ -134,7 +134,6 @@ def get_rank_value(values: list) -> int:
     return len(values)
 
 
-
 # --- Metric Calculations ---
 
 # Total Publications
@@ -247,6 +246,8 @@ def calculate_b_index(h: int, avg_rate: float) -> float:
 # real h-index (hr-index) (Guns and Rousseau 2009)
 def calculate_real_h_index(citations: list, h: int) -> Number:
     if h == len(citations):
+        return h
+    elif h == 0:
         return h
 
     sorted_cites = sorted(citations, reverse=True)
@@ -1030,9 +1031,8 @@ def calculate_citation_entropy(total_cites: int, citations: list) -> float:
         if c != 0:
             p = c / total_cites
             h += p * math.log(p, 2)
-    h = -h
     # standardize Shannon entropy
-    hstar = h / math.log(len(citations), 2)
+    hstar = -h / math.log(len(citations), 2)
     return 0.25 * math.sqrt(total_cites) * math.exp(hstar)
 
 
@@ -1076,7 +1076,7 @@ def calculate_least_squares_h_rate(years: list, hs: list) -> float:
     years = [y - first_year + 1 for y in years]  # shift year list to years since start
     sumxy = sum(hs[i]*years[i] for i in range(len(years)))
     sumx2 = sum(years[i]**2 for i in range(len(years)))
-    return sumxy/sumx2
+    return sumxy / sumx2
 
 
 # dynamic h-type-index (Rousseau and Ye 2008)
@@ -1107,10 +1107,7 @@ def calculate_trend_h_index(pub_list: list) -> int:
             sc[i] += c * (1 / (ny - y))
         sc[i] *= 4
     sc.sort(reverse=True)
-    for i, x in enumerate(sc):
-        if x < i+1:
-            return i
-    return len(sc)
+    return get_rank_value(sc)
 
 
 # average activity, at (Popov 2005)
@@ -1221,10 +1218,7 @@ def calculate_career_years_h_index_pub(pub_years: list) -> int:
     maxy = max(pub_years)
     year_cnts = [pub_years.count(y) for y in range(miny, maxy+1)]
     year_cnts.sort(reverse=True)
-    for i, x in enumerate(year_cnts):
-        if x < i+1:
-            return i
-    return len(year_cnts)
+    return get_rank_value(year_cnts)
 
 
 # career years h-index by citations (Mahbuba and Rousseau 2013)
@@ -1235,10 +1229,7 @@ def calculate_career_years_h_index_cite(pub_years: list, cites: list) -> int:
     for i, c in enumerate(cites):
         year_cnts[pub_years[i]] += c
     data = sorted(year_cnts.values(), reverse=True)
-    for i, x in enumerate(data):
-        if x < i+1:
-            return i
-    return len(data)
+    return get_rank_value(data)
 
 
 # career years h-index by avg citations/year (Mahbuba and Rousseau 2013)
@@ -1256,18 +1247,8 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
         else:
             data.append(0)
     data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        avg = data[i]
-        if avg >= i + 1:
-            h += 1
-    if (h > 0) and (h < len(data)):
-        ch = data[h-1]
-        chp1 = data[h]
-        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
-    else:
-        hint = h
-    return hint
+    h = get_rank_value(data)
+    return calculate_real_h_index(data, h)
 
 
 # career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
@@ -1282,18 +1263,8 @@ def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_y
         cite_cnts[pub_years[i]] += c
     data = [cite_cnts[y]/(cur_year - y + 1) for y in cite_cnts]
     data.sort(reverse=True)
-    h = 0
-    for i in range(len(data)):
-        avg = data[i]
-        if avg >= i + 1:
-            h += 1
-    if (h > 0) and (h < len(data)):
-        ch = data[h-1]
-        chp1 = data[h]
-        hint = ((h+1)*ch - h*chp1) / (1 - chp1 + ch)
-    else:
-        hint = h
-    return hint
+    h = get_rank_value(data)
+    return calculate_real_h_index(data, h)
 
 
 # collaborative index (Lawani 1980)
@@ -1471,7 +1442,6 @@ def calculate_year_based_em_pub(pub_years: list) -> float:
     year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(data))]
 
     em_component = calculate_em_components(data)
     return math.sqrt(sum(em_component))
@@ -1486,7 +1456,6 @@ def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
         year_cnts[pub_years[i]] += c
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(data))]
 
     em_component = calculate_em_components(data)
     return math.sqrt(sum(em_component))
@@ -1496,7 +1465,6 @@ def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
 def calculate_year_based_em_cites(total_cite_list: list) -> float:
     total_cites_per_year = total_citations_each_year(total_cite_list)
     total_cites_per_year.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
     em_component = calculate_em_components(total_cites_per_year)
     return math.sqrt(sum(em_component))
@@ -1509,7 +1477,6 @@ def calculate_year_based_emp_pub(pub_years: list) -> float:
     year_cnts = {y: pub_years.count(y) for y in range(miny, maxy+1)}
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(data))]
 
     emp_component = calculate_emp_components(data)
     return math.sqrt(sum(emp_component))
@@ -1524,7 +1491,6 @@ def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
         year_cnts[pub_years[i]] += c
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(data))]
 
     emp_component = calculate_emp_components(data)
     return math.sqrt(sum(emp_component))
@@ -1534,7 +1500,6 @@ def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
 def calculate_year_based_emp_cites(total_cite_list: list) -> float:
     total_cites_per_year = total_citations_each_year(total_cite_list)
     total_cites_per_year.sort(reverse=True)
-    rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
     emp_component = calculate_emp_components(total_cites_per_year)
     return math.sqrt(sum(emp_component))
@@ -1570,26 +1535,16 @@ def calculate_w_index_anania_caruso(h: int, total: int) -> float:
 # h-norm index (Anania and Caruso 2013)
 def calculate_h_norm(citations: list, n_authors: list) -> int:
     sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
-    return hn
+    sc.sort(reverse=True)
+    return get_rank_value(sc)
 
 
 # k-norm index (Anania and Caruso 2013)
 def calculate_k_norm_index(citations: list, n_authors: list) -> float:
     sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    normcore = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
-            normcore += sc[i]
+    sc.sort(reverse=True)
+    hn = get_rank_value(sc)
+    normcore = sum(sc[:hn])
     try:
         return hn + (1 - hn**2/normcore)
     except ZeroDivisionError:
@@ -1599,12 +1554,8 @@ def calculate_k_norm_index(citations: list, n_authors: list) -> float:
 # w-norm index (Anania and Caruso 2013)
 def calculate_w_norm_index(citations: list, n_authors: list) -> float:
     sc = [citations[i] / n_authors[i] for i in range(len(citations))]
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    hn = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hn += 1
+    sc.sort(reverse=True)
+    hn = get_rank_value(sc)
     normtotal = sum(sc)
     return hn + (1 - hn**2/normtotal)
 
@@ -1622,13 +1573,8 @@ def calculate_yearly_h_index(citations: list, pub_years: list) -> float:
         for i, y in enumerate(pub_years):
             if y == year:
                 tmp_citations.append(citations[i])
-        n = len(tmp_citations)
-        _, tmporder = sort_and_rank(tmp_citations, n)
-        # calculate h for the year
-        hy = 0
-        for i in range(n):
-            if tmporder[i] <= tmp_citations[i]:
-                hy += 1
+        tmp_citations.sort(reverse=True)
+        hy = get_rank_value(tmp_citations)
         havg += hy
         yearcnt += 1
     return havg / yearcnt  # average across all years
@@ -1646,9 +1592,7 @@ def calculate_t_index_singh(citations, year_h, age: int, total_cites: int) -> fl
 
 # fairness
 def calculate_fairness(total_cites: int, total_pubs: int, citations: list) -> float:
-    sumc2 = 0
-    for c in citations:
-        sumc2 += c**2
+    sumc2 = sum(c**2 for c in citations)
     return total_cites**2 / (total_pubs * sumc2)
 
 
@@ -1679,11 +1623,10 @@ def calculate_css(citations: list) -> float:
 
 # csr (Gagolewski et al 2022)
 def calculate_csr(citations: list) -> float:
-    s = 0
     tmpcites = sorted(citations)
     tmpcites.reverse()
-    for i, c in enumerate(tmpcites):
-        s += 2*(i+0.5)*c  # it is i + 0.5 rather than i - 0.5 because i is counting from 0
+    # it is i + 0.5 rather than i - 0.5 because i is counting from 0
+    s = sum(2*(i+0.5)*c for i, c in enumerate(tmpcites))
     return s**(1/3)
 
 
@@ -1725,28 +1668,12 @@ def calculate_partnership_ability(coauthor_list: list):
                     coauthor_cnts[a] += 1
                 else:
                     coauthor_cnts[a] = 1
-    phi = 0
-    cnts = list(coauthor_cnts.values())
-    n = len(cnts)
-    _, tmporder = sort_and_rank(cnts, n)
-    # calculate phi
-    for i in range(n):
-        if tmporder[i] <= cnts[i]:
-            phi += 1
-    return phi
+    cnts = sorted(coauthor_cnts.values(), reverse=True)
+    return get_rank_value(cnts)
 
 
 # stratified h-index (Wurtz and Schmidt 2016)
 def calculate_stratified_h(h: int, author_pos: list, author_cnts: list, citations: list) -> list:
-    def calc_h(cites: list) -> int:
-        hn = 0
-        n = len(cites)
-        _, tmporder = sort_and_rank(cites, n)
-        for j in range(n):
-            if tmporder[j] <= cites[j]:
-                hn += 1
-        return hn
-
     # sort citations of publications into lists based on author position
     pub1, pub2, pub3, publast = [], [], [], []
     for i, p in enumerate(author_pos):
@@ -1756,14 +1683,13 @@ def calculate_stratified_h(h: int, author_pos: list, author_cnts: list, citation
             pub2.append(citations[i])
         elif p == 3:
             pub3.append(citations[i])
-        # elif p == author_cnts[i]:
         if p == author_cnts[i]:  # do this separately, because for solo-authored papers, one is both 1st and last author
             publast.append(citations[i])
 
-    h1 = calc_h(pub1)
-    h2 = calc_h(pub2)
-    h3 = calc_h(pub3)
-    hlast = calc_h(publast)
+    h1 = get_rank_value(sorted(pub1, reverse=True))
+    h2 = get_rank_value(sorted(pub2, reverse=True))
+    h3 = get_rank_value(sorted(pub3, reverse=True))
+    hlast = get_rank_value(sorted(publast, reverse=True))
 
     return [h, h1, h2, h3, hlast]
 
@@ -1816,6 +1742,9 @@ def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) 
 
 
 # multiple h-index (Yaminfirooz and Gholinia 2015)
+
+# must be able to do this better xxxx
+
 def calculate_multiple_h_index(citations: list, rank_order: list, is_core: list, h: int, year: int,
                                pub_years: list) -> float:
     multi_dim_h_index = [h]
