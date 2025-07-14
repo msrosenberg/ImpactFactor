@@ -323,8 +323,8 @@ def test_calculate_rational_h():
     # data and answer from Guns and Rousseau 2009
     citations = [9, 7, 6, 5, 3, 0]
     rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    assert round(Impact_Funcs.calculate_rational_h(citations, rank_order, is_core, h), 2) == 4.78
+    h, _ = Impact_Funcs.calculate_h_index(citations, rank_order)
+    assert round(Impact_Funcs.calculate_rational_h(citations, h), 2) == 4.78
 
 
 def test_h2_regions():

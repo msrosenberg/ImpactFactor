@@ -380,15 +380,15 @@ def calculate_e_index(core_cites: int, h: int) -> float:
 
 
 # rational h-index (Ruane and Tol 2008)
-def calculate_rational_h(citations: list, rank_order: list, is_core: list, h: int) -> float:
+def calculate_rational_h(citations: list, h: int) -> float:
+    if h == len(citations):
+        return h
+    sorted_citations = sorted(citations, reverse=True)
     j = 0
-    for i in range(len(citations)):
-        if is_core[i]:
-            if citations[i] == h:
-                j += 1
-        else:
-            if rank_order[i] == h + 1:
-                j += (h + 1 - citations[i])
+    for c in sorted_citations[:h]:
+        if c == h:
+            j += 1
+    j += h + 1 - sorted_citations[h]
     return h + 1 - j/(2*h + 1)
 
 

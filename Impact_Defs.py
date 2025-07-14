@@ -1596,10 +1596,8 @@ def metric_indifference() -> Metric:
 # rational h-index (Ruane and Tol 2008)
 def calculate_rational_h_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    is_core = metric_set.is_core
     h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_rational_h(citations, rank_order, is_core, h)
+    return Impact_Funcs.calculate_rational_h(citations, h)
 
 
 def write_rational_h_index_example(metric_set: MetricSet) -> str:
