@@ -560,10 +560,8 @@ def test_calculate_multidimensional_h_index():
 def test_calculate_two_sided_h():
     citations = [386, 282, 172, 113, 87, 83, 80, 69, 40, 38, 30, 28, 27, 24, 17, 14, 11, 11, 10, 7, 7, 4, 2, 1, 1,
                  1, 0, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
     mdh = Impact_Funcs.calculate_multidimensional_h_index(citations)
-    assert Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
+    assert Impact_Funcs.calculate_two_sided_h(citations, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
 
 
 def test_calculate_normal_hi_index():
@@ -599,8 +597,7 @@ def test_calculate_frac_weight_cite_h_cut():
 
 
 def test_calculate_woeginger_w():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_woeginger_w(TEST_CITATION_DATA, rank_order) == 9
+    assert Impact_Funcs.calculate_woeginger_w(TEST_CITATION_DATA) == 9
 
 
 def test_calculate_todeschini_j_index():
@@ -707,9 +704,7 @@ def test_calculate_hj_indices():
 def test_calculate_iteratively_weighted_h_index():
     citations = [42, 13, 11, 11, 10, 10, 10, 10, 9, 8, 7, 7, 7, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2,
                  2, 2, 2, 2, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    md = Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
+    md = Impact_Funcs.calculate_multidimensional_h_index(citations)
     assert round(Impact_Funcs.calculate_iteratively_weighted_h_index(md), 4) == 16.2091
 
 
@@ -717,38 +712,32 @@ def test_calculate_em_components():
     # data and answer from original paper, Bihari Tripathi 2017
     answer = [10, 6, 5, 3, 2, 2, 2]
     citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert Impact_Funcs.calculate_em_components(citations, rank_order) == answer
+    assert Impact_Funcs.calculate_em_components(citations) == answer
 
     answer = [10, 7, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1]
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert Impact_Funcs.calculate_em_components(citations, rank_order) == answer
+    assert Impact_Funcs.calculate_em_components(citations) == answer
 
 
 def test_calculate_emp_components():
     # data and answer from original paper, Bihari Tripathi 2017
     answer = [10, 9, 5, 4, 3, 2, 1, 1]
     citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert Impact_Funcs.calculate_emp_components(citations, rank_order) == answer
+    assert Impact_Funcs.calculate_emp_components(citations) == answer
 
     answer = [10, 8, 6, 6, 5, 4, 3, 3, 2, 2, 1, 1]
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert Impact_Funcs.calculate_emp_components(citations, rank_order) == answer
+    assert Impact_Funcs.calculate_emp_components(citations) == answer
 
 
 def test_calculate_em_index():
     # data and answer from original paper, Bihari Tripathi 2017
     citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_em_index(citations, rank_order), 2) == 5.48
+    assert round(Impact_Funcs.calculate_em_index(citations), 2) == 5.48
 
     # data and answer from original paper, Bihari Tripathi 2021
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_em_index(citations, rank_order), 2) == 6.78
+    assert round(Impact_Funcs.calculate_em_index(citations), 2) == 6.78
 
 
 def test_calculate_emp_index():
@@ -757,13 +746,11 @@ def test_calculate_emp_index():
     #          as they appear to have truncated the value to one decimal rather than rounding it. They report
     #          5.91 when it should be 5.92, as the value calculated to more digits is 5.91608.
     citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1, 0, 0, 0, 0, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_emp_index(citations, rank_order), 3) == 5.916
+    assert round(Impact_Funcs.calculate_emp_index(citations), 3) == 5.916
 
     # data and answer from original paper, Bihari Tripathi 2021
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_emp_index(citations, rank_order), 2) == 7.14
+    assert round(Impact_Funcs.calculate_emp_index(citations), 2) == 7.14
 
 
 def test_calculate_iterative_weighted_em_index():
@@ -772,15 +759,13 @@ def test_calculate_iterative_weighted_em_index():
     # accurate to a single decimal place, as the value should be 18.98334 (calculated independently).
     # I suspect they round/truncate calculated values at an early stage of the process and accuracy is lost a bit
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_iterative_weighted_em_index(citations, rank_order), 5) == 18.98334
+    assert round(Impact_Funcs.calculate_iterative_weighted_em_index(citations), 5) == 18.98334
 
 
 def test_calculate_iterative_weighted_emp_index():
     # data and answer from original paper, Bihari Tripathi 2021
     citations = [50, 45, 33, 30, 24, 23, 17, 12, 11, 10, 8, 8, 7, 6, 6, 6, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    assert round(Impact_Funcs.calculate_iterative_weighted_emp_index(citations, rank_order), 2) == 20.57
+    assert round(Impact_Funcs.calculate_iterative_weighted_emp_index(citations), 2) == 20.57
 
 
 def test_calculate_alpha_index():

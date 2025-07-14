@@ -245,7 +245,6 @@ def calculate_b_index(h: int, avg_rate: float) -> float:
 
 
 # real h-index (hr-index) (Guns and Rousseau 2009)
-# def calculate_real_h_index(citations: list, rank_order: list, h: int) -> Number:
 def calculate_real_h_index(citations: list, h: int) -> Number:
     if h == len(citations):
         return h
@@ -655,10 +654,10 @@ def calculate_hm_index(citations: list, n_authors: list) -> float:
     return hm_index
 
 
-# pick up from here XXXX
-
-
 # gF-index (fractional paper) (Egghe 2008)
+
+# consider if this can be written better xxxx
+
 def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list) -> float:
     gf_paper = 0
     cumulative_rank = 0
@@ -681,8 +680,7 @@ def calculate_multidimensional_h_index(citations: list) -> list:
 
 
 # two-sided h-index (Garcia-Perez 2012)
-def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h: list,
-                          mk: Optional[int] = None) -> list:
+def calculate_two_sided_h(citations: list, multidim_h: list, mk: Optional[int] = None) -> list:
     # only need to calculate the upper part of the index the center and tail are identical to multidimensional h
     # mk is the number of steps to match on either side of h; the default is to auto-calculate for as many steps in
     # core as equal to length of steps in tail
@@ -691,17 +689,15 @@ def calculate_two_sided_h(citations: list, rank_order: list, h: int, multidim_h:
     else:
         mk += 1  # need to add 1 so number of steps works out correctly
     two_sided_h = [i for i in multidim_h[:mk]]
-    j = 0
-    tmph = h
-    k = 1
-    while k < mk:
-        j += tmph
-        tmph = 0
-        for i in range(len(citations)):
-            if rank_order[i] <= citations[i] - j:
-                tmph += 1
-        two_sided_h.insert(0, tmph)
-        k += 1
+    sorted_citations = sorted(citations, reverse=True)
+    h = multidim_h[0]
+    sorted_citations = [c - h for c in sorted_citations[:h]]
+    cnt = 1
+    while cnt < mk:
+        h = get_rank_value(sorted_citations)
+        two_sided_h.insert(0, h)
+        sorted_citations = [c - h for c in sorted_citations[:h]]
+        cnt += 1
     return two_sided_h
 
 
@@ -710,13 +706,13 @@ def calculate_normal_hi_index(citations: list, n_authors: list) -> int:
     n = len(citations)
     sc = [citations[i] / n_authors[i] for i in range(n)]
     sc.sort(reverse=True)
-    for i, x in enumerate(sc):
-        if x < i+1:
-            return i
-    return len(sc)
+    return get_rank_value(sc)
 
 
 # gf-index (Egghe 2008)
+
+# consider if this can be written better xxxx
+
 def calculate_gf_cite_index(citations: list, n_authors: list) -> int:
     n = len(citations)
     sc = [citations[i] / n_authors[i] for i in range(n)]
@@ -733,42 +729,22 @@ def calculate_gf_cite_index(citations: list, n_authors: list) -> int:
 
 # position-weighted h-index (Abbas 2011)
 def calculate_position_weighted_h_index(citations: list, n_authors: list, author_pos: list) -> int:
-    n = len(citations)
-    sc = []
-    totalsum = 0
-    for i in range(n):
-        w = (2 * (n_authors[i] + 1 - author_pos[i])) / (n_authors[i] * (n_authors[i] + 1))
-        sc.append(citations[i] * w)
-        totalsum += citations[i] * w
+    sc = [c*author_effort("proportional", n_authors[i], author_pos[i]) for i, c in enumerate(citations)]
     sc.sort(reverse=True)
-    for i, x in enumerate(sc):
-        if x < i+1:
-            return i
-    return n
+    return get_rank_value(sc)
 
 
 # proportional weighted citation aggregate (Abbas 2011)
 def calculate_prop_weight_cite_agg(citations: list, n_authors: list, author_pos: list) -> float:
-    weighted_aggregate = 0
-    for i in range(len(citations)):
-        w = author_effort("proportional", n_authors[i], author_pos[i])
-        weighted_aggregate += citations[i] * w
-    return weighted_aggregate
+    return sum(c*author_effort("proportional", n_authors[i], author_pos[i]) for i, c in enumerate(citations))
 
 
 # proportional weighted citation h-cut (Abbas 2011)
 def calculate_prop_weight_cite_h_cut(citations: list, n_authors: list, author_pos: list) -> float:
-    n = len(citations)
-    sc = []
-    for i in range(n):
-        w = author_effort("proportional", n_authors[i], author_pos[i])
-        sc.append(citations[i] * w)
-    _, tmporder = sort_and_rank(sc, n)
-    hcut = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hcut += sc[i]
-    return hcut
+    sc = [c*author_effort("proportional", n_authors[i], author_pos[i]) for i, c in enumerate(citations)]
+    sc.sort(reverse=True)
+    v = get_rank_value(sc)
+    return sum(sc[:v])
 
 
 # fractional weighted citation aggregate (Abbas 2011)
@@ -778,27 +754,21 @@ def calculate_frac_weight_cite_agg(citations: list, n_authors: list) -> float:
 
 # fractional weighted citation h-cut (Abbas 2011)
 def calculate_frac_weight_cite_h_cut(citations: list, n_authors: list) -> float:
-    n = len(citations)
-    sc = []
-    for i in range(n):
-        sc.append(citations[i] / n_authors[i])
-    _, tmporder = sort_and_rank(sc, n)
-    hcut = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hcut += sc[i]
-    return hcut
+    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
+    sc.sort(reverse=True)
+    v = get_rank_value(sc)
+    return sum(sc[:v])
 
 
 # Woeginger w-index (Woeginger 2008)
-def calculate_woeginger_w(citations: list, rank_order: list) -> int:
+def calculate_woeginger_w(citations: list) -> int:
+    sorted_citations = sorted(citations, reverse=True)
     w = 0
-    for j in range(len(citations)):
+    for j in range(1, len(sorted_citations)+1):
         tmp_good = True
-        for i in range(len(rank_order)):
-            if rank_order[i] <= j:
-                if citations[i] < j - rank_order[i] + 1:
-                    tmp_good = False
+        for i in range(1, j+1):
+            if sorted_citations[i-1] < j - i + 1:
+                tmp_good = False
         if tmp_good:
             w = j
     return w
@@ -827,20 +797,9 @@ def calculate_adapt_pure_h_index(sc: list) -> float:
     """
     this is used to calculate the adapted pure h-index once the weighted citations (sc) are determined
     """
-    n = len(sc)
-    _, tmporder = sort_and_rank(sc, n)
-    j = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            j += 1
-    cite_e = 0
-    cite_e1 = 0
-    for i in range(n):
-        if tmporder[i] == j:
-            cite_e = sc[i]
-        elif tmporder[i] == j + 1:
-            cite_e1 = sc[i]
-    return (((j + 1)*cite_e) - (j*cite_e1)) / (cite_e - cite_e1 + 1)
+    sc.sort(reverse=True)
+    j = get_rank_value(sc)
+    return calculate_real_h_index(sc, j)
 
 
 # fractional adapted pure h-index (Chai et al 2008)
@@ -851,19 +810,13 @@ def calculate_adapt_pure_h_index_frac(citations: list, n_authors: list) -> float
 
 # adapted pure h-index w/proportional author credit (Chai et al 2008)
 def calculate_adapt_pure_h_index_prop(citations: list, n_authors: list, author_pos: list) -> float:
-    sc = []
-    for i in range(len(citations)):
-        ea = author_effort("proportional", n_authors[i], author_pos[i])
-        sc.append(citations[i] / math.sqrt(1/ea))
+    sc = [c / math.sqrt(1/author_effort("proportional", n_authors[i], author_pos[i])) for i, c in enumerate(citations)]
     return calculate_adapt_pure_h_index(sc)
 
 
 # adapted pure h-index w/geometric author credit (Chai et al 2008)
 def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_pos: list) -> float:
-    sc = []
-    for i in range(len(citations)):
-        ea = author_effort("geometric", n_authors[i], author_pos[i])
-        sc.append(citations[i] / math.sqrt(1/ea))
+    sc = [c / math.sqrt(1/author_effort("geometric", n_authors[i], author_pos[i])) for i, c in enumerate(citations)]
     return calculate_adapt_pure_h_index(sc)
 
 
@@ -875,13 +828,11 @@ def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list)
 
 # profit adjusted h-index (Aziz and Rozing 2013)
 def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: list) -> int:
-    n = len(citations)
-    sc = [citations[i] * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i in range(n)]
+    sc = [c * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i, c in enumerate(citations)]
+    # n = len(citations)
+    # sc = [citations[i] * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i in range(n)]
     sc.sort(reverse=True)
-    for i, x in enumerate(sc):
-        if x < i+1:
-            return i
-    return n
+    return get_rank_value(sc)
 
 
 # profit h-index (Aziz and Rozing 2013)
@@ -893,7 +844,7 @@ def calculate_profit_h_index(profit_adj_h: int, h: int) -> float:
 def calculate_hj_indices(h: int, citations: list) -> list:
     total_pubs = len(citations)
     sorted_citations = sorted(citations, reverse=True)
-    if total_pubs < 2 * h - 1:
+    if total_pubs < 2*h - 1:
         j = total_pubs - h
     else:
         j = h - 1
@@ -910,19 +861,17 @@ def calculate_iteratively_weighted_h_index(multidim_h_index: list) -> float:
 
 
 # subfunction from (Bihari and Tripathi 2017)
-def calculate_em_components(values: list, rank_order: list) -> list:
+def calculate_em_components(values: list) -> list:
     em_component = []
     tmp_values = [c for c in values]  # make a temporary copy of the citation counts
+    tmp_values.sort(reverse=True)
     non_zero_values = count_non_zero(tmp_values)
     while non_zero_values > 1:
         if max(tmp_values) == 1:
             em_component.append(1)
             non_zero_values = 0
         else:
-            h = 0
-            for i in range(len(values)):
-                if rank_order[i] <= tmp_values[i]:
-                    h += 1
+            h = get_rank_value(tmp_values)
             em_component.append(h)
             tmp_values = [max(0, c-h) for c in tmp_values]  # subtract previous h-index from citations
             non_zero_values = count_non_zero(tmp_values)
@@ -937,29 +886,25 @@ def calculate_em_components(values: list, rank_order: list) -> list:
     return em_component
 
 # subfunction from (Bihari and Tripathi 2017)
-def calculate_emp_components(values: list, rank_order: list) -> list:
+def calculate_emp_components(values: list) -> list:
     # EM'-index
     emp_component = []
     tmp_values = [c for c in values]  # make a temporary copy of the citation counts
-    tmp_ranks = [r for r in rank_order]  # make a temporary copy of the ranks
+    tmp_values.sort(reverse=True)
     non_zero_values = count_non_zero(tmp_values)
     while non_zero_values > 1:
         if max(tmp_values) == 1:
             emp_component.append(1)
             non_zero_values = 0
         else:
-            h = 0
-            for i in range(len(values)):
-                if tmp_ranks[i] <= tmp_values[i]:
-                    h += 1
+            h = get_rank_value(tmp_values)
             emp_component.append(h)
             # subtract h_index only from top h pubs
-            for i in range(len(values)):
-                if tmp_ranks[i] <= tmp_values[i]:
-                    tmp_values[i] = max(0, tmp_values[i]-h)
+            for i in range(h):
+                tmp_values[i] = max(0, tmp_values[i] - h)
             non_zero_values = count_non_zero(tmp_values)
-            # rerank counts
-            _, tmp_ranks = sort_and_rank(tmp_values, len(values))
+            # resort
+            tmp_values.sort(reverse=True)
 
     # the 2017 paper makes it sound like one should quit when there is only a single paper left, but the em
     # example in the 2021 paper requires one last value added to the component list in this case
@@ -970,33 +915,27 @@ def calculate_emp_components(values: list, rank_order: list) -> list:
 
 
 # EM-index (Bihari and Tripathi 2017)
-def calculate_em_index(citations: list, rank_order: list) -> float:
-    em_component = calculate_em_components(citations, rank_order)
+def calculate_em_index(citations: list) -> float:
+    em_component = calculate_em_components(citations)
     return math.sqrt(sum(em_component))
 
 
 # EM'-index (Bihari and Tripathi 2017)
-def calculate_emp_index(citations: list, rank_order: list) -> float:
-    emp_component = calculate_emp_components(citations, rank_order)
+def calculate_emp_index(citations: list) -> float:
+    emp_component = calculate_emp_components(citations)
     return math.sqrt(sum(emp_component))
 
 
 # iterative weighted EM-index (Bihari et al 2021)
-def calculate_iterative_weighted_em_index(citations: list, rank_order: list) -> float:
-    em_component = calculate_em_components(citations, rank_order)
-    iwem = 0
-    for i, e in enumerate(em_component):
-        iwem += e/(i+1)
-    return iwem
+def calculate_iterative_weighted_em_index(citations: list) -> float:
+    em_component = calculate_em_components(citations)
+    return sum(e/(i+1) for i, e in enumerate(em_component))
 
 
 # iterative weighted EM'-index (Bihari et al 2021)
-def calculate_iterative_weighted_emp_index(citations: list, rank_order: list) -> float:
-    emp_component = calculate_emp_components(citations, rank_order)
-    iwemp = 0
-    for i, e in enumerate(emp_component):
-        iwemp += e/(i+1)
-    return iwemp
+def calculate_iterative_weighted_emp_index(citations: list) -> float:
+    emp_component = calculate_emp_components(citations)
+    return sum(e/(i+1) for i, e in enumerate(emp_component))
 
 
 # alpha-index
@@ -1534,7 +1473,7 @@ def calculate_year_based_em_pub(pub_years: list) -> float:
     data.sort(reverse=True)
     rank_order = [i+1 for i in range(len(data))]
 
-    em_component = calculate_em_components(data, rank_order)
+    em_component = calculate_em_components(data)
     return math.sqrt(sum(em_component))
 
 
@@ -1549,7 +1488,7 @@ def calculate_year_based_em_pycites(pub_years: list, cites: list) -> float:
     data.sort(reverse=True)
     rank_order = [i+1 for i in range(len(data))]
 
-    em_component = calculate_em_components(data, rank_order)
+    em_component = calculate_em_components(data)
     return math.sqrt(sum(em_component))
 
 
@@ -1559,7 +1498,7 @@ def calculate_year_based_em_cites(total_cite_list: list) -> float:
     total_cites_per_year.sort(reverse=True)
     rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
-    em_component = calculate_em_components(total_cites_per_year, rank_order)
+    em_component = calculate_em_components(total_cites_per_year)
     return math.sqrt(sum(em_component))
 
 
@@ -1572,7 +1511,7 @@ def calculate_year_based_emp_pub(pub_years: list) -> float:
     data.sort(reverse=True)
     rank_order = [i+1 for i in range(len(data))]
 
-    emp_component = calculate_emp_components(data, rank_order)
+    emp_component = calculate_emp_components(data)
     return math.sqrt(sum(emp_component))
 
 
@@ -1587,7 +1526,7 @@ def calculate_year_based_emp_pycites(pub_years: list, cites: list) -> float:
     data.sort(reverse=True)
     rank_order = [i+1 for i in range(len(data))]
 
-    emp_component = calculate_emp_components(data, rank_order)
+    emp_component = calculate_emp_components(data)
     return math.sqrt(sum(emp_component))
 
 
@@ -1597,7 +1536,7 @@ def calculate_year_based_emp_cites(total_cite_list: list) -> float:
     total_cites_per_year.sort(reverse=True)
     rank_order = [i+1 for i in range(len(total_cites_per_year))]
 
-    emp_component = calculate_emp_components(total_cites_per_year, rank_order)
+    emp_component = calculate_emp_components(total_cites_per_year)
     return math.sqrt(sum(emp_component))
 
 

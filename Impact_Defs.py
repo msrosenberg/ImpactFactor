@@ -1203,8 +1203,7 @@ def metric_tol_t_index() -> Metric:
 # Woeginger w-index (Woeginger 2008)
 def calculate_woeginger_w_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_woeginger_w(citations, rank_order)
+    return Impact_Funcs.calculate_woeginger_w(citations)
 
 
 def write_woeginger_w_index_desc_data(metric_set: MetricSet) -> list:
@@ -3084,10 +3083,8 @@ def metric_multdim_h_index() -> Metric:
 # two-sided h-index (Garcia-Perez 2012)
 def calculate_two_sided_h_index(metric_set: MetricSet) -> list:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    h = metric_set.metrics["h-index"].value
     multidim_h = metric_set.metrics["multidim h-index"].value
-    return Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, multidim_h)
+    return Impact_Funcs.calculate_two_sided_h(citations, multidim_h)
 
 
 def write_two_sided_h_index_desc_data(metric_set: MetricSet) -> list:
@@ -3317,8 +3314,7 @@ def metric_iter_weighted_h_index() -> Metric:
 # EM-index (Bihari and Tripathi 2017)
 def calculate_em_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_em_index(citations, rank_order)
+    return Impact_Funcs.calculate_em_index(citations)
 
 
 def write_em_index_example(metric_set: MetricSet) -> str:
@@ -3425,8 +3421,7 @@ def metric_em_index() -> Metric:
 # EM'-index (Bihari and Tripathi 2017)
 def calculate_emp_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_emp_index(citations, rank_order)
+    return Impact_Funcs.calculate_emp_index(citations)
 
 
 def write_emp_index_example(metric_set: MetricSet) -> str:
@@ -3544,8 +3539,7 @@ def metric_emp_index() -> Metric:
 # iterative weighted EM-index (Bihari et al. 2021)
 def calculate_iterative_weighted_em_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_iterative_weighted_em_index(citations, rank_order)
+    return Impact_Funcs.calculate_iterative_weighted_em_index(citations)
 
 
 def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
@@ -3653,8 +3647,7 @@ def metric_iterative_weighted_em_index() -> Metric:
 # iterative weighted EM'-index (Bihari et al 2021)
 def calculate_iterative_weighted_emp_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_iterative_weighted_emp_index(citations, rank_order)
+    return Impact_Funcs.calculate_iterative_weighted_emp_index(citations)
 
 
 def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
