@@ -2227,10 +2227,10 @@ def metric_rm_index() -> Metric:
 # weighted h-index (Egghe and Rousseau 2008)
 def calculate_weighted_h_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    cumulative_citations = metric_set.cumulative_citations
+    # rank_order = metric_set.rank_order
+    # cumulative_citations = metric_set.cumulative_citations
     h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_weighted_h_index(citations, cumulative_citations, rank_order, h)
+    return Impact_Funcs.calculate_weighted_h_index(citations, h)
 
 
 def write_weighted_h_index_example(metric_set: MetricSet) -> str:

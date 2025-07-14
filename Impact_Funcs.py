@@ -320,11 +320,15 @@ def calculate_franceschini_f_index(citations: list, pub_years: list) -> int:
 
 
 # weighted h-index (Egghe and Rousseau 2008)
-def calculate_weighted_h_index(citations: list, cumulative_citations: list, rank_order: list, h: int) -> float:
+def calculate_weighted_h_index(citations: list, h: int) -> float:
+    sorted_citations = sorted(citations, reverse=True)
+    cumulative_citations = [c for c in sorted_citations]
+    for i in range(1, len(cumulative_citations)):
+        cumulative_citations[i] += cumulative_citations[i-1]
     weighted_h_index = 0
-    for i in range(len(citations)):
-        if citations[i] >= cumulative_citations[rank_order[i]-1] / h:
-            weighted_h_index += citations[i]
+    for i, c in enumerate(sorted_citations):
+        if c >= cumulative_citations[i] / h:
+            weighted_h_index += c
     return math.sqrt(weighted_h_index)
 
 
@@ -1715,7 +1719,6 @@ def calculate_multiple_h_index(citations: list, year: int, pub_years: list) -> f
     data.sort(reverse=True)
     sorted_citations = [d[0] for d in data]
     sorted_pubyears = [d[1] for d in data]
-    # sorted_citations = sorted(citations, reverse=True)
     while (len(sorted_citations) > 0) and (max(sorted_citations) > 0):
         h = get_rank_value(sorted_citations)
         multi_dim_h_index.append(h)

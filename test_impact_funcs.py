@@ -279,9 +279,7 @@ def test_calculate_weighted_h_index():
     # data and answer from original paper, Egghe and Rousseau 2008
     citations = [10, 8, 7, 4, 3]
     h = 4
-    rank_order = [1, 2, 3, 4, 5]
-    cumulative_cites = [10, 18, 25, 29, 32]
-    assert Impact_Funcs.calculate_weighted_h_index(citations, cumulative_cites, rank_order, h) == 5
+    assert Impact_Funcs.calculate_weighted_h_index(citations, h) == 5
 
 
 def test_calculate_normalized_h_index():
