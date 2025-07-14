@@ -164,8 +164,8 @@ def test_calculate_hirsch_min_const():
 def test_calculate_g_index():
     # cumulative_cnt = [42, 78, 92, 103, 112, 121, 124, 126, 128, 130, 131, 132, 133, 133, 133, 133]
     # rank squared =   [1   4   9   16   25   36   49   64   81   100  121  144  <- g = 11
-    rank_order, cumulative_cites = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_g_index(cumulative_cites, rank_order) == 11
+    _, cumulative_cites = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    assert Impact_Funcs.calculate_g_index(cumulative_cites) == 11
 
 
 def test_calculate_h2_index():
@@ -175,7 +175,7 @@ def test_calculate_h2_index():
 def test_calculate_hg_index():
     rank_order, cumulative_cites = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    g = Impact_Funcs.calculate_g_index(cumulative_cites, rank_order)
+    g = Impact_Funcs.calculate_g_index(cumulative_cites)
     assert round(Impact_Funcs.calculate_hg_index(h, g), 3) == 8.124
 
 
@@ -1398,15 +1398,12 @@ def test_calculate_multiple_h_index():
     # data and answer from original publication, Yaminfirooz and Gholinia 2015
     answer = 42.45
     citations = [20, 18, 18, 13, 13, 12, 10, 9, 6, 5, 5, 4, 3, 2, 2, 2, 1, 1, 1, 0]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
     ages = [10, 8, 9, 7, 7, 8, 8, 6, 4, 5, 3, 3, 4, 2, 2, 1, 3, 3, 5, 1]
     # original paper gave the ages, not the publication year, so we're back calculating
     year = 2010
     pub_year = [year + 1 - a for a in ages]
 
-    assert round(Impact_Funcs.calculate_multiple_h_index(citations, rank_order, is_core, h, year,
-                                                         pub_year), 2) == answer
+    assert round(Impact_Funcs.calculate_multiple_h_index(citations, year, pub_year), 2) == answer
 
 
 def test_calculate_hmaj_index():

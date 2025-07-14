@@ -675,8 +675,7 @@ def metric_hirsch_min_const() -> Metric:
 # g-index (Egghe 2006)
 def calculate_g_index(metric_set: MetricSet) -> int:
     cumulative_citations = metric_set.cumulative_citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_g_index(cumulative_citations, rank_order)
+    return Impact_Funcs.calculate_g_index(cumulative_citations)
 
 
 def write_g_index_desc_data1(metric_set: MetricSet) -> list:
@@ -10665,12 +10664,9 @@ def metric_stochastic_h() -> Metric:
 # multiple h-index (Yaminfirooz and Gholinia 2015)
 def calculate_multiple_h_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    is_core = metric_set.is_core
-    h = metric_set.metrics["h-index"].value
     year = metric_set.year()
     pub_years = metric_set.publication_years()
-    return Impact_Funcs.calculate_multiple_h_index(citations, rank_order, is_core, h, year, pub_years)
+    return Impact_Funcs.calculate_multiple_h_index(citations, year, pub_years)
 
 
 def metric_multiple_h_index() -> Metric:

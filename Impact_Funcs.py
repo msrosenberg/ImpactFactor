@@ -192,12 +192,12 @@ def calculate_hirsch_min_const(total_cites: int, h: int) -> float:
 
 
 # g-index (Egghe 2006)
-def calculate_g_index(cumulative_citations: list, rank_order: list) -> int:
-    g = 0
-    for i in range(len(rank_order)):
-        if rank_order[i]**2 <= cumulative_citations[rank_order[i]-1]:
-            g += 1
-    return g
+def calculate_g_index(cumulative_citations: list) -> int:
+    sorted_cumulative = sorted(cumulative_citations)
+    for i, c in enumerate(sorted_cumulative):
+        if c < (i+1)**2:
+            return i
+    return len(sorted_cumulative)
 
 
 # h2-index (Kosmulski 2006)
@@ -500,58 +500,33 @@ def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list
 
 
 # Tol's f-index (Tol 2007)
-
-# CHECK THIS FOR A BETTER WAY TO GET IT TO WORK XXXXX
-
 def calculate_tol_f_index(citations: list) -> int:
-    # sorted_citations = sorted(citations, reverse=True)
-    # harmonic_means = [sorted_citations[0]]
-    # for i, c in enumerate(citations[1:]):
-    #     if c == 0:
-    #         harmonic_means.append(harmonic_means[i])
-    #     else:
-    #         harmonic_means.append(harmonic_means[i] + 1/c)
-    # harmonic_means = [(i+1)/h for i, h in enumerate(harmonic_means)]
-    # return get_rank_value(harmonic_means)
-    n = len(citations)
-    harmonic_means = [0 for _ in range(n)]
-    tmp_index, rank_order = sort_and_rank(citations, n)
-    for i in range(n):
-        if citations[tmp_index[n - i - 1]] > 0:
-            harmonic_means[i] = harmonic_means[i - 1] + 1 / citations[tmp_index[n - i - 1]]
+    sorted_citations = sorted(citations, reverse=True)
+    harmonic_means = []
+    for c in sorted_citations:
+        if c == 0:
+            harmonic_means.append(0)
         else:
-            harmonic_means[i] = harmonic_means[i - 1]
-    f = 0
-    for i in range(n):
-        if rank_order[i] / harmonic_means[rank_order[i]-1] >= rank_order[i]:
-            if rank_order[i] > f:
-                f = rank_order[i]
-    return f
+            harmonic_means.append(1/c)
+    for i in range(1, len(harmonic_means)):
+        harmonic_means[i] += harmonic_means[i-1]
+    harmonic_means = [(i+1)/h for i, h in enumerate(harmonic_means)]
+    return get_rank_value(harmonic_means)
 
 
 # Tol's t-index (Tol 2007)
-
-# CHECK THIS FOR A BETTER WAY TO GET IT TO WORK XXXXX
-
 def calculate_tol_t_index(citations: list) -> int:
-    n = len(citations)
-    geometric_means = [0 for _ in range(n)]
-    tmp_index, rank_order = sort_and_rank(citations, n)
-    if citations[tmp_index[n - 1]] > 0:
-        geometric_means[0] = math.log(citations[tmp_index[n - 1]])
-    else:
-        geometric_means[0] = 0
-    for i in range(1, n):
-        if citations[tmp_index[n - i - 1]] > 0:
-            geometric_means[i] = geometric_means[i - 1] + math.log(citations[tmp_index[n - i - 1]])
+    sorted_citations = sorted(citations, reverse=True)
+    geometric_means = []
+    for c in sorted_citations:
+        if c == 0:
+            geometric_means.append(0)
         else:
-            geometric_means[i] = geometric_means[i - 1]
-    t = 0
-    for i in range(n):
-        if math.exp(geometric_means[rank_order[i]-1]/rank_order[i]) >= rank_order[i]:
-            if rank_order[i] > t:
-                t = rank_order[i]
-    return t
+            geometric_means.append(math.log(c))
+    for i in range(1, len(geometric_means)):
+        geometric_means[i] += geometric_means[i-1]
+    geometric_means = [math.exp(g/(i+1)) for i, g in enumerate(geometric_means)]
+    return get_rank_value(geometric_means)
 
 
 # mu-index (Glanzel and Schubert 2010)
@@ -567,7 +542,6 @@ def calculate_mu_index(citations: list) -> int:
 # Wu w-index (Wu 2010)
 def calculate_wu_w_index(citations: list) -> int:
     sorted_citations = sorted(citations, reverse=True)
-    w = 0
     for i, c in enumerate(sorted_citations):
         if c < (i+1)*10:
             return i
@@ -656,9 +630,6 @@ def calculate_hm_index(citations: list, n_authors: list) -> float:
 
 
 # gF-index (fractional paper) (Egghe 2008)
-
-# consider if this can be written better xxxx
-
 def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_authors: list) -> float:
     gf_paper = 0
     cumulative_rank = 0
@@ -711,21 +682,16 @@ def calculate_normal_hi_index(citations: list, n_authors: list) -> int:
 
 
 # gf-index (Egghe 2008)
-
-# consider if this can be written better xxxx
-
 def calculate_gf_cite_index(citations: list, n_authors: list) -> int:
-    n = len(citations)
-    sc = [citations[i] / n_authors[i] for i in range(n)]
-    tmpindex, tmporder = sort_and_rank(sc, n)
-    acum = [sc[tmpindex[n-1]]]
-    for i in range(1, n):
-        acum.append(acum[i-1] + sc[tmpindex[n-i-1]])
-    gf_cite = 0
-    for i in range(n):
-        if tmporder[i]**2 <= acum[tmporder[i]-1]:
-            gf_cite += 1
-    return gf_cite
+    sc = [citations[i] / n_authors[i] for i in range(len(citations))]
+    sc.sort(reverse=True)
+    sc_cumulative = [x for x in sc]
+    for i in range(1, len(sc_cumulative)):
+        sc_cumulative[i] += sc_cumulative[i-1]
+    for i in range(len(sc_cumulative)):
+        if sc_cumulative[i] < (i+1)**2:
+            return i
+    return len(sc_cumulative)
 
 
 # position-weighted h-index (Abbas 2011)
@@ -1742,41 +1708,26 @@ def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) 
 
 
 # multiple h-index (Yaminfirooz and Gholinia 2015)
-
-# must be able to do this better xxxx
-
-def calculate_multiple_h_index(citations: list, rank_order: list, is_core: list, h: int, year: int,
-                               pub_years: list) -> float:
-    multi_dim_h_index = [h]
-    multi_used = []
-    matching_h = [0 for _ in citations]  # the value of h associated with each publication
-    for i in range(len(citations)):
-        if is_core[i]:
-            multi_used.append(True)
-            matching_h[i] = h
-        else:
-            multi_used.append(False)
-    j = 0
-    tmph = -1
-    while tmph != 0:
-        nc = len(multi_dim_h_index)
-        j += multi_dim_h_index[nc-1]
-        tmph = 0
-        for i in range(len(citations)):
-            if not multi_used[i]:
-                if rank_order[i] - j <= citations[i]:
-                    multi_used[i] = True
-                    tmph += 1
-        if tmph > 0:
-            multi_dim_h_index.append(tmph)
-            # replace the default h of 0 with tmph for the newly used publications
-            for i in range(len(citations)):
-                if multi_used[i] and (matching_h[i] == 0):
-                    matching_h[i] = tmph
-
-    pub_ages = publication_ages(year, pub_years)
+def calculate_multiple_h_index(citations: list, year: int, pub_years: list) -> float:
+    multi_dim_h_index = []
+    matching_h = []
+    data = [[c, pub_years[i]] for i, c in enumerate(citations)]
+    data.sort(reverse=True)
+    sorted_citations = [d[0] for d in data]
+    sorted_pubyears = [d[1] for d in data]
+    # sorted_citations = sorted(citations, reverse=True)
+    while (len(sorted_citations) > 0) and (max(sorted_citations) > 0):
+        h = get_rank_value(sorted_citations)
+        multi_dim_h_index.append(h)
+        for _ in range(h):
+            matching_h.append(h)
+        sorted_citations = sorted_citations[h:]
+    sorted_citations = [d[0] for d in data]  # pull original sorted citation data back out
+    while len(matching_h) < len(sorted_citations):
+        matching_h.append(0)
+    pub_ages = publication_ages(year, sorted_pubyears)
     mh = 0
-    for i, c in enumerate(citations):
+    for i, c in enumerate(sorted_citations):
         mh += (matching_h[i] * c**2) / pub_ages[i]
     return math.sqrt(mh)
 
