@@ -123,6 +123,18 @@ def citations_per_pub_per_year(pub_list: list) -> list:
     return pub_cites
 
 
+def get_rank_value(values: list) -> int:
+    """
+    basic function that takes an ordered list of values (high to low) and returns the largest index where the value
+    is greater than or equal to the rank, essentially the basic h-index concept
+    """
+    for i, value in enumerate(values):
+        if value < i + 1:
+            return i
+    return len(values)
+
+
+
 # --- Metric Calculations ---
 
 # Total Publications
@@ -190,12 +202,10 @@ def calculate_g_index(cumulative_citations: list, rank_order: list) -> int:
 
 
 # h2-index (Kosmulski 2006)
-def calculate_h2_index(citations: list, rank_order: list) -> int:
-    h2_index = 0
-    for i in range(len(rank_order)):
-        if rank_order[i] <= math.sqrt(citations[i]):
-            h2_index += 1
-    return h2_index
+def calculate_h2_index(citations: list) -> int:
+    tmp_cites = [math.sqrt(c) for c in citations]
+    tmp_cites.sort(reverse=True)
+    return get_rank_value(tmp_cites)
 
 
 # hg-index (Alonso et al 2010)
@@ -210,7 +220,7 @@ def calculate_total_self_cites(self_citations: list) -> int:
 
 # total self-citation rate
 def calculate_total_self_cite_rate(total_self_cites: int, total_cites: int) -> float:
-    return total_self_cites/total_cites
+    return total_self_cites / total_cites
 
 
 # mean self-citation rate
@@ -225,12 +235,8 @@ def calculate_mean_self_cite_rate(self_citations: list, all_citations: list) -> 
 # sharpened h-index (Schreiber 2007)
 def calculate_sharpened_h_index(self_citations: list, all_citations: list) -> int:
     sharp_citations = [all_citations[i] - self_citations[i] for i in range(len(self_citations))]
-    _, tmprank = sort_and_rank(sharp_citations, len(sharp_citations))
-    sharp_h_index = 0
-    for i in range(len(sharp_citations)):
-        if tmprank[i] <= sharp_citations[i]:
-            sharp_h_index += 1
-    return sharp_h_index
+    sharp_citations.sort(reverse=True)
+    return get_rank_value(sharp_citations)
 
 
 # b-index (Brown 2009)
@@ -239,22 +245,18 @@ def calculate_b_index(h: int, avg_rate: float) -> float:
 
 
 # real h-index (hr-index) (Guns and Rousseau 2009)
-def calculate_real_h_index(citations: list, rank_order: list, h: int) -> Number:
-    j = -1
-    k = -1
-    for i in range(len(citations)):
-        if rank_order[i] == h:
-            j = i
-        elif rank_order[i] == h + 1:
-            k = i
-    if (k != -1) and (j != -1):
-        return ((h + 1) * citations[j] - h * citations[k]) / (1 - citations[k] + citations[j])
-    else:
+# def calculate_real_h_index(citations: list, rank_order: list, h: int) -> Number:
+def calculate_real_h_index(citations: list, h: int) -> Number:
+    if h == len(citations):
         return h
+
+    sorted_cites = sorted(citations, reverse=True)
+    cite_h = sorted_cites[h-1]  # need to offset because counting from zero
+    cite_hp1 = sorted_cites[h]
+    return ((h + 1) * cite_h - h * cite_hp1) / (1 - cite_hp1 + cite_h)
 
 
 # a-index (Jin 2006; Rousseau 2006)
-# def calculate_a_index(core_cites: int, total_pubs: int) -> float:
 def calculate_a_index(core_cites: int, h: int) -> float:
     return core_cites / h
 
@@ -270,8 +272,7 @@ def calculate_rm_index(citations: list, is_core: list) -> float:
     for i in range(len(citations)):
         if is_core[i]:
             rm_index += math.sqrt(citations[i])
-    rm_index = math.sqrt(rm_index)
-    return rm_index
+    return math.sqrt(rm_index)
 
 
 # ar-index (Jin 2007; Jin et al 2007)
@@ -419,13 +420,12 @@ def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
 
 
 # pi-index (Vinkler 2009)
-def calculate_pi_index(total_pubs: int, citations: list, rank_order: list) -> float:
+def calculate_pi_index(citations: list) -> float:
+    total_pubs = len(citations)
     p_pi = math.floor(math.sqrt(total_pubs))
-    pi_index = 0
-    for i in range(len(citations)):
-        if rank_order[i] <= p_pi:
-            pi_index += citations[i]
-    return pi_index / 100
+    sorted_cites = sorted(citations, reverse=True)
+    pi_index = sum(sorted_cites[:p_pi])
+    return pi_index/100
 
 
 # pi-rate
@@ -447,11 +447,8 @@ def calculate_ph_ratio(p: float, h: int) -> float:
 
 # fractional p-index (pf) (Prathap 2010b, 2011)
 def calculate_fractional_p_index(citations: list, n_authors: list) -> float:
-    pf = 0
-    nf = 0
-    for i in range(len(citations)):
-        pf += 1 / n_authors[i]
-        nf += citations[i] / n_authors[i]
+    pf = sum(1/n for n in n_authors)
+    nf = sum(c/n_authors[i] for i, c in enumerate(citations))
     return (nf**2 / pf)**(1/3)
 
 
@@ -503,7 +500,19 @@ def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list
 
 
 # Tol's f-index (Tol 2007)
+
+# CHECK THIS FOR A BETTER WAY TO GET IT TO WORK XXXXX
+
 def calculate_tol_f_index(citations: list) -> int:
+    # sorted_citations = sorted(citations, reverse=True)
+    # harmonic_means = [sorted_citations[0]]
+    # for i, c in enumerate(citations[1:]):
+    #     if c == 0:
+    #         harmonic_means.append(harmonic_means[i])
+    #     else:
+    #         harmonic_means.append(harmonic_means[i] + 1/c)
+    # harmonic_means = [(i+1)/h for i, h in enumerate(harmonic_means)]
+    # return get_rank_value(harmonic_means)
     n = len(citations)
     harmonic_means = [0 for _ in range(n)]
     tmp_index, rank_order = sort_and_rank(citations, n)
@@ -521,6 +530,9 @@ def calculate_tol_f_index(citations: list) -> int:
 
 
 # Tol's t-index (Tol 2007)
+
+# CHECK THIS FOR A BETTER WAY TO GET IT TO WORK XXXXX
+
 def calculate_tol_t_index(citations: list) -> int:
     n = len(citations)
     geometric_means = [0 for _ in range(n)]
@@ -549,33 +561,29 @@ def calculate_mu_index(citations: list) -> int:
     tmp_cites.sort(reverse=True)
     # calculate medians
     median_list = [calculate_median(tmp_cites[:i+1]) for i in range(0, n)]
-    mu_index = 0
-    for i in range(n):
-        if median_list[i] >= i+1:
-            mu_index = i+1
-    return mu_index
+    return get_rank_value(median_list)
 
 
 # Wu w-index (Wu 2010)
 def calculate_wu_w_index(citations: list) -> int:
     sorted_citations = sorted(citations, reverse=True)
     w = 0
-    for i in range(len(sorted_citations)):
-        if sorted_citations[i] >= 10 * (i+1):
-            w += 1
-    return w
+    for i, c in enumerate(sorted_citations):
+        if c < (i+1)*10:
+            return i
+    return len(citations)
 
 
 # Wu w-index (Wu 2010)
 def calculate_wu_wq(citations: list, w: int) -> int:
     sorted_citations = sorted(citations, reverse=True)
     j = 0
-    for i in range(len(sorted_citations)):
-        if sorted_citations[i] >= 10 * (i+1):
-            if sorted_citations[i] < 10 * (w + 1):
-                j += (10 * (w + 1) - sorted_citations[i])
+    for i, c in enumerate(sorted_citations):
+        if c >= 10*(i + 1):
+            if c < 10*(w + 1):
+                j += 10*(w + 1) - c
         elif i == w:
-            j += 10 * (w + 1) - sorted_citations[i]
+            j += 10*(w + 1) - c
     return j
 
 
@@ -606,30 +614,20 @@ def calculate_wohlin_w(citations: list) -> float:
 
 # contemporary h-index (Sidiropoulos et al 2007)
 def calculate_contemporary_h_index(citations: list, pub_years: list, year: int) -> int:
-    n = len(citations)
     pub_ages = publication_ages(year, pub_years)
     cites_per_year = citations_per_year(citations, pub_ages)
     sc = [4*c for c in cites_per_year]
-    _, tmporder = sort_and_rank(sc, n)
-    contemp_h_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            contemp_h_index += 1
-    return contemp_h_index
+    sc.sort(reverse=True)
+    return get_rank_value(sc)
 
 
 # hpd-index (Kosmulski 2009)
 def calculate_hpd_index(citations: list, pub_years: list, year: int) -> int:
-    n = len(citations)
     pub_ages = publication_ages(year, pub_years)
     cites_per_year = citations_per_year(citations, pub_ages)
     sc = [10*c for c in cites_per_year]
-    _, tmporder = sort_and_rank(sc, n)
-    hpd_index = 0
-    for i in range(n):
-        if tmporder[i] <= sc[i]:
-            hpd_index += 1
-    return hpd_index
+    sc.sort(reverse=True)
+    return get_rank_value(sc)
 
 
 # specific impact s-index (De Visscher 2010)
@@ -649,13 +647,15 @@ def calculate_hm_index(citations: list, n_authors: list) -> float:
     data = [[citations[i], n_authors[i]] for i in range(len(citations))]
     data.sort(reverse=True)
     for d in data:
-        c = d[0]
-        a = d[1]
-        e = 1/a
+        c = d[0]  # citations
+        e = 1 / d[1]  # effort = 1 /n_authors
         cumulative_rank += e
         if cumulative_rank <= c:
             hm_index = cumulative_rank
     return hm_index
+
+
+# pick up from here XXXX
 
 
 # gF-index (fractional paper) (Egghe 2008)
@@ -670,22 +670,13 @@ def calculate_gf_paper_index(cumulative_citations: list, rank_order: list, n_aut
 
 
 # multidimensional h-index (Garcia-Perez 2009)
-def calculate_multidimensional_h_index(citations: list, rank_order: list, is_core: list, h: int) -> list:
-    multi_dim_h_index = [h]
-    multi_used = [c for c in is_core]
-    j = 0
-    tmph = -1
-    while tmph != 0:
-        nc = len(multi_dim_h_index)
-        j += multi_dim_h_index[nc-1]
-        tmph = 0
-        for i in range(len(citations)):
-            if not multi_used[i]:
-                if rank_order[i] - j <= citations[i]:
-                    multi_used[i] = True
-                    tmph += 1
-        if tmph > 0:
-            multi_dim_h_index.append(tmph)
+def calculate_multidimensional_h_index(citations: list) -> list:
+    multi_dim_h_index = []
+    sorted_citations = sorted(citations, reverse=True)
+    while (len(sorted_citations) > 0) and (max(sorted_citations) > 0):
+        h = get_rank_value(sorted_citations)
+        multi_dim_h_index.append(h)
+        sorted_citations = sorted_citations[h:]
     return multi_dim_h_index
 
 
@@ -1923,27 +1914,18 @@ def calculate_multiple_h_index(citations: list, rank_order: list, is_core: list,
 
 
 # hmaj-index (Hu et al 2010; Bucur et al 2015)
-# def calculate_hmaj_index(citations: list, ht: int, primary: list) -> list:
 def calculate_hmaj_index(citations: list, primary: list) -> int:
     # create list containing only the publications in which the author is primary
     tmp_cites = []
     for i, c in enumerate(citations):
         if primary[i]:
             tmp_cites.append(c)
-    hp = 0
-    n = len(tmp_cites)
-    _, tmporder = sort_and_rank(tmp_cites, n)
-    for j in range(n):
-        if tmporder[j] <= tmp_cites[j]:
-            hp += 1
-    return hp
+    tmp_cites.sort(reverse=True)
+    return get_rank_value(tmp_cites)
 
 
 def calculate_total_pubs_coauthor_adj(measure: str, author_cnts: list, author_pos: list) -> float:
-    cnt = 0
-    for i, a in enumerate(author_cnts):
-        cnt += author_effort(measure, a, author_pos[i])
-    return cnt
+    return sum(author_effort(measure, a, author_pos[i]) for i, a in enumerate(author_cnts))
 
 
 # only used for spot testing new functions

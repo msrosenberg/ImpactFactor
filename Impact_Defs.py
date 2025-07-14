@@ -899,8 +899,7 @@ def metric_g_index() -> Metric:
 # h2-index (Kosmulski 2006)
 def calculate_h2_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_h2_index(citations, rank_order)
+    return Impact_Funcs.calculate_h2_index(citations)
 
 
 def write_h2_index_desc_data(metric_set: MetricSet) -> list:
@@ -1683,9 +1682,8 @@ def metric_rational_h_index() -> Metric:
 # real h-index (hr-index) (Guns and Rousseau 2009)
 def calculate_real_h_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
     h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_real_h_index(citations, rank_order, h)
+    return Impact_Funcs.calculate_real_h_index(citations, h)
 
 
 def write_real_h_index_desc_data(metric_set: MetricSet) -> list:
@@ -2326,10 +2324,8 @@ def metric_weighted_h_index() -> Metric:
 
 # pi-index (Vinkler 2009)
 def calculate_pi_index(metric_set: MetricSet) -> float:
-    total_pubs = metric_set.metrics["total pubs"].value
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    return Impact_Funcs.calculate_pi_index(total_pubs, citations, rank_order)
+    return Impact_Funcs.calculate_pi_index(citations)
 
 
 def write_pi_index_example(metric_set: MetricSet) -> str:
@@ -2941,10 +2937,7 @@ def metric_p_index_frac() -> Metric:
 # multidimensional h-index (Garcia-Perez 2009)
 def calculate_multidimensional_h_index(metric_set: MetricSet) -> list:
     citations = metric_set.citations
-    rank_order = metric_set.rank_order
-    is_core = metric_set.is_core
-    h = metric_set.metrics["h-index"].value
-    return Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
+    return Impact_Funcs.calculate_multidimensional_h_index(citations)
 
 
 def write_multidim_h_index_desc_data(metric_set: MetricSet) -> list:

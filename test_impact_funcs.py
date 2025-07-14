@@ -169,8 +169,7 @@ def test_calculate_g_index():
 
 
 def test_calculate_h2_index():
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_h2_index(TEST_CITATION_DATA, rank_order) == 3
+    assert Impact_Funcs.calculate_h2_index(TEST_CITATION_DATA) == 3
 
 
 def test_calculate_hg_index():
@@ -210,13 +209,12 @@ def test_calculate_b_index():
 def test_calculate_real_h_index():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
     h, _ = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
-    assert round(Impact_Funcs.calculate_real_h_index(TEST_CITATION_DATA, rank_order, h), 4) == 6.4286
+    assert round(Impact_Funcs.calculate_real_h_index(TEST_CITATION_DATA, h), 4) == 6.4286
 
     # data and answer from original publication
     citations = [9, 7, 6, 5, 3, 0]
-    rank_order = [1, 2, 3, 4, 5, 6]
     h = 4
-    assert round(Impact_Funcs.calculate_real_h_index(citations, rank_order, h), 2) == 4.33
+    assert round(Impact_Funcs.calculate_real_h_index(citations, h), 2) == 4.33
 
 
 def test_calculate_a_index():
@@ -362,15 +360,12 @@ def test_calculate_tapered_h_index():
 
 
 def test_calculate_pi_index_rate():
-    total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    assert Impact_Funcs.calculate_pi_index(total_pubs, TEST_CITATION_DATA, rank_order) == 1.03
+    assert Impact_Funcs.calculate_pi_index(TEST_CITATION_DATA) == 1.03
 
 
 def test_calculate_pi_rate():
     total_pubs = Impact_Funcs.calculate_total_pubs(TEST_CITATION_DATA)
-    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
-    pi_index = Impact_Funcs.calculate_pi_index(total_pubs, TEST_CITATION_DATA, rank_order)
+    pi_index = Impact_Funcs.calculate_pi_index(TEST_CITATION_DATA)
     assert round(Impact_Funcs.calculate_pi_rate(total_pubs, pi_index), 4) == 25.75
 
 
@@ -559,10 +554,7 @@ def test_calculate_multidimensional_h_index():
     # data and answers from original publication
     citations = [42, 13, 11, 11, 10, 10, 10, 10, 9, 8, 7, 7, 7, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2,
                  2, 2, 2, 2, 1, 1, 1, 1]
-    rank_order, _ = Impact_Funcs.calculate_ranks(citations)
-    h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    assert Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order,
-                                                           is_core, h) == [9, 5, 5, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1]
+    assert Impact_Funcs.calculate_multidimensional_h_index(citations) == [9, 5, 5, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1]
 
 
 def test_calculate_two_sided_h():
@@ -570,7 +562,7 @@ def test_calculate_two_sided_h():
                  1, 0, 0]
     rank_order, _ = Impact_Funcs.calculate_ranks(citations)
     h, is_core = Impact_Funcs.calculate_h_index(citations, rank_order)
-    mdh = Impact_Funcs.calculate_multidimensional_h_index(citations, rank_order, is_core, h)
+    mdh = Impact_Funcs.calculate_multidimensional_h_index(citations)
     assert Impact_Funcs.calculate_two_sided_h(citations, rank_order, h, mdh, 4) == [8, 8, 10, 12, 15, 6, 2, 1, 1]
 
 
