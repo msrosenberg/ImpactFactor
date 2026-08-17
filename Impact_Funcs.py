@@ -1750,6 +1750,33 @@ def calculate_total_pubs_coauthor_adj(measure: str, author_cnts: list, author_po
     return sum(author_effort(measure, a, author_pos[i]) for i, a in enumerate(author_cnts))
 
 
+# l-sequence (Liu and Yang 2014)
+def calculate_l_sequence(pub_list: list) -> int:
+    pub_cites = citations_per_pub_per_year(pub_list)
+    """
+    although technically a multidimensional sequence, values for previous years are fixed, so only need to 
+    calculate for the citations for the latest year
+    """
+    cur_year_cites = [x[-1] for x in pub_cites]
+    sorted_citations = sorted(cur_year_cites, reverse=True)
+    return get_rank_value(sorted_citations)
+
+
+# l-prop (Liu and Yang 2014)
+def calculate_l_prop(pub_list: list) -> int:
+    """
+    I should be able to get this by directly adding the L values from all years already calculated, but it is
+    simpler to recalculate than to access the already calculated values
+    """
+    pub_cites = citations_per_pub_per_year(pub_list)
+    lp = 0
+    for i in range(len(pub_cites[0])):
+        cur_year_cites = [x[i] for x in pub_cites]
+        sorted_citations = sorted(cur_year_cites, reverse=True)
+        lp += get_rank_value(sorted_citations)
+    return lp
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

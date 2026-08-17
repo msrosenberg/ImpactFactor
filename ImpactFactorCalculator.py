@@ -241,7 +241,7 @@ def encode_name(name: str) -> str:
 
 def strip_html(html_str: str) -> str:
     """
-    remove any stray html tags from string
+    remove any stray HTML tags from string
     """
     regex = r"<.+?>"
     return re.sub(regex, "", html_str)
@@ -256,9 +256,10 @@ def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = 
                   "beyond those described in the paper and have now created a separate webpage "
                   "for every metric, including a basic explanation, a worked example (in many cases), and a "
                   "year-by-year history of that metric based on my own publication record.</p>\n")
-    outfile.write("   <p>The code for calculating all of these metrics can be found on "
-                  "<a href=\"https://github.com/msrosenberg/ImpactFactor\"><span class=\"fab fa-github\">"
-                  "</span> Github</a>.</p>\n")
+    outfile.write('   <p>The code for calculating all of these metrics can be found on '
+                  '<a href="https://github.com/msrosenberg/ImpactFactor"><span role="presentation" class="fa-brands '
+                  'fa-github" aria-hidden="true"></span> Github</a>.</p>\n')
+
     now = datetime.datetime.now()
     outfile.write(f"   <p>Citation data used for calculating all examples extracted from Google Scholar "
                   f"on {now.strftime("%Y-%m-%d")}.</p>\n")
@@ -326,7 +327,6 @@ def format_description(instr: str, metric_data: Impact_Defs.MetricSet, single_pa
             prefix = "impact_"
             suffix = ".html"
         replace_str = f'<a href="{prefix}{encode_name(name)}{suffix}">{metric.html_name}</a>'
-        # replace_str = "<a href=\"" + prefix + encode_name(name) + suffix + "\">" + metric.html_name + "</a>"
         instr = re.sub(search_str, replace_str, instr, count=1)
     return instr
 

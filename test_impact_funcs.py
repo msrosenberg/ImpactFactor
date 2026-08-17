@@ -1426,3 +1426,10 @@ def test_calculate_total_pubs_coauthor_adj_geometric():
 def test_calculate_total_pubs_coauthor_adj_harmonic():
     assert round(Impact_Funcs.calculate_total_pubs_coauthor_adj("harmonic", TEST_AUTHOR_CNT,
                                                                 TEST_AUTHOR_ORDER), 3) == 9.059
+
+def test_calculate_l_sequence():
+    assert Impact_Funcs.calculate_l_sequence(TEST_YEARLY_PUBCITE_DATA) == 4
+
+
+def test_calculate_l_prop():
+    assert Impact_Funcs.calculate_l_prop(TEST_YEARLY_PUBCITE_DATA) == 14

@@ -10867,6 +10867,67 @@ def metric_total_pubs_harmonic() -> Metric:
 
 
 
+# l sequence (liu and yang 2014)
+def calculate_l_sequence(metric_set: MetricSet) -> int:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    return Impact_Funcs.calculate_l_sequence(pub_data)
+
+
+def metric_l_sequence() -> Metric:
+    m = Metric()
+    m.name = "l seq"
+    m.full_name = "L-Sequence"
+    m.html_name = "<em>L-</em>Sequence"
+    m.symbol = "<em>L<sub>y</sub></em>"
+    m.metric_type = INT
+    m.description = ("<p>The <em>L-</em>Sequence is a multi-dimensional measure where impact is measured as a "
+                     "series of <em>h-</em>indices with each one based on the citations for a single year. In "
+                     "practice, this means that from one year to the next, the only change in the sequences is the "
+                     "value for the latest year.</p><p>In practice the value of <em>L/em> for a particular year may "
+                     "be higher or lower than the previous year, depending on what the citation pattern for that "
+                     "particular year ended up being.</p>")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_l_sequence
+    m.properties["Multidimensional Metric"] = True
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Core Citations"] = True
+    m.references = ["Liu, Y., and Y. Yang (2014) Empirical study of <em>L-</em>Sequence: The basic <em>h-</em>index "
+                    "sequence for cumulative publications with consideration of the yearly citation performance. "
+                    "<em>Journal of Informetrics</em> 8(3):478-485."]
+    return m
+
+
+# l∝ (liu and yang 2014)
+def calculate_l_prop(metric_set: MetricSet) -> int:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    return Impact_Funcs.calculate_l_prop(pub_data)
+
+
+def metric_l_prop() -> Metric:
+    m = Metric()
+    m.name = "l prop"
+    m.full_name = "L∝"
+    m.html_name = "<em>L<sub>∝</sub></em>"
+    # m.symbol = "<em>L<sub>y</sub></em>"
+    m.metric_type = INT
+    m.description = ("<p><em>L<sub>∝</sub></em> is simply the sum of the values in the __l seq__, "
+                     "meant to be viewed as an alternative to the __h-index__.</p>")
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_l_prop
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Time"] = True
+    m.properties["Core Citations"] = True
+    m.references = ["Liu, Y., and Y. Yang (2014) Empirical study of <em>L-</em>Sequence: The basic <em>h-</em>index "
+                    "sequence for cumulative publications with consideration of the yearly citation performance. "
+                    "<em>Journal of Informetrics</em> 8(3):478-485."]
+    return m
 
 
 
@@ -11092,7 +11153,9 @@ def load_all_metrics() -> list:
                    metric_total_pubs_fractional(),
                    metric_total_pubs_proportional(),
                    metric_total_pubs_geometric(),
-                   metric_total_pubs_harmonic()
+                   metric_total_pubs_harmonic(),
+                   metric_l_sequence(),
+                   metric_l_prop()
                    # metric_ab_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()
