@@ -757,7 +757,7 @@ def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth
                         outfile.write("          <li><strong>{}:</strong> {}</li>\n".format(m_type, ", ".join(outlist)))
                 outfile.write("        </ul>\n")
                 outfile.write("      <h3>Description</h3>\n")
-                outfile.write("      " + format_description(metric.description, metric_base_data, True) + "\n")
+                outfile.write("      " + format_description(metric.description, metric_base_data, False) + "\n")
 
                 if metric.example is not None:
                     outfile.write("      <h3>Example</h3>\n")
