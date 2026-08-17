@@ -1433,3 +1433,26 @@ def test_calculate_l_sequence():
 
 def test_calculate_l_prop():
     assert Impact_Funcs.calculate_l_prop(TEST_YEARLY_PUBCITE_DATA) == 14
+
+
+def test_calculate_k_index_kaptay():
+    x = Impact_Funcs.calculate_frac_weight_cite_agg(TEST_CITATION_DATA, TEST_AUTHOR_CNT)
+    assert round(Impact_Funcs.calculate_k_index_kaptay(x), 4) == 7.3768
+
+
+def test_calculate_kz_index():
+    # test data and answers from original paper
+    r1years = [2014, 2015, 2016, 2017, 2018, 2018, 2020, 2021, 2022, 2022]
+    r1cites = [40, 30, 0, 3, 24, 1, 1, 1, 0, 10]
+    r1year = 2022
+    r1h = 4
+    r1answer = 2.458
+    assert round(Impact_Funcs.calculate_kz_index(r1cites, r1years, r1year, r1h), 3) == r1answer
+
+    r2years = [2014, 2015, 2016, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+    r2cites = [2, 3, 3, 40, 1, 30, 22, 0, 1, 8]
+    r2year = 2022
+    r2h = 4
+    r2answer = 2.753
+    assert round(Impact_Funcs.calculate_kz_index(r2cites, r2years, r2year, r2h), 3) == r2answer
+

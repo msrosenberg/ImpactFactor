@@ -1777,6 +1777,23 @@ def calculate_l_prop(pub_list: list) -> int:
     return lp
 
 
+# k-index (Kaptay 2020)
+def calculate_k_index_kaptay(x: float) -> float:
+    return math.sqrt(x)
+
+
+# kz-index (Sharma and Uddin 2026)
+def calculate_kz_index(citations, pub_years, year, h) -> float:
+    pub_ages = publication_ages(year, pub_years)
+    k = []
+    for c in citations:
+        if c == 0:
+            k.append(0)
+        else:
+            k.append(math.log(c)/math.log(h+1))
+    return sum(k[i]/pub_ages[i] for i in range(len(k)))
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
