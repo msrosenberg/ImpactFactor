@@ -22,16 +22,16 @@ class Publication:
         self.code = ""
 
 
-def get_webpage(url, encoding):
-    """
-    function to fetch the webpage specifed by url and return a list containing the contents of the page
-    """
-    webpage = urllib.request.urlopen(url)
-    page = webpage.read()
-    page = page.decode(encoding)
-    # lines = page.split("\n")
-    return page
-    # return TEST
+# def get_webpage(url, encoding):
+#     """
+#     function to fetch the webpage specifed by url and return a list containing the contents of the page
+#     """
+#     webpage = urllib.request.urlopen(url)
+#     page = webpage.read()
+#     page = page.decode(encoding)
+#     # lines = page.split("\n")
+#     return page
+#     # return TEST
 
 
 def read_input_data(filename: str):
@@ -53,37 +53,37 @@ def read_input_data(filename: str):
     return data, pub_list
 
 
-def fetch_pub_data(pub: Publication):
-    code = pub.code
-    page = get_webpage(f"https://scholar.google.com/citations?view_op=view_citation&hl=en&user=exyen9EAAAAJ&citation_for_view=exyen9EAAAAJ:{code}", "ISO-8859-1")
-    # print(page)
-    # print()
-
-    # get publication date
-    # <div class="gsc_oci_field">Publication date</div><div class="gsc_oci_value">2011</div>
-    # regex = r'<div class="gsc_oci_field">Publication date</div><div class="gsc_oci_value">(?P<year>.+?)</div>'
-    # match = re.search(regex, page)
-    # pub_year = int(match.group("year"))
-    pub_year = int(pub.year)
-
-    citations = {y: 0 for y in range(START_YEAR, CURRENT_YEAR + 1)}
-    for y in range(START_YEAR, pub_year):  # set count to n/a for any year prior to publication year
-        citations[y] = "n/a"
-    # <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=12480068626253116047,8651933093376463528&amp;as_sdt=5&amp;as_ylo=2002&amp;as_yhi=2002" class="gsc_oci_g_a" style="left:5px;height:2px;top:55px;z-index:23"><span class="gsc_oci_g_al">3</span></a>
-    # <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=12480068626253116047,8651933093376463528&amp;as_sdt=5&amp;as_ylo=2003&amp;as_yhi=2003" class="gsc_oci_g_a" style="left:38px;height:2px;top:55px;z-index:22"><span class="gsc_oci_g_al">4</span></a>
-    regex = r'<a href="https://scholar.google.com/scholar\?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=.+?&amp;as_sdt=5&amp;as_ylo=(?P<year>\d{4})&amp;as_yhi=(?P<year2>\d{4})" class="gsc_oci_g_a" style=".+?"><span class="gsc_oci_g_al">(?P<cnt>\d+?)</span></a>'
-    # i = 0
-    for match in re.finditer(regex, page):
-        # i+=1
-        # print("match", i)
-        y = int(match.group("year"))
-        if y < pub_year:
-            y = pub_year
-        citations[y] += int(match.group("cnt"))
-
-    # for y in range(START_YEAR, CURRENT_YEAR + 1):
-    #     print(y, citations[y])
-    return citations
+# def fetch_pub_data(pub: Publication):
+#     code = pub.code
+#     page = get_webpage(f"https://scholar.google.com/citations?view_op=view_citation&hl=en&user=exyen9EAAAAJ&citation_for_view=exyen9EAAAAJ:{code}", "ISO-8859-1")
+#     # print(page)
+#     # print()
+#
+#     # get publication date
+#     # <div class="gsc_oci_field">Publication date</div><div class="gsc_oci_value">2011</div>
+#     # regex = r'<div class="gsc_oci_field">Publication date</div><div class="gsc_oci_value">(?P<year>.+?)</div>'
+#     # match = re.search(regex, page)
+#     # pub_year = int(match.group("year"))
+#     pub_year = int(pub.year)
+#
+#     citations = {y: 0 for y in range(START_YEAR, CURRENT_YEAR + 1)}
+#     for y in range(START_YEAR, pub_year):  # set count to n/a for any year prior to publication year
+#         citations[y] = "n/a"
+#     # <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=12480068626253116047,8651933093376463528&amp;as_sdt=5&amp;as_ylo=2002&amp;as_yhi=2002" class="gsc_oci_g_a" style="left:5px;height:2px;top:55px;z-index:23"><span class="gsc_oci_g_al">3</span></a>
+#     # <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=12480068626253116047,8651933093376463528&amp;as_sdt=5&amp;as_ylo=2003&amp;as_yhi=2003" class="gsc_oci_g_a" style="left:38px;height:2px;top:55px;z-index:22"><span class="gsc_oci_g_al">4</span></a>
+#     regex = r'<a href="https://scholar.google.com/scholar\?oi=bibs&amp;hl=en&amp;oe=ASCII&amp;cites=.+?&amp;as_sdt=5&amp;as_ylo=(?P<year>\d{4})&amp;as_yhi=(?P<year2>\d{4})" class="gsc_oci_g_a" style=".+?"><span class="gsc_oci_g_al">(?P<cnt>\d+?)</span></a>'
+#     # i = 0
+#     for match in re.finditer(regex, page):
+#         # i+=1
+#         # print("match", i)
+#         y = int(match.group("year"))
+#         if y < pub_year:
+#             y = pub_year
+#         citations[y] += int(match.group("cnt"))
+#
+#     # for y in range(START_YEAR, CURRENT_YEAR + 1):
+#     #     print(y, citations[y])
+#     return citations
 
 
 def fetch_pub_data_offline(pub: Publication):
@@ -138,34 +138,34 @@ def write_output(pub_list, pub_data, citation_cnts):
         #     print("\t".join(data))
 
 
-def main_online():
-    print("Get Data from Google Scholar")
-    print()
-    default = "google_scholar_codes.txt"
-    data_name = input("Enter name of data file (default = {}): ".format(default))
-    if data_name == "":
-        data_name = default
-    pub_data, pub_list = read_input_data(data_name)
-    print()
-    # testing = True
-    citation_cnts ={}
-    # cnt = 0
-    for pub in tqdm.tqdm(pub_list):
-
-        # cnt += 1
-        # if cnt == 11:  # switch server every 10 fetches
-        #     cnt = 1
-        #     input("Change server. Press enter to continue")
-
-        # print("Fetching data from", pub)
-        citation_cnts[pub] = fetch_pub_data(pub_data[pub])
-        time.sleep(5)
-        # if testing:
-        #     time.sleep(5)
-        #     testing = False
-        #     print("Fetching data from", pub)
-        #     citation_cnts[pub] = fetch_pub_data(pub_data[pub])
-    write_output(pub_list, pub_data, citation_cnts)
+# def main_online():
+#     print("Get Data from Google Scholar")
+#     print()
+#     default = "google_scholar_codes.txt"
+#     data_name = input("Enter name of data file (default = {}): ".format(default))
+#     if data_name == "":
+#         data_name = default
+#     pub_data, pub_list = read_input_data(data_name)
+#     print()
+#     # testing = True
+#     citation_cnts ={}
+#     # cnt = 0
+#     for pub in tqdm.tqdm(pub_list):
+#
+#         # cnt += 1
+#         # if cnt == 11:  # switch server every 10 fetches
+#         #     cnt = 1
+#         #     input("Change server. Press enter to continue")
+#
+#         # print("Fetching data from", pub)
+#         citation_cnts[pub] = fetch_pub_data(pub_data[pub])
+#         time.sleep(5)
+#         # if testing:
+#         #     time.sleep(5)
+#         #     testing = False
+#         #     print("Fetching data from", pub)
+#         #     citation_cnts[pub] = fetch_pub_data(pub_data[pub])
+#     write_output(pub_list, pub_data, citation_cnts)
 
 
 def main_offline():

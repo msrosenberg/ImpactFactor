@@ -8181,6 +8181,90 @@
         var chart_Kz_index = new google.visualization.LineChart(document.getElementById('chart_Kz_index_div'));
         chart_Kz_index.draw(data_Kz_index, options_Kz_index);
 
+        var data_λ_index = google.visualization.arrayToDataTable([
+           ['Year', 'λ'],
+           ['1997', 1],
+           ['1998', 2],
+           ['1999', 2],
+           ['2000', 3],
+           ['2001', 4],
+           ['2002', 5],
+           ['2003', 6],
+           ['2004', 7],
+           ['2005', 8],
+           ['2006', 8],
+           ['2007', 9],
+           ['2008', 10],
+           ['2009', 10],
+           ['2010', 11],
+           ['2011', 12],
+           ['2012', 13],
+           ['2013', 14],
+           ['2014', 14],
+           ['2015', 14],
+           ['2016', 15],
+           ['2017', 15],
+           ['2018', 15],
+           ['2019', 16],
+           ['2020', 16],
+           ['2021', 16],
+           ['2022', 17],
+           ['2023', 17],
+           ['2024', 17],
+           ['2025', 18],
+           ['2026', 18],
+		]);
+
+        var options_λ_index = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_λ_index = new google.visualization.LineChart(document.getElementById('chart_λ_index_div'));
+        chart_λ_index.draw(data_λ_index, options_λ_index);
+
+        var data_Pareto_ratio = google.visualization.arrayToDataTable([
+           ['Year', 'λ/P'],
+           ['1997', 16.666666666666668],
+           ['1998', 25.0],
+           ['1999', 22.22222222222222],
+           ['2000', 21.428571428571427],
+           ['2001', 22.22222222222222],
+           ['2002', 22.727272727272727],
+           ['2003', 23.076923076923077],
+           ['2004', 24.137931034482758],
+           ['2005', 22.857142857142858],
+           ['2006', 22.22222222222222],
+           ['2007', 23.076923076923077],
+           ['2008', 24.390243902439025],
+           ['2009', 22.22222222222222],
+           ['2010', 21.568627450980394],
+           ['2011', 21.818181818181817],
+           ['2012', 23.214285714285715],
+           ['2013', 22.580645161290324],
+           ['2014', 21.875],
+           ['2015', 20.895522388059703],
+           ['2016', 21.73913043478261],
+           ['2017', 21.428571428571427],
+           ['2018', 20.0],
+           ['2019', 21.05263157894737],
+           ['2020', 20.77922077922078],
+           ['2021', 20.253164556962027],
+           ['2022', 20.238095238095237],
+           ['2023', 20.238095238095237],
+           ['2024', 19.54022988505747],
+           ['2025', 20.224719101123597],
+           ['2026', 19.78021978021978],
+		]);
+
+        var options_Pareto_ratio = {
+		     legend: {position: 'none'},
+		     hAxis: {slantedText: true},
+        };
+
+        var chart_Pareto_ratio = new google.visualization.LineChart(document.getElementById('chart_Pareto_ratio_div'));
+        chart_Pareto_ratio.draw(data_Pareto_ratio, options_Pareto_ratio);
+
 		}
     </script>
   </head>
@@ -8188,7 +8272,7 @@
     <div>
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span role="presentation" class="fa-brands fa-github" aria-hidden="true"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2026-08-17.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2026-08-18.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -8374,6 +8458,7 @@
         <li><a href="#p_index"><em>p-</em>index (Prathap)</a></li>
         <li><a href="#P1"><em>P</em><sub>1</sub></a></li>
         <li><a href="#p20"><em>p</em><sub>20</sub></a></li>
+        <li><a href="#Pareto_ratio">Pareto ratio</a></li>
         <li><a href="#partnership_ability">partnership ability</a></li>
         <li><a href="#cited_paper_percent"><em>P</em><sub>C</sub>%</a></li>
         <li><a href="#fractional_p_index"><em>p<sub>f</sub></em></a></li>
@@ -8470,6 +8555,7 @@
         <li><a href="#zynergy_index">Zynergy-Index</a></li>
         <li><a href="#alpha_index"><em>α-</em>index</a></li>
         <li><a href="#fairness"><em>η</em></a></li>
+        <li><a href="#λ_index">λ-index</a></li>
         <li><a href="#mu_index"><em>μ-</em>index</a></li>
         <li><a href="#frac_weight_cite_h_cut"><em>ξ<sub>e</sub></em></a></li>
         <li><a href="#prop_weight_cite_h_cut"><em>ξ<sub>p</sub></em></a></li>
@@ -10418,6 +10504,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="#Pareto_ratio">Pareto ratio</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="#partnership_ability">partnership ability</a></td>
         <td>⚫</td>
         <td></td>
@@ -11745,6 +11850,25 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        </tr>
+        <tr>
+          <td class="first_col"><a href="#λ_index">λ-index</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
         <td></td>
         </tr>
         <tr>
@@ -21070,6 +21194,110 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         </div>
       </div>
     </div>
+    <div id="λ_index" class="metric_container">
+      <h2>λ-index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The λ-index (Lathabai, 2026) is based on the Pareto principle, which essentially observes that 80% of outputs are produced by 20% of inputs (the 80/20 rule). In the case of academic output, the inputs are publications and the outputs are citations. The λ-index is a measure of the largest value which produces a 1-λ/<em>P</em> / λ/<em>P</em> ratio of outputs to inputs.</p><p>It is calcaulted by comparing the proportion of total citations found in the top <em>i</em> publications to the proportion of publications represented by the top <em>i</em> publications, or</p>$$\lambda=\underset{i}{\max} \left( \frac{C^i}{C^P} \leq 1-\frac{i}{P}\right).$$<p></p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>λ</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">1</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">2</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">3</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">4</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">5</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">6</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">7</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">8</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">9</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">10</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">11</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">12</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">13</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">14</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">15</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">16</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">17</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">17</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">17</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">18</td></tr>
+            <tr><td class="cell_year">2026</td><td class="cell_value">18</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_λ_index_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="Pareto_ratio" class="metric_container">
+      <h2>Pareto ratio</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The λ-index (Lathabai, 2026) determines the number of publications for which the proportion of total publications represented by λ produces 1-proportion of citations, based on the concept of the Pareto rule, which observed that 80% of outputs were produced by 20% of inputs. The Pareto ratio is just the percentage of publications represented by λ, or 100&times;λ/P.</p><p>The proportion of outputs is 100 - the pareto value, thus a Pareto value of 22 would indicate a 78:22 Pareto ratio of outputs (citations) to inputs (publications).</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th>λ/P</th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">16.6667</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">25.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">22.2222</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">21.4286</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">22.2222</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">22.7273</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">23.0769</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">24.1379</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">22.8571</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">22.2222</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">23.0769</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">24.3902</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">22.2222</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">21.5686</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">21.8182</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">23.2143</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">22.5806</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">21.8750</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">20.8955</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">21.7391</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">21.4286</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">20.0000</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">21.0526</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">20.7792</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">20.2532</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">20.2381</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">20.2381</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">19.5402</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">20.2247</td></tr>
+            <tr><td class="cell_year">2026</td><td class="cell_value">19.7802</td></tr>
+          </table>
+        </div>
+        <div class="graph_container">
+          <div id="chart_Pareto_ratio_div" class="impact_chart"></div>
+        </div>
+      </div>
+    </div>
     <div id="references">
       <h2>References</h2>
       <ul>
@@ -21127,6 +21355,7 @@ $$m=\frac{h}{Y-Y_{0}+1},$$
         <li>Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original <em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6.</li>
         <li>Kosmulski, M. (2007) MAXPROD - A new index for assessment of the scientific output of an individual, and a comparison with the <em>h-</em>index. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 11(1):5.</li>
         <li>Kosmulski, M. (2009) New seniority-independent Hirsch-type index. <em>Journal of Informetrics</em> 3:341&ndash;347.</li>
+        <li>Lathabai, H.H. (2026) λ-index: A new indicator based on generalized law in Information Production Processes. <em>Journal of Informetrics</em> 20(1):101769.</li>
         <li>Lawani, S.M. (1980) <em>Quality, Collaboration and Citations in Cancer Research: A Bibliometric Study</em> (doctoral dissertation). Florida State University: Tallahassee, Florida.</li>
         <li>Levene, M., M. Harris, and T. Fenner (2020) A two‑dimensional bibliometric index reflecting both quality and quantity. <em>Scientometrics</em>.</li>
         <li>Levene, M., T. Fenner, and J. Bar-Ilan (2012) A bibliometric index based on the complete list of cited publications. <em>International Journal of Scientometrics, Informetrics and Bibliometrics</em> 16:1.</li>

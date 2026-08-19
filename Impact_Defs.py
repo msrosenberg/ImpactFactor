@@ -11000,6 +11000,67 @@ def metric_kz_index() -> Metric:
     return m
 
 
+# λ-index (Lathabai 2026)
+def calculate_lambda_index(metric_set: MetricSet) -> int:
+    citations = metric_set.citations
+    return Impact_Funcs.calculate_lambda_index(citations)
+
+
+def metric_lambda_index() -> Metric:
+    m = Metric()
+    m.name = "λ-index"
+    m.full_name = "λ-index"
+    m.symbol = "λ"
+    m.metric_type = INT
+    equation = r"$$\lambda=\underset{i}{\max} \left( \frac{C^i}{C^P} \leq 1-\frac{i}{P}\right).$$"
+    m.description = ('<p>The λ-index (Lathabai, 2026) is based on the Pareto principle, which essentially observes '
+                     'that 80% of outputs are produced by 20% of inputs (the 80:20 rule). In the case of academic '
+                     'output, the inputs are publications and the outputs are citations. The λ-index is a measure of '
+                     'the largest value which produces a 1-λ/<em>P</em>:λ/<em>P</em> proportion of outputs to '
+                     'inputs.</p><p>It is calcaulted by comparing the proportion of total citations found in the '
+                     'top <em>i</em> publications to the proportion '
+                     f'of publications represented by the top <em>i</em> publications, or</p>{equation}<p></p>')
+    m.references = ["Lathabai, H.H. (2026) λ-index: A new indicator based on generalized law in Information "
+                    "Production Processes. <em>Journal of Informetrics</em> 20(1):101769."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_lambda_index
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    return m
+
+
+# Pareto rule (Lathabai 2026)
+def calculate_pareto_rule(metric_set: MetricSet) -> float:
+    lamb = metric_set.metrics["λ-index"].value
+    n = metric_set.metrics["total pubs"].value
+    return Impact_Funcs.calculate_pareto_rule(lamb, n)
+
+
+def metric_pareto_rule() -> Metric:
+    m = Metric()
+    m.name = "Pareto value"
+    m.full_name = "Pareto value"
+    m.symbol = "λ/P"
+    m.metric_type = FLOAT
+    m.description = ('<p>The λ-index (Lathabai, 2026) determines the number of publications for which the proportion '
+                     'of total publications represented by λ produces 1-proportion of total citations, based on the '
+                     'concept of the Pareto rule, which observed that 80% of outputs were produced by 20% of inputs. '
+                     'The Pareto value is the percentage of publications represented by λ, or 100&times;λ/P.</p>'
+                     '<p>The proportion of outputs is 100 - the Pareto value, thus a Pareto value of 22 would indicate '
+                     'a 78:22 Pareto rule, or 78% of outputs (citations) are produced by 22% of inputs '
+                     '(publications).</p>')
+    m.references = ["Lathabai, H.H. (2026) λ-index: A new indicator based on generalized law in Information "
+                    "Production Processes. <em>Journal of Informetrics</em> 20(1):101769."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_pareto_rule
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
+    return m
+
+
+
 
 # Ab-index (Biswal 2013)
 # def calculate_ab_index(metric_set: MetricSet) -> float:
@@ -11225,7 +11286,9 @@ def load_all_metrics() -> list:
                    metric_l_sequence(),
                    metric_l_prop(),
                    metric_k_index_kaptay(),
-                   metric_kz_index()
+                   metric_kz_index(),
+                   metric_lambda_index(),
+                   metric_pareto_rule()
                    # metric_ab_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()

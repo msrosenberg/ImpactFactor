@@ -3,13 +3,7 @@
 This program is designed to calculate a large number of impact factors for
 data collected over multiple years.
 
-It now has two modes:
-
-(1) It uses data pre-curated by the user (see below for the format).
-
-(2) It attempst to retrieve data via Google Scholar. There are advantages,
-disadvantages, and limitations to the second method, which works but is
-still in early stages of development.
+It uses data pre-curated by the user (see below for the format).
 """
 
 import Impact_Defs
@@ -248,55 +242,55 @@ def strip_html(html_str: str) -> str:
 
 
 def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = True):
-    outfile.write("   <h2>Publication and Citation-based Impact</h2>")
-    outfile.write("   <p>I have been collecting data on citations of my own work for a number of years and once "
-                  "wrote a <a href=\"https://peerj.com/preprints/477/\">guide to the concepts for "
-                  "biologists</a> (rather than for those better versed in bibliometrics and scientometrics) "
-                  "(put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics "
-                  "beyond those described in the paper and have now created a separate webpage "
-                  "for every metric, including a basic explanation, a worked example (in many cases), and a "
-                  "year-by-year history of that metric based on my own publication record.</p>\n")
+    outfile.write('   <h2>Publication and Citation-based Impact</h2>')
+    outfile.write('   <p>I have been collecting data on citations of my own work for a number of years and once '
+                  'wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for '
+                  'biologists</a> (rather than for those better versed in bibliometrics and scientometrics) '
+                  '(put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics '
+                  'beyond those described in the paper and have now created a separate webpage '
+                  'for every metric, including a basic explanation, a worked example (in many cases), and a '
+                  'year-by-year history of that metric based on my own publication record.</p>\n')
     outfile.write('   <p>The code for calculating all of these metrics can be found on '
                   '<a href="https://github.com/msrosenberg/ImpactFactor"><span role="presentation" class="fa-brands '
                   'fa-github" aria-hidden="true"></span> Github</a>.</p>\n')
 
     now = datetime.datetime.now()
-    outfile.write(f"   <p>Citation data used for calculating all examples extracted from Google Scholar "
-                  f"on {now.strftime("%Y-%m-%d")}.</p>\n")
+    outfile.write(f'   <p>Citation data used for calculating all examples extracted from Google Scholar '
+                  f'on {now.strftime("%Y-%m-%d")}.</p>\n')
 
-    outfile.write(f"   <p>Below the Index is a table summarizing major properties of the various indices.</p>\n")
+    outfile.write(f'   <p>Below the Index is a table summarizing major properties of the various indices.</p>\n')
 
     if not inc_self:
-        outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
-                      "self- and coauthor-citation are not currently included in the descriptions below because the "
-                      "current data source makes it difficult to track these accurately.</p>")
+        outfile.write('  <p style="font-style: italic">Note: metrics which account for '
+                      'self- and coauthor-citation are not currently included in the descriptions below because the '
+                      'current data source makes it difficult to track these accurately.</p>')
     # elif not inc_coauth:
     #     outfile.write("  <p style=\"font-style: italic\">Note: metrics which account for "
     #                   "coauthor-citation are not currently included in the descriptions below because the "
     #                   "current data source makes it difficult to track these accurately.</p>")
 
-    outfile.write("      <h3>Common Symbols and Definitions</h3>\n")
-    outfile.write("        <ul>\n")
-    outfile.write("          <li><em>P</em> &mdash; The total number of publications of an author. Unless "
-                  "otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having "
-                  "the most citations and <em>P</em> the fewest.</li>\n")
-    outfile.write("          <li><em>C<sub>i</sub></em> &mdash; The number of citations for the "
-                  "<em>i</em><sup>th</sup> publication.</li>\n")
-    outfile.write("          <li><em>C<sup>x</sup></em> &mdash; The sum of citations for the top <em>x</em> "
-                  "publications, " + r"\(C^x=\sum\limits_{i=1}^{x}{C_i}\)" + ".</li>\n")
-    outfile.write("          <li><em>A<sub>i</sub></em> &mdash; The number of authors of the "
-                  "<em>i</em><sup>th</sup> publication.</li>\n")
-    outfile.write("          <li><em>a<sub>i</sub></em> &mdash; The ordered position of the focal author among "
-                  "the full author list of the <em>i</em><sup>th</sup> publication, it\'s value can range from "
-                  "1 to <em>A<sub>i</sub>.</em></li>\n")
-    outfile.write("          <li><em>Y<sub>i</sub></em> &mdash; The year of the "
-                  "<em>i</em><sup>th</sup> publication.</li>\n")
-    outfile.write("          <li><em>Y</em><sub>0</sub></em> &mdash; The year of the "
-                  "author\'s first publication, " + r"\(Y_0=\min\left(Y_i\right)\)" + ".</li>\n")
+    outfile.write('      <h3>Common Symbols and Definitions</h3>\n')
+    outfile.write('        <ul>\n')
+    outfile.write('          <li><em>P</em> &mdash; The total number of publications of an author. Unless '
+                  'otherwise specified, publications are in rank order from 1&hellip;<em>P,</em> with 1 having '
+                  'the most citations and <em>P</em> the fewest.</li>\n')
+    outfile.write('          <li><em>C<sub>i</sub></em> &mdash; The number of citations for the '
+                  '<em>i</em><sup>th</sup> publication.</li>\n')
+    outfile.write('          <li><em>C<sup>x</sup></em> &mdash; The sum of citations for the top <em>x</em> '
+                  'publications, ' + r'\(C^x=\sum\limits_{i=1}^{x}{C_i}\)' + '.</li>\n')
+    outfile.write('          <li><em>A<sub>i</sub></em> &mdash; The number of authors of the '
+                  '<em>i</em><sup>th</sup> publication.</li>\n')
+    outfile.write('          <li><em>a<sub>i</sub></em> &mdash; The ordered position of the focal author among '
+                  'the full author list of the <em>i</em><sup>th</sup> publication, it\'s value can range from '
+                  '1 to <em>A<sub>i</sub>.</em></li>\n')
+    outfile.write('          <li><em>Y<sub>i</sub></em> &mdash; The year of the '
+                  '<em>i</em><sup>th</sup> publication.</li>\n')
+    outfile.write('          <li><em>Y</em><sub>0</sub></em> &mdash; The year of the '
+                  'author\'s first publication, ' + r'\(Y_0=\min\left(Y_i\right)\)' + '.</li>\n')
     outfile.write('          <li>academic age &mdash; The number of years since an author\'s first publication. '
                   'If <em>Y</em> is the current year (or year of interest), the academic age of the author is '
-                  r"\(Y-Y_0+1\)" + '.</li>\n')
-    outfile.write("        </ul>\n")
+                  r'\(Y-Y_0+1\)' + '.</li>\n')
+    outfile.write('        </ul>\n')
 
 
 def create_name_links(metric_names, metric_base_data, inc_self, inc_coauth):
@@ -334,27 +328,27 @@ def format_description(instr: str, metric_data: Impact_Defs.MetricSet, single_pa
 def create_metric_table(outfile, metric_base_data, metric_names, inc_coauth: bool, inc_self: bool,
                         is_single: bool = True):
     # new and temp
-    outfile.write("    <hr/>\n")
-    outfile.write("    <h2>Properties Table</h2>\n")
-    outfile.write("    <p>This table attempts to give a basic summary of some of the properties that distinguish "
-                  "the different metrics and measures.</p>\n")
-    outfile.write("    <div>\n")
+    outfile.write('    <hr/>\n')
+    outfile.write('    <h2>Properties Table</h2>\n')
+    outfile.write('    <p>This table attempts to give a basic summary of some of the properties that distinguish '
+                  'the different metrics and measures.</p>\n')
+    outfile.write('    <div>\n')
     outfile.write('      <table class="property_table">\n')
-    outfile.write("       <thead>\n")
-    outfile.write("        <tr>\n")
+    outfile.write('       <thead>\n')
+    outfile.write('        <tr>\n')
     outfile.write('          <th class="blank toph"></th>\n')
     for m_type in Impact_Defs.PROPERTY_TYPES:
         nc = len(Impact_Defs.PROPERTY_DICT[m_type])
         outfile.write(f'          <th class="toph" colspan="{nc}" style="width: {nc*40}px">{m_type}</th>\n')
-    outfile.write("        </tr>\n")
-    outfile.write("        <tr>\n")
-    outfile.write("          <th>Metric Name</th>\n")
+    outfile.write('        </tr>\n')
+    outfile.write('        <tr>\n')
+    outfile.write('          <th>Metric Name</th>\n')
     for m_type in Impact_Defs.PROPERTY_TYPES:
         for p in Impact_Defs.PROPERTY_DICT[m_type]:
             outfile.write(f'        <th><div class="rot_1"><div class="rot_2">{p}</div></div></th>\n')
-    outfile.write("        </tr>\n")
-    outfile.write("       </thead>\n")
-    outfile.write("       <tbody>\n")
+    outfile.write('        </tr>\n')
+    outfile.write('       </thead>\n')
+    outfile.write('       <tbody>\n')
     tmp_names = [[metric_base_data.metrics[x].full_name.lower(), x] for x in metric_names]
     if is_single:
         prefix = "#"
@@ -369,7 +363,7 @@ def create_metric_table(outfile, metric_base_data, metric_names, inc_coauth: boo
         elif metric.is_self and not inc_self:
             pass
         else:
-            outfile.write("        <tr>\n")
+            outfile.write('        <tr>\n')
             outfile.write(f'          <td class="first_col"><a href="{prefix}{encode_name(metric.name)}{suffix}">'
                           f'{metric.html_name}</a></td>\n')
             for m_type in Impact_Defs.PROPERTY_TYPES:
@@ -378,21 +372,21 @@ def create_metric_table(outfile, metric_base_data, metric_names, inc_coauth: boo
                         v = "⚫"
                     else:
                         v = ""
-                    outfile.write(f"        <td>{v}</td>\n")
-            outfile.write("        </tr>\n")
-    outfile.write("       </tbody>\n")
-    outfile.write("      </table>\n")
-    outfile.write("    </div>\n")
+                    outfile.write(f'        <td>{v}</td>\n')
+            outfile.write('        </tr>\n')
+    outfile.write('       </tbody>\n')
+    outfile.write('      </table>\n')
+    outfile.write('    </div>\n')
 
 
 def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:
     with open("webout/impact_factors.html", "w", encoding="utf-8") as outfile:
-        outfile.write("<!DOCTYPE HTML>\n")
+        outfile.write('<!DOCTYPE HTML>\n')
         outfile.write('<html lang="en">\n')
-        outfile.write("  <head>\n")
+        outfile.write('  <head>\n')
         outfile.write('    <meta charset="utf-8" />\n')
         outfile.write('    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n')
-        outfile.write("    <title>Impact Factors</title>\n")
+        outfile.write('    <title>Impact Factors</title>\n')
         outfile.write('    <meta name="description" content="Impact factor calculations and descriptions" />\n')
         outfile.write('    <link rel="author" href="mailto:msr@asu.edu" />\n')
         outfile.write('    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?'
@@ -403,8 +397,8 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
         outfile.write('    <script type="text/javascript" src="https://www.google.com/jsapi"></script>\n')
         outfile.write('    <script type="text/javascript">\n')
         outfile.write('      google.load("visualization", "1", {packages:["corechart"]});\n')
-        outfile.write("      google.setOnLoadCallback(drawChart);\n")
-        outfile.write("      function drawChart() {\n")
+        outfile.write('      google.setOnLoadCallback(drawChart);\n')
+        outfile.write('      function drawChart() {\n')
         metric_base_data = yearly_metrics_list[4]  # use data from the 5th year for examples
         metric_names = metric_base_data.metric_names
         for name in metric_names:
@@ -535,16 +529,16 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
 
         # output index of names
         name_links = create_name_links(metric_names, metric_base_data, inc_self, inc_coauth)
-        outfile.write("      <h2>Index</h2>\n")
-        outfile.write("      <ul class=\"index_list\">\n")
+        outfile.write('      <h2>Index</h2>\n')
+        outfile.write('      <ul class="index_list">\n')
         # need to sort by lowercase, but need to maintain uppercase to allow distinction of some metric names
         index_list = [[i.lower(), i] for i in list(name_links.keys())]
         index_list.sort()
         for i in index_list:
             name = name_links[i[1]]
             outfile.write(f'        <li><a href="#{name[1]}">{name[0]}</a></li>\n')
-        outfile.write("      </ul>\n")
-        outfile.write("    </div>\n")
+        outfile.write('      </ul>\n')
+        outfile.write('    </div>\n')
 
         create_metric_table(outfile, metric_base_data, metric_names, inc_coauth, inc_self)
 
@@ -560,22 +554,22 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
                 outfile.write(f'      <h2>{metric.html_name}</h2>\n')
                 # outfile.write("    <div id=\"" + encode_name(name) + "\" class=\"metric_container\">\n")
                 # outfile.write("      <h2>" + metric.html_name + "</h2>\n")
-                outfile.write("      <h3>Properties</h3>\n")
-                outfile.write("        <ul>\n")
+                outfile.write('      <h3>Properties</h3>\n')
+                outfile.write('        <ul>\n')
                 for m_type in Impact_Defs.PROPERTY_TYPES:
                     outlist = []
                     for p in Impact_Defs.PROPERTY_DICT[m_type]:
                         if metric.properties[p]:
                             outlist.append(p)
                     if len(outlist) > 0:
-                        outfile.write("          <li><strong>{}:</strong> {}</li>\n".format(m_type, ", ".join(outlist)))
-                outfile.write("        </ul>\n")
-                outfile.write("      <h3>Description</h3>\n")
-                outfile.write("      " + format_description(metric.description, metric_base_data, True) + "\n")
+                        outfile.write(f'          <li><strong>{m_type}:</strong> {", ".join(outlist)}</li>\n')
+                outfile.write('        </ul>\n')
+                outfile.write('      <h3>Description</h3>\n')
+                outfile.write('      ' + format_description(metric.description, metric_base_data, True) + '\n')
                 if metric.example is not None:
-                    outfile.write("      <h3>Example</h3>\n")
-                    outfile.write("      " + metric.example(metric_base_data) + "\n")
-                outfile.write("      <h3>History</h3>\n")
+                    outfile.write('      <h3>Example</h3>\n')
+                    outfile.write('      ' + metric.example(metric_base_data) + '\n')
+                outfile.write('      <h3>History</h3>\n')
 
                 # if metric.metric_type == Impact_Defs.INTLIST:
                 #     outfile.write(f'    <div id="{encode_name(name)}" class="metric_data_container_wide">\n')
@@ -585,35 +579,35 @@ def create_single_html_output(yearly_metrics_list: list, inc_self: bool, inc_coa
 
                 outfile.write('        <div class="table_container">\n')
                 outfile.write('          <table class="impact_table">\n')
-                outfile.write("            <tr>")
-                outfile.write("<th>Year</th>")
-                outfile.write(f"<th>{metric.symbol}</th>")
-                outfile.write("</tr>\n")
+                outfile.write('            <tr>')
+                outfile.write('<th>Year</th>')
+                outfile.write(f'<th>{metric.symbol}</th>')
+                outfile.write('</tr>\n')
                 for metric_set in yearly_metrics_list:
-                    outfile.write("            <tr>")
+                    outfile.write('            <tr>')
                     outfile.write(f'<td class="cell_year">{metric_set.year():4d}</td>')
                     outfile.write(f'<td class="cell_value">{str(metric_set.metrics[name])}</td>')
-                    outfile.write("</tr>\n")
+                    outfile.write('</tr>\n')
                 outfile.write("          </table>\n")
                 outfile.write("        </div>\n")
                 if metric.graph_type is not None:
                     outfile.write('        <div class="graph_container">\n')
                     outfile.write(f'          <div id="chart_{encode_name(name)}_div" class="impact_chart"></div>\n')
-                outfile.write("        </div>\n")
-                outfile.write("      </div>\n")
-                outfile.write("    </div>\n")
+                outfile.write('        </div>\n')
+                outfile.write('      </div>\n')
+                outfile.write('    </div>\n')
         # references
         outfile.write('    <div id="references">\n')
-        outfile.write("      <h2>References</h2>\n")
-        outfile.write("      <ul>\n")
+        outfile.write('      <h2>References</h2>\n')
+        outfile.write('      <ul>\n')
         reflist = metric_base_data.references()
         for r in reflist:
-            outfile.write(f"        <li>{r}</li>\n")
-        outfile.write("      </ul>\n")
-        outfile.write("    </div>\n")
+            outfile.write(f'        <li>{r}</li>\n')
+        outfile.write('      </ul>\n')
+        outfile.write('    </div>\n')
 
-        outfile.write("  </body>\n")
-        outfile.write("</html>\n")
+        outfile.write('  </body>\n')
+        outfile.write('</html>\n')
 
 
 def create_set_html_output(yearly_metrics_list: list, inc_self: bool, inc_coauth: bool) -> None:

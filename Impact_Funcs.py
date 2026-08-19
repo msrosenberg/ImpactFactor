@@ -1794,6 +1794,22 @@ def calculate_kz_index(citations, pub_years, year, h) -> float:
     return sum(k[i]/pub_ages[i] for i in range(len(k)))
 
 
+# λ-index (Lathabai 2026)
+def calculate_lambda_index(citations: list) -> int:
+    total_cites = sum(citations)
+    sorted_cite_ratio = sorted([c/total_cites for c in citations], reverse=True)
+    i = 1
+    n = len(sorted_cite_ratio)
+    while sum(sorted_cite_ratio[:i]) <= 1 - i/n:
+        i += 1
+    return i-1
+
+
+# Pareto rule (Lathabai 2026)
+def calculate_pareto_rule(lamb: int, total_cites: int) -> float:
+    return 100*lamb/total_cites
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
