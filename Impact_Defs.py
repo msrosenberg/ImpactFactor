@@ -10979,7 +10979,7 @@ def metric_kz_index() -> Metric:
     m.metric_type = FLOAT
     equation1 = r"$$k_i=\frac{\ln{C_i}}{\ln \left(h+1\right)}.$$"
     equation2 = r"$$K_z=\sum\limits_{i=1}^P \frac{k_i}{Y - Y_i + 1},$$"
-    m.description = ("<p>The <em>K<sub>z</sub></em> index (Sharma and Uddin, 2026) expands upon the two-dimensional "
+    m.description = ("<p>The <em>K<sub>z</sub></em> index (Sharma and Uddin 2026) expands upon the two-dimensional "
                      "interpretation of the __h-index__ by introducing the age of publications and a measure of the "
                      "impact of each publication to <em>h</em> into a three-dimensional framework which includes "
                      "all publications, rather than just the core. The impact parameter for each publication is "
@@ -11013,7 +11013,7 @@ def metric_lambda_index() -> Metric:
     m.symbol = "λ"
     m.metric_type = INT
     equation = r"$$\lambda=\underset{i}{\max} \left( \frac{C^i}{C^P} \leq 1-\frac{i}{P}\right).$$"
-    m.description = ('<p>The λ-index (Lathabai, 2026) is based on the Pareto principle, which essentially observes '
+    m.description = ('<p>The λ-index (Lathabai 2026) is based on the Pareto principle, which essentially observes '
                      'that 80% of outputs are produced by 20% of inputs (the 80:20 rule). In the case of academic '
                      'output, the inputs are publications and the outputs are citations. The λ-index is a measure of '
                      'the largest value which produces a 1-λ/<em>P</em>:λ/<em>P</em> proportion of outputs to '
@@ -11043,7 +11043,7 @@ def metric_pareto_rule() -> Metric:
     m.full_name = "Pareto value"
     m.symbol = "λ/P"
     m.metric_type = FLOAT
-    m.description = ('<p>The λ-index (Lathabai, 2026) determines the number of publications for which the proportion '
+    m.description = ('<p>The λ-index (Lathabai 2026) determines the number of publications for which the proportion '
                      'of total publications represented by λ produces 1-proportion of total citations, based on the '
                      'concept of the Pareto rule, which observed that 80% of outputs were produced by 20% of inputs. '
                      'The Pareto value is the percentage of publications represented by λ, or 100&times;λ/P.</p>'
@@ -11060,6 +11060,51 @@ def metric_pareto_rule() -> Metric:
     return m
 
 
+# h*-index (Rusinek et al 2026)
+def calculate_hstar_index(metric_set: MetricSet) -> float:
+    h = metric_set.metrics["h-index"].value
+    pub_years = metric_set.publication_years()
+    year = metric_set.year()
+    year0 = metric_set.first_pub_year
+    academic_age = metric_set.academic_age()
+    total_cites = metric_set.metrics["total cites"].value
+    return Impact_Funcs.calculate_hstar_index(h, pub_years, year, year0, academic_age, total_cites)
+
+
+def metric_hstar_index() -> Metric:
+    m = Metric()
+    m.name = "hstar-index"
+    m.full_name = "h*-index"
+    m.html_name = "<em>h<sup>*</sup></em>-index"
+    m.symbol = "<em>h<sup>*</sup></em>"
+    m.metric_type = FLOAT
+    equation = (r"$$h^* = h \times \left(\frac{R_{cnt}}{R_{total}}\right)^{\alpha} \times "
+                r"\left(\frac{C^P}{\text{academic age}}\right)^{\beta} \times \frac{1}{\sqrt{\text{academic age}}},$$")
+    m.description = ("<p>The <em>h<sup>*</sup></em>-index (Rusinek <em>et al.</em> 2026) is a slightly complicated "
+                     "modification of the __h-index__ designed to reflect not only cumulative achievement, but "
+                     "also recent productivity and impact. In addition to <em>h</em>, it includes a measure of "
+                     "publication regularity (the proportion of two-year intervals of the investigator's career that "
+                     "they published at least one item, citation intensity (average citations per year of career), "
+                     "and an adjustment for career length which introduces a mild penalty for long careers with little "
+                     f"recent output.</p><p>The entire formula for the index is:</p>{equation}<p>where "
+                     "<em>R<sub>total</sub></em> is the number of two year intervals in the academic career (the "
+                     "floor of (academic age)/2) and <em>R<sub>cnt</sub></em> is the count of those intervals in "
+                     "which the researcher published at least one paper. &alpha; and &beta; are tuning parameters "
+                     "that have been set to 1.</p><p>Overall, these are multiplicative adjustments to <em>h</em>. "
+                     "Two of these terms (the first and third) can never be greater than 1 and would thus serve to "
+                     "reduce the value of <em>h<sup>*</sup></em> (relative to <em>h</em), while the second term will "
+                     "generally be much greater than 1 and thus increase the value of <em>h<sup>*</sup></em> relative "
+                     "to <em>h</em>, potentially dramatically for those who are well cited.</p>")
+    m.references = ["Rusinek, A., T. Jankowiak, and A. Besnard (2026) A novel indicator h* to measure research "
+                    "efficiency and identify researchers facing challenges: Application to engineering sciences. "
+                    "<em>Journal of Informetrics</em> 20(3):101818."]
+    m.graph_type = LINE_CHART
+    m.calculate = calculate_hstar_index
+    m.properties["Alternative Metric"] = True
+    m.properties["Time"] = True
+    m.properties["All Publications"] = True
+    m.properties["All Citations"] = True
+    return m
 
 
 # Ab-index (Biswal 2013)
@@ -11288,7 +11333,8 @@ def load_all_metrics() -> list:
                    metric_k_index_kaptay(),
                    metric_kz_index(),
                    metric_lambda_index(),
-                   metric_pareto_rule()
+                   metric_pareto_rule(),
+                   metric_hstar_index()
                    # metric_ab_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()

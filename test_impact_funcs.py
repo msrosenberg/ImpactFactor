@@ -1456,7 +1456,18 @@ def test_calculate_kz_index():
     r2answer = 2.753
     assert round(Impact_Funcs.calculate_kz_index(r2cites, r2years, r2year, r2h), 3) == r2answer
 
+
 def test_calculate_lambda_index():
     # test data and answers from original paper
     test_cites = [46, 30, 17, 12, 11, 9, 6, 5, 3, 2, 1, 1, 1, 1, 0]
     assert Impact_Funcs.calculate_lambda_index(test_cites) == 4
+
+
+def test_hstar_index():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, _  = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    total_cites = Impact_Funcs.calculate_total_cites(TEST_CITATION_DATA)
+    year0 = min(TEST_YEAR_DATA)
+    year = max(TEST_YEAR_DATA)
+    age = year - year0 + 1
+    assert round(Impact_Funcs.calculate_hstar_index(h, TEST_YEAR_DATA, year, year0, age, total_cites), 4) == 71.3753

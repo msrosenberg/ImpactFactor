@@ -1810,6 +1810,29 @@ def calculate_pareto_rule(lamb: int, total_cites: int) -> float:
     return 100*lamb/total_cites
 
 
+# h*-index (Rusinek et al 2026)
+def calculate_hstar_index(h: int, pub_years: list, year: int, year0: int, academic_age: int, total_cites: int) -> float:
+    # currently these are just set at 1
+    alpha = 1
+    beta = 1
+
+    r = math.floor(academic_age/2)  # number of two-year intervals since start of publishing career
+    if r == 0:
+        r, p = 1, 1
+    else:
+        # determine years of academic career with at least 1 publication
+        year_dict = {y: False for y in range(year0, year+1)}
+        for y in pub_years:
+            year_dict[y] = True
+        # determine number of two-year intervals with at least 1 publication
+        p = 0
+        for y in range(year0, year, 2):  # do not need it to be year+1 because I am only interested in year pairs
+            if year_dict[y] or year_dict[y+1]:
+                p += 1
+
+    return (h * (p/r)**alpha * (total_cites/academic_age)**beta) / math.sqrt(academic_age)
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass
