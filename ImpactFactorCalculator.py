@@ -1217,7 +1217,7 @@ def main():
         out_name = "impactfactors.txt"
     print()
 
-    webstr = input("Create html output? (y/n) (deafult = y) ")
+    webstr = input("Create html output? (y/n) (default = y) ")
     if (webstr.strip() == "") or (webstr.strip().lower() == "y"):
         do_web = True
     else:
