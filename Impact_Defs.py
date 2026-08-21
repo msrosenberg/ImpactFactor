@@ -9,7 +9,7 @@ from typing import Union
 # --- Internal Constants ---
 INT = 0
 FLOAT = 1
-# INTLIST = 2
+# INTLIST = 2         # the various specific list types has been deprecated for a more flexible approach
 FLOAT_NA = 3
 # LISTLIST = 4
 # FLOATLIST = 5
@@ -56,7 +56,7 @@ class Metric:
         self.citation = ""
         self.symbol = ""
         self.__html_name = None
-        self.__axes_name = None
+        self.__axis_name = None
         self.is_self = False
         self.is_coauthor = False
         self.metric_type = FLOAT
@@ -67,12 +67,10 @@ class Metric:
         self.draw_graph = None
         self.__value = None
         self.parent_set = None
-        self.graph_type = None
+        # self.graph_type = None
         self.description_graphs = []
         self.example = None
-        # self.mixformats = []
         self.list_formats = []
-        # self.properties = {x: False for x in METRIC_PROPERTIES}
         self.properties = {}
         for y in PROPERTY_TYPES:
             for x in PROPERTY_DICT[y]:
@@ -90,15 +88,15 @@ class Metric:
         self.__html_name = value
 
     @property
-    def axes_name(self):
-        if self.__axes_name is None:
+    def axis_name(self):
+        if self.__axis_name is None:
             return self.full_name
         else:
-            return self.__axes_name
+            return self.__axis_name
 
-    @axes_name.setter
-    def axes_name(self, value):
-        self.__axes_name = value
+    @axis_name.setter
+    def axis_name(self, value):
+        self.__axis_name = value
 
     @property
     def value(self):
@@ -111,17 +109,13 @@ class Metric:
             return str(self.value)
         elif self.metric_type == FLOAT:
             return format(self.value, FSTR)
-        # elif self.metric_type == INTLIST:
-        #     return str(self.value)
         elif self.metric_type == FLOAT_NA:
             if self.value == "n/a":
                 return self.value
             else:
                 return format(self.value, FSTR)
-        # elif self.metric_type == FLOATLIST:
-        #     vl = self.value
-        #     return f"[{", ".join([format(v, FSTR) for v in vl])}]"
-        # elif self.metric_type == MIXLIST:
+        elif self.metric_type == STR:
+            return self.value
         elif self.metric_type == LIST:
             value_list = self.value
             formatted_values = []
@@ -269,10 +263,11 @@ def metric_total_pubs() -> Metric:
     m.name = "total pubs"
     m.full_name = "total publications"
     m.symbol = "<em>P</em>"
+    m.axis_name = r"$\text{total publications } \left(P\right)$"
     m.metric_type = INT
-    m.description = "<p>This metric is simply the total number of publications by an author. Many works might be " \
-                    "considered a publication, including journal articles, books, book chapters, published " \
-                    "conference abstracts, software, reports, dissertations, and theses.</p>"
+    m.description = ('<p>This metric is simply the total number of publications by an author. Many works might be '
+                     'considered a publication, including journal articles, books, book chapters, published '
+                     'conference abstracts, software, reports, dissertations, and theses.</p>')
     m.synonyms = ["<em>P</em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
@@ -292,15 +287,15 @@ def metric_total_cites() -> Metric:
     m.name = "total cites"
     m.full_name = "total citations"
     m.symbol = "<em>C<sup>P</sup></em>"
+    m.axis_name = r"$\text{total citations } \left(C^P\right)$"
     m.metric_type = INT
     equation = r"$$C^P=\sum\limits_{i=1}^{P}{C_i}.$$"
-    m.description = "<p>This metric (sometimes called <span class=\"metric_name\"><em>C<sub>T</sub></em></span>) is " \
-                    "the total number of citations to all publications by an author, or</p>" + equation
+    m.description = ('<p>This metric (sometimes called <span class="metric_name"><em>C<sub>T</sub></em></span>) is '
+                     f'the total number of citations to all publications by an author, or</p>{equation}')
     m.synonyms = ["<em>C<sub>T</sub></em>",
                   "citation count",
                   "<em>C<sup>P</sup></em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_total_cites
     m.properties["Basic Statistic"] = True
     m.properties["All Citations"] = True
@@ -318,13 +313,12 @@ def metric_max_cites() -> Metric:
     m.name = "max cites"
     m.full_name = "maximum citations"
     m.metric_type = INT
-    m.description = "<p>This metric is the largest number of citations found for a single publication by an " \
-                    "author. When publications are in rank order by citations, <em>C</em><sub>max</sub> = " \
-                    "<em>C</em><sub>1</sub>.</p>"
+    m.description = ('<p>This metric is the largest number of citations found for a single publication by an '
+                     'author. When publications are in rank order by citations, <em>C</em><sub>max</sub> = '
+                     '<em>C</em><sub>1</sub>.</p>')
     m.symbol = "<em>C</em><sub>max</sub>"
     m.synonyms = ["<em>C</em><sub>max</sub>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_max_cites
     m.properties["Basic Statistic"] = True
     m.properties["All Publications"] = True
@@ -344,16 +338,15 @@ def metric_mean_cites() -> Metric:
     m.full_name = "mean citations per publication"
     m.metric_type = FLOAT
     equation = r"$$C/P\text{ index}=\frac{C^P}{P}$$"
-    m.description = "<p>This metric is the mean number of citations per publication. It has been described under " \
-                    "many names, including the <span class=\"metric_name\"><em>C/P</em> index</span>, the " \
-                    "<span class=\"metric_name\">mean citation rate (<em>MCR</em>)</span>, the " \
-                    "<span class=\"metric_name\">mean observed citation rate (<em>MOCR</em>)</span>, " \
-                    "<span class=\"metric_name\">citations per publication (<em>CPP</em>)</span>, the " \
-                    "<span class=\"metric_name\">observed citation rate (<em>OCR</em>)</span>, " \
-                    "the <span class=\"metric_name\">generalized impact factor (<em>I<sub>f</sub></em>)</span>, and " \
-                    "the <span class=\"metric_name\">journal paper citedness (<em>JPC</em>)</span>.</p>" + equation
+    m.description = ('<p>This metric is the mean number of citations per publication. It has been described under '
+                     'many names, including the <span class="metric_name"><em>C/P</em> index</span>, the '
+                     '<span class="metric_name">mean citation rate (<em>MCR</em>)</span>, the '
+                     '<span class="metric_name">mean observed citation rate (<em>MOCR</em>)</span>, '
+                     '<span class="metric_name">citations per publication (<em>CPP</em>)</span>, the '
+                     '<span class="metric_name">observed citation rate (<em>OCR</em>)</span>, '
+                     'the <span class="metric_name">generalized impact factor (<em>I<sub>f</sub></em>)</span>, and '
+                     f'the <span class="metric_name">journal paper citedness (<em>JPC</em>)</span>.</p>{equation}')
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.synonyms = ["<em>C/P</em> index",
                   "mean citation rate",
                   "mean observed citation rate",
@@ -387,11 +380,10 @@ def metric_median_cites() -> Metric:
     m.full_name = "median citations per publication"
     m.metric_type = FLOAT
     m.symbol = r"\(\tilde{C}\)"
-    m.description = "<p>This metric is the median number of citations per publication. It may be a better " \
-                    "indicator of the average impact of an author\'s publications than the __c/p__ since it is less " \
-                    "prone to bias under a heavily skewed citation distribution.</p>"
+    m.description = ('<p>This metric is the median number of citations per publication. It may be a better '
+                     'indicator of the average impact of an author\'s publications than the __c/p__ since it is less '
+                     'prone to bias under a heavily skewed citation distribution.</p>')
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_median_cites
     m.properties["Basic Statistic"] = True
     m.properties["All Citations"] = True
@@ -415,16 +407,14 @@ def metric_pubs_per_year() -> Metric:
     equation = r"$$P^{TS}=\frac{P}{\text{academic age}}=\frac{P}{Y-Y_0+1},$$"
     ystr = r"\(Y\)"
     y0str = r"\(Y_{0}\)"
-    m.description = "<p>This metric, also called the " \
-                    "<span class=\"metric_name\">time-scaled number of publications</span> is just the mean " \
-                    "number of publications per year, calculated as the total number of publications of an author " \
-                    "divided by their academic age (number of years since their first publication),</p>" + equation + \
-                    "<p>where " + ystr + " is the current year and " + y0str + " is the year of their first " \
-                    "publication.</p>"
+    m.description = ('<p>This metric, also called the '
+                     '<span class="metric_name">time-scaled number of publications</span> is just the mean '
+                     'number of publications per year, calculated as the total number of publications of an author '
+                     f'divided by their academic age (number of years since their first publication),</p>{equation}'
+                     f'<p>where {ystr} is the current year and {y0str} is the year of their first publication.</p>')
     m.synonyms = ["time-scaled number of publications",
                   "<em>P<sup>TS</sup></em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_pubs_per_year
     m.properties["Basic Statistic"] = True
     m.properties["Time"] = True
@@ -448,15 +438,14 @@ def metric_cites_per_year() -> Metric:
     equation = r"$$C^{TS}=\frac{C^P}{\text{academic age}}=\frac{C^P}{Y-Y_0+1},$$"
     ystr = r"\(Y\)"
     y0str = r"\(Y_{0}\)"
-    m.description = "<p>This metric, also called the <span class=\"metric_name\">time-scaled citation index</span>, " \
-                    "is just the mean number of citations per year, calculated as the total number of citations of " \
-                    "an author divided by their academic age (number of years since their first publication),</p>" + \
-                    equation + "<p>where " + ystr + " is the current year and " + y0str + \
-                    " is the year of their first publication.</p>"
+    m.description = ('<p>This metric, also called the <span class="metric_name">time-scaled citation index</span>, '
+                     'is just the mean number of citations per year, calculated as the total number of citations of '
+                     'an author divided by their academic age (number of years since their first publication),</p>'
+                     f'{equation}<p>where {ystr} is the current year and {y0str} is the year of their first '
+                     f'publication.</p>')
     m.synonyms = ["time-scaled citation index",
                   "<em>C<sup>TS</sup></em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_cites_per_year
     m.properties["Basic Statistic"] = True
     m.properties["Time"] = True
@@ -474,85 +463,144 @@ def calculate_h_index(metric_set: MetricSet) -> int:
     return h
 
 
-def write_h_index_desc_data(metric_set: MetricSet) -> list:
-    metric = metric_set.metrics["h-index"]
-    graph = metric.description_graphs[0]
-    output = list()
-    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("           ['Rank', 'Citations', 'y=x', 'h-square', {'type': 'string', 'role': 'annotation'}],\n")
-    tmp_cites = [c for c in metric_set.citations]
-    tmp_cites.sort(reverse=True)
+# def write_h_index_desc_data(metric_set: MetricSet) -> list:
+#     metric = metric_set.metrics["h-index"]
+#     graph = metric.description_graphs[0]
+#     output = list()
+#     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+#     output.append("           ['Rank', 'Citations', 'y=x', 'h-square', {'type': 'string', 'role': 'annotation'}],\n")
+#     tmp_cites = [c for c in metric_set.citations]
+#     tmp_cites.sort(reverse=True)
+#     h = metric_set.metrics["h-index"].value
+#     maxx = metric_set.metrics["total pubs"].value
+#     maxv = 50
+#     # write citation count for ranked publication x
+#     for x in range(maxx + 1):
+#         outstr = "           [{}".format(x)  # write rank
+#         if x == 0:
+#             v = "null"
+#         else:
+#             v = tmp_cites[x - 1]
+#         outstr += ", {}, null, null, null],\n".format(v)
+#         output.append(outstr)
+#     # write y for x=y
+#     output.append("           [{}, null, {}, null, null],\n".format(0, 0))
+#     output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
+#     output.append("           [null, null, null, null, null],\n")
+#     # write h-square
+#     output.append("           [{}, null, null, {}, null],\n".format(0, h))
+#     output.append("           [{}, null, null, {}, \'h\'],\n".format(h, h))
+#     output.append("           [{}, null, null, {}, null],\n".format(h, 0))
+#     output.append("		]);\n")
+#     output.append("\n")
+#     output.append("        var options_{} = {{\n".format(graph.name))
+#     output.append("		     legend: {position: 'top'},\n")
+#     # output.append("		     interpolateNulls: true,\n")
+#     output.append("		     hAxis: {slantedText: true,\n")
+#     output.append("		             title: \'Rank\',\n")
+#     output.append("		             gridlines: {color: \'transparent\'},\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+#     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+#     output.append("		             title: \'Citation Count\',\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             gridlines: {color: \'transparent\'}},\n")
+#     output.append("		     series: { 0: {},\n")
+#     output.append("		               1: {lineDashStyle: [4, 4]},\n")
+#     output.append("		               2: {lineDashStyle: [2, 2],\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("        };\n")
+#     output.append("\n")
+#     output.append("        var chart_{} = new google.visualization."
+#                   "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+#     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+#     output.append("\n")
+#
+#     return output
+
+
+def create_h_index_desc_graph_data(metric_set: MetricSet) -> list:
+    output = []
+
     h = metric_set.metrics["h-index"].value
-    maxx = metric_set.metrics["total pubs"].value
-    maxv = 50
-    # write citation count for ranked publication x
-    for x in range(maxx + 1):
-        outstr = "           [{}".format(x)  # write rank
-        if x == 0:
-            v = "null"
-        else:
-            v = tmp_cites[x - 1]
-        outstr += ", {}, null, null, null],\n".format(v)
-        output.append(outstr)
-    # write y for x=y
-    output.append("           [{}, null, {}, null, null],\n".format(0, 0))
-    output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
-    output.append("           [null, null, null, null, null],\n")
-    # write h-square
-    output.append("           [{}, null, null, {}, null],\n".format(0, h))
-    output.append("           [{}, null, null, {}, \'h\'],\n".format(h, h))
-    output.append("           [{}, null, null, {}, null],\n".format(h, 0))
-    output.append("		]);\n")
-    output.append("\n")
-    output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'top'},\n")
-    # output.append("		     interpolateNulls: true,\n")
-    output.append("		     hAxis: {slantedText: true,\n")
-    output.append("		             title: \'Rank\',\n")
-    output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
-    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Citation Count\',\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             gridlines: {color: \'transparent\'}},\n")
-    output.append("		     series: { 0: {},\n")
-    output.append("		               1: {lineDashStyle: [4, 4]},\n")
-    output.append("		               2: {lineDashStyle: [2, 2],\n")
-    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
-    output.append("        };\n")
-    output.append("\n")
-    output.append("        var chart_{} = new google.visualization."
-                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
-    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
-    output.append("\n")
+
+    # basic citation curve
+    cite_data = Impact_Graphs.LineData()
+    output.append(cite_data)
+    cite_data.x = [i+1 for i in range(len(metric_set.citations))]
+    cite_data.y = [c for c in metric_set.citations]
+    cite_data.y.sort(reverse=True)
+    cite_data.label = "Citations"
+
+    # example points
+    point_data = Impact_Graphs.PointData()
+    output.append(point_data)
+    point_data.x = [h, h+1]
+    point_data.y = [h, h+1]
+    point_data.fillcolor = "none"
+
+    # threshold line
+    threshold_data = Impact_Graphs.LineData()
+    output.append(threshold_data)
+    threshold_data.x = [0, max(cite_data.y)]
+    threshold_data.y = [0, max(cite_data.y)]
+    threshold_data.style = "--"
+    threshold_data.label = r"$y = x$"
+
+    # square lines
+    square_data = Impact_Graphs.LineData()
+    output.append(square_data)
+    square_data.x = [0, 0, h, h, 0]
+    square_data.y = [0, h, h, 0, 0]
+    square_data.style = ":"
+    square_data.label = r"$h\text{-square}$"
+
+    # annotation
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$h = {h}$"
+    annotation.pos = (h, h)
+    annotation.textpos = (h+20, h)
+
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$h+1 = {h+1}$"
+    annotation.pos = (h+1, h+1)
+    annotation.textpos = (h+20, h+15)
+
+
+    general_data = Impact_Graphs.GeneralData()
+    output.append(general_data)
+    general_data.x_label = "Rank"
+    general_data.y_label = "Citation Count"
+    general_data.inc_legend = True
 
     return output
 
 
 def write_h_index_example(metric_set: MetricSet) -> str:
-    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
-    outstr += "<table class=\"example_table\">"
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
     citations = sorted(metric_set.citations, reverse=True)
-    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
-    row2 = "<tr><th>Rank (<em>i</em>)</th>"
-    row3 = "<tr><th></th>"
+    row1 = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th>Rank (<em>i</em>)</th>'
+    row3 = '<tr><th></th>'
     h = metric_set.metrics["h-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
-            ec = " class=\"box\""
+            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            ec = ' class="box"'
         else:
             v = ""
             ec = ""
-        row1 += "<td" + ec + ">{}</td>".format(c)
-        row2 += "<td" + ec + ">{}</td>".format(i+1)
-        row3 += "<td>{}</td>".format(v)
-    row1 += "</tr>"
-    row2 += "</tr>"
-    row3 += "</tr>"
-    outstr += row1 + row2 + row3 + "</table>"
-    outstr += "<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {}.</p>".format(h)
+        row1 += f'<td{ec}>{c}</td>'
+        row2 += f'<td{ec}>{i+1}</td>'
+        row3 += f'<td>{v}</td>'
+    row1 += '</tr>'
+    row2 += '</tr>'
+    row3 += '</tr>'
+    outstr += row1 + row2 + row3 + '</table>'
+    outstr += f'<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {h}.</p>'
     return outstr
 
 
@@ -562,41 +610,68 @@ def metric_h_index() -> Metric:
     m.full_name = "h-index"
     m.html_name = "<em>h-</em>index"
     m.symbol = "<em>h</em>"
-    m.axes_name = r"$h$"
+    m.axis_name = r"$h$"
     m.metric_type = INT
     m.example = write_h_index_example
+
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "h_index_desc"
-    graph.data = write_h_index_desc_data
+    graph.data = create_h_index_desc_graph_data
+
     equation = r"$$h=\underset{i}{\max}\left(i\leq C_i\right).$$"
-    m.description = "<p>The <span class=\"metric_name\"><em>h-</em>index</span> (Hirsch 2005) is the most " \
-                    "important personal impact factor one needs " \
-                    "to be familiar with, not because it is necessarily the best, but because (1) it was the first " \
-                    "major index of its type and most of the other indices are based on it in some way, and (2) it " \
-                    "is the single factor with which most other people (<em>e.g.</em>, " \
-                    "administrators) are likely to be somewhat familiar. You may find another index which you " \
-                    "prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the " \
-                    "largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another " \
-                    "way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at " \
-                    "least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> " \
-                    "citations. Note that <em>h</em> is measured in publications. In formal notation, one might " \
-                    "write</p>" + equation + "<p>These top <em>h</em> publications are often referred " \
-                    "to as the &ldquo;Hirsch core.&rdquo;</p><div id=\"chart_" + graph.name + \
-                    "_div\" class=\"proportional_chart\"></div>" \
-                    "<p>One way to graphically visualize <em>h</em> is to imagine a " \
-                    "plot of citation count versus rank for all publications (often called the citation curve). An " \
-                    "alternative way of thinking of this is a plot of minimum number of citations for a publication " \
-                    "in the top <em>i</em> publications vs. <em>i</em>. By " \
-                    "definition, this plot will generally trend from upper left (highest ranked publications with " \
-                    "most citations, to lower right (lowest ranked publications with fewest citations), depending on " \
-                    "the precise citation distribution of the author. If one were to add a (threshold) line with a " \
-                    "slope of one to this plot, the point where the threshold line crosses the citation curve " \
-                    "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the " \
-                    "size (length of sides) of the largest (integer) square that one can fit under the citation " \
-                    "curve.</p>"
+    m.description = ('<p>The <span class="metric_name"><em>h-</em>index</span> (Hirsch 2005) is the most ' 
+                     'important personal impact factor one needs ' 
+                     'to be familiar with, not because it is necessarily the best, but because (1) it was the first '
+                     'major index of its type and most of the other indices are based on it in some way, and (2) it ' 
+                     'is the single factor with which most other people (<em>e.g.</em>, ' 
+                     'administrators) are likely to be somewhat familiar. You may find another index which you ' 
+                     'prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the ' 
+                     'largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another ' 
+                     'way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at ' 
+                     'least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> ' 
+                     'citations. Note that <em>h</em> is measured in publications. In formal notation, one might ' 
+                     f'write</p>{equation}<p>These top <em>h</em> publications are often referred ' 
+                     'to as the &ldquo;Hirsch core.&rdquo;</p>'
+                     f'<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_{graph.name}.svg" '
+                     f'/></figure>'
+                     "<p>One way to graphically visualize <em>h</em> is to imagine a " 
+                     "plot of citation count versus rank for all publications (often called the citation curve). An " 
+                     "alternative way of thinking of this is a plot of minimum number of citations for a publication " 
+                     "in the top <em>i</em> publications vs. <em>i</em>. By " 
+                     "definition, this plot will generally trend from upper left (highest ranked publications with " 
+                     "most citations) to lower right (lowest ranked publications with fewest citations), depending on " 
+                     "the precise citation distribution of the author. If one were to add a (threshold) line with a " 
+                     "slope of one to this plot, the point where the threshold line crosses the citation curve " 
+                     "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the " 
+                     "size (length of sides) of the largest (integer) square that one can fit under the citation " 
+                     "curve.</p>")
+    # m.description = ("<p>The <span class=\"metric_name\"><em>h-</em>index</span> (Hirsch 2005) is the most "
+    #                  "important personal impact factor one needs "
+    #                  "to be familiar with, not because it is necessarily the best, but because (1) it was the first "
+    #                  "major index of its type and most of the other indices are based on it in some way, and (2) it "
+    #                  "is the single factor with which most other people (<em>e.g.</em>, "
+    #                  "administrators) are likely to be somewhat familiar. You may find another index which you "
+    #                  "prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the "
+    #                  "largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another "
+    #                  "way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at "
+    #                  "least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> "
+    #                  "citations. Note that <em>h</em> is measured in publications. In formal notation, one might "
+    #                  "write</p>" + equation + "<p>These top <em>h</em> publications are often referred "
+    #                  "to as the &ldquo;Hirsch core.&rdquo;</p><div id=\"chart_" + graph.name +
+    #                  "_div\" class=\"proportional_chart\"></div>"
+    #                  "<p>One way to graphically visualize <em>h</em> is to imagine a "
+    #                  "plot of citation count versus rank for all publications (often called the citation curve). An "
+    #                  "alternative way of thinking of this is a plot of minimum number of citations for a publication "
+    #                  "in the top <em>i</em> publications vs. <em>i</em>. By "
+    #                  "definition, this plot will generally trend from upper left (highest ranked publications with "
+    #                  "most citations) to lower right (lowest ranked publications with fewest citations), depending on "
+    #                  "the precise citation distribution of the author. If one were to add a (threshold) line with a "
+    #                  "slope of one to this plot, the point where the threshold line crosses the citation curve "
+    #                  "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the "
+    #                  "size (length of sides) of the largest (integer) square that one can fit under the citation "
+    #                  "curve.</p>")
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.calculate = calculate_h_index
@@ -614,31 +689,31 @@ def calculate_h_core(metric_set: MetricSet) -> int:
 
 
 def write_h_core_example(metric_set: MetricSet) -> str:
-    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
-    outstr += "<table class=\"example_table\">"
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
     citations = sorted(metric_set.citations, reverse=True)
-    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
-    row2 = "<tr><th>Rank (<em>i</em>)</th>"
-    row3 = "<tr><th></th>"
+    row1 = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th>Rank (<em>i</em>)</th>'
+    row3 = '<tr><th></th>'
     h = metric_set.metrics["h-index"].value
     hc = metric_set.metrics["h-core cites"].value
     for i, c in enumerate(citations):
         if i + 1 <= h:
-            ec = " class=\"box\""
+            ec = ' class="box"'
         else:
             ec = ""
         if i + 1 == h:
-            v = "<em>h</em>&nbsp;=&nbsp;{}".format(h)
+            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
         else:
             v = ""
-        row1 += "<td" + ec + ">{}</td>".format(c)
-        row2 += "<td>{}</td>".format(i+1)
-        row3 += "<td>{}</td>".format(v)
-    row1 += "</tr>"
-    row2 += "</tr>"
-    row3 += "</tr>"
-    outstr += row1 + row2 + row3 + "</table>"
-    outstr += "<p>The sum of the citations for the top <em>h</em> publications is {}.</p>".format(hc)
+        row1 += f'<td{ec}>{c}</td>'
+        row2 += f'<td>{i+1}</td>'
+        row3 += f'<td>{v}</td>'
+    row1 += '</tr>'
+    row2 += '</tr>'
+    row3 += '</tr>'
+    outstr += row1 + row2 + row3 + '</table>'
+    outstr += f'<p>The sum of the citations for the top <em>h</em> publications is {hc}.</p>'
     return outstr
 
 
@@ -647,16 +722,16 @@ def metric_h_core() -> Metric:
     m.name = "h-core cites"
     m.full_name = "Hirsch core citations"
     m.symbol = "<em>C<sup>H</sup></em>"
+    m.axis_name = r"$\text{Hirsch core citations }\left(C^H\right)$"
     m.example = write_h_core_example
     m.metric_type = INT
     equation = r"$$C^H=\sum\limits_{i=1}^{h}{C_i}.$$"
-    m.description = "<p>This is the sum of the citations for all publications that contribute to the __h-index__, " \
-                    "<em>i.e.</em> the Hirsch core,</p>" + equation
+    m.description = ('<p>This is the sum of the citations for all publications that contribute to the __h-index__, '
+                     f'<em>i.e.</em> the Hirsch core,</p>{equation}')
     m.synonyms = ["<em>C<sup>H</sup></em>"]
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_h_core
     m.properties["Core Citations"] = True
     m.properties["Core Publications"] = True
@@ -676,15 +751,14 @@ def metric_hirsch_min_const() -> Metric:
     m.name = "Hirsch min const"
     m.full_name = "Hirsch proportionality constant"
     m.symbol = "<em>a</em>"
-    m.axes_name = r"$a$"
+    m.axis_name = r"$a$"
     m.metric_type = FLOAT
     equation = r"$$a=\frac{C^P}{h^2}.$$"
-    m.description = "<p>This metric (Hirsch 2005) describes a relationship between the __h-index__ and the " \
-                    "__total cites__ and is defined as</p>" + equation
+    m.description = ('<p>This metric (Hirsch 2005) describes a relationship between the __h-index__ and the '
+                     f'__total cites__ and is defined as</p>{equation}')
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_hirsch_min_const
     m.properties["All Citations"] = True
     m.properties["Core Citations"] = True
@@ -700,164 +774,285 @@ def calculate_g_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_g_index(cumulative_citations)
 
 
-def write_g_index_desc_data1(metric_set: MetricSet) -> list:
-    metric = metric_set.metrics["g-index"]
-    graph = metric.description_graphs[0]
-    output = list()
-    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("           ['Rank', 'Cumulative Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],\n")
+def create_g_index_desc_graph_data1(metric_set: MetricSet) -> list:
+    output = []
+
+    g = metric_set.metrics["g-index"].value
+    n = len(metric_set.citations)
+
+    # cumulative citation curve
+    cumulative_cite_data = Impact_Graphs.LineData()
+    output.append(cumulative_cite_data)
+    cumulative_cite_data.x = [i+1 for i in range(n)]
     tmp_cites = [c for c in metric_set.citations]
     tmp_cites.sort(reverse=True)
-    cum_cites = [tmp_cites[0]]
+    total_cites = sum(tmp_cites)
+    cumulative_cite_data.y = [tmp_cites[0]]
     for i, c in enumerate(tmp_cites[1:]):
-        cum_cites.append(cum_cites[i] + c)
-    g = metric_set.metrics["g-index"].value
-    maxx = metric_set.metrics["total pubs"].value
-    maxv = 150
-    # write cumulative citation count for ranked publication x
-    for x in range(maxx + 1):
-        outstr = "           [{}".format(x)  # write rank
-        # write cumulative citation count for ranked publication x
-        if x == 0:
-            v = "null"
-        else:
-            v = cum_cites[x - 1]
-        outstr += ", {}, null, null],\n".format(v)
-        output.append(outstr)
-    # write y for y=x^2
-    for x in range(maxx + 1):
-        outstr = "           [{}, null".format(x)  # write rank
-        v = x**2
-        if v > maxv:
-            v = "null"
-        if x == g:
-            a = "\'g\'"
-        else:
-            a = "null"
-        outstr += ", {}, {}],\n".format(v, a)
-        output.append(outstr)
-    output.append("		]);\n")
-    output.append("\n")
-    output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'top'},\n")
-    # output.append("		     chartArea: {width:\'75%\', height:\'75%\'},\n")
-    output.append("		     interpolateNulls: true,\n")
-    output.append("		     hAxis: {slantedText: true,\n")
-    output.append("		             title: \'Rank\',\n")
-    output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
-    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
-    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Cumulative Citation Count\',\n")
-    output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
-    output.append("		             gridlines: {color: \'transparent\'}},\n")
-    output.append("		     series: { 0: {},\n")
-    output.append("		               1: {lineDashStyle: [4, 4],\n")
-    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
-    output.append("        };\n")
-    output.append("\n")
-    output.append("        var chart_{} = new google.visualization."
-                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
-    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
-    output.append("\n")
+        cumulative_cite_data.y.append(cumulative_cite_data.y[i] + c)
+    cumulative_cite_data.label = "Cumulative Citations"
+
+    # example points
+    point_data = Impact_Graphs.PointData()
+    output.append(point_data)
+    point_data.x = [g, g+1]
+    point_data.y = [g**2, (g+1)**2]
+    point_data.fillcolor = "none"
+
+    # threshold line
+    threshold_data = Impact_Graphs.LineData()
+    output.append(threshold_data)
+    threshold_data.x = [i for i in range(n+1)]
+    threshold_data.y = [i**2 for i in range(n+1)]
+    threshold_data.style = "--"
+    threshold_data.label = r"$y = x^2$"
+
+    # annotation
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$g = {g}$"
+    annotation.pos = (g, g**2)
+    annotation.textpos = (g+20, g**2 - 30)
+
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$g+1 = {g+1}$"
+    annotation.pos = (g+1, (g+1)**2)
+    annotation.textpos = (g+30, (g+1)**2)
+
+    general_data = Impact_Graphs.GeneralData()
+    output.append(general_data)
+    general_data.x_label = "Rank"
+    general_data.y_label = "Cumulative Citation Count"
+    general_data.inc_legend = True
+    general_data.x_max = max(total_cites + 5, (g+1)**2 + 5)
+    general_data.y_max = general_data.x_max
 
     return output
 
 
-def write_g_index_desc_data2(metric_set: MetricSet) -> list:
-    metric = metric_set.metrics["g-index"]
-    graph = metric.description_graphs[1]
-    output = list()
-    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("           ['Rank', 'Mean Citations', 'y=x', 'g-square', "
-                  "{'type': 'string', 'role': 'annotation'}],\n")
+def create_g_index_desc_graph_data2(metric_set: MetricSet) -> list:
+    output = []
+
+    g = metric_set.metrics["g-index"].value
+    n = len(metric_set.citations)
+
+    # basic citation curve
+    cite_data = Impact_Graphs.LineData()
+    output.append(cite_data)
+    cite_data.x = [i+1 for i in range(n)]
+
     tmp_cites = [c for c in metric_set.citations]
     tmp_cites.sort(reverse=True)
-    avg_cites = []
-    for i in range(len(tmp_cites)):
-        avg_cites.append(sum(tmp_cites[:i+1])/(i+1))
-    g = metric_set.metrics["g-index"].value
-    maxx = metric_set.metrics["total pubs"].value
-    maxv = 45
-    # write avg citation count for top x ranked publications
-    for x in range(maxx + 1):
-        outstr = "           [{}".format(x)  # write rank
-        if x == 0:
-            v = "null"
-        else:
-            v = avg_cites[x - 1]
-        outstr += ", {}, null, null, null],\n".format(v)
-        output.append(outstr)
-    # write y for y=x
-    output.append("           [{}, null, {}, null, null],\n".format(0, 0))
-    output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
-    # write g-square
-    output.append("           [{}, null, null, {}, null],\n".format(0, g))
-    output.append("           [{}, null, null, {}, \'g\'],\n".format(g, g))
-    output.append("           [{}, null, null, {}, null],\n".format(g, 0))
-    output.append("		]);\n")
-    output.append("\n")
-    output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'top'},\n")
-    output.append("		     hAxis: {slantedText: true,\n")
-    output.append("		             title: \'Rank\',\n")
-    output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
-    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Mean Citation Count\',\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             gridlines: {color: \'transparent\'}},\n")
-    output.append("		     series: { 0: {},\n")
-    output.append("		               1: {lineDashStyle: [4, 4]},\n")
-    output.append("		               2: {lineDashStyle: [2, 2],\n")
-    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
-    output.append("        };\n")
-    output.append("\n")
-    output.append("        var chart_{} = new google.visualization."
-                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
-    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
-    output.append("\n")
+    tmp_cumulative = [tmp_cites[0]]
+    for i, c in enumerate(tmp_cites[1:]):
+        tmp_cumulative.append(tmp_cumulative[i] + c)
+    cite_data.y = [c/(i+1) for i, c in enumerate(tmp_cumulative)]
+    cite_data.label = "Mean Citations"
+
+    # example points
+    point_data = Impact_Graphs.PointData()
+    output.append(point_data)
+    point_data.x = [g, g+1]
+    point_data.y = [g, g+1]
+    point_data.fillcolor = "none"
+
+    # threshold line
+    threshold_data = Impact_Graphs.LineData()
+    output.append(threshold_data)
+    threshold_data.x = [0, max(cite_data.y)]
+    threshold_data.y = [0, max(cite_data.y)]
+    threshold_data.style = "--"
+    threshold_data.label = r"$y = x$"
+
+    # square lines
+    square_data = Impact_Graphs.LineData()
+    output.append(square_data)
+    square_data.x = [0, 0, g, g, 0]
+    square_data.y = [0, g, g, 0, 0]
+    square_data.style = ":"
+    square_data.label = r"$g\text{-square}$"
+
+    # annotation
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$g = {g}$"
+    annotation.pos = (g, g)
+    annotation.textpos = (g+20, g)
+
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = f"$g+1 = {g+1}$"
+    annotation.pos = (g+1, g+1)
+    annotation.textpos = (g+1, g+20)
+
+    general_data = Impact_Graphs.GeneralData()
+    output.append(general_data)
+    general_data.x_label = "Rank"
+    general_data.y_label = "Mean Citation Count"
+    general_data.inc_legend = True
 
     return output
+
+
+# def write_g_index_desc_data1(metric_set: MetricSet) -> list:
+#     metric = metric_set.metrics["g-index"]
+#     graph = metric.description_graphs[0]
+#     output = list()
+#     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+#     output.append("           ['Rank', 'Cumulative Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],\n")
+#     tmp_cites = [c for c in metric_set.citations]
+#     tmp_cites.sort(reverse=True)
+#     cum_cites = [tmp_cites[0]]
+#     for i, c in enumerate(tmp_cites[1:]):
+#         cum_cites.append(cum_cites[i] + c)
+#     g = metric_set.metrics["g-index"].value
+#     maxx = metric_set.metrics["total pubs"].value
+#     maxv = 150
+#     # write cumulative citation count for ranked publication x
+#     for x in range(maxx + 1):
+#         outstr = "           [{}".format(x)  # write rank
+#         # write cumulative citation count for ranked publication x
+#         if x == 0:
+#             v = "null"
+#         else:
+#             v = cum_cites[x - 1]
+#         outstr += ", {}, null, null],\n".format(v)
+#         output.append(outstr)
+#     # write y for y=x^2
+#     for x in range(maxx + 1):
+#         outstr = "           [{}, null".format(x)  # write rank
+#         v = x**2
+#         if v > maxv:
+#             v = "null"
+#         if x == g:
+#             a = "\'g\'"
+#         else:
+#             a = "null"
+#         outstr += ", {}, {}],\n".format(v, a)
+#         output.append(outstr)
+#     output.append("		]);\n")
+#     output.append("\n")
+#     output.append("        var options_{} = {{\n".format(graph.name))
+#     output.append("		     legend: {position: 'top'},\n")
+#     # output.append("		     chartArea: {width:\'75%\', height:\'75%\'},\n")
+#     output.append("		     interpolateNulls: true,\n")
+#     output.append("		     hAxis: {slantedText: true,\n")
+#     output.append("		             title: \'Rank\',\n")
+#     output.append("		             gridlines: {color: \'transparent\'},\n")
+#     output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
+#     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+#     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+#     output.append("		             title: \'Cumulative Citation Count\',\n")
+#     output.append("		             ticks: [0, 20, 40, 60, 80, 100, 120, 140],\n")
+#     output.append("		             gridlines: {color: \'transparent\'}},\n")
+#     output.append("		     series: { 0: {},\n")
+#     output.append("		               1: {lineDashStyle: [4, 4],\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("        };\n")
+#     output.append("\n")
+#     output.append("        var chart_{} = new google.visualization."
+#                   "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+#     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+#     output.append("\n")
+#
+#     return output
+#
+#
+# def write_g_index_desc_data2(metric_set: MetricSet) -> list:
+#     metric = metric_set.metrics["g-index"]
+#     graph = metric.description_graphs[1]
+#     output = list()
+#     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+#     output.append("           ['Rank', 'Mean Citations', 'y=x', 'g-square', "
+#                   "{'type': 'string', 'role': 'annotation'}],\n")
+#     tmp_cites = [c for c in metric_set.citations]
+#     tmp_cites.sort(reverse=True)
+#     avg_cites = []
+#     for i in range(len(tmp_cites)):
+#         avg_cites.append(sum(tmp_cites[:i+1])/(i+1))
+#     g = metric_set.metrics["g-index"].value
+#     maxx = metric_set.metrics["total pubs"].value
+#     maxv = 45
+#     # write avg citation count for top x ranked publications
+#     for x in range(maxx + 1):
+#         outstr = "           [{}".format(x)  # write rank
+#         if x == 0:
+#             v = "null"
+#         else:
+#             v = avg_cites[x - 1]
+#         outstr += ", {}, null, null, null],\n".format(v)
+#         output.append(outstr)
+#     # write y for y=x
+#     output.append("           [{}, null, {}, null, null],\n".format(0, 0))
+#     output.append("           [{}, null, {}, null, null],\n".format(maxv, maxv))
+#     # write g-square
+#     output.append("           [{}, null, null, {}, null],\n".format(0, g))
+#     output.append("           [{}, null, null, {}, \'g\'],\n".format(g, g))
+#     output.append("           [{}, null, null, {}, null],\n".format(g, 0))
+#     output.append("		]);\n")
+#     output.append("\n")
+#     output.append("        var options_{} = {{\n".format(graph.name))
+#     output.append("		     legend: {position: 'top'},\n")
+#     output.append("		     hAxis: {slantedText: true,\n")
+#     output.append("		             title: \'Rank\',\n")
+#     output.append("		             gridlines: {color: \'transparent\'},\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+#     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+#     output.append("		             title: \'Mean Citation Count\',\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             gridlines: {color: \'transparent\'}},\n")
+#     output.append("		     series: { 0: {},\n")
+#     output.append("		               1: {lineDashStyle: [4, 4]},\n")
+#     output.append("		               2: {lineDashStyle: [2, 2],\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("        };\n")
+#     output.append("\n")
+#     output.append("        var chart_{} = new google.visualization."
+#                   "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+#     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+#     output.append("\n")
+#
+#     return output
 
 
 def write_g_index_example(metric_set: MetricSet) -> str:
-    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
-    outstr += "<table class=\"example_table\">"
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
     citations = sorted(metric_set.citations, reverse=True)
-    row0 = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
-    row1 = "<tr class=\"top_row\"><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>"
-    row2 = "<tr><th>Rank Squared (<em>i</em><sup>2</sup>)</th>"
-    row3 = "<tr><th></th>"
-    row4 = "<tr class=\"top_row\"><th>Rank (<em>i</em>)</th>"
-    row5 = "<tr><th>Mean Citations (Σ<em>C<sub>i</sub></em> / <em>i</em>)</th>"
+    row0 = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row1 = '<tr class="top_row"><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th>Rank Squared (<em>i</em><sup>2</sup>)</th>'
+    row3 = '<tr><th></th>'
+    row4 = '<tr class="top_row"><th>Rank (<em>i</em>)</th>'
+    row5 = '<tr><th>Mean Citations (Σ<em>C<sub>i</sub></em> / <em>i</em>)</th>'
 
     g = metric_set.metrics["g-index"].value
     s = 0
     for i, c in enumerate(citations):
         s += c
         if i + 1 == g:
-            v = "<em>g</em>&nbsp;=&nbsp;{}".format(g)
-            ec = " class=\"box\""
+            v = f'<em>g</em>&nbsp;=&nbsp;{g}'
+            ec = ' class="box"'
         else:
             v = ""
             ec = ""
-        row0 += "<td>{}</td>".format(c)
-        row1 += "<td" + ec + ">{}</td>".format(s)
-        row2 += "<td" + ec + ">{}</td>".format((i+1)**2)
-        row3 += "<td>{}</td>".format(v)
-        row4 += "<td" + ec + ">{}</td>".format(i + 1)
-        row5 += "<td" + ec + ">{:1.1f}</td>".format(s/(i+1))
-    row0 += "</tr>"
-    row1 += "</tr>"
-    row2 += "</tr>"
-    row3 += "</tr>"
-    row4 += "</tr>"
-    row5 += "</tr>"
-    outstr += row0 + row1 + row2 + row3 + row4 + row5 + "</table>"
-    outstr += "<p>The largest rank where <em>i</em><sup>2</sup> ≤ Σ<em>C<sub>i</sub></em> (or " \
-              "<em>i</em> ≤ mean <em>C<sub>i</sub></em>) is {}.</p>".format(g)
+        row0 += f'<td>{c}</td>'
+        row1 += f'<td{ec}>{s}</td>'
+        row2 += f'<td{ec}>{(i+1)**2}</td>'
+        row3 += f'<td>{v}</td>'
+        row4 += f'<td{ec}>{i+1}</td>'
+        row5 += f'<td{ec}>{s/(i+1):1.1f}</td>'
+    row0 += '</tr>'
+    row1 += '</tr>'
+    row2 += '</tr>'
+    row3 += '</tr>'
+    row4 += '</tr>'
+    row5 += '</tr>'
+    outstr += row0 + row1 + row2 + row3 + row4 + row5 + '</table>'
+    outstr += ('<p>The largest rank where <em>i</em><sup>2</sup> ≤ Σ<em>C<sub>i</sub></em> (or '
+               f'<em>i</em> ≤ mean <em>C<sub>i</sub></em>) is {g}.</p>')
     return outstr
 
 
@@ -867,51 +1062,84 @@ def metric_g_index() -> Metric:
     m.full_name = "g-index"
     m.html_name = "<em>g-</em>index"
     m.symbol = "<em>g</em>"
-    m.axes_name = r"$g$"
+    m.axis_name = r"$g$"
     m.metric_type = INT
+
     graph1 = DescriptionGraph()
     m.description_graphs.append(graph1)
     graph1.name = "g_index_desc1"
-    graph1.data = write_g_index_desc_data1
+    graph1.data = create_g_index_desc_graph_data1
+
     graph2 = DescriptionGraph()
     m.description_graphs.append(graph2)
     graph2.name = "g_index_desc2"
-    graph2.data = write_g_index_desc_data2
+    graph2.data = create_g_index_desc_graph_data2
+
+    # graph1 = DescriptionGraph()
+    # m.description_graphs.append(graph1)
+    # graph1.name = "g_index_desc1"
+    # graph1.data = write_g_index_desc_data1
+    # graph2 = DescriptionGraph()
+    # m.description_graphs.append(graph2)
+    # graph2.name = "g_index_desc2"
+    # graph2.data = write_g_index_desc_data2
     m.example = write_g_index_example
     equation = r"$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=" \
                r"\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$"
-    m.description = "<p>The best known and most widely studied alternative to the __h-index__ is known as the " \
-                    "<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for " \
-                    "publications cited in excess of the <em>h</em> threshold. The primary difference between the " \
-                    "formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on " \
-                    "cumulative citation counts rather than individual citation counts. Formally, the " \
-                    "<em>g-</em>index is the largest value for which <em>g</em> publications have jointly received " \
-                    "at least <em>g</em><sup>2</sup> citations.</p>" + equation + \
-                    "<div class=\"chart2container\">" \
-                    "<div id=\"chart_" + graph1.name + "_div\" class=\"proportional_chart2\"></div>" \
-                    "<div id=\"chart_" + graph2.name + "_div\" class=\"proportional_chart2\"></div>" \
-                    "</div><div class=\"clear_float\">" \
-                    "<p>Although not usually " \
-                    "formulated this way, the above also shows an alternative interpretation of the <em>g-</em>" \
-                    "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em>" \
-                    "index is the largest value for which the top <em>g</em> publications average <em>g</em> " \
-                    "citations, while <em>h</em> is the largest value for which the top <em>h</em> publications " \
-                    "have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number " \
-                    "of citations in the <em>g-</em>core to exceed the square of the total number of publications " \
-                    "(<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for " \
-                    "the average number of citations per publication to exceed the number of publications. Under " \
-                    "this scenario, the threshold curve and the citation curve do not actually cross. Some authors " \
-                    "have suggested adding phantom publications with zero citations until the curves cross " \
-                    "(essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); " \
-                    "a more conservative approach, illustrated here, is to set the maximum possible value of " \
-                    "<em>g</em> equal to the number of publications.</p>"
+    m.description = ('<p>The best known and most widely studied alternative to the __h-index__ is known as the '
+                     '<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for '
+                     'publications cited in excess of the <em>h</em> threshold. The primary difference between the '
+                     'formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on '
+                     'cumulative citation counts rather than individual citation counts. Formally, the '
+                     '<em>g-</em>index is the largest value for which <em>g</em> publications have jointly received '
+                     f'at least <em>g</em><sup>2</sup> citations.</p>{equation}'                     
+                     f'<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_{graph1.name}.svg" />'
+                     f'<img class="impact_fig" src="impact_figs/img_{graph2.name}.svg" /></figure>'                     
+                     '<p>Although not usually '
+                     'formulated this way, the above also shows an alternative interpretation of the <em>g-</em>'
+                     'index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em>'
+                     'index is the largest value for which the top <em>g</em> publications average <em>g</em> '
+                     'citations, while <em>h</em> is the largest value for which the top <em>h</em> publications '
+                     'have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number '
+                     'of citations in the <em>g-</em>core to exceed the square of the total number of publications '
+                     '(<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for '
+                     'the average number of citations per publication to exceed the number of publications. Under '
+                     'this scenario, the threshold curve and the citation curve do not actually cross. Some authors '
+                     'have suggested adding phantom publications with zero citations until the curves cross '
+                     '(essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); '
+                     'a more conservative approach, illustrated here, is to set the maximum possible value of '
+                     '<em>g</em> equal to the number of publications.</p>')
+    # m.description = "<p>The best known and most widely studied alternative to the __h-index__ is known as the " \
+    #                 "<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for " \
+    #                 "publications cited in excess of the <em>h</em> threshold. The primary difference between the " \
+    #                 "formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on " \
+    #                 "cumulative citation counts rather than individual citation counts. Formally, the " \
+    #                 "<em>g-</em>index is the largest value for which <em>g</em> publications have jointly received " \
+    #                 "at least <em>g</em><sup>2</sup> citations.</p>" + equation + \
+    #                 "<div class=\"chart2container\">"  \
+    #                 "<div id=\"chart_" + graph1.name + "_div\" class=\"proportional_chart2\"></div>" \
+    #                 "<div id=\"chart_" + graph2.name + "_div\" class=\"proportional_chart2\"></div>" \
+    #                 "</div><div class=\"clear_float\">" \
+    #                 "<p>Although not usually " \
+    #                 "formulated this way, the above also shows an alternative interpretation of the <em>g-</em>" \
+    #                 "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em>" \
+    #                 "index is the largest value for which the top <em>g</em> publications average <em>g</em> " \
+    #                 "citations, while <em>h</em> is the largest value for which the top <em>h</em> publications " \
+    #                 "have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number " \
+    #                 "of citations in the <em>g-</em>core to exceed the square of the total number of publications " \
+    #                 "(<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for " \
+    #                 "the average number of citations per publication to exceed the number of publications. Under " \
+    #                 "this scenario, the threshold curve and the citation curve do not actually cross. Some authors " \
+    #                 "have suggested adding phantom publications with zero citations until the curves cross " \
+    #                 "(essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); " \
+    #                 "a more conservative approach, illustrated here, is to set the maximum possible value of " \
+    #                 "<em>g</em> equal to the number of publications.</p>"
     m.references = ["Egghe, L. (2006) How to improve the <em>h-</em>index: Letter. <em>The Scientist</em> 20(3):14.",
                     "Egghe, L. (2006) An improvement of the <em>h-</em>index: The <em>g-</em>index. <em>ISSI "
                     "Newsletter</em> 2(1):8&ndash;9.",
                     "Egghe, L. (2006) Theory and practice of the <em>g-</em>index. <em>Scientometrics</em> "
                     "69(1):131&ndash;152."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_g_index
     m.properties["Core Metric"] = True
     m.properties["Core Citations"] = True
@@ -925,89 +1153,143 @@ def calculate_h2_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_h2_index(citations)
 
 
-def write_h2_index_desc_data(metric_set: MetricSet) -> list:
-    metric = metric_set.metrics["h(2)-index"]
-    graph = metric.description_graphs[0]
-    output = list()
-    output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
-    output.append("           ['Rank', 'Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],\n")
-    tmp_cites = [c for c in metric_set.citations]
-    tmp_cites.sort(reverse=True)
-    h = metric_set.metrics["h(2)-index"].value
-    maxx = metric_set.metrics["total pubs"].value
-    maxv = 50
-    for x in range(maxx + 1):
-        outstr = "           [{}".format(x)  # write rank
-        # write citation count for ranked publication x
-        if x == 0:
-            v = "null"
-        else:
-            v = tmp_cites[x - 1]
-        outstr += ", {}".format(v)
-        # write y for y=x^2
-        v = x**2
-        if v > maxv:
-            v = "null"
-        if x == h:
-            a = "\'h(2)\'"
-        else:
-            a = "null"
-        outstr += ", {}, {}".format(v, a)
-        outstr += "],\n"
-        output.append(outstr)
-    output.append("		]);\n")
-    output.append("\n")
-    output.append("        var options_{} = {{\n".format(graph.name))
-    output.append("		     legend: {position: 'top'},\n")
-    # output.append("		     interpolateNulls: true,\n")
-    output.append("		     hAxis: {slantedText: true,\n")
-    output.append("		             title: \'Rank\',\n")
-    output.append("		             gridlines: {color: \'transparent\'},\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
-    output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
-    output.append("		             title: \'Citation Count\',\n")
-    output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
-    output.append("		             gridlines: {color: \'transparent\'}},\n")
-    output.append("		     series: { 0: {},\n")
-    output.append("		               1: {lineDashStyle: [4, 4],\n")
-    output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
-    output.append("        };\n")
-    output.append("\n")
-    output.append("        var chart_{} = new google.visualization."
-                  "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
-    output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
-    output.append("\n")
+# def write_h2_index_desc_data(metric_set: MetricSet) -> list:
+#     metric = metric_set.metrics["h(2)-index"]
+#     graph = metric.description_graphs[0]
+#     output = list()
+#     output.append("        var data_{} = google.visualization.arrayToDataTable([\n".format(graph.name))
+#     output.append("           ['Rank', 'Citations', 'y=x^2', {'type': 'string', 'role': 'annotation'}],\n")
+#     tmp_cites = [c for c in metric_set.citations]
+#     tmp_cites.sort(reverse=True)
+#     h = metric_set.metrics["h(2)-index"].value
+#     maxx = metric_set.metrics["total pubs"].value
+#     maxv = 50
+#     for x in range(maxx + 1):
+#         outstr = "           [{}".format(x)  # write rank
+#         # write citation count for ranked publication x
+#         if x == 0:
+#             v = "null"
+#         else:
+#             v = tmp_cites[x - 1]
+#         outstr += ", {}".format(v)
+#         # write y for y=x^2
+#         v = x**2
+#         if v > maxv:
+#             v = "null"
+#         if x == h:
+#             a = "\'h(2)\'"
+#         else:
+#             a = "null"
+#         outstr += ", {}, {}".format(v, a)
+#         outstr += "],\n"
+#         output.append(outstr)
+#     output.append("		]);\n")
+#     output.append("\n")
+#     output.append("        var options_{} = {{\n".format(graph.name))
+#     output.append("		     legend: {position: 'top'},\n")
+#     # output.append("		     interpolateNulls: true,\n")
+#     output.append("		     hAxis: {slantedText: true,\n")
+#     output.append("		             title: \'Rank\',\n")
+#     output.append("		             gridlines: {color: \'transparent\'},\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             viewWindow: {max:" + str(maxv) + "}},\n")
+#     output.append("		     vAxis: {viewWindow: {max:" + str(maxv) + "},\n")
+#     output.append("		             title: \'Citation Count\',\n")
+#     output.append("		             ticks: [0, 10, 20, 30, 40, 50],\n")
+#     output.append("		             gridlines: {color: \'transparent\'}},\n")
+#     output.append("		     series: { 0: {},\n")
+#     output.append("		               1: {lineDashStyle: [4, 4],\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("        };\n")
+#     output.append("\n")
+#     output.append("        var chart_{} = new google.visualization."
+#                   "LineChart(document.getElementById('chart_{}_div'));\n".format(graph.name, graph.name))
+#     output.append("        chart_{}.draw(data_{}, options_{});\n".format(graph.name, graph.name, graph.name))
+#     output.append("\n")
+#
+#     return output
+
+
+def create_h2_index_desc_graph_data(metric_set: MetricSet) -> list:
+    output = []
+
+    h2 = metric_set.metrics["h(2)-index"].value
+    n = len(metric_set.citations)
+
+    # basic citation curve
+    cite_data = Impact_Graphs.LineData()
+    output.append(cite_data)
+    cite_data.x = [i+1 for i in range(n)]
+    cite_data.y = [c for c in metric_set.citations]
+    cite_data.y.sort(reverse=True)
+    cite_data.label = "Citations"
+    maxc = max(cite_data.y)
+
+    # example points
+    point_data = Impact_Graphs.PointData()
+    output.append(point_data)
+    point_data.x = [h2, h2+1]
+    point_data.y = [h2**2, (h2+1)**2]
+    point_data.fillcolor = "none"
+
+    # threshold line
+    threshold_data = Impact_Graphs.LineData()
+    output.append(threshold_data)
+    threshold_data.x = [i for i in range(n+1)]
+    threshold_data.y = [i**2 for i in range(n+1)]
+    threshold_data.style = "--"
+    threshold_data.label = r"$y = x^2$"
+
+    # annotation
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = r"$h\left(2\right) = " + f"{h2}$"
+    annotation.pos = (h2, h2**2)
+    annotation.textpos = (h2 + 20, h2**2)
+
+    annotation = Impact_Graphs.AnnotationData()
+    output.append(annotation)
+    annotation.label = r"$h\left(2\right) + 1 = " + f"{h2+1}$"
+    annotation.pos = (h2+1, (h2+1)**2)
+    annotation.textpos = (h2 + 20, (h2+1)**2)
+
+    general_data = Impact_Graphs.GeneralData()
+    output.append(general_data)
+    general_data.x_label = "Rank"
+    general_data.y_label = "Citation Count"
+    general_data.inc_legend = True
+    general_data.x_max = maxc + 5
+    general_data.y_max = general_data.x_max
 
     return output
 
 
 def write_h2_index_example(metric_set: MetricSet) -> str:
-    outstr = "<p>Publications are ordered by number of citations, from highest to lowest.</p>"
-    outstr += "<table class=\"example_table\">"
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
     citations = sorted(metric_set.citations, reverse=True)
-    row1 = "<tr class=\"top_row\"><th>Citations (<em>C<sub>i</sub></em>)</th>"
-    row2 = "<tr><th>Rank-squared (<em>i</em><sup>2</sup>)"
-    row3 = "<tr><th>Rank (<em>i</em>)</th>"
-    row4 = "<tr><th></th>"
+    row1 = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th>Rank-squared (<em>i</em><sup>2</sup>)'
+    row3 = '<tr><th>Rank (<em>i</em>)</th>'
+    row4 = '<tr><th></th>'
     h = metric_set.metrics["h(2)-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = "<em>h</em>(2)&nbsp;=&nbsp;{}".format(h)
-            ec = " class=\"box\""
+            v = f'<em>h</em>(2)&nbsp;=&nbsp;{h}'
+            ec = ' class="box"'
         else:
             v = ""
             ec = ""
-        row1 += "<td" + ec + ">{}</td>".format(c)
-        row2 += "<td" + ec + ">{}</td>".format((i + 1)**2)
-        row3 += "<td>{}</td>".format(i + 1)
-        row4 += "<td>{}</td>".format(v)
-    row1 += "</tr>"
-    row2 += "</tr>"
-    row3 += "</tr>"
-    row4 += "</tr>"
-    outstr += row1 + row2 + row3 + row4 + "</table>"
-    outstr += "<p>The largest rank where <em>i</em><sup>2</sup> ≤ <em>C<sub>i</sub></em> is {}.</p>".format(h)
+        row1 += f'<td{ec}>{c}</td>'
+        row2 += f'<td{ec}>{(i+1)**2}</td>'
+        row3 += f'<td>{i+1}</td>'
+        row4 += f'<td>{v}</td>'
+    row1 += '</tr>'
+    row2 += '</tr>'
+    row3 += '</tr>'
+    row4 += '</tr>'
+    outstr += row1 + row2 + row3 + row4 + '</table>'
+    outstr += f'<p>The largest rank where <em>i</em><sup>2</sup> ≤ <em>C<sub>i</sub></em> is {h}.</p>'
     return outstr
 
 
@@ -1017,24 +1299,27 @@ def metric_h2_index() -> Metric:
     m.full_name = "h(2)-index"
     m.html_name = "<em>h</em>(2)-index"
     m.symbol = "<em>h</em>(2)"
-    m.axes_name = r"$h\left(2\right)$"
+    m.axis_name = r"$h\left(2\right)$"
     m.metric_type = INT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
-    m.example = write_h2_index_example
     graph.name = "h2_index_desc"
-    graph.data = write_h2_index_desc_data
+    graph.data = create_h2_index_desc_graph_data
+    # graph.data = write_h2_index_desc_data
+    m.example = write_h2_index_example
     equation = r"$$h\left(2\right)=\underset{i}{\max}\left(i^2 \leq C_i\right).$$"
-    m.description = "<p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the __h-index__, but rather than " \
-                    "define the core based on <em>h</em> publications having <em>h</em> citations, this index " \
-                    "requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> citations:</p>" + \
-                    equation + "<div id=\"chart_" + graph.name + "_div\" class=\"proportional_chart\"></div>" \
-                    "<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than " \
-                    "many other metrics.</p>"
+    m.description = ('<p>The <em>h</em>(2)-index (Kosmulski 2006) is similar to the __h-index__, but rather than '
+                     'define the core based on <em>h</em> publications having <em>h</em> citations, this index '
+                     f'requires the <em>h</em> publications to each have <em>h</em><sup>2</sup> citations:</p>'
+                     f'{equation}'
+                     f'<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_{graph.name}.svg" '
+                     f'/></figure>'
+                     # '<div id="chart_' + graph.name + '_div" class="proportional_chart"></div>'                     
+                     '<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than '
+                     'many other metrics.</p>')
     m.references = ["Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original "
                     "<em>h-</em>index. <em>ISSI Newsletter</em> 2(3):4&ndash;6."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_h2_index
     m.properties["Core Metric"] = True
     m.properties["Core Citations"] = True
@@ -1085,7 +1370,7 @@ def metric_mu_index() -> Metric:
     m.full_name = "μ-index"
     m.html_name = "<em>μ-</em>index"
     m.symbol = "<em>μ</em>"
-    m.axes_name = r"$\mu$"
+    m.axis_name = r"$\mu$"
     m.example = write_mu_index_example
     m.metric_type = INT
     m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
@@ -1147,7 +1432,7 @@ def metric_tol_f_index() -> Metric:
     m.full_name = "f-index (Tol)"
     m.html_name = "<em>f-</em>index (Tol)"
     m.symbol = "<em>f</em>"
-    m.axes_name = r"$f$"
+    m.axis_name = r"$f$"
     m.example = write_tol_f_index_example
     m.metric_type = INT
     equation = r"$$f=\underset{i}{\max}\left(\frac{1}{\frac{1}{i}\sum\limits_{j=1}^{i}{\frac{1}{C_j}}}\geq " \
@@ -1211,7 +1496,7 @@ def metric_tol_t_index() -> Metric:
     m.full_name = "t-index (Tol)"
     m.html_name = "<em>t-</em>index (Tol)"
     m.symbol = "<em>t</em>"
-    m.axes_name = r"$t$"
+    m.axis_name = r"$t$"
     m.example = write_tol_t_index_example
     m.metric_type = INT
     equation = r"$$t=\underset{i}{\max}\left(\exp\left(\frac{1}{i}\sum\limits_{j=1}^{i}\ln{C_j}\right)\geq " \
@@ -1328,7 +1613,7 @@ def metric_woeginger_w_index() -> Metric:
     m.full_name = "w-index (Woeginger)"
     m.html_name = "<em>w-</em>index (Woeginger)"
     m.symbol = "<em>w</em>"
-    m.axes_name = r"$w$"
+    m.axis_name = r"$w$"
     m.metric_type = INT
     m.example = write_woeginger_index_example
     graph = DescriptionGraph()
@@ -1449,7 +1734,7 @@ def metric_wu_w_index() -> Metric:
     m.full_name = "w-index (Wu)"
     m.html_name = "<em>w-</em>index (Wu)"
     m.symbol = "<em>w</em>"
-    m.axes_name = r"$w$"
+    m.axis_name = r"$w$"
     m.metric_type = INT
     m.example = write_wu_w_index_example
     graph = DescriptionGraph()
@@ -1488,7 +1773,7 @@ def metric_wu_wq() -> Metric:
     m.full_name = "w(q) (Wu)"
     m.html_name = "<em>w</em>(<em>q</em>) (Wu)"
     m.symbol = "<em>q</em>"
-    m.axes_name = r"$q$"
+    m.axis_name = r"$q$"
     m.metric_type = INT
     m.description = "<p>A corollary measure of the __Wu w-index__, <em>q</em> (Wu 2010) is the number of " \
                     "additional citations needed by an author to raise their <em>w-</em>index by one. It is similar " \
@@ -1517,7 +1802,7 @@ def metric_hg_index() -> Metric:
     m.full_name = "hg-index"
     m.html_name = "<em>hg-</em>index"
     m.symbol = "<em>hg</em>"
-    m.axes_name = r"$hg$"
+    m.axis_name = r"$hg$"
     m.metric_type = FLOAT
     equation = r"$$hg=\sqrt{h \times g}.$$"
     m.description = "<p>The <em>hg-</em>index (Alonso <em>et al.</em> 2010) is an aggregate index which tries to " \
@@ -1551,7 +1836,7 @@ def metric_a_index() -> Metric:
     m.full_name = "a-index"
     m.html_name = "<em>a-</em>index"
     m.symbol = "<em>a</em>"
-    m.axes_name = r"$a$"
+    m.axis_name = r"$a$"
     m.metric_type = FLOAT
     equation = r"$$a=\frac{C^H}{h}=\frac{\sum\limits_{i=1}^{h}{C_i}}{h}.$$"
     m.description = "<p>The <em>a-</em>index (Jin 2006; Rousseau 2006) is used to describe the citations within " \
@@ -1584,7 +1869,7 @@ def metric_r_index() -> Metric:
     m.full_name = "R-index"
     m.html_name = "<em>R-</em>index"
     m.symbol = "<em>R</em>"
-    m.axes_name = r"$R$"
+    m.axis_name = r"$R$"
     m.metric_type = FLOAT
     equation = r"$$R=\sqrt{C^H}=\sqrt{\sum\limits_{i=1}^{h}{C_i}}.$$"
     m.description = "<p>The <em>R-</em>index (Jin <em>et al.</em> 2007) is a measure of the quality of the " \
@@ -1712,7 +1997,7 @@ def metric_rational_h_index() -> Metric:
                     "economics in the Republic of Ireland. <em>Scientometrics</em> 75(2):395&ndash;405."]
     m.synonyms = ["h<sub>rat</sub>", "h<sup>Δ</sup>"]
     m.symbol = "<em>h</em><sup>Δ</sup>"
-    m.axes_name = r"$h^{\Delta}$"
+    m.axis_name = r"$h^{\Delta}$"
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
     m.calculate = calculate_rational_h_index
@@ -1811,7 +2096,7 @@ def metric_real_h_index() -> Metric:
     m.references = ["Guns, R., and R. Rousseau (2009) Real and rational variants of the <em>h-</em>index and the "
                     "<em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71."]
     m.symbol = "<em>h<sub>r</sub></em>"
-    m.axes_name = r"$h_r$"
+    m.axis_name = r"$h_r$"
     m.synonyms = ["<em>h<sub>r</sub></em>", "interpolated <em>h-</em>index"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
@@ -1887,7 +2172,7 @@ def metric_tapered_h_index() -> Metric:
                     "the <em>h-</em>index to score total publication output. <em>Scientometrics</em> "
                     "76(3):577&ndash;588."]
     m.symbol = "<em>h<sub>T</sub></em>"
-    m.axes_name = r"$h_T$"
+    m.axis_name = r"$h_T$"
     m.synonyms = ["<em>h<sub>T</sub></em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
@@ -1966,7 +2251,7 @@ def metric_todeschini_j_index() -> Metric:
     m.full_name = "j-index (Todeschini)"
     m.html_name = "<em>j-</em>index (Todeschini)"
     m.symbol = "<em>j</em>"
-    m.axes_name = r"$j$"
+    m.axis_name = r"$j$"
     m.metric_type = FLOAT
     m.example = write_todeschini_j_index_example
     j_table = "<table class=\"j_table\">" \
@@ -2060,7 +2345,7 @@ def metric_wohlin_w_index() -> Metric:
     m.full_name = "w-index (Wohlin)"
     m.html_name = "<em>w-</em>index (Wohlin)"
     m.symbol = "<em>w</em>"
-    m.axes_name = r"$w$"
+    m.axis_name = r"$w$"
     m.example = write_wohlin_j_index_example
     m.metric_type = FLOAT
     table = "<table class=\"cds_table\">" \
@@ -2156,7 +2441,7 @@ def metric_hj_indices() -> Metric:
                     "this last part that can make interpretation so difficult since a well over-cited core can lead " \
                     "to very large increases in subsequent values of <em>H<sub>j</sub>.</em> </p>"
     m.symbol = "<em>H<sub>j</sub></em>"
-    m.axes_name = r"$H_j$"
+    m.axis_name = r"$H_j$"
     m.references = ["Dorta-González, P., and M.I. Dorta-González (2010) Indicador bibliométrico basado en el "
                     "índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245."]
     # m.graph_type = MULTILINE_CHART_LEFT
@@ -2190,7 +2475,7 @@ def metric_v_index() -> Metric:
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
     m.symbol = "<em>v</em>"
-    m.axes_name = r"$v$"
+    m.axis_name = r"$v$"
     m.calculate = calculate_v_index
     m.properties["Core Property"] = True
     m.properties["All Publications"] = True
@@ -2215,7 +2500,7 @@ def metric_normalized_h_index() -> Metric:
                     "divided by the number of publications (or the __v-index__ expressed as a proportion rather " \
                     "than a percentage):</p>" + equation
     m.symbol = "<em>h<sup>n</sup></em>"
-    m.axes_name = r"$h^n$"
+    m.axis_name = r"$h^n$"
     m.synonyms = ["<em>h<sup>n</sup></em>"]
     m.references = ["Sidiropoulos, A., D. Katsaros, and Y. Manolopoulos (2007) Generalized Hirsch <em>h-</em>index "
                     "for disclosing latent facts in citation networks. <em>Scientometrics</em> 72(2):253&ndash;280."]
@@ -2240,7 +2525,7 @@ def metric_m_index() -> Metric:
     m.full_name = "m-index"
     m.html_name = "<em>m-</em>index"
     m.symbol = "<em>m</em>"
-    m.axes_name = r"$m$"
+    m.axis_name = r"$m$"
     m.metric_type = FLOAT
     m.description = "<p>Similar to the __a-index__, the <em>m-</em>index (Bornmann <em>et al.</em> 2008) is " \
                     "the median number of citations for papers in the __h-index__ core.</p>"
@@ -2270,7 +2555,7 @@ def metric_rm_index() -> Metric:
     m.full_name = "rm-index"
     m.html_name = "<em>r<sub>m</sub>-</em>index"
     m.symbol = "<em>r<sub>m</sub></em>"
-    m.axes_name = r"$r_m$"
+    m.axis_name = r"$r_m$"
     m.metric_type = FLOAT
     equation = r"$$r_m=\sqrt{\sum\limits_{i=1}^{h}{\sqrt{C_i}}}.$$"
     m.description = "<p>The <em>r<sub>m</sub>-</em>index (Panaretos and Malesios 2009) is a modification of the " \
@@ -2355,7 +2640,7 @@ def metric_weighted_h_index() -> Metric:
     m.full_name = "weighted h-index"
     m.html_name = "weighted <em>h-</em>index"
     m.symbol = "<em>h<sub>w</sub></em>"
-    m.axes_name = r"$h_w$"
+    m.axis_name = r"$h_w$"
     m.example = write_weighted_h_index_example
     m.metric_type = FLOAT
     rweq = r"$$r_w\left(i\right)=\frac{\sum\limits_{j=1}^{i}{C_j}}{h},$$"
@@ -2432,7 +2717,7 @@ def metric_pi_index() -> Metric:
     m.full_name = "π-index"
     m.html_name = "<em>π-</em>index"
     m.symbol = "<em>π</em>"
-    m.axes_name = r"$\pi$"
+    m.axis_name = r"$\pi$"
     m.metric_type = FLOAT
     m.example = write_pi_index_example
     ppistr = r"$$P_\pi=\text{floor}\left({\sqrt{P}}\right).$$"
@@ -2474,7 +2759,7 @@ def metric_pi_rate() -> Metric:
                     "number of publications in the π-core. It is simply the average number of citations per " \
                     "core publication.</p>" + equation
     m.symbol = "<em>π-</em>rate"
-    m.axes_name = r"$\pi\text{-rate}$"
+    m.axis_name = r"$\pi\text{-rate}$"
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     # m.graph_type = LINE_CHART
     m.calculate = calculate_pi_rate
@@ -2497,7 +2782,7 @@ def metric_q2_index() -> Metric:
     m.full_name = "q2-index"
     m.html_name = "<em>q</em><sup>2</sup>-index"
     m.symbol = "<em>q</em><sup>2</sup>"
-    m.axes_name = r"$q^2$"
+    m.axis_name = r"$q^2$"
     m.metric_type = FLOAT
     equation = r"$$q^2=\sqrt{h\times m}.$$"
     m.description = "<p>The <em>q</em><sup>2</sup>-index (Cabrerizo <em>et al.</em> 2010) is another metric " \
@@ -2576,7 +2861,7 @@ def metric_e_index() -> Metric:
     m.full_name = "e-index"
     m.html_name = "<em>e-</em>index"
     m.symbol = "<em>e</em>"
-    m.axes_name = r"$e$"
+    m.axis_name = r"$e$"
     m.metric_type = FLOAT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
@@ -2687,7 +2972,7 @@ def metric_h2_upper_index() -> Metric:
     m.full_name = "h2-upper index"
     m.html_name = "<em>h</em><sup>2</sup>-upper index"
     m.symbol = r"\(h_\text{upper}^2\)"
-    m.axes_name = r"$h_\text{upper}^2$"
+    m.axis_name = r"$h_\text{upper}^2$"
     m.metric_type = FLOAT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
@@ -2775,7 +3060,7 @@ def metric_h2_center_index() -> Metric:
     m.full_name = "h2-center index"
     m.html_name = "<em>h</em><sup>2</sup>-center index"
     m.symbol = r"\(h_\text{center}^2\)"
-    m.axes_name = r"$h_\text{center}^2$"
+    m.axis_name = r"$h_\text{center}^2$"
     m.metric_type = FLOAT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
@@ -2861,7 +3146,7 @@ def metric_h2_tail_index() -> Metric:
     m.full_name = "h2-tail index"
     m.html_name = "<em>h</em><sup>2</sup>-tail index"
     m.symbol = r"\(h_\text{tail}^2\)"
-    m.axes_name = r"$h_\text{tail}^2$"
+    m.axis_name = r"$h_\text{tail}^2$"
     m.metric_type = FLOAT
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
@@ -2901,7 +3186,7 @@ def metric_k_index() -> Metric:
     m.full_name = "k-index (Ye and Rousseau)"
     m.html_name = "<em>k-</em>index (Ye and Rousseau)"
     m.symbol = "<em>k</em>"
-    m.axes_name = r"$k$"
+    m.axis_name = r"$k$"
     m.metric_type = FLOAT
     equation = r"$$k=\frac{C^PC^h}{P\left(C^P-C^h\right)}.$$"
     m.description = "<p>The <em>k-</em>index (Ye and Rousseau 2010) is a measure of the relative impact of " \
@@ -2935,7 +3220,7 @@ def metric_prathap_p_index() -> Metric:
     m.full_name = "p-index (Prathap)"
     m.html_name = "<em>p-</em>index (Prathap)"
     m.symbol = "<em>p</em>"
-    m.axes_name = r"$p$"
+    m.axis_name = r"$p$"
     m.metric_type = FLOAT
     equation = r"$$p=\sqrt[3]{\frac{\left(C^P\right)^2}{P}}.$$"
     m.description = "<p>Also called the <span class=\"metric_name\">mock <em>h<sub>m</sub>-</em>index</span> " \
@@ -2970,7 +3255,7 @@ def metric_ph_ratio() -> Metric:
     m.full_name = "ph-ratio"
     m.html_name = "<em>ph-</em>ratio"
     m.symbol = "<em>ph-</em>ratio"
-    m.axes_name = r"$ph\text{-ratio}$"
+    m.axis_name = r"$ph\text{-ratio}$"
     m.metric_type = FLOAT
     m.description = "<p>The __p-index__ can be considered a predictor of the __h-index__.</em> The ratio between " \
                     "<em>p</em> and <em>h</em> (the <em>ph-</em>ratio) reflects the sensitivity of the value to the " \
@@ -2998,7 +3283,7 @@ def metric_p_index_frac() -> Metric:
     m.full_name = "fractional p-index"
     m.html_name = "fractional <em>p-</em>index"
     m.symbol = "<em>p<sub>f</sub></em>"
-    m.axes_name = r"$p_f$"
+    m.axis_name = r"$p_f$"
     m.synonyms = ["<em>p<sub>f</sub></em>"]
     m.metric_type = FLOAT
     eq1 = r"$$C^{\prime}=\sum\limits_{i=1}^{P}{\frac{C_i}{A_i}}$$"
@@ -3131,7 +3416,7 @@ def metric_multdim_h_index() -> Metric:
     m.full_name = "multidimensional h-index"
     m.html_name = "multidimensional <em>h-</em>index"
     m.symbol = "<strong><em>H</em></strong>"
-    m.axes_name = r"$h$"
+    m.axis_name = r"$h$"
     # m.metric_type = INTLIST
     m.metric_type = LIST
     m.list_formats = INT
@@ -3332,7 +3617,7 @@ def metric_two_sided_h_index() -> Metric:
     m.full_name = "two-sided h-index"
     m.html_name = "two-sided <em>h-</em>index"
     m.symbol = "<em>h</em>±<em>k</em>"
-    m.axes_name = r"$h$"
+    m.axis_name = r"$h$"
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "two_sided_h_index_desc"
@@ -3383,7 +3668,7 @@ def metric_iter_weighted_h_index() -> Metric:
     m.full_name = "iteratively weighted h-index"
     m.html_name = "iteratively weighted <em>h-</em>index"
     m.symbol = "<em>iw</em>(<em>h</em>)-index"
-    m.axes_name = r"$iw\left(h\right)$"
+    m.axis_name = r"$iw\left(h\right)$"
     m.metric_type = FLOAT
     equation = r"$$iw\left(h\right)=\sum\limits_{j=1}^{n}{\frac{h_j}{j}}.$$"
     m.description = "<p>The interatively weighted <em>h-</em>index (Todeschini and Baccini 2016) is a method " \
@@ -3487,7 +3772,7 @@ def metric_em_index() -> Metric:
     m.full_name = "EM-index"
     m.html_name = "<em>EM-</em>index"
     m.symbol = "<em>EM</em>"
-    m.axes_name = r"$EM$"
+    m.axis_name = r"$EM$"
     m.example = write_em_index_example
     m.metric_type = FLOAT
     equation = r"$$EM=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
@@ -3601,7 +3886,7 @@ def metric_emp_index() -> Metric:
     m.full_name = "EM\'-index"
     m.html_name = "<em>EM</em>&prime;-index"
     m.symbol = "<em>EM&prime;</em>"
-    m.axes_name = r"$EM^{\prime}$"
+    m.axis_name = r"$EM^{\prime}$"
     m.example = write_emp_index_example
     m.metric_type = FLOAT
     equation = r"$$EM^\prime=\sqrt{\sum\limits_{i=1}^{n}{E_i}},$$"
@@ -3716,7 +4001,7 @@ def metric_iterative_weighted_em_index() -> Metric:
     m.name = "iterative weighted EM-index"
     m.html_name = "iterative weighted <em>EM-</em>index"
     m.symbol = "<em>iw<sub>EM</sub></em>"
-    m.axes_name = r"$iw_{EM}$"
+    m.axis_name = r"$iw_{EM}$"
     m.synonyms = ["<em>iw<sub>EM</sub></em>"]
     m.example = write_iterative_weighted_em_index_example
     m.metric_type = FLOAT
@@ -3832,7 +4117,7 @@ def metric_iterative_weighted_emp_index() -> Metric:
     m.full_name = "iterative weighted EM\'-index"
     m.html_name = "iterative weighted <em>EM</em>&prime;-index"
     m.symbol = "<em>iw<sub>EM&prime;</sub></em>"
-    m.axes_name = r"$iw_{EM\prime}$"
+    m.axis_name = r"$iw_{EM\prime}$"
     m.synonyms = ["<em>iw<sub>EM&prime;</sub></em>"]
     m.example = write_iterative_weighted_emp_index_example
     m.metric_type = FLOAT
@@ -3878,7 +4163,7 @@ def metric_total_self_cites() -> Metric:
     m.name = "total self cites"
     m.full_name = "total self citations"
     m.symbol = "S"
-    m.axes_name = r"$S$"
+    m.axis_name = r"$S$"
     m.metric_type = INT
     m.is_self = True
     equation = r"$$S = \sum\limits_{i=1}^{P}{s_i}.$$"
@@ -3908,7 +4193,7 @@ def metric_total_self_cite_rate() -> Metric:
     m.name = "total self cite rate"
     m.full_name = "total self-citation rate"
     m.symbol = "<em>S<sub>r</sub></em>"
-    m.axes_name = r"$S_r$"
+    m.axis_name = r"$S_r$"
     m.metric_type = FLOAT
     m.is_self = True
     equation = r"$$S_r=\frac{S}{C^P}=\frac{\sum\limits_{i=1}^{P}{s_i}}{\sum\limits_{i=1}^{P}{C_i}}.$$"
@@ -4267,7 +4552,7 @@ def metric_hi_index() -> Metric:
     m.full_name = "hi-index "
     m.html_name = "<em>h<sub>i</sub>-</em>index"
     m.symbol = "<em>h<sub>i</sub></em>"
-    m.axes_name = r"$h_i$"
+    m.axis_name = r"$h_i$"
     m.metric_type = FLOAT
     m.example = write_hi_index_example
     equation = r"$$h_i=\frac{h}{\frac{\sum\limits_{i=1}^{h}{A_i}}{h}}=\frac{h^2}{\sum\limits_{i=1}^{h}{A_i}}.$$"
@@ -5332,7 +5617,7 @@ def metric_hm_index() -> Metric:
     m.full_name = "hm-index"
     m.html_name = "<em>h<sub>m</sub>-</em>index"
     m.symbol = "<em>h<sub>m</sub></em>"
-    m.axes_name = r"$h_m$"
+    m.axis_name = r"$h_m$"
     m.example = write_hm_index_example
     m.metric_type = FLOAT
     rheq = r"$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$"
@@ -5440,7 +5725,7 @@ def metric_gf_paper_index() -> Metric:
     equation = r"$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 " \
                r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$"
     m.symbol = "<em>g<sub>F</sub></em>"
-    m.axes_name = r"$g_F$"
+    m.axis_name = r"$g_F$"
     m.synonyms = ["<em>g<sub>F</sub></em>"]
     m.description = "<p>The fractional <em>g-</em>index (Egghe 2008) is a variant of the __g-index__ in which ranks " \
                     "are normalized by the number of authors and is the <em>g</em> " \
@@ -5530,7 +5815,7 @@ def metric_pos_weight_h_index() -> Metric:
     m.full_name = "position-weighted h-index"
     m.html_name = "position-weighted <em>h-</em>index"
     m.symbol = "<em>h<sub>p</sub></em>"
-    m.axes_name = r"$h_p$"
+    m.axis_name = r"$h_p$"
     m.synonyms = ["<em>h<sub>p</sub></em>"]
     m.example = write_pos_weight_h_index_example
     m.metric_type = INT
@@ -5574,7 +5859,7 @@ def metric_prop_weight_cite_agg() -> Metric:
     m.full_name = "weighted citation aggregate (proportional)"
     m.metric_type = FLOAT
     m.symbol = "<em>ψ<sub>p</sub></em>"
-    m.axes_name = r"$\psi_p$"
+    m.axis_name = r"$\psi_p$"
     m.synonyms = ["<em>ψ<sub>p</sub></em>"]
     equation = r"$$\psi_p=\sum\limits_{i=i}^{P}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}" \
                r"=\sum\limits_{i=i}^{P}{C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)}}$$"
@@ -5669,7 +5954,7 @@ def metric_prop_weight_cite_h_cut() -> Metric:
     m.example = write_prop_weight_cite_h_cut_example
     m.metric_type = FLOAT
     m.symbol = "<em>ξ<sub>p</sub></em>"
-    m.axes_name = r"$\xi_p$"
+    m.axis_name = r"$\xi_p$"
     m.synonyms = ["<em>ξ<sub>p</sub></em>"]
     equation = r"$$\xi_p=\sum\limits_{i=1}^{h_p}{C^{*}_i}" \
                r"=\sum\limits_{i=i}^{h_p}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}" \
@@ -5704,7 +5989,7 @@ def metric_frac_weight_cite_agg() -> Metric:
     m.full_name = "weighted citation aggregate (fractional)"
     m.metric_type = FLOAT
     m.symbol = "<em>ψ<sub>e</sub></em>"
-    m.axes_name = r"$\psi_e$"
+    m.axis_name = r"$\psi_e$"
     m.synonyms = ["<em>ψ<sub>e</sub></em>"]
     equation = r"$$\psi_e=\sum\limits_{i=i}^{P}{\frac{C_i}{A_i}}$$"
     m.description = "<p>The fractional weighted citation aggregate (Abbas 2011) is a weighted count of an " \
@@ -5781,7 +6066,7 @@ def metric_frac_weight_cite_h_cut() -> Metric:
     m.example = write_frac_weight_cite_h_cut_example
     m.metric_type = FLOAT
     m.symbol = "<em>ξ<sub>e</sub></em>"
-    m.axes_name = r"$\xi_e$"
+    m.axis_name = r"$\xi_e$"
     m.synonyms = ["<em>ξ<sub>e</sub></em>"]
     equation = r"$$\xi_e=\sum\limits_{i=i}^{h_{i\text{-norm}}}{\frac{C_i}{A_i}}.$$"
     m.description = "<p>The fractional weighted citation H-cut is the sum of weighted citations found within " \
@@ -5855,7 +6140,7 @@ def metric_h_rate() -> Metric:
     m.full_name = "h-rate"
     m.html_name = "<em>h-</em>rate"
     m.symbol = "<em>m</em>"
-    m.axes_name = r"$m$"
+    m.axis_name = r"$m$"
     m.metric_type = FLOAT
     m.synonyms = ["<em>m-</em>quotient",
                   "<em>m-</em>ratio index",
@@ -5950,7 +6235,7 @@ def metric_ls_h_rate() -> Metric:
     m.full_name = "least squares h-rate"
     m.html_name = "least squares <em>h-</em>rate"
     m.symbol = "<em>m<sub>ls</sub></em>"
-    m.axes_name = r"$m_{ls}$"
+    m.axis_name = r"$m_{ls}$"
     graph = DescriptionGraph()
     m.description_graphs.append(graph)
     graph.name = "ls_h_rate_desc"
@@ -5988,7 +6273,7 @@ def metric_time_scaled_h_index() -> Metric:
     m.full_name = "time-scaled h-index"
     m.html_name = "time-scaled <em>h-</em>index"
     m.symbol = "<em>h<sup>TS</sup></em>"
-    m.axes_name = r"$h^{TS}$"
+    m.axis_name = r"$h^{TS}$"
     m.synonyms = ["<em>h<sup>TS</sup></em>"]
     m.metric_type = FLOAT
     equation = r"$$h^{TS}=\frac{h}{\sqrt{Y-Y_0+1}}.$$"
@@ -6019,7 +6304,7 @@ def metric_alpha_index() -> Metric:
     m.full_name = "α-index"
     m.html_name = "<em>α-</em>index"
     m.symbol = "<em>α</em>"
-    m.axes_name = r"$a$"
+    m.axis_name = r"$a$"
     m.synonyms = ["<em>α-</em>index"]
     m.metric_type = FLOAT
     equation = r"$$\alpha = \frac{h}{Y_D},$$"
@@ -6057,7 +6342,7 @@ def metric_ar_index() -> Metric:
     m.full_name = "ar-index"
     m.html_name = "<em>ar-</em>index"
     m.symbol = "<em>ar</em>"
-    m.axes_name = r"$ar$"
+    m.axis_name = r"$ar$"
     m.metric_type = FLOAT
     equation = r"$$ar=\sqrt{\sum\limits_{i=1}^{h}{\frac{C_i}{Y-Y_i+1}}},$$"
     m.description = "<p>The <em>ar-</em>index (Jin 2007; Jin <em>et al.</em> 2007) is an adaptation of the " \
@@ -8802,7 +9087,7 @@ def metric_reci_recp() -> Metric:
     m.full_name = "recI, recP"
     m.html_name = "<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"
     m.symbol = "[<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>]"
-    m.axes_name = r"$rec_I, rec_P$"
+    m.axis_name = r"$rec_I, rec_P$"
     m.example = write_reci_recp_example
     m.synonyms = ["<em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em>"]
     # m.metric_type = INTLIST
@@ -10993,7 +11278,7 @@ def metric_total_pubs_fractional() -> Metric:
     m.name = "total pubs frac"
     m.full_name = "total publications (fractional counting)"
     m.symbol = "<em>P<sub>frac</sub></em>"
-    m.axes_name = r"$P_\text{frac}$"
+    m.axis_name = r"$P_\text{frac}$"
     m.synonyms = ["<em>P<sub>frac</sub></em>"]
     m.metric_type = FLOAT
     equation = r"$$P_{frac} = \sum\limits_{i=1}^P\frac{1}{A_i}.$$"
@@ -11023,7 +11308,7 @@ def metric_total_pubs_proportional() -> Metric:
     m.name = "total pubs prop"
     m.full_name = "total publications (proportional counting)"
     m.symbol = "<em>P<sub>prop</sub></em>"
-    m.axes_name = r"$P_\text{prop}$"
+    m.axis_name = r"$P_\text{prop}$"
     m.synonyms = ["<em>P<sub>prop</sub></em>"]
     m.metric_type = FLOAT
     equation = r"$$P_{prop}=\sum\limits_{i=1}^P2\frac{A_i + 1 - a_i}{A_i\left(A_i + 1\right)}.$$"
@@ -11055,7 +11340,7 @@ def metric_total_pubs_geometric() -> Metric:
     m.name = "total pubs geom"
     m.full_name = "total publications (geometric counting)"
     m.symbol = "<em>P<sub>geom</sub></em>"
-    m.axes_name = r"$P_\text{geom}$"
+    m.axis_name = r"$P_\text{geom}$"
     m.synonyms = ["<em>P<sub>geom</sub></em>"]
     m.metric_type = FLOAT
     equation = r"$$P_{geom}=\sum\limits_{i=1}^P\frac{2^{A_i - a_i}}{2^{A_i}-1}.$$"
@@ -11087,7 +11372,7 @@ def metric_total_pubs_harmonic() -> Metric:
     m.name = "total pubs harm"
     m.full_name = "total publications (harmonic counting)"
     m.symbol = "<em>P<sub>harm</sub></em>"
-    m.axes_name = r"$P_\text{harm}$"
+    m.axis_name = r"$P_\text{harm}$"
     m.synonyms = ["<em>P<sub>harm</sub></em>"]
     m.metric_type = FLOAT
     equation = r"$$P_{harm}=\sum\limits_{i=1}^P\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}\frac{1}{j}}.$$"
@@ -11122,7 +11407,7 @@ def metric_l_sequence() -> Metric:
     m.full_name = "L-Sequence"
     m.html_name = "<em>L-</em>Sequence"
     m.symbol = "<em>L<sub>y</sub></em>"
-    m.axes_name = r"$L_y$"
+    m.axis_name = r"$L_y$"
     m.metric_type = INT
     m.description = ("<p>The <em>L-</em>Sequence is a multi-dimensional measure where impact is measured as a "
                      "series of <em>h-</em>indices with each one based on the citations for a single year. In "
@@ -11157,7 +11442,7 @@ def metric_l_prop() -> Metric:
     m.name = "l prop"
     m.full_name = "L∝"
     m.html_name = "<em>L<sub>∝</sub></em>"
-    m.axes_name = r"$L_\propto$"
+    m.axis_name = r"$L_\propto$"
     m.metric_type = INT
     m.description = ("<p><em>L<sub>∝</sub></em> is simply the sum of the values in the __l seq__, "
                      "meant to be viewed as an alternative to the __h-index__.</p>")
@@ -11186,7 +11471,7 @@ def metric_k_index_kaptay() -> Metric:
     m.full_name = "k-index (Kaptay)"
     m.html_name = "<em>k-</em>index (Kaptay)"
     m.symbol = "<em>k</em>"
-    m.axes_name = r"$k$"
+    m.axis_name = r"$k$"
     m.metric_type = FLOAT
     equation = r"$$k=\sqrt{\sum\limits_{i=1}^{P}{\frac{C_i}{A_i}}}.$$"
     m.description = ("<p>The <em>k-</em>index (Kapatay 2010) is a measure of impact that account for all citations "
@@ -11222,7 +11507,7 @@ def metric_kz_index() -> Metric:
     m.full_name = "Kz index"
     m.html_name = "<em>K<sub>z</sub></em> index"
     m.symbol = "<em>K<sub>z</sub></em>"
-    m.axes_name = r"$K_z$"
+    m.axis_name = r"$K_z$"
     m.metric_type = FLOAT
     equation1 = r"$$k_i=\frac{\ln{C_i}}{\ln \left(h+1\right)}.$$"
     equation2 = r"$$K_z=\sum\limits_{i=1}^P \frac{k_i}{Y - Y_i + 1},$$"
@@ -11259,7 +11544,7 @@ def metric_lambda_index() -> Metric:
     m.name = "λ-index"
     m.full_name = "λ-index"
     m.symbol = "λ"
-    m.axes_name = r"$\lambda$"
+    m.axis_name = r"$\lambda$"
     m.metric_type = INT
     equation = r"$$\lambda=\underset{i}{\max} \left( \frac{C^i}{C^P} \leq 1-\frac{i}{P}\right).$$"
     m.description = ('<p>The λ-index (Lathabai 2026) is based on the Pareto principle, which essentially observes '
@@ -11292,7 +11577,7 @@ def metric_pareto_rule() -> Metric:
     m.name = "Pareto value"
     m.full_name = "Pareto value"
     m.symbol = "λ/P"
-    m.axes_name = r"$\lambda/P$"
+    m.axis_name = r"$\lambda/P$"
     m.metric_type = FLOAT
     m.description = ('<p>The λ-index (Lathabai 2026) determines the number of publications for which the proportion '
                      'of total publications represented by λ produces 1-proportion of total citations, based on the '
@@ -11328,7 +11613,7 @@ def metric_hstar_index() -> Metric:
     m.name = "hstar-index"
     m.full_name = "h*-index"
     m.html_name = "<em>h<sup>*</sup></em>-index"
-    m.axes_name = r"$h^*$"
+    m.axis_name = r"$h^*$"
     m.symbol = "<em>h<sup>*</sup></em>"
     m.metric_type = FLOAT
     equation = (r"$$h^* = h \times \left(\frac{R_{cnt}}{R_{total}}\right)^{\alpha} \times "

@@ -11,6 +11,43 @@ FIGSIZE = [6, 4]  # default figure size
 WIDESIZE = [8, 4]  # for multiline with legends
 
 
+class LineData:
+    def __init__(self):
+        self.x = []
+        self.y = []
+        self.style = "-"
+        self.label = ""
+
+
+class GeneralData:
+    def __init__(self):
+        self.x_label = ""
+        self.y_label = ""
+        self.inc_legend = False
+        self.x_max = None
+        self.y_max = None
+
+
+class AnnotationData:
+    def __init__(self):
+        self.label = ""
+        self.pos = None
+        self.textpos = None
+
+
+class PointData:
+    def __init__(self):
+        self.x = []
+        self.y = []
+        self.label = ""
+        self.edgecolor = "black"
+        self.fillcolor = "black"
+        self.marker = "o"
+
+
+
+# ---- history plotting functions ----
+
 def save_figure(plt, name):
     plt.savefig(f'webout/impact_figs/img_{encode_name(name)}.svg', format="svg", dpi=600)
 
@@ -34,7 +71,7 @@ def draw_graph_line_chart(name: str, metric_list: list):
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
     faxes.set_xlabel("Year")
-    faxes.set_ylabel(base_metric.axes_name)
+    faxes.set_ylabel(base_metric.axis_name)
     plt.tight_layout()
     save_figure(plt, name)
     plt.close("all")
@@ -57,7 +94,7 @@ def draw_graph_multiline_left_chart(name: str, metric_list: list):
 
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
-    faxes.set_ylabel(base_metric.axes_name)
+    faxes.set_ylabel(base_metric.axis_name)
     fig.legend(loc="outside right center", prop={"size": "x-small"}, ncols=2)
     save_figure(plt, name)
     plt.close("all")
@@ -82,7 +119,7 @@ def draw_graph_multiline_center_chart(name: str, metric_list: list):
 
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
-    faxes.set_ylabel(base_metric.axes_name)
+    faxes.set_ylabel(base_metric.axis_name)
     fig.legend(loc="outside right center", prop={"size": "x-small"}, ncols=2)
     save_figure(plt, name)
     plt.close("all")
@@ -107,7 +144,7 @@ def draw_graph_two_line_chart(name: str, metric_list: list):
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
     faxes.set_xlabel("Year")
-    faxes.set_ylabel(base_metric.axes_name)
+    faxes.set_ylabel(base_metric.axis_name)
     faxes.legend()
     plt.tight_layout()
     save_figure(plt, name)
@@ -130,14 +167,14 @@ def draw_graph_line_combined_chart(name: str, metric_list: list):
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
     faxes.set_xlabel("Year")
-    faxes.set_ylabel(base_metric.axes_name)
+    faxes.set_ylabel(base_metric.axis_name)
     plt.tight_layout()
     save_figure(plt, name)
     plt.close("all")
 
 
 def draw_graph_ternary_chart(name: str, metric_list: list):
-    base_metric = metric_list[0].metrics[name]
+    # base_metric = metric_list[0].metrics[name]
     fig = plt.figure(figsize=FIGSIZE)
     faxes = fig.add_subplot(projection="ternary")
     faxes.grid()
@@ -161,3 +198,35 @@ def draw_graph_ternary_chart(name: str, metric_list: list):
     plt.tight_layout()
     save_figure(plt, name)
     plt.close("all")
+
+
+# ---- example drawing function ----
+
+def draw_example_figure(graph, metric_base_data):
+    fig, faxes = plt.subplots(figsize=FIGSIZE)
+    graph_data = graph.data(metric_base_data)
+    for data in graph_data:
+        if isinstance(data, LineData):
+            faxes.plot(data.x, data.y, linestyle=data.style, label=data.label)
+        elif isinstance(data, PointData):
+            faxes.scatter(data.x, data.y, label=data.label, edgecolors=data.edgecolor, c=data.fillcolor)
+        elif isinstance(data, AnnotationData):
+            faxes.annotate(data.label, xy=data.pos, xytext=data.textpos, va="center",
+                           arrowprops=dict(facecolor="black", shrink=0.1))
+        elif isinstance(data, GeneralData):
+            faxes.set_xlabel(data.x_label)
+            faxes.set_ylabel(data.y_label)
+            if data.inc_legend:
+                faxes.legend()
+            if data.x_max is not None:
+                faxes.set_xlim(0, data.x_max)
+            if data.y_max is not None:
+                faxes.set_ylim(0, data.y_max)
+
+    faxes.set_aspect("equal", adjustable="box")
+    faxes.spines["right"].set_visible(False)
+    faxes.spines["top"].set_visible(False)
+    plt.tight_layout()
+    save_figure(plt, graph.name)
+    plt.close("all")
+

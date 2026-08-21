@@ -1,187 +1,292 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i");
 
 body {
-	font-size: medium;
+    font-size: medium;
     font-family: "Noto Serif", serif;
 }
 
 a,
 a:visited {
-  color: blue;
-  text-decoration: none;
- }
+    color: blue;
+    text-decoration: none;
+}
 
 .metric_name {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .index_list {
-	column-count: 4;
-	list-style-type: none;
+    column-count: 4;
+    list-style-type: none;
 }
 
 #references,
 .metric_container {
-	border-top: 1px solid silver;
-	margin-top: 16px;
+    border-top: 1px solid silver;
+    margin-top: 16px;
 }
 
 .metric_data_container {
-	margin-top: 16px;
+    margin-top: 16px;
     display: grid;
     grid-template-columns: 1fr 3fr;
-	grid-template-rows: auto;
-	grid-template-areas: 
+    grid-template-rows: auto;
+    grid-template-areas:
 	  "value_table value_graph";
 }
 
 .metric_data_container_wide {
-	margin-top: 16px;
+    margin-top: 16px;
     display: grid;
     grid-template-columns: 1fr 3fr;
-	grid-template-rows: auto;
-	grid-template-areas: 
+    grid-template-rows: auto;
+    grid-template-areas:
 	  "value_table value_graph";
 }
 
 .table_container {
-	grid-area: value_table;
+    grid-area: value_table;
 }
 
 .impact_table {
-	font-size: 0.75em;
-	border: 0;
+    font-size: 0.75em;
+    border: 0;
     border-collapse: collapse;
 }
 
-.impact_table tbody tr:nth-child(even)  td { background-color: #eee; }
+.impact_table tbody tr:nth-child(even) td {
+    background-color: #eee;
+}
 
 .impact_table th {
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .cell_year {
-	padding-left: 8px;
-	padding-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
+
 .cell_value {
-	text-align: right;
-	padding-left: 16px;
-	padding-right: 8px;
+    text-align: right;
+    padding-left: 16px;
+    padding-right: 8px;
 }
 
 .graph_container {
-	grid-area: value_graph;
-	align-self: center;	
+    grid-area: value_graph;
+    align-self: center;
 }
 
 .impact_chart {
-	height: 400px;
-	width: 800px;
+    height: 400px;
+    width: 800px;
 }
 
-.ferrers {border-collapse: collapse;
-          border: 0;
-		  margin: 0 auto;}
+.ferrers {
+    border-collapse: collapse;
+    border: 0;
+    margin: 0 auto;
+}
 
-.ferrers td {padding-left: 8px; 
-			padding-right: 8px; 
-			text-align: center}
-   
-.tc_bb {border-bottom: 1px solid black}
-.tc_rb {border-right: 1px solid black}
-.tc_bdb {border-bottom: 1px solid silver}
-.tc_rdb {border-right: 1px solid silver}
+.ferrers td {
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center
+}
 
-.j_table {margin: 0 auto; 
-			border: 0; 
-			border-collapse: collapse}
+.tc_bb {
+    border-bottom: 1px solid black
+}
 
-.j_table td {padding-left: 16px; 
-			padding-right: 16px; 
-			text-align: center}
+.tc_rb {
+    border-right: 1px solid black
+}
+
+.tc_bdb {
+    border-bottom: 1px solid silver
+}
+
+.tc_rdb {
+    border-right: 1px solid silver
+}
+
+.j_table {
+    margin: 0 auto;
+    border: 0;
+    border-collapse: collapse
+}
+
+.j_table td {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: center
+}
 
 .top_row th,
-.top_row td {border-bottom: 1px solid silver}
+.top_row td {
+    border-bottom: 1px solid silver
+}
 
-.cds_table {border: 0; 
-			border-collapse: collapse; 
-			margin: 0 auto;}
+.cds_table {
+    border: 0;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
 
 .cds_table th,
-.cds_table td {padding-left: 8px; 
-				padding-right: 8px; 
-				text-align: center}
+.cds_table td {
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center
+}
 
-.cds_table th {border-bottom: 1px solid silver}
+.cds_table th {
+    border-bottom: 1px solid silver
+}
 
 .proportional_chart {
-	width: 400px;
-	height: 400px;
-	margin: auto;
+    width: 400px;
+    height: 400px;
+    margin: auto;
 }
 
 .proportional_chart2 {
-	width: 400px;
-	height: 400px;
-	float: left;
-	margin: auto;
+    width: 400px;
+    height: 400px;
+    float: left;
+    margin: auto;
 }
 
 .time_chart {
-	height: 400px;
-	width: 800px;
-	margin: auto;
+    height: 400px;
+    width: 800px;
+    margin: auto;
 }
 
-.chart2container {width: 816px; margin: auto}
+.chart2container {
+    width: 816px;
+    margin: auto
+}
 
-.clear_float {clear: both}
+.clear_float {
+    clear: both
+}
 
-.example_table {margin: 0 auto;
-               border; 0;
-			   border-collapse: collapse}
+.example_table {
+    margin: 0 auto;
+    border: 0;
+    border-collapse: collapse
+}
 
-.example_table td {padding-left: 16px;
-           padding-right: 16px;
-		   text-align: center;
-		   width: 45px;}
+.example_table td {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: center;
+    width: 45px;
+}
 
-.example_table th {padding-left: 16px; padding-right: 16px}
-		   
-
-.box {background: black; color: white}
-.xbox_top {border-top: 1px solid black}
-.xbox_sides {border-left: 1px solid black;
-              border-right: 1px solid black}
-.xbox_bottom {border-bottom: 1px solid black}
-.xbox_right {border-right: 1px solid black}
-
-.dark_box {background: dimgray; color: white}
-.light_box {background: whitesmoke; color: white}
-
-.right_border {border-right: 1px solid black}
-.left_border {border-left: 1px solid black}
-.spacer_row {height: 0.75em}
+.example_table th {
+    padding-left: 16px;
+    padding-right: 16px
+}
 
 
-.property_table {border-collapse: collapse}
+.box {
+    background: black;
+    color: white
+}
 
-.property_table td {border: 1px solid silver; text-align: center}
-.property_table th {border: 1px solid silver; text-align: center; 
-	height: 220px;
-	vertical-align: bottom;
-	line-height: 1}
-td.first_col {text-align: left}
-th.blank {border: 0px; height: 10px}
-th.toph {height: 20px}
+.xbox_top {
+    border-top: 1px solid black
+}
 
-.rot_1 {width: 40px; }
-.rot_2 {width: 220px; margin-bottom: 5px;
-	transform-origin: bottom left; text-align: left;
-	transform: translateX(30px) rotate(-90deg)}
+.xbox_sides {
+    border-left: 1px solid black;
+    border-right: 1px solid black
+}
+
+.xbox_bottom {
+    border-bottom: 1px solid black
+}
+
+.xbox_right {
+    border-right: 1px solid black
+}
+
+.dark_box {
+    background: dimgray;
+    color: white
+}
+
+.light_box {
+    background: whitesmoke;
+    color: white
+}
+
+.right_border {
+    border-right: 1px solid black
+}
+
+.left_border {
+    border-left: 1px solid black
+}
+
+.spacer_row {
+    height: 0.75em
+}
+
+
+.property_table {
+    border-collapse: collapse
+}
+
+.property_table td {
+    border: 1px solid silver;
+    text-align: center
+}
+
+.property_table th {
+    border: 1px solid silver;
+    text-align: center;
+    height: 220px;
+    vertical-align: bottom;
+    line-height: 1
+}
+
+td.first_col {
+    text-align: left
+}
+
+th.blank {
+    border: 0px;
+    height: 10px
+}
+
+th.toph {
+    height: 20px
+}
+
+.rot_1 {
+    width: 40px;
+}
+
+.rot_2 {
+    width: 220px;
+    margin-bottom: 5px;
+    transform-origin: bottom left;
+    text-align: left;
+    transform: translateX(30px) rotate(-90deg)
+}
 
 .impact_fig {
-	height: 400px
+    height: 400px
+}
+
+.desc_fig {
+    /*display: block;*/
+    margin: auto;
+	text-align: center;
+	width: 100%;
 }

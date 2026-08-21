@@ -7,6 +7,7 @@ It uses data pre-curated by the user (see below for the format).
 """
 
 import Impact_Defs
+import Impact_Graphs
 from Impact_Common import encode_name
 import datetime
 # import urllib.request
@@ -539,8 +540,9 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
 
                 # plots for descriptions
                 for graph in metric.description_graphs:
-                    for outline in graph.data(metric_base_data):
-                        outfile.write(outline)
+                    Impact_Graphs.draw_example_figure(graph, metric_base_data)
+                    # for outline in graph.data(metric_base_data):
+                    #     outfile.write(outline)
             outfile.write("		}\n")
             outfile.write("    </script>\n")
 
@@ -674,9 +676,9 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                     #     outfile.write("\n")
 
                     # plots for descriptions
-                    for graph in metric.description_graphs:
-                        for outline in graph.data(metric_base_data):
-                            outfile.write(outline)
+                    # for graph in metric.description_graphs:
+                    #     for outline in graph.data(metric_base_data):
+                    #         outfile.write(outline)
                     outfile.write("@@\n")
 
                 # main metric information output
@@ -714,7 +716,7 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                 outfile.write("          </table>\n")
                 outfile.write("        </div>\n")
                 if metric.draw_graph is not None:
-                    outfile.write('        <div class="x_graph_container">\n')
+                    outfile.write('        <div>\n')
                     outfile.write('          <figure>\n')
                     outfile.write(f'            <img class="impact_fig" src="impact_figs/img_{encode_name(name)}.svg"/>\n')
                     outfile.write('          </figure>\n')
