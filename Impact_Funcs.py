@@ -1833,6 +1833,41 @@ def calculate_hstar_index(h: int, pub_years: list, year: int, year0: int, academ
     return (h * (p/r)**alpha * (total_cites/academic_age)**beta) / math.sqrt(academic_age)
 
 
+# APR (Rull 2026)
+def calculate_apr(paper_authors: list, author_pos: list) -> list:
+    author_cnt, manager_cnt, collaborator_cnt = 0, 0, 0
+    total = len(paper_authors)
+    for i in range(total):
+        if author_pos[i] == 1:
+            author_cnt += 1
+        elif author_pos[i] == paper_authors[i]:
+            manager_cnt += 1
+        else:
+            collaborator_cnt += 1
+    a_per = 100*author_cnt/total
+    m_per = 100*manager_cnt/total
+    c_per = 100*collaborator_cnt/total
+    m = max(a_per, m_per, c_per)
+    label = ""
+    mv = 0
+    if m - a_per <= 5:
+        label += "A"
+        mv += a_per
+    if m - c_per <= 5:
+        label += "C"
+        mv += c_per
+    if m - m_per <= 5:
+        label += "M"
+        mv += m_per
+    mv /= len(label)
+    if len(label) == 3:
+        label = "E"
+    label = f"{label}{round(mv)}"
+
+    return [a_per, c_per, m_per, label]
+
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

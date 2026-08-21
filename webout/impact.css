@@ -181,3 +181,7 @@ th.toph {height: 20px}
 .rot_2 {width: 220px; margin-bottom: 5px;
 	transform-origin: bottom left; text-align: left;
 	transform: translateX(30px) rotate(-90deg)}
+
+.impact_fig {
+	height: 400px
+}
