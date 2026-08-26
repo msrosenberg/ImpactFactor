@@ -1867,7 +1867,6 @@ def calculate_apr(paper_authors: list, author_pos: list) -> list:
     return [a_per, c_per, m_per, label]
 
 
-
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

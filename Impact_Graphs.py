@@ -3,6 +3,7 @@ create graphs for output, rather than relying on Google Charts
 """
 
 import matplotlib.pyplot as plt
+# the following needs to be imported even though it is not directly referenced in the code
 import mpltern
 import numpy
 from Impact_Common import encode_name
@@ -181,7 +182,6 @@ def draw_graph_line_combined_chart(name: str, metric_list: list):
 
 
 def draw_graph_ternary_chart(name: str, metric_list: list):
-    # base_metric = metric_list[0].metrics[name]
     fig = plt.figure(figsize=FIGSIZE)
     faxes = fig.add_subplot(projection="ternary")
     faxes.grid()
@@ -195,11 +195,13 @@ def draw_graph_ternary_chart(name: str, metric_list: list):
         m.append(d[2])
         y.append(metric_set.year())
     sc = faxes.scatter(a, c, m, c=y)
+    # the following functions are not errors despite PyCharm not recognizing them
+    #    they are unique to the ternary plot
     faxes.set_tlabel("Author")
     faxes.set_llabel("Collaborator")
     faxes.set_rlabel("Manager")
 
-    cax = faxes.inset_axes([1.05, 0.1, 0.05, 0.9], transform=faxes.transAxes)
+    cax = faxes.inset_axes((1.05, 0.1, 0.05, 0.9), transform=faxes.transAxes)
     fig.colorbar(sc, cax=cax)
 
     plt.tight_layout()
