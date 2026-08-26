@@ -13,6 +13,8 @@ import datetime
 # import urllib.request
 from typing import Tuple
 import re
+import shutil
+
 
 class Article:
     def __init__(self):
@@ -1026,6 +1028,9 @@ def main():
         create_html_output(yearly_metrics_list, inc_self, inc_coauth, single=False)
         # create_single_html_output(yearly_metrics_list, inc_self, inc_coauth)
         # create_set_html_output(yearly_metrics_list, inc_self, inc_coauth)
+        shutil.copy2("Citations.txt", "webout/")
+        with open("webout/citeupdate.txt", "w") as outfile:
+            outfile.write(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     print("Finished")
 
