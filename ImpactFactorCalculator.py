@@ -415,12 +415,7 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                           'config=TeX-MML-AM_CHTML"></script>\n')
             outfile.write('    <link rel="stylesheet" href="impact.css" />\n')
 
-            # graph data
-            outfile.write('    <script type="text/javascript" src="https://www.google.com/jsapi"></script>\n')
-            outfile.write('    <script type="text/javascript">\n')
-            outfile.write('      google.load("visualization", "1", {packages:["corechart"]});\n')
-            outfile.write('      google.setOnLoadCallback(drawChart);\n')
-            outfile.write('      function drawChart() {\n')
+            # create graphs
             for name in metric_names:
                 metric = metric_base_data.metrics[name]
                 if metric.is_self and not inc_self:
@@ -430,121 +425,9 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                 elif metric.draw_graph is not None:
                     metric.draw_graph(name, yearly_metrics_list)
 
-                # elif metric.graph_type is not None:
-                #     enc_name = encode_name(name)
-                #     outfile.write(f"        var data_{enc_name} = google.visualization.arrayToDataTable([\n")
-                #     if metric.graph_type == Impact_Defs.LINE_CHART:
-                #         outfile.write(f"           ['Year', '{metric.symbol}'],\n")
-                #         for metric_set in yearly_metrics_list:
-                #             if metric_set.metrics[name].value == "n/a":
-                #                 v = "null"
-                #             else:
-                #                 v = metric_set.metrics[name].value
-                #             outfile.write(f"           ['{metric_set.year()}', {v}],\n")
-                #         outfile.write("		]);\n")
-                #         outfile.write("\n")
-                #         outfile.write(f"        var options_{enc_name} = {{\n")
-                #         outfile.write("		     legend: {position: 'none'},\n")
-                #         outfile.write("		     hAxis: {slantedText: true},\n")
-                #         outfile.write("        };\n")
-                #     elif metric.graph_type == Impact_Defs.TWO_LINE_CHART:
-                #         s1 = "recI"
-                #         s2 = "recP"
-                #         outfile.write(f"           ['Year', '{s1}', '{s2}'],\n")
-                #         for metric_set in yearly_metrics_list:
-                #             if metric_set.metrics[name].value == "n/a":
-                #                 v = "null"
-                #             else:
-                #                 v = metric_set.metrics[name].value
-                #                 v1 = v[0]
-                #                 v2 = v[1]
-                #             outfile.write(f"           ['{metric_set.year()}', {v1}, {v2}],\n")
-                #         outfile.write("		]);\n")
-                #         outfile.write("\n")
-                #         outfile.write(f"        var options_{enc_name} = {{\n")
-                #         outfile.write("		     hAxis: {slantedText: true},\n")
-                #         outfile.write("        };\n")
-                #     elif metric.graph_type == Impact_Defs.MULTILINE_CHART_LEFT:
-                #         # figure out how many values will be on the x-axis
-                #         maxx = 0
-                #         for metric_set in yearly_metrics_list:
-                #             maxx = max(maxx, len(metric_set.metrics[name].value))
-                #         # write header
-                #         outstr = "           [\'i\'"
-                #         for metric_set in yearly_metrics_list:
-                #             outstr += f", '{metric_set.year()}'"
-                #         outstr += "],\n"
-                #         outfile.write(outstr)
-                #         for x in range(maxx):
-                #             outstr = f"           ['{x+1}'"
-                #             for metric_set in yearly_metrics_list:
-                #                 vlist = metric_set.metrics[name].value
-                #                 if x >= len(vlist):
-                #                     v = "null"
-                #                 else:
-                #                     v = vlist[x]
-                #                 outstr += f", {v}"
-                #             outstr += "],\n"
-                #             outfile.write(outstr)
-                #         outfile.write("		]);\n")
-                #         outfile.write("\n")
-                #         outfile.write(f"        var options_{enc_name} = {{\n")
-                #         outfile.write("		     hAxis: {slantedText: true},\n")
-                #         outfile.write("        };\n")
-                #     elif metric.graph_type == Impact_Defs.MULTILINE_CHART_CENTER:
-                #         # figure out how many values will be on the x-axis
-                #         maxx = 0
-                #         for metric_set in yearly_metrics_list:
-                #             maxx = max(maxx, len(metric_set.metrics[name].value))
-                #         # write header
-                #         outstr = "           [\'i\'"
-                #         for metric_set in yearly_metrics_list:
-                #             outstr += f", '{metric_set.year()}'"
-                #         outstr += "],\n"
-                #         outfile.write(outstr)
-                #         d = maxx // 2
-                #         for x in range(-d, d+1):
-                #             outstr = f"           ['{x}'"
-                #             for metric_set in yearly_metrics_list:
-                #                 vlist = metric_set.metrics[name].value
-                #                 vl = len(vlist)
-                #                 if (x + vl // 2 < 0) or (x + vl // 2 >= vl):
-                #                     v = "null"
-                #                 else:
-                #                     v = vlist[x + vl // 2]
-                #                 outstr += f", {v}"
-                #             outstr += "],\n"
-                #             outfile.write(outstr)
-                #         outfile.write("		]);\n")
-                #         outfile.write("\n")
-                #         outfile.write(f"        var options_{enc_name} = {{\n")
-                #         outfile.write("		     hAxis: {slantedText: true},\n")
-                #         outfile.write("        };\n")
-                #     elif metric.graph_type == Impact_Defs.LINE_CHART_COMBINE:
-                #         outfile.write(f"           ['Year', '{metric.symbol}'],\n")
-                #         for metric_set in yearly_metrics_list:
-                #             t = metric_set.metrics[name].value
-                #             v = t[0] + t[1]/10
-                #             outfile.write(f"           ['{metric_set.year()}', {v}],\n")
-                #         outfile.write("		]);\n")
-                #         outfile.write("\n")
-                #         outfile.write(f"        var options_{enc_name} = {{\n")
-                #         outfile.write("		     legend: {position: 'none'},\n")
-                #         outfile.write("		     hAxis: {slantedText: true},\n")
-                #         outfile.write("        };\n")
-                #     outfile.write("\n")
-                #     outfile.write(f"        var chart_{enc_name} = new google.visualization."
-                #                   f"LineChart(document.getElementById('chart_{enc_name}_div'));\n")
-                #     outfile.write(f"        chart_{enc_name}.draw(data_{enc_name}, options_{enc_name});\n")
-                #     outfile.write("\n")
-
                 # plots for descriptions
                 for graph in metric.description_graphs:
                     Impact_Graphs.draw_example_figure(graph, metric_base_data)
-                    # for outline in graph.data(metric_base_data):
-                    #     outfile.write(outline)
-            outfile.write("		}\n")
-            outfile.write("    </script>\n")
 
             outfile.write("  </head>\n")
             outfile.write("  <body>\n")
@@ -583,102 +466,6 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                     outfile.write("@@@@\n")
                     link = name_links[metric.full_name]
                     outfile.write(f"impact_{link[1]}.html\n")
-                    # output header info for graphs and plots
-                    # if metric.graph_type is not None:
-                    #     enc_name = encode_name(name)
-                    #     outfile.write(f'        var data_{enc_name} = google.visualization.arrayToDataTable([\n')
-                    #     if metric.graph_type == Impact_Defs.LINE_CHART:
-                    #         outfile.write(f"           ['Year', '{metric.symbol}'],\n")
-                    #         for metric_set in yearly_metrics_list:
-                    #             if metric_set.metrics[name].value == "n/a":
-                    #                 v = "null"
-                    #             else:
-                    #                 v = metric_set.metrics[name].value
-                    #             outfile.write(f"           ['{metric_set.year()}', {v}],\n")
-                    #         outfile.write("		]);\n")
-                    #         outfile.write("\n")
-                    #         outfile.write(f"        var options_{enc_name} = {{\n")
-                    #         outfile.write("		     legend: {position: 'none'},\n")
-                    #         outfile.write("		     hAxis: {slantedText: true},\n")
-                    #         outfile.write("        };\n")
-                    #     elif metric.graph_type == Impact_Defs.MULTILINE_CHART_LEFT:
-                    #         # figure out how many values will be on the x-axis
-                    #         maxx = 0
-                    #         for metric_set in yearly_metrics_list:
-                    #             maxx = max(maxx, len(metric_set.metrics[name].value))
-                    #         # write header
-                    #         outstr = "           ['i'"
-                    #         for metric_set in yearly_metrics_list:
-                    #             outstr += f", '{metric_set.year()}'"
-                    #         outstr += "],\n"
-                    #         outfile.write(outstr)
-                    #         for x in range(maxx):
-                    #             outstr = f"           ['{x + 1}'"
-                    #             for metric_set in yearly_metrics_list:
-                    #                 vlist = metric_set.metrics[name].value
-                    #                 if x >= len(vlist):
-                    #                     v = "null"
-                    #                 else:
-                    #                     v = vlist[x]
-                    #                 outstr += f", {v}"
-                    #             outstr += "],\n"
-                    #             outfile.write(outstr)
-                    #         outfile.write("		]);\n")
-                    #         outfile.write("\n")
-                    #         outfile.write(f"        var options_{enc_name} = {{\n")
-                    #         outfile.write("		     hAxis: {slantedText: true},\n")
-                    #         outfile.write("        };\n")
-                    #     elif metric.graph_type == Impact_Defs.MULTILINE_CHART_CENTER:
-                    #         # figure out how many values will be on the x-axis
-                    #         maxx = 0
-                    #         for metric_set in yearly_metrics_list:
-                    #             maxx = max(maxx, len(metric_set.metrics[name].value))
-                    #         # write header
-                    #         outstr = "           ['i'"
-                    #         for metric_set in yearly_metrics_list:
-                    #             outstr += f", '{metric_set.year()}'"
-                    #         outstr += "],\n"
-                    #         outfile.write(outstr)
-                    #         d = maxx // 2
-                    #         for x in range(-d, d + 1):
-                    #             outstr = "           [\'{}\'".format(x)
-                    #             for metric_set in yearly_metrics_list:
-                    #                 vlist = metric_set.metrics[name].value
-                    #                 vl = len(vlist)
-                    #                 if (x + vl // 2 < 0) or (x + vl // 2 >= vl):
-                    #                     v = "null"
-                    #                 else:
-                    #                     v = vlist[x + vl // 2]
-                    #                 outstr += ", {}".format(v)
-                    #             outstr += "],\n"
-                    #             outfile.write(outstr)
-                    #         outfile.write("		]);\n")
-                    #         outfile.write("\n")
-                    #         outfile.write(f"        var options_{enc_name} = {{\n")
-                    #         outfile.write("		     hAxis: {slantedText: true},\n")
-                    #         outfile.write("        };\n")
-                    #     elif metric.graph_type == Impact_Defs.LINE_CHART_COMBINE:
-                    #         outfile.write(f"           ['Year', '{metric.symbol}'],\n")
-                    #         for metric_set in yearly_metrics_list:
-                    #             t = metric_set.metrics[name].value
-                    #             v = t[0] + t[1] / 10
-                    #             outfile.write(f"           ['{metric_set.year()}', {v}],\n")
-                    #         outfile.write("		]);\n")
-                    #         outfile.write("\n")
-                    #         outfile.write(f"        var options_{enc_name} = {{\n")
-                    #         outfile.write("		     legend: {position: 'none'},\n")
-                    #         outfile.write("		     hAxis: {slantedText: true},\n")
-                    #         outfile.write("        };\n")
-                    #     outfile.write("\n")
-                    #     outfile.write(f"        var chart_{enc_name} = new google.visualization."
-                    #                   f"LineChart(document.getElementById('chart_{enc_name}_div'));\n")
-                    #     outfile.write(f"        chart_{enc_name}.draw(data_{enc_name}, options_{enc_name});\n")
-                    #     outfile.write("\n")
-
-                    # plots for descriptions
-                    # for graph in metric.description_graphs:
-                    #     for outline in graph.data(metric_base_data):
-                    #         outfile.write(outline)
                     outfile.write("@@\n")
 
                 # main metric information output
@@ -721,10 +508,6 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
                     outfile.write(f'            <img class="impact_fig" src="impact_figs/img_{encode_name(name)}.svg"/>\n')
                     outfile.write('          </figure>\n')
                     outfile.write('        </div>\n')
-                # elif metric.graph_type is not None:
-                #     outfile.write('        <div class="graph_container">\n')
-                #     outfile.write(f'          <div id="chart_{encode_name(name)}_div" class="impact_chart"></div>\n')
-                #     outfile.write('        </div>\n')
                 outfile.write('      </div>\n')
                 outfile.write('    </div>\n')
 

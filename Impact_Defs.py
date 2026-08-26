@@ -270,7 +270,6 @@ def metric_total_pubs() -> Metric:
                      'conference abstracts, software, reports, dissertations, and theses.</p>')
     m.synonyms = ["<em>P</em>"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_total_pubs
     m.properties["Basic Statistic"] = True
     m.properties["All Publications"] = True
