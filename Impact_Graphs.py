@@ -26,6 +26,7 @@ class GeneralData:
         self.inc_legend = False
         self.x_max = None
         self.y_max = None
+        self.equal_axes = True
 
 
 class AnnotationData:
@@ -44,6 +45,12 @@ class PointData:
         self.fillcolor = "black"
         self.marker = "o"
 
+
+class StackData:
+    def __init__(self):
+        self.x = []
+        self.y = {}
+        self.labels = []
 
 
 # ---- history plotting functions ----
@@ -213,6 +220,12 @@ def draw_example_figure(graph, metric_base_data):
         elif isinstance(data, AnnotationData):
             faxes.annotate(data.label, xy=data.pos, xytext=data.textpos, va="center",
                            arrowprops=dict(facecolor="black", shrink=0.1))
+        elif isinstance(data, StackData):
+            bottom = [0 for _ in range(len(data.x))]
+            for d in data.labels:
+                dat = data.y[d]
+                faxes.bar(data.x, dat, bottom=bottom, label=d)
+                bottom = [bottom[i] + dat[i] for i in range(len(bottom))]
         elif isinstance(data, GeneralData):
             faxes.set_xlabel(data.x_label)
             faxes.set_ylabel(data.y_label)
@@ -222,11 +235,11 @@ def draw_example_figure(graph, metric_base_data):
                 faxes.set_xlim(0, data.x_max)
             if data.y_max is not None:
                 faxes.set_ylim(0, data.y_max)
+            if data.equal_axes:
+                faxes.set_aspect("equal", adjustable="box")
 
-    faxes.set_aspect("equal", adjustable="box")
     faxes.spines["right"].set_visible(False)
     faxes.spines["top"].set_visible(False)
     plt.tight_layout()
     save_figure(plt, graph.name)
     plt.close("all")
-

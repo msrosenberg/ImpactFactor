@@ -1225,12 +1225,16 @@ def main():
     else:
         do_web = False
 
+    print("...computing...")
+
     # calculate metrics for every year
     yearly_metrics_list = []
     for y in range(len(date_list)):
         m = calculate_metrics(y, date_list, article_list, inc_self, inc_coauth)
         yearly_metrics_list.append(m)
         m.parent_list = yearly_metrics_list
+
+    print("...writing output...")
 
     # output
     write_output(out_name, date_list, yearly_metrics_list, inc_self, inc_coauth)

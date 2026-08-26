@@ -1471,3 +1471,11 @@ def test_hstar_index():
     year = max(TEST_YEAR_DATA)
     age = year - year0 + 1
     assert round(Impact_Funcs.calculate_hstar_index(h, TEST_YEAR_DATA, year, year0, age, total_cites), 4) == 71.3753
+
+
+def test_apr():
+    a_per, c_per, m_per, apr_str = Impact_Funcs.calculate_apr(TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER)
+    assert round(a_per, 1) == 62.5  # 10/16 are first authors
+    assert round(c_per, 1) == 25.0  # 4/16 are mid authors
+    assert round(m_per, 1) == 12.5  # 2/16 are last authors
+    assert apr_str == "A62"
