@@ -93,26 +93,6 @@ def read_data_file(filename: str) -> Tuple[list, list]:
                 new_article.coauthors = dat[4]
                 new_article.title = dat[5]
                 cite_list = dat[6:]
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # new_article.year = int(tstr)
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # new_article.authors = int(tstr)
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # new_article.author_rank = int(tstr)
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # if tstr == "Y":
-                #     new_article.primary_author = True
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # new_article.coauthors = tstr
-                # tstr = line[:line.find("\t")]
-                # line = line[line.find("\t")+1:]
-                # new_article.title = tstr
-                # cite_list = line.split("\t")
                 for n in cite_list:
                     if n == 'n/a':
                         n = None
@@ -142,19 +122,6 @@ def read_self_citation_files(article_list: list, sname: str, cname: str) -> None
                     article = article_list[a - 1]
                     dat = line.split("\t")
                     cite_list = dat[6:]
-                    # # skip year
-                    # line = line[line.find("\t") + 1:]
-                    # # skip authors
-                    # line = line[line.find("\t") + 1:]
-                    # # skip author rank
-                    # line = line[line.find("\t") + 1:]
-                    # # skip primary
-                    # line = line[line.find("\t") + 1:]
-                    # # skip coauthors
-                    # line = line[line.find("\t") + 1:]
-                    # # skip title
-                    # line = line[line.find("\t") + 1:]
-                    # cite_list = line.split("\t")
                     for n in cite_list:
                         if n == 'n/a':
                             n = None
