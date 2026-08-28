@@ -11424,6 +11424,7 @@ def metric_3dsi_pr() -> Metric:
                     "Gagolewski, M., B. Żogała‑Siudem, G. Siudem, and A. Cena (2022) Ockham's index of citation "
                     "impact. <em>Scientometrics</em> 127:2829&ndash;2845."]
     m.calculate = calculate_3dsi_pr
+    m.draw_graph = Impact_Graphs.draw_graph_3d_scatter_chart
     m.properties["Alternative Metric"] = True
     m.properties["Multidimensional Metric"] = True
     m.properties["All Publications"] = True

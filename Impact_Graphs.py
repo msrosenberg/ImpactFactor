@@ -209,6 +209,52 @@ def draw_graph_ternary_chart(name: str, metric_list: list):
     plt.close("all")
 
 
+def draw_graph_3d_scatter_chart(name: str, metric_list: list):
+    fig = plt.figure(figsize=FIGSIZE)
+    faxes = fig.add_subplot(projection="3d")
+    # get data
+    years, x, y, z = [], [], [], []
+    for metric_set in metric_list:
+        d = metric_set.metrics[name].value
+        x.append(d[0])
+        y.append(d[1])
+        z.append(d[2])
+        years.append(metric_set.year())
+    sc = faxes.scatter(x, y, z, c=years)
+    faxes.set_xlabel("Total Publications")
+    faxes.set_ylabel("Total Citations")
+    faxes.set_zlabel(r"$\rho_R$")
+
+    fig.colorbar(sc, location="left")
+
+    plt.tight_layout()
+    save_figure(plt, name)
+    plt.close("all")
+
+
+
+"""
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+
+n = 100
+
+# For each set of style and range settings, plot n random points in the box
+# defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
+for m, zlow, zhigh in [('o', -50, -25), ('^', -30, -5)]:
+    xs = randrange(n, 23, 32)
+    ys = randrange(n, 0, 100)
+    zs = randrange(n, zlow, zhigh)
+    ax.scatter(xs, ys, zs, marker=m)
+
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
+plt.show()
+
+"""
+
 # ---- example drawing function ----
 
 def draw_example_figure(graph, metric_base_data):
