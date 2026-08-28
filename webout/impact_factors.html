@@ -13,7 +13,7 @@
     <div>
    <h2>Publication and Citation-based Impact</h2>   <p>I have been collecting data on citations of my own work for a number of years and once wrote a <a href="https://peerj.com/preprints/477/">guide to the concepts for biologists</a> (rather than for those better versed in bibliometrics and scientometrics) (put on <em>PeerJ Preprint Server,</em> 2014-08-26). I have expanded the collection of metrics beyond those described in the paper and have now created a separate webpage for every metric, including a basic explanation, a worked example (in many cases), and a year-by-year history of that metric based on my own publication record.</p>
    <p>The code for calculating all of these metrics can be found on <a href="https://github.com/msrosenberg/ImpactFactor"><span role="presentation" class="fa-brands fa-github" aria-hidden="true"></span> Github</a>.</p>
-   <p>Citation data used for calculating all examples extracted from Google Scholar on 2026-08-26.</p>
+   <p>Citation data used for calculating all examples extracted from Google Scholar on 2026-08-28.</p>
    <p>Below the Index is a table summarizing major properties of the various indices.</p>
       <h3>Common Symbols and Definitions</h3>
         <ul>
@@ -233,6 +233,7 @@
         <li><a href="#rec_index"><em>rec-</em>index</a></li>
         <li><a href="#reci_recp"><em>rec<sub>I</sub></em>, <em>rec<sub>P</sub></em></a></li>
         <li><a href="#Redner_index">Redner index</a></li>
+        <li><a href="#revised_h">revised <em>h-</em>index</a></li>
         <li><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></li>
         <li><a href="#rmp_index"><em>rmp</em>-index</a></li>
         <li><a href="#citation_entropy"><em>s-</em>index (citation entropy)</a></li>
@@ -2684,6 +2685,25 @@
         <td></td>
         </tr>
         <tr>
+          <td class="first_col"><a href="#revised_h">revised <em>h-</em>index</a></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>⚫</td>
+        <td></td>
+        </tr>
+        <tr>
           <td class="first_col"><a href="#rm_index"><em>r<sub>m</sub>-</em>index</a></td>
         <td></td>
         <td></td>
@@ -4507,7 +4527,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <a href="#h_index"><em>h-</em>index</a>. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations:</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$<p>for all <em>i</em> ≤ <em>k</em>. Put another way, the top 1…<em>k</em> publications have to have at least <em>k</em>…1 citations, respectively.</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em> which fits under the curve.</p><div id="chart_woeginger_w_index_desc_div" class="proportional_chart"></div>
+      <p>Woeginger's <em>w-</em>index (Woeginger 2008) is somewhat similar to the <a href="#h_index"><em>h-</em>index</a>. It is the largest value of <em>w</em> for which publications have at least 1, 2, 3, …<em>w</em> citations:</p>$$w=\underset{k}{\max}\left(C_i \geq k-i+1\right),$$<p>for all <em>i</em> ≤ <em>k</em>. Put another way, the top 1…<em>k</em> publications have to have at least <em>k</em>…1 citations, respectively.</p><p>Graphically, if the <em>h-</em>index is the largest square with sides <em>h</em> that can fit under the citation curve, <em>w</em> is the largest right-angled isoceles triangle with perpendicular sides of <em>w</em> which fits under the curve.<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_woeginger_w_index_desc.svg" /></figure>
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><td></td><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td>10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><td></td><th>Rank (<em>k</em>)</th><td><em>k</em>…1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>1</th><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>2</th><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>3</th><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>4</th><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>5</th><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>6</th><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>7</th><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>8</th><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>9</th><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td><em>w</em>&nbsp;=&nbsp;10</td><th>10</th><td class="box">10</td><td class="box">9</td><td class="box">8</td><td class="box">7</td><td class="box">6</td><td class="box">5</td><td class="box">4</td><td class="box">3</td><td class="box">2</td><td class="box">1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>11</th><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>12</th><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>13</th><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>14</th><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>15</th><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td></tr><tr><td></td><th>16</th><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td></tr><tr><td></td><th>17</th><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td><td></td></tr><tr><td></td><th>18</th><td>18</td><td>17</td><td>16</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td></td></tr></table><p>The largest rank where the minimum number of citations for publications 1…<em>k</em> ≤ <em>k</em>…1 is 10.</p>
       <h3>History</h3>
@@ -5056,7 +5076,7 @@
       <h3>Description</h3>
       <p>The <em>j-</em>index (Todeschini 2011) is a modification of the <a href="#h_index"><em>h-</em>index</a> which allows for over-cited publications in the core to increase the overall value of the index. It uses a set of fixed categorical increases over <em>h:</em></p><table class="j_table"><tr class="top_row"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr><tr><th>Δ<em>h<sub>k</sub></em></th><td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1.5</td><td>1.25</td></tr></table>$$j=h+\frac{\sum\limits_{k=1}^{12}{w_kX_k\left(h\times \Delta h_k\right)}}{\sum\limits_{k=1}^{12}{w_k} } ,$$<p>where \(w_k\), the weight given to each category, is simply \(1/k\), and \(X_k\left(h \times \Delta h_k\right)\) is the count of publications whose citations are at least equal to \(h \times \Delta h_k\).</p><p>Essentially this metric adds additional scores to <em>h</em> for publications which are cited well more than that necessary for the core, with larger weight given to those much higher than the core value (500 times the core get a weight of 1, 250 times the core get a weight of 0.5, etc.).</p>
       <h3>Example</h3>
-      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p></p><table class="example_table"><tr class="top_row"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><tr><th>Δ<em>h<sub>k</sub></em></th><td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1.5</td><td>1.25</td><tr><th><em>h</em>&times;Δ<em>h<sub>k</sub></em></th><td>3000</td><td>1500</td><td>600</td><td>300</td><td>150</td><td>60</td><td>30</td><td>24</td><td>18</td><td>12</td><td>9.0</td><td>7.5</td><tr><th>Count <em>C<sub>i</sub></em> ≥ <em>h</em>&times;Δ<em>h<sub>k</sub></em> (<em>X<sub>k</sub></em>)</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>2</td><td>3</td><td>6</td><td>6</td><tr><th>Weight (<em>w<sub>k</sub></em>)</th><td>1.00</td><td>0.50</td><td>0.33</td><td>0.25</td><td>0.20</td><td>0.17</td><td>0.14</td><td>0.12</td><td>0.11</td><td>0.10</td><td>0.09</td><td>0.08</td><tr><th><em>w<sub>k</sub></em><em>X<sub>k</sub></em></th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.14</td><td>0.25</td><td>0.22</td><td>0.30</td><td>0.55</td><td>0.50</td></table><p>The sum of <em>w<sub>k</sub></em><em>X<sub>k</sub></em> = 1.9605 and the sum of <em>w<sub>k</sub></em> = 3.1032, therefore <em>j</em> = 6 + 1.9605/3.1032 = 6.6318.</p>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p></p><table class="example_table"><tr class="top_row"><th><em>k</em></th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><tr><th>Δ<em>h<sub>k</sub></em></th><td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1.5</td><td>1.25</td><tr><th><em>h</em>&times;Δ<em>h<sub>k</sub></em></th><td>3000</td><td>1500</td><td>600</td><td>300</td><td>150</td><td>60</td><td>30</td><td>24</td><td>18</td><td>12</td><td>9.0</td><td>7.5</td><tr><th><em>X<sub>k</sub></em> = Count <em>C<sub>i</sub></em> ≥ <em>h</em>&times;Δ<em>h<sub>k</sub></em></th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>2</td><td>3</td><td>6</td><td>6</td><tr><th>Weight (<em>w<sub>k</sub></em>)</th><td>1.00</td><td>0.50</td><td>0.33</td><td>0.25</td><td>0.20</td><td>0.17</td><td>0.14</td><td>0.12</td><td>0.11</td><td>0.10</td><td>0.09</td><td>0.08</td><tr><th><em>w<sub>k</sub></em><em>X<sub>k</sub></em></th><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.14</td><td>0.25</td><td>0.22</td><td>0.30</td><td>0.55</td><td>0.50</td></table><p>The sum of <em>w<sub>k</sub></em><em>X<sub>k</sub></em> = 1.9605 and the sum of <em>w<sub>k</sub></em> = 3.1032, therefore <em>j</em> = 6 + 1.9605/3.1032 = 6.6318.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -5547,7 +5567,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The π-core citation rate, or π-rate, is the ratio of the π-core citations divided by the number of publications in the π-core. It is simply the average number of citations per core publication.</p>$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$
+      <p>The π-core citation rate, or π-rate, is related to the <a href="#pi_index"><em>π-</em>index</a>. It is the ratio of the π-core citations divided by the number of publications in the π-core. It is simply the average number of citations per core publication.</p>$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -5710,7 +5730,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <a href="#h_index"><em>h-</em>index</a> describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section.</p><figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_h2_upper_index_desc.svg" /></figure><p>The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is calculated as:$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$
+      <p>The <a href="#h_index"><em>h-</em>index</a> describes an <em>h</em>×<em>h</em> square under the citation curve containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing the citation curve into three sections based on this square and describing each section as the percent of all citations found within the section.</p><figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_h2_upper_index_desc.svg" /></figure><p>The <em>h</em><sup>2</sup>-upper index is the percent of excess citations found within the <em>h-</em>core citations, <em>i.e.</em>, the citations found above the <em>h-</em>square. It is related to the <a href="#e_index"><em>e-</em>index</a>, and is calculated as:$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100=\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -7166,7 +7186,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The fractional <em>g-</em>index (Egghe 2008) is a variant of the <a href="#g_index"><em>g-</em>index</a> in which ranks are normalized by the number of authors and is the <em>g</em> equivalent of the <a href="#hm_index"><em>h<sub>m</sub>-</em>index</a>. Effective ranks for each publication are calculated identically as for <em>h<sub>m</sub></em> and <em>g<sub>F</sub></em> is calculated as:</p>$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 \leq \sum\limits_{j=1}^{i}{C_j}\right).$$
+      <p>The fractional <em>g-</em>index (Egghe 2008) is a variant of the <a href="#g_index"><em>g-</em>index</a> in which ranks are normalized by the number of authors and is the <em>g</em> equivalent of the <a href="#hm_index"><em>h<sub>m</sub>-</em>index</a>. Effective ranks for each publication are calculated identically as for <em>h<sub>m</sub></em>. <em>g<sub>F</sub></em> is calculated as:</p>$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 \leq \sum\limits_{j=1}^{i}{C_j}\right).$$
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td>10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th><td>54</td><td>78</td><td>93</td><td>104</td><td>115</td><td>125</td><td>129</td><td>133</td><td>136</td><td>138</td><td>139</td><td>140</td><td>141</td><td>141</td><td>141</td><td>141</td><td>141</td><td class="box">141</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>1</td><td>4</td><td>4</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th><td>0.33</td><td>0.33</td><td>0.50</td><td>0.25</td><td>0.33</td><td>1.00</td><td>0.25</td><td>0.25</td><td>1.00</td><td>0.25</td><td>0.50</td><td>1.00</td><td>1.00</td><td>0.25</td><td>0.50</td><td>1.00</td><td>1.00</td><td>1.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>)&nbsp;=&nbsp;Σ<em>E<sub>i</sub></em>)</th><td>0.33</td><td>0.67</td><td>1.17</td><td>1.42</td><td>1.75</td><td>2.75</td><td>3.00</td><td>3.25</td><td>4.25</td><td>4.50</td><td>5.00</td><td>6.00</td><td>7.00</td><td>7.25</td><td>7.75</td><td>8.75</td><td>9.75</td><td>10.75</td></tr><tr><th>Adjusted Rank Squared (<em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup></th><td>0.11</td><td>0.44</td><td>1.36</td><td>2.01</td><td>3.06</td><td>7.56</td><td>9.00</td><td>10.56</td><td>18.06</td><td>20.25</td><td>25.00</td><td>36.00</td><td>49.00</td><td>52.56</td><td>60.06</td><td>76.56</td><td>95.06</td><td class="box">115.56</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><em>g<sub>F</sub></em>&nbsp;=&nbsp;10.75</td></tr></table><p>The largest adjusted rank where <em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup> ≤ Σ<em>C<sub>i</sub></em> is 10.7500.</p>
       <h3>History</h3>
@@ -7555,7 +7575,7 @@
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The total self-citation rate is the ratio bewtween the number of citations to all of an author's publications made by other publications from the same author versus the total number of citations to all of the author's publications or</p>$$S_r=\frac{S}{C^P}=\frac{\sum\limits_{i=1}^{P}{s_i}}{\sum\limits_{i=1}^{P}{C_i}}.$$
+      <p>The total self-citation rate is the ratio bewtween <a href="#total_self_cites">total self citations</a> (the number of citations to all of an author's publications made by other publications from the same author) versus the total number of citations to all of the author's publications or</p>$$S_r=\frac{S}{C^P}=\frac{\sum\limits_{i=1}^{P}{s_i}}{\sum\limits_{i=1}^{P}{C_i}}.$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -10525,7 +10545,7 @@
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of the largest square. This index is identical to the maxprod-index previously suggested by Kosmulski (2007)</p><figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_rec_index_desc.svg" /></figure>
+      <p>The <em>rec-</em>index (Levene <em>et al.</em> 2019) is the area of the largest rectangle which can fit under the citation curve; similar to how <em>h</em><sup>2</sup> is the area of the largest square. This index is identical to the <span class="metric_name">maxprod-index</span> previously suggested by Kosmulski (2007)</p><figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_rec_index_desc.svg" /></figure>
       <h3>Example</h3>
       <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td>10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr class="top_row"><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th><em>i</em>&times;<em>C<sub>i</sub></em></th><td>54</td><td>48</td><td>45</td><td>44</td><td>55</td><td class="box">60</td><td>28</td><td>32</td><td>27</td><td>20</td><td>11</td><td>12</td><td>13</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></table><p>The largest rectangle which can fit under the citation curve has an area of 60.</p>
       <h3>History</h3>
@@ -10917,7 +10937,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale outputbetween large and small collaborative research teams under an assumption that larger teams could produce more output per year just by the nature of being larger. It attempts to rescale the <a href="#h_index"><em>h-</em>index</a> based on the number of publications in the <em>h-</em>core that were first-authored (<em>P<sub>fa</sub></em>).</p>$$h_{fa}=h \frac{P_h + P_{fa}}{P_h}=h + P_{fa}.$$<p>The authors did not seem to realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of <em>h</em> and the number of first-authored papers that make up h. This index ranges from equal to the <em>h-</em>index if the investigator is never a first author of publications in the <em>h-</em>core to double the <em>h-</em>index if they are the first author of every publication in the core.</p><p>This is conceptually similar to some other metrics such as the <a href="#stratified_h_index">stratified <em>h-</em>index</a> and the <a href="#hmaj_index"><em>h<sub>major</sub>-</em>index</a>.</p>
+      <p>The first-author <em>h-</em>index (Butson and Yu 2010) was designed to rescale output between large and small collaborative research teams under an assumption that larger teams could produce more output per year just by the nature of being larger. It attempts to rescale the <a href="#h_index"><em>h-</em>index</a> based on the number of publications in the <em>h-</em>core that were first-authored (<em>P<sub>fa</sub></em>).</p>$$h_{fa}=h \frac{P_h + P_{fa}}{P_h}=h + P_{fa}.$$<p>The authors did not seem to realize that the number of papers in the core <em>P<sub>h</sub></em> is, by definition, equal to <em>h</em> and thus some of the terms cancel, leaving the metric just the sum of <em>h</em> and the number of first-authored papers that make up h. This index ranges from equal to the <em>h-</em>index if the investigator is never a first author of publications in the <em>h-</em>core to double the <em>h-</em>index if they are the first author of every publication in the core.</p><p>This is conceptually similar to some other metrics such as the <a href="#stratified_h_index">stratified <em>h-</em>index</a> and the <a href="#hmaj_index"><em>h<sub>major</sub>-</em>index</a>.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -11805,7 +11825,7 @@
           <li><strong>Citation Focus:</strong> Core Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <em>h-norm</em> index (Anania and Caruso 2013) is described more or less incidentally when building up to normalized versions of other metrics in the paper. It is a version of the <a href="#h_index"><em>h-</em>index</a> normalized by the number of coauthors for each publication. It is very similar to the calculation of <em>h<sub>e</sub></em> when determining the <a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a>, but citation counts are divided by the number of coauthors rather than the square root. Citation accounts are adjusted for coauthor counts as:</p>$$C^{*}_i = \frac{C_i}{A_i}.$$<p>and <em>h-norm</em> isdetermined using these adjusted counts:</p>$$h{-}norm = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$
+      <p>The <em>h-norm</em> index (Anania and Caruso 2013) is described more or less incidentally when building up to normalized versions of other metrics in the paper. It is a version of the <a href="#h_index"><em>h-</em>index</a> normalized by the number of coauthors for each publication. It is very similar to the calculation of <em>h<sub>e</sub></em> when determining the <a href="#adapt_pure_h_index_frac">adapted pure <em>h-</em>index (fractional credit)</a>, but citation counts are divided by the number of coauthors rather than the square root. Citation counts are adjusted for coauthor counts as:</p>$$C^{*}_i = \frac{C_i}{A_i}.$$<p>and <em>h-norm</em> is determined using these adjusted counts:</p>$$h{-}norm = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$
       <h3>Example</h3>
       <p>Publications are ordered by adjusted number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>10</td><td>24</td><td>15</td><td>11</td><td>3</td><td>11</td><td>4</td><td>4</td><td>1</td><td>1</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td>3</td><td>1</td><td>3</td><td>2</td><td>3</td><td>1</td><td>4</td><td>4</td><td>4</td><td>1</td><td>1</td><td>4</td><td>2</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr class="top_row"><th>Adjusted Citations (\(C^*_i\))</th><td>18.00</td><td>10.00</td><td>8.00</td><td class="box">7.50</td><td>3.67</td><td>3.00</td><td>2.75</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.50</td><td>0.50</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td class="box">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td><em>h-norm</em>&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table><p>The largest rank where \(i \leq C^*_i\) is 4.</p>
       <h3>History</h3>
@@ -12498,6 +12518,11 @@
             <tr><td class="cell_year">2026</td><td class="cell_value">[91, 14298, 0.6771]</td></tr>
           </table>
         </div>
+        <div>
+          <figure>
+            <img class="impact_fig" src="impact_figs/img_3DSI_pr.svg"/>
+          </figure>
+        </div>
       </div>
     </div>
     <div id="total_collaborators" class="metric_container">
@@ -12655,6 +12680,11 @@
             <tr><td class="cell_year">2025</td><td class="cell_value">[44, 27, 10, 8, 24]</td></tr>
             <tr><td class="cell_year">2026</td><td class="cell_value">[44, 29, 10, 8, 24]</td></tr>
           </table>
+        </div>
+        <div>
+          <figure>
+            <img class="impact_fig" src="impact_figs/img_stratified_h_index.svg"/>
+          </figure>
         </div>
       </div>
     </div>
@@ -12939,7 +12969,7 @@
           <li><strong>Publication Focus:</strong> All Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the proportional approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{prop}=\sum\limits_{i=1}^P2\frac{A_i + 1 - a_i}{A_i\left(A_i + 1\right)}.$$
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the proportional approach for assigning authorship credit, with each author's contribution declining with their subsequent position within the author list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{prop}=\sum\limits_{i=1}^P2\frac{A_i + 1 - a_i}{A_i\left(A_i + 1\right)}.$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -12993,7 +13023,7 @@
           <li><strong>Publication Focus:</strong> All Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the geometric approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{geom}=\sum\limits_{i=1}^P\frac{2^{A_i - a_i}}{2^{A_i}-1}.$$
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the geometric approach for assigning authorship credit, with each author's contribution declining with their subsequent position within the author list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with geometric authorship counting is</p>$$P_{geom}=\sum\limits_{i=1}^P\frac{2^{A_i - a_i}}{2^{A_i}-1}.$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -13047,7 +13077,7 @@
           <li><strong>Publication Focus:</strong> All Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the harmonic approach for assigning authorship credit, with each author's contribution decliing with their subsequence position within the atuhor list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with proportional authorship counting is</p>$$P_{harm}=\sum\limits_{i=1}^P\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}\frac{1}{j}}.$$
+      <p>In just the same way one can account for coauthorship when calculating various citation-based metrics, one could use the same approach for counting the total number of publications of an author.</p><p>This version uses the harmonic approach for assigning authorship credit, with each author's contribution declining with their subsequent position within the author list. If <em>A<sub>i</sub></em> is the number of authors of the <em>i</em><sup>th</sup> publication and <em>a<sub>i</sub></em> is the position of the target author within that publication's author list, the total publications of an author with harmonic authorship counting is</p>$$P_{harm}=\sum\limits_{i=1}^P\frac{\frac{1}{a_i}}{\sum\limits_{j=1}^{A_i}\frac{1}{j}}.$$
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -13323,6 +13353,8 @@
         </ul>
       <h3>Description</h3>
       <p>The λ-index (Lathabai 2026) is based on the Pareto principle, which essentially observes that 80% of outputs are produced by 20% of inputs (the 80:20 rule). In the case of academic output, the inputs are publications and the outputs are citations. The λ-index is a measure of the largest value which produces a 1-λ/<em>P</em>:λ/<em>P</em> proportion of outputs to inputs.</p><p>It is calcaulted by comparing the proportion of total citations found in the top <em>i</em> publications to the proportion of publications represented by the top <em>i</em> publications, or</p>$$\lambda=\underset{i}{\max} \left( \frac{C^i}{C^P} \leq 1-\frac{i}{P}\right).$$<p></p>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td>10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><tr><th>Cumulative Citations (<em>C<sup>i</sup></em> =Σ<em>C<sub>i</sub></em>)</th><td>54</td><td>78</td><td>93</td><td>104</td><td>115</td><td>125</td><td>129</td><td>133</td><td>136</td><td>138</td><td>139</td><td>140</td><td>141</td><td>141</td><td>141</td><td>141</td><td>141</td><td>141</td><tr><th><em>C<sup>i</sup>/C<sup>P</sup></em></th><td>0.3830</td><td>0.5532</td><td>0.6596</td><td class="box">0.7376</td><td>0.8156</td><td>0.8865</td><td>0.9149</td><td>0.9433</td><td>0.9645</td><td>0.9787</td><td>0.9858</td><td>0.9929</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><tr class="top_row"><th>1 - <em>i/P</em></th><td>0.9444</td><td>0.8889</td><td>0.8333</td><td class="box">0.7778</td><td>0.7222</td><td>0.6667</td><td>0.6111</td><td>0.5556</td><td>0.5000</td><td>0.4444</td><td>0.3889</td><td>0.3333</td><td>0.2778</td><td>0.2222</td><td>0.1667</td><td>0.1111</td><td>0.0556</td><td>0.0000</td><tr><th></th><td></td><td></td><td></td><td><em></em>λ&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></table><p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is 4.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -13377,11 +13409,13 @@
         </ul>
       <h3>Description</h3>
       <p>The λ-index (Lathabai 2026) determines the number of publications for which the proportion of total publications represented by λ produces 1-proportion of total citations, based on the concept of the Pareto rule, which observed that 80% of outputs were produced by 20% of inputs. The Pareto value is the percentage of publications represented by λ, or 100&times;λ/P.</p><p>The proportion of outputs is 100 - the Pareto value, thus a Pareto value of 22 would indicate a 78:22 Pareto rule, or 78% of outputs (citations) are produced by 22% of inputs (publications).</p>
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td>10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><tr><th>Cumulative Citations (<em>C<sup>i</sup></em> =Σ<em>C<sub>i</sub></em>)</th><td>54</td><td>78</td><td>93</td><td>104</td><td>115</td><td>125</td><td>129</td><td>133</td><td>136</td><td>138</td><td>139</td><td>140</td><td>141</td><td>141</td><td>141</td><td>141</td><td>141</td><td>141</td><tr><th><em>C<sup>i</sup>/C<sup>P</sup></em></th><td>0.3830</td><td>0.5532</td><td>0.6596</td><td class="box">0.7376</td><td>0.8156</td><td>0.8865</td><td>0.9149</td><td>0.9433</td><td>0.9645</td><td>0.9787</td><td>0.9858</td><td>0.9929</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><tr class="top_row"><th>1 - <em>i/P</em></th><td>0.9444</td><td>0.8889</td><td>0.8333</td><td class="box">0.7778</td><td>0.7222</td><td>0.6667</td><td>0.6111</td><td>0.5556</td><td>0.5000</td><td>0.4444</td><td>0.3889</td><td>0.3333</td><td>0.2778</td><td>0.2222</td><td>0.1667</td><td>0.1111</td><td>0.0556</td><td>0.0000</td><tr><th></th><td></td><td></td><td></td><td><em></em>λ&nbsp;=&nbsp;4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></table><p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is 4. With 18 total publications, that makes the λ/P&nbsp;%&nbsp;=&nbsp;100&times;4/18&nbsp;=&nbsp;22, representing a 78:22 rule.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
           <table class="impact_table">
-            <tr><th>Year</th><th>λ/P</th></tr>
+            <tr><th>Year</th><th>λ/P %</th></tr>
             <tr><td class="cell_year">1997</td><td class="cell_value">16.6667</td></tr>
             <tr><td class="cell_year">1998</td><td class="cell_value">25.0000</td></tr>
             <tr><td class="cell_year">1999</td><td class="cell_value">22.2222</td></tr>
@@ -13431,7 +13465,7 @@
           <li><strong>Citation Focus:</strong> All Citations</li>
         </ul>
       <h3>Description</h3>
-      <p>The <em>h<sup>*</sup></em>-index (Rusinek <em>et al.</em> 2026) is a slightly complicated modification of the <a href="#h_index"><em>h-</em>index</a> designed to reflect not only cumulative achievement, but also recent productivity and impact. In addition to <em>h</em>, it includes a measure of publication regularity (the proportion of two-year intervals of the investigator's career that they published at least one item, citation intensity (average citations per year of career), and an adjustment for career length which introduces a mild penalty for long careers with little recent output.</p><p>The entire formula for the index is:</p>$$h^* = h \times \left(\frac{R_{cnt}}{R_{total}}\right)^{\alpha} \times \left(\frac{C^P}{\text{academic age}}\right)^{\beta} \times \frac{1}{\sqrt{\text{academic age}}},$$<p>where <em>R<sub>total</sub></em> is the number of two year intervals in the academic career (the floor of (academic age)/2) and <em>R<sub>cnt</sub></em> is the count of those intervals in which the researcher published at least one paper. &alpha; and &beta; are tuning parameters that have been set to 1.</p><p>Overall, these are multiplicative adjustments to <em>h</em>. Two of these terms (the first and third) can never be greater than 1 and would thus serve to reduce the value of <em>h<sup>*</sup></em> (relative to <em>h</em), while the second term will generally be much greater than 1 and thus increase the value of <em>h<sup>*</sup></em> relative to <em>h</em>, potentially dramatically for those who are well cited.</p>
+      <p>The <em>h<sup>*</sup></em>-index (Rusinek <em>et al.</em> 2026) is a slightly complicated modification of the <a href="#h_index"><em>h-</em>index</a> designed to reflect not only cumulative achievement, but also recent productivity and impact. In addition to <em>h</em>, it includes a measure of publication regularity (the proportion of two-year intervals of the investigator's career that they published at least one item), citation intensity (average citations per year of career), and an adjustment for career length which introduces a mild penalty for long careers with little recent output.</p><p>The entire formula for the index is:</p>$$h^* = h \times \left(\frac{R_{cnt}}{R_{total}}\right)^{\alpha} \times \left(\frac{C^P}{\text{academic age}}\right)^{\beta} \times \frac{1}{\sqrt{\text{academic age}}},$$<p>where <em>R<sub>total</sub></em> is the number of two year intervals in the academic career (the floor of academic age/2) and <em>R<sub>cnt</sub></em> is the count of those intervals in which the researcher published at least one paper. &alpha; and &beta; are tuning parameters that have been set to 1.</p><p>Overall, these are multiplicative adjustments to <em>h</em>. Two of these terms (the first and third) can never be greater than 1 and would thus serve to reduce the value of <em>h<sup>*</sup></em> relative to <em>h</em>, while the second term will generally be much greater than 1 and thus increase the value of <em>h<sup>*</sup></em> relative to <em>h</em>, potentially dramatically for those who are well cited.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -13485,7 +13519,7 @@
           <li><strong>Publication Focus:</strong> All Publications</li>
         </ul>
       <h3>Description</h3>
-      <p>The Author Position Ratio (Rull 2026) is a statistic focused on coauthorship patterns, rather than publications or citations. Like some other metrics, it divides authorship of a publication into one of three categories: Author-focused works (those where the researcher is the first author), Manager-focused works (those where the researcher is the last author), and Collaborator-focused works (those where the researchers is neither first nor last author). Like any other such metrics, this breakdown makes assumptions about the relationship of author position and contribution which may not be true in any given field, or even for any given work.</p><p>The metric itself starts by simply calculating the percent of publications which fall into each of these three categories. The one with the highest percentage would be considered the dominant focus of the researcher. If two categories are similar in level, the researcher might earn a mixed-label combining those two categories; if all three are similar, they could be viewed to have an equal focus. For reporting purposes, the APR is reported as the letter(s) representing the dominant category and its percentage (average percentage if a combined labeling).<p><p>The original paper does not suggest a threshold for combining categories, so in these calculations I combined categories if the top two were within 5% of each other (or all three if all three were within 5%).</p><p>Because the three categories must add up to 100%, an obvous way to graph them is to create a ternary plot where positions within a triangle indicate the tripartite combination of the three values.</p>
+      <p>The Author Position Ratio (Rull 2026) is a statistic focused on coauthorship patterns, rather than publications or citations. Like some other metrics, it divides authorship of a publication into one of three categories: Author-focused works (those where the researcher is the first author), Manager-focused works (those where the researcher is the last author), and Collaborator-focused works (those where the researchers is neither first nor last author). Like other such metrics, this breakdown makes assumptions about the relationship of author position and contribution which may not be true in any given field or any given work.</p><p>The metric itself starts by simply calculating the percent of publications which fall into each of these three categories. The one with the highest percentage would be considered the dominant focus of the researcher. If two categories are similar in level, the researcher might earn a mixed-label combining those two categories; if all three are similar, they could be viewed to have an equal focus. For reporting purposes, the APR is reported as the letter(s) representing the dominant categor(ies) and its percentage (average percentage for combined labeling).<p><p>The original paper does not suggest a threshold for combining categories, so in these calculations I combined categories if the top two were within 5% of each other (or all three if all three were within 5%).</p><p>Because the three categories must add up to 100%, an obvous way to graph them is a ternary plot where positions within a triangle indicate the tripartite combination of the three values.</p>
       <h3>History</h3>
       <div class="metric_data_container">
         <div class="table_container">
@@ -13526,6 +13560,63 @@
         <div>
           <figure>
             <img class="impact_fig" src="impact_figs/img_APR.svg"/>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div id="revised_h" class="metric_container">
+      <h2>revised <em>h-</em>index</h2>
+      <h3>Properties</h3>
+        <ul>
+          <li><strong>Metric Type:</strong> Core Metric</li>
+          <li><strong>Considerations and Adjustments:</strong> Coauthorship</li>
+          <li><strong>Publication Focus:</strong> Core Publications</li>
+          <li><strong>Citation Focus:</strong> Core Citations</li>
+        </ul>
+      <h3>Description</h3>
+      <p>The revised <em>h-</em>index (Romanovsky 2012) is a modification of the <a href="#h_index"><em>h-</em>index</a> meant to account for coauthorship, explicitly giving more weight to publications with first and last authorship. It is a simple modification of the <em>h-</em>index:</p>$$r=1.6a + 0.4\left(h-a\right)=1.2a + 0.4h,$$<p>where <em>a</em> is the count of publications with first or last authorship in the Hirsch core. It gives these papers 60% more weight and those with middle authorship 60% less weight.
+      <h3>Example</h3>
+      <p>Publications are ordered by number of citations, from highest to lowest.</p><table class="example_table"><tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th><td>54</td><td>24</td><td>15</td><td>11</td><td>11</td><td class="box">10</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>Rank (<em>i</em>)</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td class="box">6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr><tr><th></th><td></td><td></td><td></td><td></td><td></td><td><em>h</em>&nbsp;=&nbsp;6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>Authors (<em>A<sub>i</sub></em>)</th><td class="dark_box">3</td><td class="dark_box">3</td><td class="dark_box">2</td><td>4</td><td class="dark_box">3</td><td class="dark_box">1</td><td>4</td><td>4</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>4</td><td>2</td><td>1</td><td>1</td><td>1</td></tr><tr><th>Author Position (<em>a<sub>i</sub></em>)</th><td class="dark_box">1</td><td class="dark_box">3</td><td class="dark_box">2</td><td>3</td><td class="dark_box">1</td><td class="dark_box">1</td><td>3</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>1</td></tr></table><p>The <em>h-</em>index is 6. Of the 6 publications in the core, 5 represent first or last author publications, so <em>r</em>&nbsp;=1.2&times;5&nbsp;+&nbsp;0.4&times;6&nbsp;=&nbsp;8.4.</p>
+      <h3>History</h3>
+      <div class="metric_data_container">
+        <div class="table_container">
+          <table class="impact_table">
+            <tr><th>Year</th><th><em>r</em></th></tr>
+            <tr><td class="cell_year">1997</td><td class="cell_value">0.4000</td></tr>
+            <tr><td class="cell_year">1998</td><td class="cell_value">2.0000</td></tr>
+            <tr><td class="cell_year">1999</td><td class="cell_value">4.8000</td></tr>
+            <tr><td class="cell_year">2000</td><td class="cell_value">6.8000</td></tr>
+            <tr><td class="cell_year">2001</td><td class="cell_value">8.4000</td></tr>
+            <tr><td class="cell_year">2002</td><td class="cell_value">11.6000</td></tr>
+            <tr><td class="cell_year">2003</td><td class="cell_value">16.4000</td></tr>
+            <tr><td class="cell_year">2004</td><td class="cell_value">18.4000</td></tr>
+            <tr><td class="cell_year">2005</td><td class="cell_value">20.0000</td></tr>
+            <tr><td class="cell_year">2006</td><td class="cell_value">23.6000</td></tr>
+            <tr><td class="cell_year">2007</td><td class="cell_value">26.8000</td></tr>
+            <tr><td class="cell_year">2008</td><td class="cell_value">31.6000</td></tr>
+            <tr><td class="cell_year">2009</td><td class="cell_value">34.8000</td></tr>
+            <tr><td class="cell_year">2010</td><td class="cell_value">38.0000</td></tr>
+            <tr><td class="cell_year">2011</td><td class="cell_value">41.6000</td></tr>
+            <tr><td class="cell_year">2012</td><td class="cell_value">43.6000</td></tr>
+            <tr><td class="cell_year">2013</td><td class="cell_value">45.6000</td></tr>
+            <tr><td class="cell_year">2014</td><td class="cell_value">46.0000</td></tr>
+            <tr><td class="cell_year">2015</td><td class="cell_value">46.4000</td></tr>
+            <tr><td class="cell_year">2016</td><td class="cell_value">46.4000</td></tr>
+            <tr><td class="cell_year">2017</td><td class="cell_value">49.6000</td></tr>
+            <tr><td class="cell_year">2018</td><td class="cell_value">49.6000</td></tr>
+            <tr><td class="cell_year">2019</td><td class="cell_value">49.6000</td></tr>
+            <tr><td class="cell_year">2020</td><td class="cell_value">50.0000</td></tr>
+            <tr><td class="cell_year">2021</td><td class="cell_value">52.0000</td></tr>
+            <tr><td class="cell_year">2022</td><td class="cell_value">53.6000</td></tr>
+            <tr><td class="cell_year">2023</td><td class="cell_value">54.0000</td></tr>
+            <tr><td class="cell_year">2024</td><td class="cell_value">54.0000</td></tr>
+            <tr><td class="cell_year">2025</td><td class="cell_value">53.6000</td></tr>
+            <tr><td class="cell_year">2026</td><td class="cell_value">54.8000</td></tr>
+          </table>
+        </div>
+        <div>
+          <figure>
+            <img class="impact_fig" src="impact_figs/img_revised_h.svg"/>
           </figure>
         </div>
       </div>
@@ -13610,6 +13701,7 @@
         <li>Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. <em>Scientometrics</em> 80(3):809&ndash;818.</li>
         <li>Redner, S. (2010) On the meaning of the <em>h-</em>index. <em>Journal of Statistical Mechanics: Theory and Experiment</em> 2010(3):L03005.</li>
         <li>Riikonen, P., and M. Vihinen (2008) National research contributions: A case study on Finnish biomedical research. <em>Scientometrics</em> 77(2):207&ndash;222.</li>
+        <li>Romanovsky, A.A. (2012) Revised <em>h</em> index for biomedical research. <em>Cell Cycle</em> 11(22):4118&ndash;4121.</li>
         <li>Rousseau, R. (2006) New developments related to the Hirsch index. <em>Science Focus</em> 1(4):23&ndash;25.</li>
         <li>Rousseau, R., and F.Y. Ye (2008) A proposal for a dynamic <em>h-</em>type index. <em>Journal of the American Society for Information Science and Technology</em> 59(11):1853&ndash;1855.</li>
         <li>Ruane, F., and R.S.J. Tol (2008) Rational (successive) <em>h-</em>indices: An application to economics in the Republic of Ireland. <em>Scientometrics</em> 75(2):395&ndash;405.</li>
