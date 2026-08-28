@@ -12095,31 +12095,66 @@ def metric_apr() -> Metric:
     m.symbol = "[Author%, Collaborator%, Manager%, APR]"
     m.metric_type = LIST
     m.list_formats = [FLOAT, FLOAT, FLOAT, STR]
-    m.description = ("<p>The Author Position Ratio (Rull 2026) is a statistic focused on coauthorship patterns, rather "
-                     "than publications or citations. Like some other metrics, it divides authorship of a publication "
-                     "into one of three categories: Author-focused works (those where the researcher is the "
-                     "first author), Manager-focused works (those where the researcher is the last author), and "
-                     "Collaborator-focused works (those where the researchers is neither first nor last author). "
-                     "Like other such metrics, this breakdown makes assumptions about the relationship of "
-                     "author position and contribution which may not be true in any given field or any "
-                     "given work.</p><p>The metric itself starts by simply calculating the percent of publications "
-                     "which fall into each of these three categories. The one with the highest percentage would be "
-                     "considered the dominant focus of the researcher. If two categories are similar in level, the "
-                     "researcher might earn a mixed-label combining those two categories; if all three are similar, "
-                     "they could be viewed to have an equal focus. For reporting purposes, the APR is "
-                     "reported as the letter(s) representing the dominant categor(ies) and its percentage (average "
-                     "percentage for combined labeling).<p><p>The original paper does not suggest a threshold for "
-                     "combining categories, so in these calculations I combined "
-                     "categories if the top two were within 5% of each other (or all three if all three were within "
-                     "5%).</p><p>Because the three categories must add up to 100%, an obvous way to graph them is "
-                     "a ternary plot where positions within a triangle indicate the tripartite combination of "
-                     "the three values.</p>")
+    m.description = ('<p>The Author Position Ratio (Rull 2026) is a statistic focused on coauthorship patterns, rather '
+                     'than publications or citations. Like some other metrics, it divides authorship of a publication '
+                     'into one of three categories: Author-focused works (those where the researcher is the '
+                     'first author), Manager-focused works (those where the researcher is the last author), and '
+                     'Collaborator-focused works (those where the researchers is neither first nor last author). '
+                     'Like other such metrics, this breakdown makes assumptions about the relationship of '
+                     'author position and contribution which may not be true in any given field or any '
+                     'given work.</p><p>The metric itself starts by simply calculating the percent of publications '
+                     'which fall into each of these three categories. The one with the highest percentage would be '
+                     'considered the dominant focus of the researcher. If two categories are similar in level, the '
+                     'researcher might earn a mixed-label combining those two categories; if all three are similar, '
+                     'they could be viewed to have an equal focus. For reporting purposes, the APR is '
+                     'reported as the letter(s) representing the dominant categor(ies) and its percentage (average '
+                     'percentage for combined labeling).<p><p>The original paper does not suggest a threshold for '
+                     'combining categories, so in these calculations I combined '
+                     'categories if the top two were within 5% of each other (or all three if all three were within '
+                     '5%).</p><p>Because the three categories must add up to 100%, an obvous way to graph them is '
+                     'a ternary plot where positions within a triangle indicate the tripartite combination of '
+                     'the three values.</p>')
     m.references = ["Rull, V. (2026) Author position ratio (APR): A simple complementary bibliometric descriptor of "
                     "authorship patterns. <em>Journal of Informetrics</em> 20(1):101776."]
     m.draw_graph = Impact_Graphs.draw_graph_ternary_chart
     m.calculate = calculate_apr
     m.properties["Basic Statistic"] = True
     m.properties["All Publications"] = True
+    m.properties["Coauthorship"] = True
+    return m
+
+
+# revised h (Romanovsky 2012)
+def calculate_revised_h(metric_set: MetricSet) -> float:
+    n_authors = metric_set.author_counts()
+    author_pos = metric_set.author_position()
+    h = metric_set.metrics["h-index"].value
+    is_core = metric_set.is_core
+    return Impact_Funcs.calculate_revised_h(h, is_core, n_authors, author_pos)
+
+
+def metric_revised_h() -> Metric:
+    m = Metric()
+    m.name = "revised h"
+    m.full_name = "revised h-index"
+    m.html_name = "revised <em>h-</em>index"
+    m.symbol = "<em>r</em>"
+    m.axis_name = r"$r$"
+    m.metric_type = FLOAT
+    equation = r"$$r=1.6a + 0.4\left(h-a\right)=1.2a + 0.4h,$$"
+    m.description = ('<p>The revised <em>h-</em>index (Romanovsky 2012) is a modification of the __h-index__ meant '
+                     'to account for coauthorship, explicitly giving more weight to publications with first and '
+                     'last authorship. It is a simple modification '
+                     f'of the <em>h-</em>index:</p>{equation}<p>where <em>a</em> is the count of publications with '
+                     f'first or last authorship in the Hirsch core. It gives these papers 60% more weight and those '
+                     f'with middle authorship 60% less weight.')
+    m.references = ["Romanovsky, A.A. (2012) Revised <em>h</em> index for biomedical research. <em>Cell Cycle</em> "
+                    "11(22):4118&ndash;4121."]
+    m.draw_graph = Impact_Graphs.draw_graph_line_chart
+    m.calculate = calculate_revised_h
+    m.properties["Core Metric"] = True
+    m.properties["Core Publications"] = True
+    m.properties["Core Citations"] = True
     m.properties["Coauthorship"] = True
     return m
 
@@ -12358,7 +12393,8 @@ def load_all_metrics() -> list:
                    metric_lambda_index(),
                    metric_pareto_rule(),
                    metric_hstar_index(),
-                   metric_apr()
+                   metric_apr(),
+                   metric_revised_h()
                    # metric_ab_index()
                    # metric_beauty_coefficient(),
                    # metric_awakening_time()

@@ -1867,6 +1867,19 @@ def calculate_apr(paper_authors: list, author_pos: list) -> list:
     return [a_per, c_per, m_per, label]
 
 
+# revised h (Romanovsky 2012)
+def calculate_revised_h(h, is_core, n_authors, author_pos) -> float:
+    # count h core papers with first or last authorship
+    a = 0
+    for i in range(len(is_core)):
+        if is_core[i]:
+            if (author_pos[i] == 1) or (n_authors[i] == author_pos[i]):
+                a += 1
+
+    return a*1.2 + h*0.4
+
+
+
 # only used for spot testing new functions
 if __name__ == "__main__":
     pass

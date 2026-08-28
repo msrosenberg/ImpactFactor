@@ -1479,3 +1479,9 @@ def test_apr():
     assert round(c_per, 1) == 25.0  # 4/16 are mid authors
     assert round(m_per, 1) == 12.5  # 2/16 are last authors
     assert apr_str == "A62"
+
+def test_revised_h():
+    rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
+    h, is_core  = Impact_Funcs.calculate_h_index(TEST_CITATION_DATA, rank_order)
+    # h = 6, a = 5
+    assert round(Impact_Funcs.calculate_revised_h(h, is_core, TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER), 1) == 8.4
