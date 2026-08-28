@@ -11974,6 +11974,42 @@ def calculate_lambda_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_lambda_index(citations)
 
 
+def write_lambda_index_example(metric_set: MetricSet) -> str:
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
+    citations = sorted(metric_set.citations, reverse=True)
+    row0 = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row1 = '<tr><th>Cumulative Citations (<em>C<sup>i</sup></em> =Σ<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th><em>C<sup>i</sup>/C<sup>P</sup></em></th>'
+    row3 = '<tr><th>Rank (<em>i</em>)</th>'
+    row4 = '<tr class="top_row"><th>1 - <em>i/P</em></th>'
+    row5 = '<tr><th></th>'
+    lam = metric_set.metrics["λ-index"].value
+    s = 0
+    total_c = sum(citations)
+    p = len(citations)
+    for i, c in enumerate(citations):
+        s += c
+        if i + 1 == lam:
+            v = f'<em></em>λ&nbsp;=&nbsp;{lam}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        row0 += f'<td>{c}</td>'
+        row1 += f'<td>{s}</td>'
+        row2 += f'<td{ec}>{s/total_c:0.4f}</td>'
+        row3 += f'<td>{i+1}</td>'
+        row4 += f'<td{ec}>{1 - (i+1)/p:0.4f}</td>'
+        row5 += f'<td>{v}</td>'
+    row_list = [row0, row1, row2, row3, row4, row5]
+    for row in row_list:  # add table row endings
+        row += '</tr>'
+    outstr += "".join(row_list) + '</table>'
+    outstr += f'<p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is {lam}.</p>'
+    return outstr
+
+
 def metric_lambda_index() -> Metric:
     m = Metric()
     m.name = "λ-index"
@@ -11993,6 +12029,7 @@ def metric_lambda_index() -> Metric:
                     "Production Processes. <em>Journal of Informetrics</em> 20(1):101769."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_lambda_index
+    m.example = write_lambda_index_example
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
     m.properties["Core Citations"] = True
@@ -12006,12 +12043,52 @@ def calculate_pareto_rule(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_pareto_rule(lamb, n)
 
 
+def write_pareto_rule_example(metric_set: MetricSet) -> str:
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
+    citations = sorted(metric_set.citations, reverse=True)
+    row0 = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row1 = '<tr><th>Cumulative Citations (<em>C<sup>i</sup></em> =Σ<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th><em>C<sup>i</sup>/C<sup>P</sup></em></th>'
+    row3 = '<tr><th>Rank (<em>i</em>)</th>'
+    row4 = '<tr class="top_row"><th>1 - <em>i/P</em></th>'
+    row5 = '<tr><th></th>'
+    lam = metric_set.metrics["λ-index"].value
+    s = 0
+    total_c = sum(citations)
+    p = len(citations)
+    for i, c in enumerate(citations):
+        s += c
+        if i + 1 == lam:
+            v = f'<em></em>λ&nbsp;=&nbsp;{lam}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        row0 += f'<td>{c}</td>'
+        row1 += f'<td>{s}</td>'
+        row2 += f'<td{ec}>{s/total_c:0.4f}</td>'
+        row3 += f'<td>{i+1}</td>'
+        row4 += f'<td{ec}>{1 - (i+1)/p:0.4f}</td>'
+        row5 += f'<td>{v}</td>'
+    row_list = [row0, row1, row2, row3, row4, row5]
+    for row in row_list:  # add table row endings
+        row += '</tr>'
+    outstr += "".join(row_list) + '</table>'
+    pv = metric_set.metrics["Pareto value"].value
+    outstr += (f'<p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is {lam}. With {p} '
+               f'total publications, that makes the '
+               f'λ/P&nbsp;%&nbsp;=&nbsp;100&times;{lam}/{p}&nbsp;=&nbsp;{round(pv)}%, representing a '
+               f'{100-round(pv)}:{round(pv)} rule.</p>')
+    return outstr
+
+
 def metric_pareto_rule() -> Metric:
     m = Metric()
     m.name = "Pareto value"
     m.full_name = "Pareto value"
-    m.symbol = "λ/P"
-    m.axis_name = r"$\lambda/P$"
+    m.symbol = "λ/P %"
+    m.axis_name = r"$\lambda/P\text{ %}$"
     m.metric_type = FLOAT
     m.description = ('<p>The λ-index (Lathabai 2026) determines the number of publications for which the proportion '
                      'of total publications represented by λ produces 1-proportion of total citations, based on the '
@@ -12024,6 +12101,7 @@ def metric_pareto_rule() -> Metric:
                     "Production Processes. <em>Journal of Informetrics</em> 20(1):101769."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_pareto_rule
+    m.example = write_pareto_rule_example
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
     m.properties["Core Citations"] = True
@@ -12133,6 +12211,60 @@ def calculate_revised_h(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_revised_h(h, is_core, n_authors, author_pos)
 
 
+def write_revised_h_example(metric_set: MetricSet) -> str:
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">'
+    tmp_citations = [c for c in metric_set.citations]
+    tmp_author_cnts = [a for a in metric_set.author_counts()]
+    tmp_author_pos = [a for a in metric_set.author_position()]
+    data = []
+    for i in range(len(tmp_citations)):
+        data.append([tmp_citations[i], tmp_author_cnts[i], tmp_author_pos[i]])
+    data.sort(reverse=True)
+    row1 = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    row2 = '<tr><th>Rank (<em>i</em>)</th>'
+    row3 = '<tr><th></th>'
+    row4 = '<tr><th>Authors (<em>A<sub>i</sub></em>)</th>'
+    row5 = '<tr><th>Author Position (<em>a<sub>i</sub></em>)</th>'
+    h = metric_set.metrics["h-index"].value
+    r = metric_set.metrics["revised h"].value
+    # count 1st/last author papers in core
+    acnt = 0
+    for i in range(h):
+        if (data[i][2] == 1) or (data[i][2] == data[i][1]):
+            acnt += 1
+
+    for i, d in enumerate(data):
+        c = d[0]
+        a = d[1]
+        ap = d[2]
+        if i + 1 == h:
+            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        ec2 = ""
+        if i + 1 <= h:
+            if (ap == 1) or (a == ap):
+                ec2 = ' class="dark_box"'
+        row1 += f'<td{ec}>{c}</td>'
+        row2 += f'<td{ec}>{i+1}</td>'
+        row3 += f'<td>{v}</td>'
+        row4 += f'<td{ec2}>{a}</td>'
+        row5 += f'<td{ec2}>{ap}</td>'
+    row1 += '</tr>'
+    row2 += '</tr>'
+    row3 += '</tr>'
+    row4 += '</tr>'
+    row5 += '</tr>'
+    outstr += row1 + row2 + row3 + row4 + row5 + '</table>'
+    outstr += (f'<p>The <em>h-</em>index is {h}. Of the {h} publications in the core, {acnt} represent first or last '
+               f'author publications, so '
+               f'<em>r</em>&nbsp;=1.2&times;{acnt}&nbsp;+&nbsp;0.4&times;{h}&nbsp;=&nbsp;{r:0.4}.</p>')
+    return outstr
+
+
 def metric_revised_h() -> Metric:
     m = Metric()
     m.name = "revised h"
@@ -12152,6 +12284,7 @@ def metric_revised_h() -> Metric:
                     "11(22):4118&ndash;4121."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_revised_h
+    m.example = write_revised_h_example
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
     m.properties["Core Citations"] = True
