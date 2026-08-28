@@ -14,6 +14,7 @@ import datetime
 from typing import Tuple
 import re
 import shutil
+import tqdm
 
 
 class Article:
@@ -385,7 +386,8 @@ def create_html_output(yearly_metrics_list: list, inc_self: bool = True, inc_coa
             outfile.write('    <link rel="stylesheet" href="impact.css" />\n')
 
             # create graphs
-            for name in metric_names:
+            print("...creating figures...")
+            for name in tqdm.tqdm(metric_names):
                 metric = metric_base_data.metrics[name]
                 if metric.is_self and not inc_self:
                     pass  # skip self-citation metrics
