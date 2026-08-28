@@ -232,28 +232,36 @@ def draw_graph_3d_scatter_chart(name: str, metric_list: list):
     plt.close("all")
 
 
+def draw_graph_five_line_chart(name: str, metric_list: list):
+    base_metric = metric_list[0].metrics[name]
+    # get data for line plot
+    x = []
+    y1, y2, y3, y4, y5 = [], [], [], [], []
+    for metric_set in metric_list:
+        v = metric_set.metrics[name].value
+        x.append(metric_set.year())
+        y1.append(v[0])
+        y2.append(v[1])
+        y3.append(v[2])
+        y4.append(v[3])
+        y5.append(v[4])
 
-"""
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+    # create plot
+    fig, faxes = plt.subplots(figsize=FIGSIZE)
+    faxes.plot(x, y1, label=r"$h$")
+    faxes.plot(x, y2, label=r"$h_1$")
+    faxes.plot(x, y3, label=r"$h_2$")
+    faxes.plot(x, y4, label=r"$h_3$")
+    faxes.plot(x, y5, label=r"$h_\text{last}$")
+    faxes.spines["right"].set_visible(False)
+    faxes.spines["top"].set_visible(False)
+    faxes.set_xlabel("Year")
+    faxes.set_ylabel(base_metric.axis_name)
+    faxes.legend()
+    plt.tight_layout()
+    save_figure(plt, name)
+    plt.close("all")
 
-n = 100
-
-# For each set of style and range settings, plot n random points in the box
-# defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
-for m, zlow, zhigh in [('o', -50, -25), ('^', -30, -5)]:
-    xs = randrange(n, 23, 32)
-    ys = randrange(n, 0, 100)
-    zs = randrange(n, zlow, zhigh)
-    ax.scatter(xs, ys, zs, marker=m)
-
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
-
-plt.show()
-
-"""
 
 # ---- example drawing function ----
 

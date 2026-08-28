@@ -11499,6 +11499,7 @@ def metric_stratified_h() -> Metric:
     m.name = "stratified h-index"
     m.full_name = "stratified h-index"
     m.html_name = "stratified <em>h-</em>index"
+    m.axis_name = r"$h$"
     m.symbol = ("[<em>h</em>, <em>h</em><sub>1</sub>, <em>h</em><sub>2</sub>, <em>h</em><sub>3</sub>, "
                 "<em>h</em><sub>last</sub>]")
     m.metric_type = LIST
@@ -11517,6 +11518,7 @@ def metric_stratified_h() -> Metric:
                     "26(4):299&ndash;300."]
 
     m.calculate = calculate_stratified_h
+    m.draw_graph = Impact_Graphs.draw_graph_five_line_chart
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
     m.properties["Multidimensional Metric"] = True
