@@ -507,7 +507,8 @@ def calculate_h_index(metric_set: MetricSet) -> int:
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4]},\n")
 #     output.append("		               2: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}
+#     \n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -648,31 +649,6 @@ def metric_h_index() -> Metric:
                      "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the " 
                      "size (length of sides) of the largest (integer) square that one can fit under the citation " 
                      "curve.</p>")
-    # m.description = ("<p>The <span class=\"metric_name\"><em>h-</em>index</span> (Hirsch 2005) is the most "
-    #                  "important personal impact factor one needs "
-    #                  "to be familiar with, not because it is necessarily the best, but because (1) it was the first "
-    #                  "major index of its type and most of the other indices are based on it in some way, and (2) it "
-    #                  "is the single factor with which most other people (<em>e.g.</em>, "
-    #                  "administrators) are likely to be somewhat familiar. You may find another index which you "
-    #                  "prefer, but everything starts with <em>h.</em></p><p>The <em>h-</em>index is defined as the "
-    #                  "largest value for which <em>h</em> publications have at least <em>h</em> citations. Put another "
-    #                  "way, a scientist has an impact factor of <em>h</em> if <em>h</em> of their publications have at "
-    #                  "least <em>h</em> citations and the other <em>P - h</em> publications have ≤ <em>h</em> "
-    #                  "citations. Note that <em>h</em> is measured in publications. In formal notation, one might "
-    #                  "write</p>" + equation + "<p>These top <em>h</em> publications are often referred "
-    #                  "to as the &ldquo;Hirsch core.&rdquo;</p><div id=\"chart_" + graph.name +
-    #                  "_div\" class=\"proportional_chart\"></div>"
-    #                  "<p>One way to graphically visualize <em>h</em> is to imagine a "
-    #                  "plot of citation count versus rank for all publications (often called the citation curve). An "
-    #                  "alternative way of thinking of this is a plot of minimum number of citations for a publication "
-    #                  "in the top <em>i</em> publications vs. <em>i</em>. By "
-    #                  "definition, this plot will generally trend from upper left (highest ranked publications with "
-    #                  "most citations) to lower right (lowest ranked publications with fewest citations), depending on "
-    #                  "the precise citation distribution of the author. If one were to add a (threshold) line with a "
-    #                  "slope of one to this plot, the point where the threshold line crosses the citation curve "
-    #                  "(truncated to an integer) is <em>h.</em> Alternatively, one can visualize <em>h</em> as the "
-    #                  "size (length of sides) of the largest (integer) square that one can fit under the citation "
-    #                  "curve.</p>")
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.references = ["Hirsch, J.E. (2005) An index to quantify an individual\'s scientific research output. "
                     "<em>Proceedings of the National Academy of Sciences USA</em> 102(46):16569&ndash;16572."]
@@ -953,7 +929,8 @@ def create_g_index_desc_graph_data2(metric_set: MetricSet) -> list:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold:
+#     true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -1011,7 +988,8 @@ def create_g_index_desc_graph_data2(metric_set: MetricSet) -> list:
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4]},\n")
 #     output.append("		               2: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -1111,31 +1089,6 @@ def metric_g_index() -> Metric:
                      '(essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); '
                      'a more conservative approach, illustrated here, is to set the maximum possible value of '
                      '<em>g</em> equal to the number of publications.</p>')
-    # m.description = "<p>The best known and most widely studied alternative to the __h-index__ is known as the " \
-    #                 "<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for " \
-    #                 "publications cited in excess of the <em>h</em> threshold. The primary difference between the " \
-    #                 "formal definitions of the <em>h-</em> and <em>g-</em>indices is that <em>g</em> is based on " \
-    #                 "cumulative citation counts rather than individual citation counts. Formally, the " \
-    #                 "<em>g-</em>index is the largest value for which <em>g</em> publications have jointly received " \
-    #                 "at least <em>g</em><sup>2</sup> citations.</p>" + equation + \
-    #                 "<div class=\"chart2container\">"  \
-    #                 "<div id=\"chart_" + graph1.name + "_div\" class=\"proportional_chart2\"></div>" \
-    #                 "<div id=\"chart_" + graph2.name + "_div\" class=\"proportional_chart2\"></div>" \
-    #                 "</div><div class=\"clear_float\">" \
-    #                 "<p>Although not usually " \
-    #                 "formulated this way, the above also shows an alternative interpretation of the <em>g-</em>" \
-    #                 "index, which makes it\'s meaning and relationship to <em>h</em> much clearer: the <em>g-</em>" \
-    #                 "index is the largest value for which the top <em>g</em> publications average <em>g</em> " \
-    #                 "citations, while <em>h</em> is the largest value for which the top <em>h</em> publications " \
-    #                 "have a minimum of <em>h</em> citations.</p><p>Stricly speaking, it is possible for the number " \
-    #                 "of citations in the <em>g-</em>core to exceed the square of the total number of publications " \
-    #                 "(<em>C<sup>P</sup></em> > <em>P</em><sup>2</sup>), or using the alternate definition, for " \
-    #                 "the average number of citations per publication to exceed the number of publications. Under " \
-    #                 "this scenario, the threshold curve and the citation curve do not actually cross. Some authors " \
-    #                 "have suggested adding phantom publications with zero citations until the curves cross " \
-    #                 "(essentially, making <em>g</em> equal to the square-root of <em>C<sup>P</sup></em>); " \
-    #                 "a more conservative approach, illustrated here, is to set the maximum possible value of " \
-    #                 "<em>g</em> equal to the number of publications.</p>"
     m.references = ["Egghe, L. (2006) How to improve the <em>h-</em>index: Letter. <em>The Scientist</em> 20(3):14.",
                     "Egghe, L. (2006) An improvement of the <em>h-</em>index: The <em>g-</em>index. <em>ISSI "
                     "Newsletter</em> 2(1):8&ndash;9.",
@@ -1201,7 +1154,8 @@ def calculate_h2_index(metric_set: MetricSet) -> int:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold:
+#     true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -1315,7 +1269,6 @@ def metric_h2_index() -> Metric:
                      f'{equation}'
                      f'<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_{graph.name}.svg" '
                      f'/></figure>'
-                     # '<div id="chart_' + graph.name + '_div" class="proportional_chart"></div>'                     
                      '<p>This leads to <em>h</em>(2) having a stricter definition of the core publications than '
                      'many other metrics.</p>')
     m.references = ["Kosmulski, M. (2006) A new Hirsch-type index saves time and works equally well as the original "
@@ -1434,16 +1387,15 @@ def metric_tol_f_index() -> Metric:
     m.axis_name = r"$f$"
     m.example = write_tol_f_index_example
     m.metric_type = INT
-    equation = r"$$f=\underset{i}{\max}\left(\frac{1}{\frac{1}{i}\sum\limits_{j=1}^{i}{\frac{1}{C_j}}}\geq " \
-               r"i\right)=\underset{i}{\max}\left(\frac{i}{\sum\limits_{j=1}^{i}{\frac{1}{C_j}} }\geq i\right)$$"
-    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
-                    "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
-                    "equal to <em>x,</em> then Tol\'s <em>f-</em>index (Tol 2007) is the same idea, except based on " \
-                    "the harmonic mean number of citations for the top <em>f</em> publications.</p>" + equation
+    equation = (r"$$f=\underset{i}{\max}\left(\frac{1}{\frac{1}{i}\sum\limits_{j=1}^{i}{\frac{1}{C_j}}}\geq "
+                r"i\right)=\underset{i}{\max}\left(\frac{i}{\sum\limits_{j=1}^{i}{\frac{1}{C_j}} }\geq i\right)$$")
+    m.description = ('<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which '
+                     '<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations '
+                     'equal to <em>x,</em> then Tol\'s <em>f-</em>index (Tol 2007) is the same idea, except based on '
+                     f'the harmonic mean number of citations for the top <em>f</em> publications.</p>{equation}')
     m.references = ["Tol, R.S.J. (2007) Of the <em>h-</em>index and its alternatives: An application to the 100 "
                     "most prolific economists (FNU-146). Sustainability and Global Change, Hamburg University."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_tol_f_index
     m.properties["Core Metric"] = True
     m.properties["Core Citations"] = True
@@ -1558,7 +1510,8 @@ def calculate_woeginger_w_index(metric_set: MetricSet) -> int:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -1780,7 +1733,8 @@ def create_wu_w_index_desc_graph_data(metric_set: MetricSet) -> list:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -1990,13 +1944,12 @@ def metric_indifference() -> Metric:
     m.citation = "Egghe and Rousseau (1996)"
     m.metric_type = FLOAT
     equation = r"$$D=\frac{P}{C^P}$$"
-    m.description = "<p>This metric is simply the total number of publications divided by the number of total " \
-                    "number of citations (Egghe and Rousseau 1996); it was originally proposed to evaluate journals " \
-                    "but can be applied to individuals as well. The larger this value, the more indifferent the " \
-                    "community is to the author\'s work. This metric is also just the inverse of __c/p__.</p>" + \
-                    equation
+    m.description = ('<p>This metric is simply the total number of publications divided by the number of total '
+                     'number of citations (Egghe and Rousseau 1996); it was originally proposed to evaluate journals '
+                     'but can be applied to individuals as well. The larger this value, the more indifferent the '
+                     f'community is to the author\'s work. This metric is also just the inverse of '
+                     f'__c/p__.</p>{equation}')
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.symbol = "<em>D</em>"
     m.synonyms = ["D"]
     m.references = ["Egghe, L., and R. Rousseau (1996) Average and global impact of a set of journals. "
@@ -2144,7 +2097,8 @@ def calculate_real_h_index(metric_set: MetricSet) -> float:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}},\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}},\n")
 #     output.append("		               2: {lineDashStyle: [2, 2], visibleInLegend: false},\n")
 #     output.append("		               3: {lineDashStyle: [2, 2], visibleInLegend: false}}\n")
 #     output.append("        };\n")
@@ -2238,7 +2192,6 @@ def metric_real_h_index() -> Metric:
                      '<span class="metric_name">interpolated <em>h-</em>index</span>, as the point at which '
                      'the linear interpolation between the citation counts associated with publications <em>h</em> '
                      f'and <em>h</em> + 1 crosses a line with slope one,</p>{equation}'
-                     # f'<div id="chart_' + graph.name + '_div" class="proportional_chart"></div>'
                      f'<figure class="desc_fig"><img class="impact_fig" src="impact_figs/img_{graph.name}.svg" '
                      f'/></figure>'
                      'The real <em>h-</em>index has the same graphical definition as the __h-index__, except it is '
@@ -2270,8 +2223,9 @@ def metric_tapered_h_index() -> Metric:
     m.full_name = "tapered h-index"
     m.html_name = "tapered <em>h-</em>index"
     m.metric_type = FLOAT
-    equation1 = r"$$h_{T\left(i\right)}=\left |\begin{matrix} \frac{C_i}{2i-1} & \text{if } C_i \leq i \\ " \
-                r"\frac{i}{2i-1}+\sum\limits_{j=i+1}^{C_i}{\frac{1}{2j-1}} & \text{if } C_i > i \end{matrix}\right. ,$$"
+    equation1 = (r"$$h_{T\left(i\right)}=\left |\begin{matrix} \frac{C_i}{2i-1} & \text{if } C_i \leq i \\ "
+                 r"\frac{i}{2i-1}+\sum\limits_{j=i+1}^{C_i}{\frac{1}{2j-1}} & \text{if } C_i > i \end{matrix}\right. "
+                 r",$$")
     equation2 = r"$$h_T=\sum\limits_{i=1}^{P}{h_{T\left(i\right)}}.$$"
     hdstr = r"\(h^\Delta=3.71\)"
     ferrers_graph = ('<table class="ferrers">'
@@ -3502,7 +3456,8 @@ def calculate_multidimensional_h_index(metric_set: MetricSet) -> list:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -3723,7 +3678,8 @@ def calculate_two_sided_h_index(metric_set: MetricSet) -> list:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -4624,7 +4580,7 @@ to be worth keeping up to date
 #     m.is_coauthor = True
 #     equation = r"$$S = \sum\limits_{i=1}^{P}{s_i}.$$"
 #     m.description = "<p>The total number of self- and coauthor-citations is simply the number of citations to all " \
-#                     "of an author\'s publications made by other publications from the same author and coauthors. If " \
+#                     "of an author\'s publications made by other publications from the same author and coauthors. If "
 #                     "<em>s<sub>i</sub></em> is the number of self citations an author and coauthors have made to " \
 #                     "their <em>i</em><sup>th</sup> publication then</p>" + equation
 #     m.draw_graph = Impact_Graphs.draw_graph_line_chart
@@ -4704,7 +4660,7 @@ to be worth keeping up to date
 #                     "them from each publication\'s citation counts prior to calculating a metric. For the base " \
 #                     "calculation of the __h-index__ this is known as the sharpened <em>h-</em>index " \
 #                     "(Schreiber 2007).</p>" \
-#                     "<p>One complication is that there may be multiple methods for defining self-citations. In this " \
+#                     "<p>One complication is that there may be multiple methods for defining self-citations. In this "
 #                     "case we remove any citations by the target author and any of the coauthors to their own " \
 #                     "publications.</p>"
 #     m.references = ["Schreiber, M. (2007) Self-citation corrections for the Hirsch index. <em>Europhysics "
@@ -4734,14 +4690,14 @@ to be worth keeping up to date
 #     m.is_coauthor = True
 #     equation = r"$$b=hk^{\frac{3}{4}},$$"
 #     req = r"$$k=1-\bar{S_r}=1-\frac{\sum\limits_{i=1}^{P}{\frac{s_i}{C_i}}}{P}$$"
-#     m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct the __h-index__ for self-citations, " \
+#     m.description = "<p>The <em>b-</em>index (Brown 2009) is designed to correct the __h-index__ for self-citations, "
 #                     "without actually having to check the citation records for every publication. It assumes that " \
-#                     "an author\'s self-citation rate is fairly consistent across publications such that, on average, " \
+#                     "an author\'s self-citation rate is fairly consistent across publications such that, on average, "
 #                     "a fraction <em>k</em> of the citations are from other authors. Assuming that citations follow " \
-#                     "a Zipfian distribution and that empirically derived estimates of the shape of this distribution " \
+#                     "a Zipfian distribution and that empirically derived estimates of the shape of this distribution "
 #                     "are reasonable, one finds the index</p>" + equation + "<p>where <em>b</em> is an estimate of " \
 #                     "the <em>h-</em>index corrected for self-citations.</p><p>There are multiple ways to estimate " \
-#                     "the non-self-citation rate (<em>k</em>). In this case, we calculate it directly as the mean of " \
+#                     "the non-self-citation rate (<em>k</em>). In this case, we calculate it directly as the mean of "
 #                     "the proportion of self and coauthor-citations to total-citations across all publication, " \
 #                     "subtracted from one, or</p>" + req + "<p>where <em>s<sub>i</sub></em> is the number of " \
 #                     "self and coauthor-citations to the <em>i</em><sup>th</sup> publication.</p>"
@@ -5298,8 +5254,8 @@ def metric_adapt_pure_h_index_prop() -> Metric:
     effort_eq = r"$$E_i=\frac{2\left(A_i + 1 - a_i\right)}{A_i\left(A_i + 1\right)},$$"
     cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{w_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
-    equation = r"$$h_{ap.\text{prop}}= " \
-               r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
+    equation = (r"$$h_{ap.\text{prop}}= "
+                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$")
     m.description = ('<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the '
                      '__pure h-index prop__, except that it estimates its own core rather than relying on the '
                      'standard __h-index__ core. For a given publication, if one has information on author '
@@ -6655,7 +6611,7 @@ def metric_ar_index() -> Metric:
 
 
 # dynamic h-type-index
-def calculate_dynamic_h_type_index(metric_set: MetricSet) -> float:
+def calculate_dynamic_h_type_index(metric_set: MetricSet) -> Union[str, float]:
     metric_list = metric_set.parent_list
     metric_pos = metric_list.index(metric_set)
     rational_h_list = [m.metrics["rational h-index"].value for m in metric_list[:metric_pos + 1]]
@@ -8942,22 +8898,22 @@ def metric_uncited_paper_percent() -> Metric:
 #     line_equation = r"$$x_t = \frac{c_{\max}-c_0}{t_{\max}}t+c_{0}.$$"
 #     b_equation = r"$$B=\sum^{t_\max}_{t=0}{\frac{\frac{c_\max-c_0}{t_\max}t+c_0-c_t}{\max{\left(1, c_t\right)}}}.$$"
 #     m.description = "<p>The Beauty Coefficient attempts to measure the citation trajectory of individual " \
-#                     "publications to better understand when they reach peak impact. It is related to the concept of " \
-#                     "awakening time, which means to measure when a previously unnoticed publication suddenly begins " \
+#                     "publications to better understand when they reach peak impact. It is related to the concept of "
+#                     "awakening time, which means to measure when a previously unnoticed publication suddenly begins "
 #                     "to accumulate citations. Let <em>c<sub>t</sub></em> be " \
-#                     "the number of citations received by the publication in it's <em>t</em><sup>th</sup> year since " \
-#                     "publication. The year with the maximum number of citations (<em>c</em><sub>max</sub>) is " \
-#                     "<em>t</em><sub>max</sub>. In a plot of citations by year, one could add a straight line " \
+#                     "the number of citations received by the publication in it's <em>t</em><sup>th</sup> year since "
+#                     "publication. The year with the maximum number of citations (<em>c</em><sub>max</sub>) is "
+#                     "<em>t</em><sub>max</sub>. In a plot of citations by year, one could add a straight line "
 #                     "(<em>x</em>) connecting the number of citations in the first year (0, " \
 #                     "<em>c</em><sub>0</sub>) to the maximum number of citations (<em>t</em><sub>max</sub>, " \
 #                     "<em>c</em><sub>max</sub>). This line is described by the equation</p>" + line_equation + \
 #                     "<p>The Beauty coefficient is the sum of the ratios between " \
-#                     "<em>x<sub>t</sub></em>&minus;<em>c<sub>t</sub></em> and max(1, <em>c<sub>t</sub></em>) for all " \
+#                     "<em>x<sub>t</sub></em>&minus;<em>c<sub>t</sub></em> and max(1, <em>c<sub>t</sub></em>) for all "
 #                     "<em>t</em> up through <em>t</em><sub>max</sub>.</p>" + b_equation + \
 #                     "<p>Publications whose citation rate grows linearly with time will have a <em>B</em> equal to " \
 #                     "zero (there is no difference between the observed citation curve and <em>x</em>). A value of " \
 #                     "zero is also found when a publication is cited very quickly and then forgotten. Large " \
-#                     "positive values indicate publications whose citation recognition was delayed after publication, " \
+#                     "positive values indicate publications whose citation recognition was delayed after publication, "
 #                     "while negative values indicate concave publication trajectories.</p>"
 #     m.references = ["Ke, Q., E. Ferrara, F. Radicchi, and A. Flammini (2015) Defining and identifying Sleeping "
 #                     "Beauties in science. <em>Proceedings of the National Academy of Sciences USA</em> "
@@ -9143,7 +9099,8 @@ def calculate_rec_index(metric_set: MetricSet) -> int:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -9312,7 +9269,8 @@ def calculate_chi_index(metric_set: MetricSet) -> float:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [2, 2],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -9799,7 +9757,8 @@ def calculate_mikhailov_j_index(metric_set: MetricSet) -> int:
 #     output.append("		             gridlines: {color: \'transparent\'}},\n")
 #     output.append("		     series: { 0: {},\n")
 #     output.append("		               1: {lineDashStyle: [4, 4],\n")
-#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true, bold: true}}}}\n")
+#     output.append("		                   annotations:{textStyle:{color: \'black\', italic: true,
+#     bold: true}}}}\n")
 #     output.append("        };\n")
 #     output.append("\n")
 #     output.append("        var chart_{} = new google.visualization."
@@ -12275,13 +12234,15 @@ def metric_revised_h() -> Metric:
 #     m.synonyms = ["<em>Ab</em>"]
 #     m.metric_type = FLOAT
 #
-#     m.description = (f"<p>The Absolute index (Biswal 2013) it not a citation-based measure, rather it is a substitute "
+#     m.description = (f"<p>The Absolute index (Biswal 2013) it not a citation-based measure, rather it is a
+#     substitute "
 #                      f"for __total pubs__ which uses a fractional counting scheme to account for coauthorship."
 #                      f"suggests reporting an <em>h-</em>index "
 #                      f"based only on those publications in which the author is a major contributor "
 #                      f"(lead author or corresponding author).</p><p><em>h<sub>maj</sub></em> is essentially "
 #                      f"identical to the primary author part of the <em>h</em>(<em>p</em>,<em>t</em>) index pair "
-#                      f"suggested by Bucur <em>et al.</em> (2015), with the only potential difference being subtleties "
+#                      f"suggested by Bucur <em>et al.</em> (2015), with the only potential difference being
+#                      subtleties "
 #                      f"in how one defines a major or primary author. This concept is very similar to a few other "
 #                      f"proposals, including the __stratified h-index__.</p>")
 #
