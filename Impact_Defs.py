@@ -7,13 +7,16 @@ import math
 from typing import Union
 
 # --- Internal Constants ---
-INT = 0
-FLOAT = 1
-# INTLIST = 2         # the various specific list types has been deprecated for a more flexible approach
-FLOAT_NA = 3
+"""
+the various specific list types has been deprecated for a more flexible approach
+# INTLIST = 2         
 # LISTLIST = 4
 # FLOATLIST = 5
 # MIXLIST = 6
+"""
+INT = 0
+FLOAT = 1
+FLOAT_NA = 3
 LIST = 7
 STR = 8
 
@@ -67,7 +70,6 @@ class Metric:
         self.draw_graph = None
         self.__value = None
         self.parent_set = None
-        # self.graph_type = None
         self.description_graphs = []
         self.example = None
         self.list_formats = []
@@ -120,9 +122,9 @@ class Metric:
             value_list = self.value
             formatted_values = []
             if self.list_formats == INT:  # all values are integers
-                formats = [INT for _ in value_list]
+                formats = [INT for _ in value_list]          # PyCharm is wrong, this is reachable
             elif self.list_formats == FLOAT:  # all values are float
-                formats = [FLOAT for _ in value_list]
+                formats = [FLOAT for _ in value_list]        # PyCharm is wrong, this is reachable
             else:  # mixed types
                 formats = [x for x in self.list_formats]
 
@@ -583,7 +585,7 @@ def create_h_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -601,8 +603,8 @@ def write_h_index_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td{ec}>{i+1}</td>'
         rows[2] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {h}.</p>'
     return outstr
 
@@ -668,7 +670,7 @@ def calculate_h_core(metric_set: MetricSet) -> int:
 
 def write_h_core_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -689,8 +691,8 @@ def write_h_core_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td>{i+1}</td>'
         rows[2] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The sum of the citations for the top <em>h</em> publications is {hc}.</p>'
     return outstr
 
@@ -1002,7 +1004,7 @@ def create_g_index_desc_graph_data2(metric_set: MetricSet) -> list:
 
 def write_g_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(6)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -1029,8 +1031,8 @@ def write_g_index_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td{ec}>{i+1}</td>'
         rows[5] += f'<td{ec}>{s/(i+1):1.1f}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where <em>i</em><sup>2</sup> ≤ Σ<em>C<sub>i</sub></em> (or '
                f'<em>i</em> ≤ mean <em>C<sub>i</sub></em>) is {g}.</p>')
     return outstr
@@ -1064,8 +1066,8 @@ def metric_g_index() -> Metric:
     # graph2.name = "g_index_desc2"
     # graph2.data = write_g_index_desc_data2
     m.example = write_g_index_example
-    equation = r"$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)=" \
-               r"\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$"
+    equation = (r"$$g=\underset{i}{\max}\left(i^2\leq \sum\limits_{j=1}^{i}{C_j}\right)="
+                r"\underset{i}{\max}\left(i\leq\frac{\sum\limits_{j=1}^{i}{C_j}}{i} \right)$$")
     m.description = ('<p>The best known and most widely studied alternative to the __h-index__ is known as the '
                      '<em>g-</em>index (Egghe 2006a, b, c). The <em>g-</em>index is designed to give more credit for '
                      'publications cited in excess of the <em>h</em> threshold. The primary difference between the '
@@ -1222,7 +1224,7 @@ def create_h2_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_h2_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -1242,8 +1244,8 @@ def write_h2_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{i+1}</td>'
         rows[3] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em><sup>2</sup> ≤ <em>C<sub>i</sub></em> is {h}.</p>'
     return outstr
 
@@ -1289,7 +1291,7 @@ def calculate_mu_index(metric_set: MetricSet) -> int:
 
 def write_mu_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -1311,8 +1313,8 @@ def write_mu_index_example(metric_set: MetricSet) -> str:
         rows[3] += "<td>{}</td>".format(v)
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += "<p>The largest rank where <em>i</em> ≤ median citations is {}.</p>".format(mu)
     return outstr
 
@@ -1326,14 +1328,13 @@ def metric_mu_index() -> Metric:
     m.axis_name = r"$\mu$"
     m.example = write_mu_index_example
     m.metric_type = INT
-    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
-                    "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
-                    "equal to <em>x,</em> then the <em>μ-</em>index (Glänzel and Schubert 2010) is the same idea, " \
-                    "except based on the median number of citations for the top <em>μ</em> publications.</p>"
+    m.description = ('<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which '
+                     '<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations '
+                     'equal to <em>x,</em> then the <em>μ-</em>index (Glänzel and Schubert 2010) is the same idea, '
+                     'except based on the median number of citations for the top <em>μ</em> publications.</p>')
     m.references = ["Glänzel, W., and A. Schubert (2010) Hirsch-type characteristics of the tail of distributions. "
                     "The generalized <em>h-</em>index. <em>Journal of Informetrics</em> 4:118&ndash;123."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_mu_index
     m.properties["Core Metric"] = True
     m.properties["Core Citations"] = True
@@ -1349,7 +1350,7 @@ def calculate_tol_f_index(metric_set: MetricSet) -> int:
 
 def write_tol_f_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -1372,8 +1373,8 @@ def write_tol_f_index_example(metric_set: MetricSet) -> str:
         rows[2] += "<td" + ec + ">{:0.1f}</td>".format(1/(s/(i+1)))
         rows[3] += "<td>{}</td>".format(v)
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += "<p>The largest rank where <em>i</em> ≤ harmonic mean citations is {}.</p>".format(f)
     return outstr
 
@@ -1411,7 +1412,7 @@ def calculate_tol_t_index(metric_set: MetricSet) -> int:
 
 def write_tol_t_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = "<tr><th>Citations (<em>C<sub>i</sub></em>)</th>"
@@ -1434,8 +1435,8 @@ def write_tol_t_index_example(metric_set: MetricSet) -> str:
         rows[2] += "<td" + ec + ">{:0.1f}</td>".format(math.exp(s/(i+1)))
         rows[3] += "<td>{}</td>".format(v)
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += "<p>The largest rank where <em>i</em> ≤ geometic mean citations is {}.</p>".format(t)
     return outstr
 
@@ -1449,16 +1450,15 @@ def metric_tol_t_index() -> Metric:
     m.axis_name = r"$t$"
     m.example = write_tol_t_index_example
     m.metric_type = INT
-    equation = r"$$t=\underset{i}{\max}\left(\exp\left(\frac{1}{i}\sum\limits_{j=1}^{i}\ln{C_j}\right)\geq " \
-               r"i\right)$$"
-    m.description = "<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which " \
-                    "<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations " \
-                    "equal to <em>x,</em> then Tol\'s <em>t-</em>index (Tol 2007) is the same idea, except based on " \
-                    "the geometric mean number of citations for the top <em>t</em> publications.</p>" + equation
+    equation = (r"$$t=\underset{i}{\max}\left(\exp\left(\frac{1}{i}\sum\limits_{j=1}^{i}\ln{C_j}\right)\geq "
+                r"i\right)$$")
+    m.description = ('<p>If the __h-index__ and __g-index__ are the largest value <em>x</em> for which '
+                     '<em>x</em> publications have a minimum (<em>h</em>) or mean (<em>g</em>) number of citations '
+                     'equal to <em>x,</em> then Tol\'s <em>t-</em>index (Tol 2007) is the same idea, except based on '
+                     f'the geometric mean number of citations for the top <em>t</em> publications.</p>{equation}')
     m.references = ["Tol, R.S.J. (2007) Of the <em>h-</em>index and its alternatives: An application to the 100 "
                     "most prolific economists (FNU-146). Sustainability and Global Change, Hamburg University."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
-    # m.graph_type = LINE_CHART
     m.calculate = calculate_tol_t_index
     m.properties["Core Metric"] = True
     m.properties["Core Citations"] = True
@@ -1569,7 +1569,7 @@ def create_woeginger_w_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_woeginger_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(2)]
     rows[0] = '<tr><td></td><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -1593,8 +1593,8 @@ def write_woeginger_index_example(metric_set: MetricSet) -> str:
         rows.append(newrow)
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where the minimum number of citations for publications 1…<em>k</em> '
                f'≤ <em>k</em>…1 is {w}.</p>')
     return outstr
@@ -1747,7 +1747,7 @@ def create_wu_w_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_wu_w_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -1767,8 +1767,8 @@ def write_wu_w_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{i+1}</td>'
         rows[3] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where 10<em>i</em> ≤ <em>C<sub>i</sub></em> is {w}.</p>'
     return outstr
 
@@ -1970,7 +1970,7 @@ def calculate_rational_h_index(metric_set: MetricSet) -> float:
 
 def write_rational_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -1995,8 +1995,8 @@ def write_rational_h_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h}. To reach an <em>h</em> of {h+1}, we would need to add {hin} '
                f'citations to the publications within the core and {hnext} citations to the {h+1}<sup>th</sup> '
                f'publication (for a total of {hnext}). The maximum number of citations that could be required is '
@@ -2296,7 +2296,7 @@ def calculate_todeschini_j_index(metric_set: MetricSet) -> float:
 def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
     dhk = (500, 250, 100, 50, 25, 10, 5, 4, 3, 2, 1.5, 1.25)
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -2315,8 +2315,8 @@ def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td{ec}>{i+1}</td>'
         rows[2] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     cnts = [0 for _ in dhk]
     for k, d in enumerate(dhk):
         for c in citations:
@@ -2343,8 +2343,8 @@ def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
         sumw += 1/(k+1)
         sumwkxk += cnts[k]/(k+1)
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The sum of <em>w<sub>k</sub></em><em>X<sub>k</sub></em> = {sumwkxk:0.4f} and the sum of '
                f'<em>w<sub>k</sub></em> = {sumw:0.4f}, therefore <em>j</em> = {h} + {sumwkxk:0.4f}/{sumw:0.4f} = '
                f'{j:0.4f}.</p>')
@@ -2367,8 +2367,8 @@ def metric_todeschini_j_index() -> Metric:
                '<td>500</td><td>250</td><td>100</td><td>50</td><td>25</td><td>10</td><td>5</td><td>4</td>'
                '<td>3</td><td>2</td><td>1.5</td><td>1.25</td></tr>'
                '</table>')
-    equation = r"$$j=h+\frac{\sum\limits_{k=1}^{12}{w_kX_k\left(h\times " \
-               r"\Delta h_k\right)}}{\sum\limits_{k=1}^{12}{w_k} } ,$$"
+    equation = (r"$$j=h+\frac{\sum\limits_{k=1}^{12}{w_kX_k\left(h\times "
+                r"\Delta h_k\right)}}{\sum\limits_{k=1}^{12}{w_k} } ,$$")
     xkstr = r"\(X_k\left(h \times \Delta h_k\right)\)"
     hxhk = r"\(h \times \Delta h_k\)"
     wk = r"\(w_k\)"
@@ -2400,13 +2400,13 @@ def calculate_wohlin_w_index(metric_set: MetricSet) -> float:
 
 def write_wohlin_w_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     row1 = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
     for c in citations:
         row1 += f'<td>{c}</td>'
-    row1 += '</tr>'
-    outstr += row1 + '</table>'
+    row1 += '</tr>\n'
+    outstr += row1 + '</table>\n'
     outstr += ('<p></p><table class="cds_table">'
                '<tr><th>Class<br/>(<em>c</em>)</th><th>Citation<br/>Range</th><th>Count of Pubs<br/>in '
                'Range<br/>(<em>X<sub>c</sub></em>)</th>'
@@ -2675,7 +2675,7 @@ def calculate_weighted_h_index(metric_set: MetricSet) -> float:
 
 def write_weighted_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(6)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -2716,8 +2716,8 @@ def write_weighted_h_index_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v2}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where <em>r<sub>w</sub></em>(<em>i</em>) ≤ <em>C<sub>i</sub></em> is '
                f'{r0}. The weighted <em>h-</em>index is the square-root of the sum of citations up to this '
                f'rank, thus <em>h<sub>w</sub></em> = √{root_sum} = {hw:0.4f}</p>')
@@ -2767,7 +2767,7 @@ def calculate_pi_index(metric_set: MetricSet) -> float:
 
 def write_pi_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -2791,8 +2791,8 @@ def write_pi_index_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td>{i+1}</td>'
         rows[2] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The <em>π-</em>core is the floor of the square-root of the total number of publications, thus '
                f'<em>P<sub>π</sub></em> = floor(√{p}) = floor({math.sqrt(p):0.2f}) = {ppi}. '
                'The <em>π-</em>index is 1/100<sup>th</sup> of the sum of the citations within the <em>π-</em>core, '
@@ -2841,8 +2841,8 @@ def metric_pi_rate() -> Metric:
     m.full_name = "π-core citation rate"
     m.html_name = "<em>π-</em>core citation rate"
     m.metric_type = FLOAT
-    equation = r"$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}=" \
-               r"\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$"
+    equation = (r"$$\pi\text{-rate}=\frac{C^\pi}{P_\pi}=\frac{\sum\limits_{i=1}^{P_\pi}C_i}{P_\pi}="
+                r"\frac{100\pi_\text{index}}{\mathrm{floor}\left(\sqrt{P}\right)}$$")
     m.description = ('<p>The π-core citation rate, or π-rate, is related to the __pi-index__. It is the ratio of '
                      'the π-core citations divided by the number of publications in the π-core. It is simply the '
                      f'average number of citations per core publication.</p>{equation}')
@@ -3080,8 +3080,8 @@ def metric_h2_upper_index() -> Metric:
     m.description_graphs.append(graph)
     graph.name = "h2_upper_index_desc"
     graph.data = create_upper_center_tail_citation_graph_data
-    equation = r"$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100=" \
-               r"\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$"
+    equation = (r"$$h_\text{upper}^2=\frac{C^H - h^2}{C^P}\times 100="
+                r"\frac{\sum\limits_{i=1}^{h}{C_i} - h^2}{C^P}\times 100=\frac{e^2}{C^P}\times 100.$$")
     m.description = ('<p>The __h-index__ describes an <em>h</em>×<em>h</em> square under the citation curve '
                      'containing <em>h</em><sup>2</sup> citations. Bornmann <em>et al.</em> (2010) suggest dividing '
                      'the citation curve into three sections based on this square and describing each section as the '
@@ -3473,7 +3473,7 @@ def write_multidim_h_index_example(metric_set: MetricSet) -> str:
               'to be part of a core are removed for subsequent calcluations.</p>')
     citations = sorted(metric_set.citations, reverse=True)
     multi_h = metric_set.metrics["multidim h-index"].value
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     skip = 0
     for j, h in enumerate(multi_h):
         rows = ["" for _ in range(3)]
@@ -3497,10 +3497,10 @@ def write_multidim_h_index_example(metric_set: MetricSet) -> str:
                 rows[2] += f'<td>{v}</td>'
         skip += h
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         if j + 1 != len(multi_h):
-            rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>' + '</tr>')
-            # row4 = '<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>' + '</tr>'
+            rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>' + '</tr>\n')
+            # row4 = '<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>' + '</tr>\n'
         # else:
         #     row4 = ""
         outstr += "".join(rows)
@@ -3785,7 +3785,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
     citations = sorted(metric_set.citations, reverse=True)
     two_sided_h = metric_set.metrics["two-sided h-index"].value
     nsteps = len(two_sided_h) // 2
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     # first row is standard h
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -3803,7 +3803,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td{ec}>{i+1}</td>'
         rows[2] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
+        row += '</tr>\n'
     outstr += "".join(rows)
     tail_skip = h
     core_skip = h
@@ -3854,7 +3854,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
         oldhm = hm
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
     outstr += '</table>'
     return outstr
@@ -3971,7 +3971,7 @@ def write_em_index_example(metric_set: MetricSet) -> str:
             n_cited = count_cited(citations)
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     # oldh = len(em_components)
     oldh = len(citations)
     for j, h in enumerate(em_components):
@@ -4006,7 +4006,7 @@ def write_em_index_example(metric_set: MetricSet) -> str:
         citations = [max(0, c-h) for c in citations]
         oldh = h
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -4085,7 +4085,7 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
     # print(em_components)
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
         if j == 0:
@@ -4121,7 +4121,7 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
         citations.sort(reverse=True)
         # oldh = h
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
     outstr += '</table>'
     emp = metric_set.metrics["EMp-index"].value
@@ -4202,7 +4202,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
             n_cited = count_cited(citations)
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     oldh = len(citations)
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -4236,7 +4236,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
         citations = [max(0, c-h) for c in citations]
         oldh = h
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
     outstr += '</table>'
     em = metric_set.metrics["iterative weighted EM-index"].value
@@ -4316,7 +4316,7 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
     # print(em_components)
     citations = sorted(metric_set.citations, reverse=True)
     # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     # oldh = len(em_components)
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -4353,7 +4353,7 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
         citations.sort(reverse=True)
         # oldh = h
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
     outstr += '</table>'
     emp = metric_set.metrics["iterative weighted EMp-index"].value
@@ -4756,7 +4756,7 @@ def calculate_hi_index(metric_set: MetricSet) -> float:
 
 def write_hi_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     tmp_citations = [c for c in metric_set.citations]
     tmp_author_cnts = [a for a in metric_set.author_counts()]
     data = []
@@ -4788,8 +4788,8 @@ def write_hi_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{i+1}</td>'
         rows[3] += f'<td>{v}</td>'
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the authors for publications in the core is {s}, thus '
                f'<em>h<sub>i</sub></em>&nbsp;=&nbsp;{hi:0.4f}.</p>')
     return outstr
@@ -4834,7 +4834,7 @@ def calculate_pure_h_index_frac(metric_set: MetricSet) -> float:
 
 def write_pure_h_index_frac_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     tmp_citations = [c for c in metric_set.citations]
     tmp_author_cnts = [a for a in metric_set.author_counts()]
     data = []
@@ -4867,8 +4867,8 @@ def write_pure_h_index_frac_example(metric_set: MetricSet) -> str:
         rows[3] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the authors for publications in the core is {s}, thus '
                f'<em>h<sub>p</sub></em>&nbsp;=&nbsp;{hp:0.4f}.</p>')
     return outstr
@@ -4915,7 +4915,7 @@ def calculate_pure_h_index_prop(metric_set: MetricSet) -> float:
 
 def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     tmp_citations = [c for c in metric_set.citations]
     tmp_author_cnts = [a for a in metric_set.author_counts()]
     tmp_author_pos = [a for a in metric_set.author_position()]
@@ -4958,8 +4958,8 @@ def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         rows[6] += f'<td{ec}>{w:0.2f}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the weights for the publications in the core is {s}, '
                f'thus <em>h</em><sub><em>p</em>.prop</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
     return outstr
@@ -5008,7 +5008,7 @@ def calculate_pure_h_index_geom(metric_set: MetricSet) -> float:
 
 def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     tmp_citations = [c for c in metric_set.citations]
     tmp_author_cnts = [a for a in metric_set.author_counts()]
     tmp_author_pos = [a for a in metric_set.author_position()]
@@ -5051,8 +5051,8 @@ def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         rows[6] += f'<td{ec}>{w:0.2f}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the weights for the publications in the core is {s}, '
                f'thus <em>h</em><sub><em>p</em>.geom</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
     return outstr
@@ -5099,7 +5099,7 @@ def calculate_adapt_pure_h_index_frac(metric_set: MetricSet) -> float:
 
 def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5135,8 +5135,8 @@ def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank '
                f'yields <em>h</em><sub><em>ap</em>.frac</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
@@ -5153,8 +5153,8 @@ def metric_adapt_pure_h_index_frac() -> Metric:
     m.symbol = "<em>h</em><sub><em>ap</em>.frac</sub>"
     cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{A_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
-    equation = r"$$h_{ap.\text{frac}}= " \
-               r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
+    equation = (r"$$h_{ap.\text{frac}}= "
+                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$")
     m.description = ('<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the '
                      '__pure h-index frac__, except that it estimates its own core rather than relying on the '
                      'standard __h-index__ core. For a given publication, if one wishes to assign all authors equal '
@@ -5188,7 +5188,7 @@ def calculate_adapt_pure_h_index_prop(metric_set: MetricSet) -> float:
 
 def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5235,8 +5235,8 @@ def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank yields '
                f'<em>h</em><sub><em>ap</em>.prop</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
@@ -5294,7 +5294,7 @@ def calculate_adapt_pure_h_index_geom(metric_set: MetricSet) -> float:
 
 def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5341,8 +5341,8 @@ def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank yields '
                f'<em>h</em><sub><em>ap</em>.geom</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
@@ -5360,8 +5360,8 @@ def metric_adapt_pure_h_index_geom() -> Metric:
     effort_eq = r"$$E_i=\frac{2^{A_i - a_i}}{2^{A_i} - 1},$$"
     cistr = r"$$C^{*}_i = \frac{C_i}{\sqrt{w_i}}.$$"
     hestr = r"$$h_e = \underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
-    equation = r"$$h_{ap.\text{geom}}= " \
-               r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$"
+    equation = (r"$$h_{ap.\text{geom}}= "
+                r"\frac{\left(h_e+1\right)C^{*}_{h_e}-h_e C^{*}_{h_e +1}}{C^{*}_{h_e}-C^{*}_{h_e+1}+1}.$$")
     m.description = ('<p>The adapted pure <em>h-</em>index (Chai <em>et al.</em> 2008) is very similar to the '
                      '__pure h-index geom__, except that it estimates its own core rather than relying on the '
                      'standard __h-index__ core. For a given publication, if one has information on author '
@@ -5443,8 +5443,8 @@ def metric_profit_p_index() -> Metric:
     m.symbol = "profit <em>p</em>"
     m.metric_type = FLOAT
     weq = r"$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
-    deq = r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ " \
-          r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$"
+    deq = (r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ "
+           r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$")
     equation = r"$$p=1-\frac{\sum\limits_{i=1}^{P}{E_i}}{P}.$$"
     m.description = ('<p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on '
                      'an author\'s impact. They use a harmonic weighting algorithm and information on author '
@@ -5477,7 +5477,7 @@ def calculate_profit_adj_h_index(metric_set: MetricSet) -> int:
 
 def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5517,8 +5517,8 @@ def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
         rows[6] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += f'<p>The largest rank where {eq} is {ha}.</p>'
     return outstr
@@ -5534,8 +5534,8 @@ def metric_profit_adj_h_index() -> Metric:
     m.example = write_profit_adj_h_index_example
     m.metric_type = INT
     weq = r"$$E_i=\frac{1+\left|A_i+1-2a_i\right|}{\frac{1}{2}A_i^2+A_i\left(1-D_i\right)},$$"
-    deq = r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ " \
-          r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$"
+    deq = (r"$$D_i=\begin{matrix} 0 & \text{if }A_i\text{ is even} \\ "
+           r"\frac{1}{2A_i} & \text{if }A_i\text{ is odd} \end{matrix}.$$")
     ceq = r"$$C^{*}_i=E_i C_i,$$"
     equation = r"$$h_a=\underset{i}{\max}\left(i \leq E_iC_i\right)=\underset{i}{\max}\left(i \leq C^{*}_i\right).$$"
     m.description = ('<p>The profit indices (Aziz and Rozing 2013) attempt to measure the effect of collaboration on '
@@ -5599,7 +5599,7 @@ def calculate_normal_hi_index(metric_set: MetricSet) -> int:
 
 def write_normal_hi_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5630,8 +5630,8 @@ def write_normal_hi_index_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em> ≤ <em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is {hi}.</p>'
     return outstr
 
@@ -5689,7 +5689,7 @@ def calculate_gf_cite_index(metric_set: MetricSet) -> int:
 
 def write_gf_cite_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5727,8 +5727,8 @@ def write_gf_cite_index_example(metric_set: MetricSet) -> str:
         rows[6] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where <em>i</em><sup>2</sup> ≤ '
                f'Σ<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is {gf}.</p>')
     return outstr
@@ -5768,7 +5768,7 @@ def calculate_hm_index(metric_set: MetricSet) -> float:
 
 def write_hm_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5802,8 +5802,8 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest adjusted rank where <em>r<sub>eff</sub></em>(<em>i</em>) ≤ '
                f'<em>C<sub>i</sub></em> is {hm:0.4f}.</p>')
     return outstr
@@ -5820,8 +5820,8 @@ def metric_hm_index() -> Metric:
     m.metric_type = FLOAT
     rheq = r"$$r_i=\sum\limits_{j=1}^{i}{1}=i.$$"
     reeq = r"$$r_{\text{eff}}\left(i\right)=\sum\limits_{j=1}^{i}{\frac{1}{A_i}}.$$"
-    equation = r"$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) " \
-               r"\leq C_i\right).$$"
+    equation = (r"$$h_m=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right) "
+                r"\leq C_i\right).$$")
     m.description = ('<p>While the __normal hi-index__ accounts for the number of authors of '
                      'a publication by normalizing the citation count for that publication, <em>h<sub>m</sub></em> '
                      '(Schreiber 2008), also known as the <span class="metric_name">fractional paper '
@@ -5861,7 +5861,7 @@ def calculate_gf_paper_index(metric_set: MetricSet) -> float:
 
 def write_gf_paper_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5901,8 +5901,8 @@ def write_gf_paper_index_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest adjusted rank where <em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup> ≤ '
                f'Σ<em>C<sub>i</sub></em> is {gf:0.4f}.</p>')
     return outstr
@@ -5915,8 +5915,8 @@ def metric_gf_paper_index() -> Metric:
     m.html_name = "fractional <em>g-</em>index"
     m.metric_type = FLOAT
     m.example = write_gf_paper_index_example
-    equation = r"$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 " \
-               r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$"
+    equation = (r"$$g_F=\underset{r_{\text{eff}}\left(i\right)}{\max}\left(r_{\text{eff}}\left(i\right)^2 "
+                r"\leq \sum\limits_{j=1}^{i}{C_j}\right).$$")
     m.symbol = "<em>g<sub>F</sub></em>"
     m.axis_name = r"$g_F$"
     m.synonyms = ["<em>g<sub>F</sub></em>"]
@@ -5947,7 +5947,7 @@ def calculate_pos_weight_h_index(metric_set: MetricSet) -> int:
 
 def write_pos_weight_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -5990,8 +5990,8 @@ def write_pos_weight_h_index_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += f'<p>The largest rank where {eq} is {hp}.</p>'
     return outstr
@@ -6076,7 +6076,7 @@ def calculate_prop_weight_cite_h_cut(metric_set: MetricSet) -> float:
 
 def write_prop_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -6121,8 +6121,8 @@ def write_prop_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     hc = metric_set.metrics["prop weight cite h-cut"].value
     outstr += f'<p>The sum of the adjusted citations for the top <em>h<sub>p</sub></em> publications is {hc}.</p>'
     return outstr
@@ -6137,9 +6137,9 @@ def metric_prop_weight_cite_h_cut() -> Metric:
     m.symbol = "<em>ξ<sub>p</sub></em>"
     m.axis_name = r"$\xi_p$"
     m.synonyms = ["<em>ξ<sub>p</sub></em>"]
-    equation = r"$$\xi_p=\sum\limits_{i=1}^{h_p}{C^{*}_i}" \
-               r"=\sum\limits_{i=i}^{h_p}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}" \
-               r"=\sum\limits_{i=i}^{h_p}{C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)}}.$$"
+    equation = (r"$$\xi_p=\sum\limits_{i=1}^{h_p}{C^{*}_i}"
+                r"=\sum\limits_{i=i}^{h_p}{\frac{C_i}{\frac{A_i\left(A_i+1\right)}{2\left(A_i+1-a_i\right)}}}"
+                r"=\sum\limits_{i=i}^{h_p}{C_i\frac{2\left(A_i+1-a_i\right)}{A_i\left(A_i+1\right)}}.$$")
     m.description = ('<p>The proportional weighted citation H-cut is the sum of weighted citations found within '
                      'an author\'s core publications, with the core defined by the __position-weighted h-index__'
                      'and the citation weighting using the scheme from the '
@@ -6196,7 +6196,7 @@ def calculate_frac_weight_cite_h_cut(metric_set: MetricSet) -> float:
 
 def write_frac_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -6229,8 +6229,8 @@ def write_frac_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     hc = metric_set.metrics["frac weight cite h-cut"].value
     outstr += ('<p>The sum of the adjusted citations for the top <em>h</em><sub><em>i-</em>norm</sub> '
                f'publications is {hc}.</p>')
@@ -6659,7 +6659,7 @@ def calculate_hpd_index(metric_set: MetricSet) -> int:
 
 def write_hpd_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     cur_year = metric_set.year()
     for i in range(len(metric_set.citations)):
@@ -6692,8 +6692,8 @@ def write_hpd_index_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em> ≤ <em>cpd<sub>i</sub></em> is {hpd}.</p>'
     return outstr
 
@@ -6737,7 +6737,7 @@ def calculate_contemporary_h_index(metric_set: MetricSet) -> int:
 
 def write_contemporary_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     cur_year = metric_set.year()
     for i in range(len(metric_set.citations)):
@@ -6771,8 +6771,8 @@ def write_contemporary_h_index_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     sceq = r"\(i \leq S^{C}_i\)"
     outstr += f'<p>The largest rank where {sceq} is {hc}.</p>'
     return outstr
@@ -6836,7 +6836,7 @@ def write_trend_h_index_example(metric_set: MetricSet) -> str:
                 cites.append(p[i] - p[i-1])
         pub_cites.append(cites)
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i, p in enumerate(pub_cites):
         s = 0
@@ -6864,7 +6864,7 @@ def write_trend_h_index_example(metric_set: MetricSet) -> str:
             if c == -1:
                 c = '&mdash;'
             row += f'<td>{c}</td>'
-        # row += '</tr>'
+        # row += '</tr>\n'
         middle_rows.append(row)
 
     outer_rows = ["" for _ in range(4)]
@@ -6892,16 +6892,16 @@ def write_trend_h_index_example(metric_set: MetricSet) -> str:
     all_rows.extend(outer_rows[1:])
 
     for row in all_rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(all_rows) + '</table>'
-    # row1 += '</tr>'
-    # row2 += '</tr>'
-    # row3 += '</tr>'
-    # row4 += '</tr>'
+        row += '</tr>\n'
+    outstr += "".join(all_rows) + '</table>\n'
+    # row1 += '</tr>\n'
+    # row2 += '</tr>\n'
+    # row3 += '</tr>\n'
+    # row4 += '</tr>\n'
     # outstr += row1
     # for row in middle_rows:
     #     outstr += row
-    # outstr += row2 + row3 + row4 + '</table>'
+    # outstr += row2 + row3 + row4 + '</table>\n'
     steq = r"\(i \leq S^{t}_i\)"
     outstr += f'<p>The largest rank where {steq} is {ht}.</p>'
     return outstr
@@ -6956,8 +6956,8 @@ def metric_impact_vitality() -> Metric:
     m.full_name = "impact vitality"
     m.symbol = "<em>IV</em>"
     m.metric_type = FLOAT_NA
-    equation = r"$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{c^{Y-w}}{i}}}" \
-               r"{\sum\limits_{i=1}^{w}{c^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$"
+    equation = (r"$$IV\left(w\right)=\frac{w\left(\frac{\sum\limits_{i=1}^{w}{\frac{c^{Y-w}}{i}}}"
+                r"{\sum\limits_{i=1}^{w}{c^{Y-w}}} \right)-1 }{\left(\sum\limits_{i=1}^{w}{\frac{1}{i} } \right)-1}.$$")
     m.description = ('<p>Impact Vitality (Rons and Amez 2008, 2009) is similar in concept to the __trend h-index__, '
                      'but more complicated to measure. If <em>c<sup>x</sup></em> is the total '
                      'number of citations (across all publications) from year <em>x,</em> and <em>w</em> is the '
@@ -7098,13 +7098,13 @@ def calculate_cds_index(metric_set: MetricSet) -> int:
 
 def write_cds_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     row1 = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
     for c in citations:
         row1 += f'<td>{c}</td>'
-    row1 += '</tr>'
-    outstr += row1 + '</table>'
+    row1 += '</tr>\n'
+    outstr += row1 + '</table>\n'
 
     outstr += ('<p></p><table class="cds_table">'
                '<tr><th>Category<br/>(<em>k</em>)</th><th>Citation<br/>Range</th><th>Count of Pubs<br/>in '
@@ -7492,7 +7492,7 @@ def calculate_th_index(metric_set: MetricSet) -> float:
 
 def write_th_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by year of publication, from most recent to oldest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     years = metric_set.publication_years()
     for i in range(len(metric_set.citations)):
@@ -7527,8 +7527,8 @@ def write_th_index_example(metric_set: MetricSet) -> str:
         rows[3] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The first year where Σ<em>C<sub>i</sub></em> ≥ ½<em>C<sup>P</sup></em> is {ty}, thus the '
                'characteristic time scale of scientific activity is '
                f'{fy}&nbsp;&minus;&nbsp;{ty}&nbsp;+&nbsp;1&nbsp;=&nbsp;{th}</p>')
@@ -7903,7 +7903,7 @@ def create_history_h_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_history_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     maxc = max(citations)
     maxk = 0
@@ -7920,7 +7920,7 @@ def write_history_h_index_example(metric_set: MetricSet) -> str:
     row1 = '<tr class="top_row"><th></th><th>Citations (<em>C<sub>i</sub></em>)</th><th>Rank (<em>i</em>)</th>'
     for k in range(maxk+2):
         row1 += f'<th>2<sup>{k}</sup></th>'
-    row1 += '</tr>'
+    row1 += '</tr>\n'
     rows = []
     for i, c in enumerate(citations):
         vlist = []
@@ -7941,7 +7941,7 @@ def write_history_h_index_example(metric_set: MetricSet) -> str:
             else:
                 ec = ""
             row += f'<td{ec}>{(i+1)*2**k}</td>'
-        row += '</tr>'
+        row += '</tr>\n'
         rows.append(row)
     outstr += row1
     for row in rows:
@@ -8116,7 +8116,7 @@ def calculate_q_index(metric_set: MetricSet) -> float:
 
 def write_q_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     h = metric_set.metrics["h-index"].value
     q_index = metric_set.metrics["q-index"].value
     tmp_cites = metric_set.citations
@@ -8180,8 +8180,8 @@ def write_q_index_example(metric_set: MetricSet) -> str:
         sq += tsq
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The sum of <em>c<sub>i</sub>q<sub>i</sub></em> is {sq:1.4f}, thus Q is {q_index:1.4f}.</p>'
     return outstr
 
@@ -8235,7 +8235,7 @@ def calculate_career_years_h_index_pub(metric_set: MetricSet) -> int:
 
 def write_career_years_h_index_pub_example(metric_set: MetricSet) -> str:
     outstr = '<p>Years are ordered by number of publications, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     h = metric_set.metrics["career years h-index by pub"].value
     pub_years = metric_set.publication_years()
     miny = min(pub_years)
@@ -8265,8 +8265,8 @@ def write_career_years_h_index_pub_example(metric_set: MetricSet) -> str:
         rows[3] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>P<sub>i</sub></em> is {h}.</p>'
     return outstr
 
@@ -8312,7 +8312,7 @@ def calculate_career_years_h_index_cite(metric_set: MetricSet) -> int:
 
 def write_career_years_h_index_cite_example(metric_set: MetricSet) -> str:
     outstr = '<p>Years are ordered by number of citations for publications from that year, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     h = metric_set.metrics["career years h-index by cite"].value
     pub_years = metric_set.publication_years()
     cites = metric_set.citations
@@ -8345,8 +8345,8 @@ def write_career_years_h_index_cite_example(metric_set: MetricSet) -> str:
         rows[3] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {h}.</p>'
     return outstr
 
@@ -8393,7 +8393,7 @@ def calculate_career_years_h_index_avgcite(metric_set: MetricSet) -> float:
 def write_career_years_h_index_avgcite_example(metric_set: MetricSet) -> str:
     outstr = ('<p>Years are ordered by average number of citations per publication from that year, from highest to '
               'lowest.</p>')
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     hint = metric_set.metrics["career years h-index by avg cite"].value
     h = math.trunc(hint)
     pub_years = metric_set.publication_years()
@@ -8435,8 +8435,8 @@ def write_career_years_h_index_avgcite_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>P<sub>i</sub></em> is '
                f'{h}. The interpolated rank betweeen this and the next largest value is {hint:0.2f}.</p>')
     return outstr
@@ -8450,10 +8450,10 @@ def metric_career_years_h_index_avgcite() -> Metric:
     m.symbol = "Career years <em>h<sub>int</sub></em> by avg cites"
     m.example = write_career_years_h_index_avgcite_example
     m.metric_type = FLOAT
-    equation = r"$$\text{career years }h\text{ by average citations per year}=" \
-               r"\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$"
-    equation2 = r"$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}" \
-                r"{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$"
+    equation = (r"$$\text{career years }h\text{ by average citations per year}="
+                r"\underset{i}{\max}\left(i\leq \frac{C_i}{P_i}\right).$$")
+    equation2 = (r"$$h_{int}=\frac{\left(h+1\right)\frac{C_h}{P_h}-h\frac{C_{h+1}}{P_{h+1}}}"
+                 r"{1-\frac{C_{h+1}}{P_{h+1}}+\frac{C_h}{P_h}}.$$")
     m.description = ('<p>The career years <em>h-</em>index by average citations per year (Mahbuba and Rousseau 2013) '
                      'is similar to the __career years h-index by cite__ and __career years h-index by pub__, '
                      'but is based on the average '
@@ -8487,7 +8487,7 @@ def calculate_career_years_h_index_diffspeed(metric_set: MetricSet) -> float:
 
 def write_career_years_h_index_diffspeed_example(metric_set: MetricSet) -> str:
     outstr = '<p>Years are ordered by diffusion speed per year, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     hint = metric_set.metrics["career years h-index by diff speed"].value
     h = math.trunc(hint)
     pub_years = metric_set.publication_years()
@@ -8528,8 +8528,8 @@ def write_career_years_h_index_diffspeed_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += ('<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em>/<em>A<sub>i</sub></em> is '
                f'{h}. The interpolated rank betweeen this and the next largest value is {hint:0.2f}.</p>')
     return outstr
@@ -8594,8 +8594,8 @@ def write_collaborative_index_example(metric_set: MetricSet) -> str:
         s += a*cnts[a]
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The sum of the products is {s}, which yields a collaborative index of {ci:0.2} when divided by the '
                f'total number of publications ({len(author_cnts)}).</p>')
     return outstr
@@ -8676,8 +8676,8 @@ def write_collaborative_coefficient_example(metric_set: MetricSet) -> str:
         s += cnts[a]/a
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The sum of the quotients is {s:0.2f}, which yields a collaborative index of {cc:0.4f}.</p>'
     return outstr
 
@@ -8988,7 +8988,7 @@ def calculate_apparent_h_index(metric_set: MetricSet) -> float:
 
 def write_apparent_h_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9011,8 +9011,8 @@ def write_apparent_h_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h}. Of the {len(citations)} publications, {non_zero_cnt} have at least '
                f'one citation. The apparent <em>h-</em>index is therefore {h}&times;{non_zero_cnt}/{len(citations)} = '
                f'{ha:0.2f}</p>')
@@ -9154,7 +9154,7 @@ def create_rec_index_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_rec_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9175,8 +9175,8 @@ def write_rec_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td{ec}>{p}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rectangle which can fit under the citation curve has an area of {rec}.</p>'
     return outstr
 
@@ -9282,7 +9282,7 @@ def calculate_chi_index(metric_set: MetricSet) -> float:
 
 def write_chi_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9303,8 +9303,8 @@ def write_chi_index_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td{ec}>{p}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The largest rectangle which can fit under the citation curve has an area of {chisq}, the '
                f'square-root of which is <em>χ</em> = {chi:0.3f}.</p>')
     return outstr
@@ -9347,7 +9347,7 @@ def calculate_reci_recp(metric_set: MetricSet) -> list:
 
 def write_reci_recp_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(8)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9398,8 +9398,8 @@ def write_reci_recp_example(metric_set: MetricSet) -> str:
         rows[7] += f'<td>{pv}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     return outstr
 
 
@@ -9441,7 +9441,7 @@ def calculate_academic_trace(metric_set: MetricSet) -> float:
 
 def write_academic_trace_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(3)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9466,8 +9466,8 @@ def write_academic_trace_example(metric_set: MetricSet) -> str:
         rows[2] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h</em>-index is {h}; the total number of citations (<em>C<sup>P</sup></em>) is '
                f'{total_cites}; the number of citations in the top <em>h</em> publications (<em>C<sup>h</sup></em>) '
                f'is {core_cites}; the total number of publications (P) is {len(citations)}; and the number of '
@@ -9538,7 +9538,7 @@ def calculate_scientific_quality_index(metric_set: MetricSet) -> float:
 
 def write_scientific_quality_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of non-self citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     all_citations = metric_set.citations
     self_citations = metric_set.self_citations
     citations = [all_citations[i] - self_citations[i] for i in range(len(self_citations))]
@@ -9559,8 +9559,8 @@ def write_scientific_quality_index_example(metric_set: MetricSet) -> str:
         rows[1] += f'<td{ec}>{i+1}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     n = len(citations)
     outstr += (f'<p>Of the {n} publications, {cnt} have 10 or more non-self citations, {cnt}/{n} = {cnt/n:0.1%}. '
                f'The total non-self citations is {sum_cites}, thus the mean non-self citations per publication is '
@@ -9825,7 +9825,7 @@ def create_mikhailov_j_desc_graph_data(metric_set: MetricSet) -> list:
 
 def write_mikhailov_j_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(4)]
     rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -9846,8 +9846,8 @@ def write_mikhailov_j_index_example(metric_set: MetricSet) -> str:
         rows[3] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>i</em>&nbsp;≤&nbsp;<em>C<sub>i</sub></em> is {j}.</p>'
     return outstr
 
@@ -9927,12 +9927,12 @@ def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
 
     data = [pub_years.count(y) for y in range(miny, maxy + 1)]
     data.sort(reverse=True)
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
 
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += f'<td>{x[1]}</td>'
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     oldh = len(data)
     for j, h in enumerate(em_components):
@@ -9964,7 +9964,7 @@ def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
         oldh = h
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -10053,11 +10053,11 @@ def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
 
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += f'<td>{x[1]}</td>'
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     oldh = len(data)
     for j, h in enumerate(em_components):
@@ -10089,7 +10089,7 @@ def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
         oldh = h
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -10178,11 +10178,11 @@ def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
 
     data = [d for d in total_cites_per_year]
     data.sort(reverse=True)
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += '<td>{}</td>'.format(x[1])
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     oldh = len(data)
     for j, h in enumerate(em_components):
@@ -10214,7 +10214,7 @@ def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
         oldh = h
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -10298,12 +10298,12 @@ def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
 
     data = [pub_years.count(y) for y in range(miny, maxy + 1)]
     data.sort(reverse=True)
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
 
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += f'<td>{x[1]}</td>'
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -10331,8 +10331,8 @@ def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
         data.sort(reverse=True)
 
         for row in rows:  # add table row endings
-            row += '</tr>'
-        outstr += "".join(rows) + '</table>'
+            row += '</tr>\n'
+        outstr += "".join(rows) + '</table>\n'
     outstr += '</table>'
     yp_emp = metric_set.metrics["Year-based EMp-index by publications"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The Year-based '
@@ -10417,11 +10417,11 @@ def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
     data = [year_cnts[y] for y in year_cnts]
     data.sort(reverse=True)
 
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += f'<td>{x[1]}</td>'
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -10450,7 +10450,7 @@ def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
         data.sort(reverse=True)
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -10540,11 +10540,11 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
 
     data = [d for d in total_cites_per_year]
     data.sort(reverse=True)
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
         outstr += f'<td>{x[1]}</td>'
-    outstr += '</tr>'
+    outstr += '</tr>\n'
 
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -10572,7 +10572,7 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
         data.sort(reverse=True)
 
         for row in rows:  # add table row endings
-            row += '</tr>'
+            row += '</tr>\n'
         outstr += "".join(rows)
 
     outstr += '</table>'
@@ -10866,7 +10866,7 @@ def calculate_h_norm(metric_set: MetricSet) -> int:
 
 def write_h_norm_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by adjusted number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     data = []
     for i in range(len(metric_set.citations)):
         c = metric_set.citations[i]
@@ -10898,8 +10898,8 @@ def write_h_norm_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += f'<p>The largest rank where {eq} is {hn}.</p>'
     return outstr
@@ -11892,7 +11892,7 @@ def calculate_lambda_index(metric_set: MetricSet) -> int:
 
 def write_lambda_index_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(6)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -11921,8 +11921,8 @@ def write_lambda_index_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += f'<p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is {lam}.</p>'
     return outstr
 
@@ -11962,7 +11962,7 @@ def calculate_pareto_rule(metric_set: MetricSet) -> float:
 
 def write_pareto_rule_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     citations = sorted(metric_set.citations, reverse=True)
     rows = ["" for _ in range(6)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -11991,8 +11991,8 @@ def write_pareto_rule_example(metric_set: MetricSet) -> str:
         rows[5] += f'<td>{v}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     pv = metric_set.metrics["Pareto value"].value
     outstr += (f'<p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is {lam}. With {p} '
                f'total publications, that makes the '
@@ -12131,7 +12131,7 @@ def calculate_revised_h(metric_set: MetricSet) -> float:
 
 def write_revised_h_example(metric_set: MetricSet) -> str:
     outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
-    outstr += '<table class="example_table">'
+    outstr += '<table class="example_table">\n'
     tmp_citations = [c for c in metric_set.citations]
     tmp_author_cnts = [a for a in metric_set.author_counts()]
     tmp_author_pos = [a for a in metric_set.author_position()]
@@ -12174,8 +12174,8 @@ def write_revised_h_example(metric_set: MetricSet) -> str:
         rows[4] += f'<td{ec2}>{ap}</td>'
 
     for row in rows:  # add table row endings
-        row += '</tr>'
-    outstr += "".join(rows) + '</table>'
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h}. Of the {h} publications in the core, {acnt} represent first or last '
                f'author publications, so '
                f'<em>r</em>&nbsp;=1.2&times;{acnt}&nbsp;+&nbsp;0.4&times;{h}&nbsp;=&nbsp;{r:0.4}.</p>')
