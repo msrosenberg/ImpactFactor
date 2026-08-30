@@ -2651,7 +2651,7 @@ def metric_v_index() -> Metric:
     m.metric_type = FLOAT
     equation = r"$$v=100h^n=100\frac{h}{P}$$"
     m.description = ('<p>The v-index (Riikonen and Vihinen 2008) is the percentage of publications reflected in the '
-                     f'__h-index__:</p>{equation}')
+                     f'__h-index__ (or the __normalized h-index__ expressed as a percent):</p>{equation}')
     m.references = ["Riikonen, P., and M. Vihinen (2008) National research contributions: A case study on Finnish "
                     "biomedical research. <em>Scientometrics</em> 77(2):207&ndash;222."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
@@ -4025,38 +4025,14 @@ def calculate_em_index(metric_set: MetricSet) -> float:
 
 
 def write_em_index_example(metric_set: MetricSet) -> str:
-    def count_cited(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Publications are ordered by number of citations, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'publications. All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent '
               'steps.</p>')
     citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
     # calculate vector
-    em_components = []
-    n_cited = count_cited(citations)
-    while n_cited > 1:
-        if max(citations) == 1:
-            em_components.append(1)
-            n_cited = 0
-        else:
-            h = 0
-            for i, c in enumerate(citations):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            citations = [max(0, c-h) for c in citations]
-            n_cited = count_cited(citations)
-    citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    em_components = Impact_Funcs.calculate_em_components(citations)
     outstr += '<table class="example_table">\n'
-    # oldh = len(em_components)
     oldh = len(citations)
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -4066,10 +4042,6 @@ def write_em_index_example(metric_set: MetricSet) -> str:
             rows[0] = '<tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>'
         if j + 1 != len(em_components):
             rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>')
-        # if j + 1 == len(em_components):
-        #     row4 = ""
-        # else:
-        #     row4 = '<tr class="spacer_row"><th></th>' + len(citations) * "<td></td>" + "</tr>"
         rows[1] = '<tr><th>Rank (<em>i</em>)</th>'
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(citations):
@@ -4137,38 +4109,11 @@ def calculate_emp_index(metric_set: MetricSet) -> float:
 
 
 def write_emp_index_example(metric_set: MetricSet) -> str:
-    def count_cited(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Publications are ordered by number of citations, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'publications and all publications are re-ranked by this adjusted citation count for the next step.</p>')
     citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    # calculate vector
-    em_components = []
-    n_cited = count_cited(citations)
-    while n_cited > 1:
-        if max(citations) == 1:
-            em_components.append(1)
-            n_cited = 0
-        else:
-            h = 0
-            for i, c in enumerate(citations):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            for i in range(h):
-                citations[i] -= h
-            citations.sort(reverse=True)
-            n_cited = count_cited(citations)
-    # print(em_components)
-    citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    em_components = Impact_Funcs.calculate_emp_components(citations)
     outstr += '<table class="example_table">\n'
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
@@ -4180,17 +4125,8 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
             rows[1] = '<tr><th>New Rank (<em>i</em>)</th>'
         if j + 1 != len(em_components):
             rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>')
-        # if j + 1 == len(em_components):
-        #     row4 = ""
-        # else:
-        #     row4 = '<tr class="spacer_row"><th></th>' + len(citations) * "<td></td>" + "</tr>"
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(citations):
-            # if i >= oldh:
-            #     row1 += "<td class=\"light_box\"></td>"
-            #     row2 += "<td class=\"light_box\"></td>"
-            #     row3 += "<td></td>"
-            # else:
             if i + 1 == h:
                 v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
@@ -4203,7 +4139,6 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
         for i in range(h):
             citations[i] -= h
         citations.sort(reverse=True)
-        # oldh = h
         for row in rows:  # add table row endings
             row += '</tr>\n'
         outstr += "".join(rows)
