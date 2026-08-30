@@ -24,7 +24,7 @@ FSTR = "1.4f"  # constant formatting string
 
 NBEQ = "&nbsp;=&nbsp;"  # an equals symbol with non-breaking spaces around it
 NBPLUS = "&nbsp;+&nbsp;"  # a plus symbol with non-breaking spaces around it
-NBMINUS = "&nbsp;-&nbsp;"  # a minus symbol with non-breaking spaces around it
+NBMINUS = "&nbsp;&minus;&nbsp;"  # a minus symbol with non-breaking spaces around it
 
 PROPERTY_TYPES = ("Metric Type",
                   "Metric Property",
@@ -2551,6 +2551,47 @@ def calculate_hj_indices(metric_set: MetricSet) -> list:
     return Impact_Funcs.calculate_hj_indices(h, citations)
 
 
+def write_hj_indices_example(metric_set: MetricSet) -> str:
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">\n'
+    citations = sorted(metric_set.citations, reverse=True)
+    rows = ["" for _ in range(3)]
+    rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    rows[1] = '<tr><th>Rank (<em>i</em>)</th>'
+    rows[2] = '<tr><th></th>'
+    h = metric_set.metrics["h-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == h:
+            v = f'<em>h</em>{NBEQ}{h}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        rows[0] += f'<td{ec}>{c}</td>'
+        rows[1] += f'<td{ec}>{i+1}</td>'
+        rows[2] += f'<td>{v}</td>'
+
+    for row in rows:  # add table row endings
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
+    outstr += (f'<p>The <em>h-</em>index is {h}. From here we calculate the <em>H<sub>j</sub></em>-indices as '
+               f'follows:</p>\n')
+    hj_list = metric_set.metrics["hj-indices"].value
+    outstr += '<table class="example_table">\n'
+    for i in range(len(hj_list)):
+        outstr += f'<tr><th><em>H</em><sub>{i}</sub></th><td>=</td>'
+        if i == 0:
+            outstr += f'<td><em>h</em><sup>2</sup></td><td>=</td><td>{h}<sup>2</sup>{NBEQ}{hj_list[i]}</td>'
+        else:
+            outstr += (f'<td><em>H</em><sub>{i-1}</sub>{NBPLUS}(<em>C</em><sub>{h-i}</sub>{NBMINUS}'
+                       f'<em>C</em><sub>{h-i+1}</sub>)&times;(h{NBMINUS}{i}){NBPLUS}<em>C</em><sub>{h+i}</sub></td>'
+                       f'<td>=</td><td>{hj_list[i-1]}{NBPLUS}({citations[h-i-1]}{NBMINUS}{citations[h-i]})&times;'
+                       f'({h}{NBMINUS}{i}){NBPLUS}{citations[h+i-1]}{NBEQ}{hj_list[i]}</td>')
+        outstr += '</tr>\n'
+    outstr += '</table>\n'
+    return outstr
+
+
 def metric_hj_indices() -> Metric:
     m = Metric()
     m.name = "hj-indices"
@@ -2577,8 +2618,12 @@ def metric_hj_indices() -> Metric:
                      '<em>h,</em> plus the citations currently in the next paper outside of the core, plus the '
                      'minimum number of citations over <em>h</em> common to all publications within the core. It is '
                      'this last part that can make interpretation so difficult since a well over-cited core can lead '
-                     'to very large increases in subsequent values of <em>H<sub>j</sub>.</em> </p>')
+                     'to very large increases in subsequent values of <em>H<sub>j</sub>.</em></p><p>The total '
+                     'number of factors calculated (beyond <em>H</em><sub>0</sub>) can either be equal to '
+                     f'<em>h</em>{NBMINUS}1 or the number of publication outside the Hirsch core (the citation tail), '
+                     f'whichever is smaller.</p>')
     m.symbol = "<em>H<sub>j</sub></em>"
+    m.example = write_hj_indices_example
     m.axis_name = r"$H_j$"
     m.references = ["Dorta-González, P., and M.I. Dorta-González (2010) Indicador bibliométrico basado en el "
                     "índice <em>h.</em> <em>Revista Española de Documentación Cientifica</em> 33(2):225&ndash;245."]
