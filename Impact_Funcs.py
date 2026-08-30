@@ -42,7 +42,7 @@ def calculate_median(values: list) -> Number:
         return sort_values[j]
 
 
-def calculate_ranks(citations: list) -> Tuple[list, list]:
+def calculate_ranks(citations: list[int]) -> Tuple[list, list]:
     n = len(citations)
     cumulative_citations = [0 for _ in range(n)]
     # sort by number of citations
@@ -207,7 +207,7 @@ def calculate_h2_index(citations: list) -> int:
     return get_rank_value(tmp_cites)
 
 
-# hg-index (Alonso et al 2010)
+# hg-index (Alonso et al. 2010)
 def calculate_hg_index(h: int, g: int) -> float:
     return math.sqrt(h*g)
 
@@ -261,7 +261,7 @@ def calculate_a_index(core_cites: int, h: int) -> float:
     return core_cites / h
 
 
-# r-index (Jin et al 2007)
+# r-index (Jin et al. 2007)
 def calculate_r_index(core_cites: int) -> float:
     return math.sqrt(core_cites)
 
@@ -275,7 +275,7 @@ def calculate_rm_index(citations: list, is_core: list) -> float:
     return math.sqrt(rm_index)
 
 
-# ar-index (Jin 2007; Jin et al 2007)
+# ar-index (Jin 2007; Jin et al. 2007)
 def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: int) -> float:
     pub_ages = publication_ages(year, pub_years)
     cites_per_year = citations_per_year(citations, pub_ages)
@@ -286,7 +286,7 @@ def calculate_ar_index(citations: list, pub_years: list, is_core: list, year: in
     return math.sqrt(ar_index)
 
 
-# m-index (median index) (Bornmann et al 2008)
+# m-index (median index) (Bornmann et al. 2008)
 def calculate_m_index(citations: list, is_core: list) -> float:
     core_cites = []
     for i, c in enumerate(citations):
@@ -295,7 +295,7 @@ def calculate_m_index(citations: list, is_core: list) -> float:
     return calculate_median(core_cites)
 
 
-# q2-index (Cabrerizo et al 2010)
+# q2-index (Cabrerizo et al. 2010)
 def calculate_q2_index(h: int, m: float) -> float:
     return math.sqrt(h * m)
 
@@ -309,7 +309,7 @@ def calculate_k_index(total_cites: int, core_cites: int, total_pubs: int) -> flo
 
 
 # Franceschini f-index (Franceschini and Maisano 2010)
-def calculate_franceschini_f_index(citations: list, pub_years: list) -> int:
+def calculate_franceschini_f_index(citations: list, pub_years: list[int]) -> int:
     miny = max(pub_years)
     maxy = min(pub_years)
     for i in range(len(citations)):
@@ -332,23 +332,23 @@ def calculate_weighted_h_index(citations: list, h: int) -> float:
     return math.sqrt(weighted_h_index)
 
 
-# normalized h-index (Sidiropoulos et al 2007)
+# normalized h-index (Sidiropoulos et al. 2007)
 def calculate_normalized_h_index(h: int, total_pubs: int) -> float:
     return h / total_pubs
 
 
-# apparent h-index (Mohammed et al 2020)
+# apparent h-index (Mohammed et al. 2020)
 def calculate_apparent_h_index(citations: list, h: int) -> float:
     non_zero_cnt = count_non_zero(citations)
     return h * non_zero_cnt / len(citations)
 
 
-# chi-index (Fenner et al 2018)
+# chi-index (Fenner et al. 2018)
 def calculate_chi_index(rec: int) -> float:
     return math.sqrt(rec)
 
 
-# rec-index (Levene et al 2019)
+# rec-index (Levene et al. 2019)
 def calculate_rec_index(citations: list) -> int:
     sorted_citations = sorted(citations, reverse=True)
     rec = 0
@@ -357,7 +357,7 @@ def calculate_rec_index(citations: list) -> int:
     return rec
 
 
-# reci-recp (Levene et al 2020)
+# reci-recp (Levene et al. 2020)
 def calculate_reci_recp(citations: list, h: int) -> list:
     sorted_citations = sorted(citations, reverse=True)
     reci, recp = h**2, h**2
@@ -392,22 +392,22 @@ def calculate_rational_h(citations: list, h: int) -> float:
     return h + 1 - j/(2*h + 1)
 
 
-# h2-upper index (Bornmann et al 2010)
+# h2-upper index (Bornmann et al. 2010)
 def calculate_h2_upper_index(total_cites: int, core_cites: int, h: int) -> float:
     return 100 * (core_cites - h**2) / total_cites
 
 
-# h2-center index (Bornmann et al 2010)
+# h2-center index (Bornmann et al. 2010)
 def calculate_h2_center_index(total_cites: int, h: int) -> float:
     return 100 * h**2 / total_cites
 
 
-# h2-tail index (Bornmann et al 2010)
+# h2-tail index (Bornmann et al. 2010)
 def calculate_h2_tail_index(total_cites: int, core_cites: int) -> float:
     return 100 * (total_cites - core_cites) / total_cites
 
 
-# tapered h-index (Anderson et al 2008)
+# tapered h-index (Anderson et al. 2008)
 def calculate_tapered_h_index(citations: list, rank_order: list) -> float:
     n = len(citations)
     ht = []
@@ -467,7 +467,7 @@ def calculate_harmonic_p_index(citations: list, n_authors: list, author_pos: lis
     return (nh**2 / ph)**(1/3)
 
 
-# hi-index (Batista et al 2006)
+# hi-index (Batista et al. 2006)
 def calculate_hi_index(is_core: list, n_authors: list, h: int) -> float:
     suma = 0
     for i in range(len(n_authors)):
@@ -476,7 +476,7 @@ def calculate_hi_index(is_core: list, n_authors: list, h: int) -> float:
     return h**2 / suma
 
 
-# fractional pure h-index (Wan et al 2007)
+# fractional pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_frac(is_core: list, n_authors: list, h: int) -> float:
     suma = 0
     for i in range(len(n_authors)):
@@ -485,7 +485,7 @@ def calculate_pure_h_index_frac(is_core: list, n_authors: list, h: int) -> float
     return h / math.sqrt(suma / h)
 
 
-# proportional pure h-index (Wan et al 2007)
+# proportional pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_prop(is_core: list, n_authors: list, author_pos: list, h: int) -> float:
     sump = 0
     for i in range(len(is_core)):
@@ -494,7 +494,7 @@ def calculate_pure_h_index_prop(is_core: list, n_authors: list, author_pos: list
     return h / math.sqrt(sump / h)
 
 
-# geometric pure h-index (Wan et al 2007)
+# geometric pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_geom(is_core: list, n_authors: list, author_pos: list, h: int) -> float:
     sumg = 0
     for i in range(len(is_core)):
@@ -590,7 +590,7 @@ def calculate_wohlin_w(citations: list) -> float:
     return wohlin_w_index
 
 
-# contemporary h-index (Sidiropoulos et al 2007)
+# contemporary h-index (Sidiropoulos et al. 2007)
 def calculate_contemporary_h_index(citations: list, pub_years: list, year: int) -> int:
     pub_ages = publication_ages(year, pub_years)
     cites_per_year = citations_per_year(citations, pub_ages)
@@ -763,7 +763,7 @@ def calculate_todeschini_j_index(citations: list, h: int) -> float:
     return h + sumwdhk/sumw
 
 
-# (general) adapted pure h-index (Chai et al 2008)
+# (general) adapted pure h-index (Chai et al. 2008)
 def calculate_adapt_pure_h_index(sc: list) -> float:
     """
     this is used to calculate the adapted pure h-index once the weighted citations (sc) are determined
@@ -773,19 +773,19 @@ def calculate_adapt_pure_h_index(sc: list) -> float:
     return calculate_real_h_index(sc, j)
 
 
-# fractional adapted pure h-index (Chai et al 2008)
+# fractional adapted pure h-index (Chai et al. 2008)
 def calculate_adapt_pure_h_index_frac(citations: list, n_authors: list) -> float:
     sc = [citations[i] / math.sqrt(n_authors[i]) for i in range(len(citations))]
     return calculate_adapt_pure_h_index(sc)
 
 
-# adapted pure h-index w/proportional author credit (Chai et al 2008)
+# adapted pure h-index w/proportional author credit (Chai et al. 2008)
 def calculate_adapt_pure_h_index_prop(citations: list, n_authors: list, author_pos: list) -> float:
     sc = [c / math.sqrt(1/author_effort("proportional", n_authors[i], author_pos[i])) for i, c in enumerate(citations)]
     return calculate_adapt_pure_h_index(sc)
 
 
-# adapted pure h-index w/geometric author credit (Chai et al 2008)
+# adapted pure h-index w/geometric author credit (Chai et al. 2008)
 def calculate_adapt_pure_h_index_geom(citations: list, n_authors: list, author_pos: list) -> float:
     sc = [c / math.sqrt(1/author_effort("geometric", n_authors[i], author_pos[i])) for i, c in enumerate(citations)]
     return calculate_adapt_pure_h_index(sc)
@@ -800,8 +800,6 @@ def calculate_profit_p_index(citations: list, n_authors: list, author_pos: list)
 # profit adjusted h-index (Aziz and Rozing 2013)
 def calculate_profit_adj_h_index(citations: list, n_authors: list, author_pos: list) -> int:
     sc = [c * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i, c in enumerate(citations)]
-    # n = len(citations)
-    # sc = [citations[i] * author_effort("harmonic_aziz", n_authors[i], author_pos[i]) for i in range(n)]
     sc.sort(reverse=True)
     return get_rank_value(sc)
 
@@ -897,13 +895,13 @@ def calculate_emp_index(citations: list) -> float:
     return math.sqrt(sum(emp_component))
 
 
-# iterative weighted EM-index (Bihari et al 2021)
+# iterative weighted EM-index (Bihari et al. 2021)
 def calculate_iterative_weighted_em_index(citations: list) -> float:
     em_component = calculate_em_components(citations)
     return sum(e/(i+1) for i, e in enumerate(em_component))
 
 
-# iterative weighted EM'-index (Bihari et al 2021)
+# iterative weighted EM'-index (Bihari et al. 2021)
 def calculate_iterative_weighted_emp_index(citations: list) -> float:
     emp_component = calculate_emp_components(citations)
     return sum(e/(i+1) for i, e in enumerate(emp_component))
@@ -935,7 +933,7 @@ def calculate_cites_per_year(total_cites: int, age: int) -> float:
     return total_cites / age
 
 
-# annual h-index (hIa) (Harzing et al 2014)
+# annual h-index (hIa) (Harzing et al. 2014)
 def calculate_annual_h_index(norm_h: float, age: int) -> float:
     return norm_h / age
 
@@ -978,7 +976,7 @@ def calculate_redner_index(total_cites: int) -> float:
     return math.sqrt(total_cites)
 
 
-# Levene j-index - Levene et al (2012)
+# Levene j-index - Levene et al. (2012)
 def calculate_levene_j_index(citations: list) -> float:
     return sum(math.sqrt(c) for c in citations)
 
@@ -1067,7 +1065,7 @@ def calculate_dynamic_h_type_index(rational_h_list: list, year_list: list, r: fl
         return r * (sumxy / sumx2)
 
 
-# trend h-index (Sidiropoulos et al 2007)
+# trend h-index (Sidiropoulos et al. 2007)
 def calculate_trend_h_index(pub_list: list) -> int:
     pub_cites = citations_per_pub_per_year(pub_list)
     ny = len(pub_list[0])
@@ -1223,9 +1221,9 @@ def calculate_career_years_h_index_avgcite(pub_years: list, cites: list) -> floa
 
 # career years h-index by diffusion speed (Mahbuba and Rousseau 2013)
 def calculate_career_years_h_index_diffspeed(pub_years: list, cites: list, cur_year: int) -> float:
-    # in the original paper they calculate ageas current year - pub year, rather than cy - py + 1. This would mean
+    # in the original paper they calculate age as current year - pub year, rather than cy - py + 1. This would mean
     # articles in the present year would have an age of zero and an infinite diffusion
-    #   this coded version adds the 1, so an article published this year has an age of 1 and lat year an age of 2
+    #   this coded version adds the 1, so an article published this year has an age of 1
     miny = min(pub_years)
     maxy = max(pub_years)
     cite_cnts = {y: 0 for y in range(miny, maxy+1)}
@@ -1247,7 +1245,7 @@ def calculate_degree_of_collaboration(author_cnts: list) -> float:
     return 1 - author_cnts.count(1)/len(author_cnts)
 
 
-# collaborative coefficient (Ajiferuke et al 1988)
+# collaborative coefficient (Ajiferuke et al. 1988)
 def calculate_collaborative_coefficient(author_cnts: list) -> float:
     maxa = max(author_cnts)
     cc = sum(author_cnts.count(a) / a for a in range(1, maxa+1))
@@ -1306,7 +1304,7 @@ def calculate_uncited_paper_percent(citations: list) -> float:
     return 100 - calculate_cited_paper_percent(citations)
 
 
-# # beauty coefficient (Ke et al 2015)
+# # beauty coefficient (Ke et al. 2015)
 # def calculate_beauty_coefficient(pub_list: list) -> list:
 #     blist = []
 #     for p in pub_list:
@@ -1328,7 +1326,7 @@ def calculate_uncited_paper_percent(citations: list) -> float:
 #     return blist
 #
 #
-# # awakening_time (Ke et al 2015)
+# # awakening_time (Ke et al. 2015)
 # def calculate_awakening_time(pub_list: list) -> list:
 #     ta_list = []
 #     for p in pub_list:
@@ -1366,7 +1364,7 @@ def calculate_academic_trace(citations: list, core_cites: int, h: int) -> float:
     return t
 
 
-# scientific quality index (Pluskiewicz1 et al 2019)
+# scientific quality index (Pluskiewicz1 et al. 2019)
 def calculate_scientific_quality_index(citations, self_citations) -> float:
     cnt = 0
     sharp_citations = [citations[i] - self_citations[i] for i in range(len(self_citations))]
@@ -1536,7 +1534,7 @@ def calculate_yearly_h_index(citations: list, pub_years: list) -> float:
     maxy = max(pub_years)
     havg = 0
     yearcnt = 0
-    # calculate h only for papers published in a single  year
+    # calculate h only for papers published in a single year
     for year in range(miny, maxy+1):
         # create citation count list for a single year
         tmp_citations = []
@@ -1571,7 +1569,7 @@ def calculate_zynergy(total_cites: int, total_pubs: int, fairness: float) -> flo
     return ((fairness * total_cites**2) / total_pubs)**(1/3)
 
 
-# p20 (Gagolewski et al 2022)
+# p20 (Gagolewski et al. 2022)
 def calculate_p20(citations: list, total_cites: int, total_pubs: int) -> float:
     sorted_cites = sorted(citations)
     sorted_cites.reverse()
@@ -1580,18 +1578,18 @@ def calculate_p20(citations: list, total_cites: int, total_pubs: int) -> float:
     return core / total_cites
 
 
-# rmp (Gagolewski et al 2022)
+# rmp (Gagolewski et al. 2022)
 def calculate_rmp(mp: int) -> float:
     return math.sqrt(mp)
 
 
-# css (Gagolewski et al 2022)
+# css (Gagolewski et al. 2022)
 def calculate_css(citations: list) -> float:
     s = sum(c**2 for c in citations)
     return s**(1/3)
 
 
-# csr (Gagolewski et al 2022)
+# csr (Gagolewski et al. 2022)
 def calculate_csr(citations: list) -> float:
     tmpcites = sorted(citations)
     tmpcites.reverse()
@@ -1600,12 +1598,12 @@ def calculate_csr(citations: list) -> float:
     return s**(1/3)
 
 
-# slg (Gagolewski et al 2022)
+# slg (Gagolewski et al. 2022)
 def calculate_slg(citations: list) -> float:
     return sum(math.log10(c+1) for c in citations)
 
 
-# 3DSI w/pr (Gagolewski et al 2022)
+# 3DSI w/pr (Gagolewski et al. 2022)
 def calculate_3dsi_pr(total_pubs: int, total_cites: int, csr: float) -> list:
     pr = (total_pubs - 2*csr**3/total_cites + 1) / (total_pubs - csr**3/total_cites)
     return [total_pubs, total_cites, pr]
@@ -1671,7 +1669,7 @@ def calculate_platinum_h(h: int, total_cites: int, total_pubs: int, age: int) ->
 
 # stochastic h-index (Nair and Turlach 2012)
 def calculate_stochastic_h(h: int, citations: list, year: int, pub_years: list) -> float:
-    # main function codde
+    # main function code
     pub_ages = publication_ages(year, pub_years)
     sub_ages = []  # age of publications with h or fewer citations
     sub_cites = []  # the citation count for the publications in l_pubs
@@ -1735,7 +1733,7 @@ def calculate_multiple_h_index(citations: list, year: int, pub_years: list) -> f
     return math.sqrt(mh)
 
 
-# hmaj-index (Hu et al 2010; Bucur et al 2015)
+# hmaj-index (Hu et al. 2010; Bucur et al. 2015)
 def calculate_hmaj_index(citations: list, primary: list) -> int:
     # create list containing only the publications in which the author is primary
     tmp_cites = []
@@ -1810,7 +1808,7 @@ def calculate_pareto_rule(lamb: int, total_cites: int) -> float:
     return 100*lamb/total_cites
 
 
-# h*-index (Rusinek et al 2026)
+# h*-index (Rusinek et al. 2026)
 def calculate_hstar_index(h: int, pub_years: list, year: int, year0: int, academic_age: int, total_cites: int) -> float:
     # currently these are just set at 1
     alpha = 1
@@ -1877,7 +1875,6 @@ def calculate_revised_h(h, is_core, n_authors, author_pos) -> float:
                 a += 1
 
     return a*1.2 + h*0.4
-
 
 
 # only used for spot testing new functions

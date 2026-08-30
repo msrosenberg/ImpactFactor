@@ -1833,7 +1833,7 @@ def metric_wu_wq() -> Metric:
     return m
 
 
-# hg-index (Alonso et al 2010)
+# hg-index (Alonso et al. 2010)
 def calculate_hg_index(metric_set: MetricSet) -> float:
     h = metric_set.metrics["h-index"].value
     g = metric_set.metrics["g-index"].value
@@ -1898,7 +1898,7 @@ def metric_a_index() -> Metric:
     return m
 
 
-# R-index (Jin et al 2007)
+# R-index (Jin et al. 2007)
 def calculate_r_index(metric_set: MetricSet) -> float:
     core_cites = metric_set.metrics["h-core cites"].value
     return Impact_Funcs.calculate_r_index(core_cites)
@@ -2210,7 +2210,7 @@ def metric_real_h_index() -> Metric:
     return m
 
 
-# tapered h-index (Anderson et al 2008)
+# tapered h-index (Anderson et al. 2008)
 def calculate_tapered_h_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     rank_order = metric_set.rank_order
@@ -2579,7 +2579,7 @@ def metric_v_index() -> Metric:
     return m
 
 
-# normalized h-index (Sidiropoulos et al 2007)
+# normalized h-index (Sidiropoulos et al. 2007)
 def calculate_normalized_h_index(metric_set: MetricSet) -> float:
     total_pubs = metric_set.metrics["total pubs"].value
     h = metric_set.metrics["h-index"].value
@@ -2608,7 +2608,7 @@ def metric_normalized_h_index() -> Metric:
     return m
 
 
-# m-index (median index) (Bornmann et al 2008)
+# m-index (median index) (Bornmann et al. 2008)
 def calculate_m_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     is_core = metric_set.is_core
@@ -2856,7 +2856,7 @@ def metric_pi_rate() -> Metric:
     return m
 
 
-# q2-index (Cabrerizo et al 2010)
+# q2-index (Cabrerizo et al. 2010)
 def calculate_q2_index(metric_set: MetricSet) -> float:
     h = metric_set.metrics["h-index"].value
     m = metric_set.metrics["m-index"].value
@@ -3013,7 +3013,7 @@ def metric_e_index() -> Metric:
     return m
 
 
-# h2-upper index (Bornmann et al 2010)
+# h2-upper index (Bornmann et al. 2010)
 def calculate_h2_upper_index(metric_set: MetricSet) -> float:
     total_cites = metric_set.metrics["total cites"].value
     core_cites = metric_set.metrics["h-core cites"].value
@@ -3102,7 +3102,7 @@ def metric_h2_upper_index() -> Metric:
     return m
 
 
-# h2-center index (Bornmann et al 2010)
+# h2-center index (Bornmann et al. 2010)
 def calculate_h2_center_index(metric_set: MetricSet) -> float:
     total_cites = metric_set.metrics["total cites"].value
     h = metric_set.metrics["h-index"].value
@@ -3187,7 +3187,7 @@ def metric_h2_center_index() -> Metric:
     return m
 
 
-# h2-tail index (Bornmann et al 2010)
+# h2-tail index (Bornmann et al. 2010)
 def calculate_h2_tail_index(metric_set: MetricSet) -> float:
     total_cites = metric_set.metrics["total cites"].value
     core_cites = metric_set.metrics["h-core cites"].value
@@ -4277,7 +4277,7 @@ def metric_iterative_weighted_em_index() -> Metric:
     return m
 
 
-# iterative weighted EM'-index (Bihari et al 2021)
+# iterative weighted EM'-index (Bihari et al. 2021)
 def calculate_iterative_weighted_emp_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     return Impact_Funcs.calculate_iterative_weighted_emp_index(citations)
@@ -4746,7 +4746,7 @@ def metric_b_index_10_percent() -> Metric:
     return m
 
 
-# hi-index (Batista et al 2006)
+# hi-index (Batista et al. 2006)
 def calculate_hi_index(metric_set: MetricSet) -> float:
     is_core = metric_set.is_core
     n_authors = metric_set.author_counts()
@@ -4824,7 +4824,7 @@ def metric_hi_index() -> Metric:
     return m
 
 
-# fractional pure h-index (Wan et al 2007)
+# fractional pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_frac(metric_set: MetricSet) -> float:
     is_core = metric_set.is_core
     n_authors = metric_set.author_counts()
@@ -4904,7 +4904,7 @@ def metric_pure_h_index_frac() -> Metric:
     return m
 
 
-# proportional pure h-index (Wan et al 2007)
+# proportional pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_prop(metric_set: MetricSet) -> float:
     is_core = metric_set.is_core
     n_authors = metric_set.author_counts()
@@ -4997,7 +4997,7 @@ def metric_pure_h_index_prop() -> Metric:
     return m
 
 
-# geometric pure h-index (Wan et al 2007)
+# geometric pure h-index (Wan et al. 2007)
 def calculate_pure_h_index_geom(metric_set: MetricSet) -> float:
     is_core = metric_set.is_core
     n_authors = metric_set.author_counts()
@@ -5090,7 +5090,7 @@ def metric_pure_h_index_geom() -> Metric:
     return m
 
 
-# fractional adapted pure h-index (Chai et al 2008)
+# fractional adapted pure h-index (Chai et al. 2008)
 def calculate_adapt_pure_h_index_frac(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
@@ -5178,7 +5178,7 @@ def metric_adapt_pure_h_index_frac() -> Metric:
     return m
 
 
-# proportional adapted pure h-index (Chai et al 2008)
+# proportional adapted pure h-index (Chai et al. 2008)
 def calculate_adapt_pure_h_index_prop(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
@@ -5284,7 +5284,7 @@ def metric_adapt_pure_h_index_prop() -> Metric:
     return m
 
 
-# geometric adapted pure h-index (Chai et al 2008)
+# geometric adapted pure h-index (Chai et al. 2008)
 def calculate_adapt_pure_h_index_geom(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     n_authors = metric_set.author_counts()
@@ -6575,7 +6575,7 @@ def metric_alpha_index() -> Metric:
     return m
 
 
-# ar-index (Jin 2007; Jin et al 2007)
+# ar-index (Jin 2007; Jin et al. 2007)
 def calculate_ar_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     pub_years = metric_set.publication_years()
@@ -6727,7 +6727,7 @@ def metric_hpd_index() -> Metric:
     return m
 
 
-# contemporary h-index (Sidiropoulos et al 2007)
+# contemporary h-index (Sidiropoulos et al. 2007)
 def calculate_contemporary_h_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
     pub_years = metric_set.publication_years()
@@ -7058,7 +7058,7 @@ def metric_franceschini_f_index() -> Metric:
     return m
 
 
-# annual h-index (hIa) (Harzing et al 2014)
+# annual h-index (hIa) (Harzing et al. 2014)
 def calculate_annual_h_index(metric_set: MetricSet) -> float:
     norm_h = metric_set.metrics["normal hi-index"].value
     age = metric_set.academic_age()
@@ -7301,7 +7301,7 @@ def metric_redner_index() -> Metric:
     return m
 
 
-# Levene j-index (Levene et al 2012)
+# Levene j-index (Levene et al. 2012)
 def calculate_levene_j_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     return Impact_Funcs.calculate_levene_j_index(citations)
@@ -8652,7 +8652,7 @@ def metric_degree_of_collaboration() -> Metric:
     return m
 
 
-# collaborative coefficient (Ajiferuke et al 1988)
+# collaborative coefficient (Ajiferuke et al. 1988)
 def calculate_collaborative_coefficient(metric_set: MetricSet) -> float:
     author_cnts = metric_set.author_counts()
     return Impact_Funcs.calculate_collaborative_coefficient(author_cnts)
@@ -8878,7 +8878,7 @@ def metric_uncited_paper_percent() -> Metric:
     return m
 
 
-# # beauty coefficient (Ke et al 2015)
+# # beauty coefficient (Ke et al. 2015)
 # def calculate_beauty_coefficient(metric_set: MetricSet) -> list:
 #     metric_list = metric_set.parent_list
 #     metric_pos = metric_list.index(metric_set)
@@ -8924,7 +8924,7 @@ def metric_uncited_paper_percent() -> Metric:
 #     return m
 
 
-# # awakening time (Ke et al 2015)
+# # awakening time (Ke et al. 2015)
 # def calculate_awakening_time(metric_set: MetricSet) -> list:
 #     metric_list = metric_set.parent_list
 #     metric_pos = metric_list.index(metric_set)
@@ -8979,7 +8979,7 @@ def metric_uncited_paper_percent() -> Metric:
 #     return m
 
 
-# apparent h-index (Mohammed et al 2020)
+# apparent h-index (Mohammed et al. 2020)
 def calculate_apparent_h_index(metric_set: MetricSet) -> float:
     h = metric_set.metrics["h-index"].value
     citations = metric_set.citations
@@ -9045,7 +9045,7 @@ def metric_apparent_h_index() -> Metric:
     return m
 
 
-# rec index (Levene et al 2019)
+# rec index (Levene et al. 2019)
 def calculate_rec_index(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_rec_index(metric_set.citations)
 
@@ -9214,7 +9214,7 @@ def metric_rec_index() -> Metric:
     return m
 
 
-# chi index (Fenner et al 2018)
+# chi index (Fenner et al. 2018)
 def calculate_chi_index(metric_set: MetricSet) -> float:
     rec = metric_set.metrics["rec-index"].value
     return Impact_Funcs.calculate_chi_index(rec)
@@ -9339,7 +9339,7 @@ def metric_chi_index() -> Metric:
     return m
 
 
-# rec index (Levene et al 2020)
+# rec index (Levene et al. 2020)
 def calculate_reci_recp(metric_set: MetricSet) -> list:
     h = metric_set.metrics["h-index"].value
     return Impact_Funcs.calculate_reci_recp(metric_set.citations, h)
@@ -9529,7 +9529,7 @@ def metric_academic_trace() -> Metric:
     return m
 
 
-# scientific quality index (Pluskiewicz1 et al 2019)
+# scientific quality index (Pluskiewicz1 et al. 2019)
 def calculate_scientific_quality_index(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     self_citations = metric_set.self_citations
@@ -11148,7 +11148,7 @@ def metric_zynergy() -> Metric:
     return m
 
 
-# p20 (Gagolewski et al 2022)
+# p20 (Gagolewski et al. 2022)
 def calculate_p20(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     total_cites = metric_set.metrics["total cites"].value
@@ -11181,7 +11181,7 @@ def metric_p20() -> Metric:
     return m
 
 
-# rmp (Gagolewski et al 2022)
+# rmp (Gagolewski et al. 2022)
 def calculate_rmp(metric_set: MetricSet) -> float:
     mp = metric_set.metrics["rec-index"].value  # rec-index is equal to maxprod
     return Impact_Funcs.calculate_rmp(mp)
@@ -11210,7 +11210,7 @@ def metric_rmp() -> Metric:
     return m
 
 
-# css (Gagolewski et al 2022)
+# css (Gagolewski et al. 2022)
 def calculate_css(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     return Impact_Funcs.calculate_css(citations)
@@ -11240,7 +11240,7 @@ def metric_css() -> Metric:
     return m
 
 
-# csr (Gagolewski et al 2022)
+# csr (Gagolewski et al. 2022)
 def calculate_csr(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     return Impact_Funcs.calculate_csr(citations)
@@ -11270,7 +11270,7 @@ def metric_csr() -> Metric:
     return m
 
 
-# slg (Gagolewski et al 2022)
+# slg (Gagolewski et al. 2022)
 def calculate_slg(metric_set: MetricSet) -> float:
     citations = metric_set.citations
     return Impact_Funcs.calculate_slg(citations)
@@ -11300,7 +11300,7 @@ def metric_slg() -> Metric:
     return m
 
 
-# 3DSI (pr) (Siudem et al 2020, Gagolewsi et al 2022)
+# 3DSI (pr) (Siudem et al. 2020, Gagolewsi et al. 2022)
 def calculate_3dsi_pr(metric_set: MetricSet) -> list:
     total_cites = metric_set.metrics["total cites"].value
     total_pubs = metric_set.metrics["total pubs"].value
@@ -11584,7 +11584,7 @@ def metric_multiple_h_index() -> Metric:
     return m
 
 
-# hmaj-index (Hu et al 2010; Bucur et al 2015)
+# hmaj-index (Hu et al. 2010; Bucur et al. 2015)
 def calculate_hmaj_index(metric_set: MetricSet) -> int:
     citations = metric_set.citations
     primary = metric_set.primary_authorship()
@@ -12026,7 +12026,7 @@ def metric_pareto_rule() -> Metric:
     return m
 
 
-# h*-index (Rusinek et al 2026)
+# h*-index (Rusinek et al. 2026)
 def calculate_hstar_index(metric_set: MetricSet) -> float:
     h = metric_set.metrics["h-index"].value
     pub_years = metric_set.publication_years()
