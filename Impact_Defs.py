@@ -22,6 +22,10 @@ STR = 8
 
 FSTR = "1.4f"  # constant formatting string
 
+NBEQ = "&nbsp;=&nbsp;"  # an equals symbol with non-breaking spaces around it
+NBPLUS = "&nbsp;+&nbsp;"  # a plus symbol with non-breaking spaces around it
+NBMINUS = "&nbsp;-&nbsp;"  # a minus symbol with non-breaking spaces around it
+
 PROPERTY_TYPES = ("Metric Type",
                   "Metric Property",
                   "Considerations and Adjustments",
@@ -594,7 +598,7 @@ def write_h_index_example(metric_set: MetricSet) -> str:
     h = metric_set.metrics["h-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -684,7 +688,7 @@ def write_h_core_example(metric_set: MetricSet) -> str:
         else:
             ec = ""
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
         else:
             v = ""
         rows[0] += f'<td{ec}>{c}</td>'
@@ -1019,7 +1023,7 @@ def write_g_index_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s += c
         if i + 1 == g:
-            v = f'<em>g</em>&nbsp;=&nbsp;{g}'
+            v = f'<em>g</em>{NBEQ}{g}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1234,7 +1238,7 @@ def write_h2_index_example(metric_set: MetricSet) -> str:
     h = metric_set.metrics["h(2)-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = f'<em>h</em>(2)&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>(2){NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1302,7 +1306,7 @@ def write_mu_index_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s = Impact_Funcs.calculate_median(citations[:i+1])
         if i + 1 == mu:
-            v = "<em>μ</em>&nbsp;=&nbsp;{}".format(mu)
+            v = f'<em>μ</em>{NBEQ}{mu}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1315,7 +1319,7 @@ def write_mu_index_example(metric_set: MetricSet) -> str:
     for row in rows:  # add table row endings
         row += '</tr>\n'
     outstr += "".join(rows) + '</table>\n'
-    outstr += "<p>The largest rank where <em>i</em> ≤ median citations is {}.</p>".format(mu)
+    outstr += f'<p>The largest rank where <em>i</em> ≤ median citations is {mu}.</p>'
     return outstr
 
 
@@ -1363,7 +1367,7 @@ def write_tol_f_index_example(metric_set: MetricSet) -> str:
         if c != 0:
             s += 1/c
         if i + 1 == f:
-            v = "<em>f</em>&nbsp;=&nbsp;{}".format(f)
+            v = f'<em>f</em>{NBEQ}{f}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1425,7 +1429,7 @@ def write_tol_t_index_example(metric_set: MetricSet) -> str:
         if c != 0:
             s += math.log(c)
         if i + 1 == t:
-            v = "<em>t</em>&nbsp;=&nbsp;{}".format(t)
+            v = f'<em>t</em>{NBEQ}{t}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1577,7 +1581,7 @@ def write_woeginger_index_example(metric_set: MetricSet) -> str:
     w = metric_set.metrics["Woeginger w-index"].value
     for i, c in enumerate(citations):
         if i + 1 == w:
-            v = f'<td><em>w</em>&nbsp;=&nbsp;{w}</td>'
+            v = f'<td><em>w</em>{NBEQ}{w}</td>'
             ec = ' class="box"'
         else:
             v = '<td></td>'
@@ -1757,7 +1761,7 @@ def write_wu_w_index_example(metric_set: MetricSet) -> str:
     w = metric_set.metrics["Wu w-index"].value
     for i, c in enumerate(citations):
         if i + 1 == w:
-            v = '<em>w</em>&nbsp;=&nbsp;{}'.format(w)
+            v = f'<em>w</em>{NBEQ}{w}'
             ec = ' class="box"'
         else:
             v = ""
@@ -1985,7 +1989,7 @@ def write_rational_h_index_example(metric_set: MetricSet) -> str:
             if c == h:
                 hin += 1
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -2189,7 +2193,7 @@ def write_real_h_index_example(metric_set: MetricSet) -> str:
     realh = metric_set.metrics["real h-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -2204,10 +2208,10 @@ def write_real_h_index_example(metric_set: MetricSet) -> str:
     ch = citations[h-1]
     ch1 = citations[h]
     outstr += (f'<p>The <em>h-</em>index is {h}. The {h}<sup>th</sup> publication has '
-               f'<em>C<sub>h</sub></em>&nbsp;=&nbsp;{ch} citations, '
-               f'while the {h+1}<sup>th</sup> publication has <em>C<sub>h+1</sub></em>&nbsp;=&nbsp;{ch1} '
-               f'citations. <em>h<sub>r</sub>&nbsp;=&nbsp;({h+1}&times;{ch}&nbsp;-&nbsp;{h}&times;{ch1})/'
-               f'(1&nbsp;-&nbsp;{ch1}&nbsp;+&nbsp;{ch})&nbsp;=&nbsp;{realh:0.4f}</em>')
+               f'<em>C<sub>h</sub></em>{NBEQ}{ch} citations, '
+               f'while the {h+1}<sup>th</sup> publication has <em>C<sub>h+1</sub></em>{NBEQ}{ch1} '
+               f'citations. <em>h<sub>r</sub>{NBEQ}({h+1}&times;{ch}{NBMINUS}{h}&times;{ch1})/'
+               f'(1{NBMINUS}{ch1}{NBPLUS}{ch}){NBEQ}{realh:0.4f}</em>')
     return outstr
 
 
@@ -2341,7 +2345,7 @@ def write_todeschini_j_index_example(metric_set: MetricSet) -> str:
     j = metric_set.metrics["Todeschini j-index"].value
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -2740,7 +2744,7 @@ def write_weighted_h_index_example(metric_set: MetricSet) -> str:
             v = f'<em>h</em> = {h}'
             ec = ' class="dark_box"'
         if i + 1 == r0:
-            v2 = f'<em>r</em><sub>0</sub>&nbsp;=&nbsp;{r0}'
+            v2 = f'<em>r</em><sub>0</sub>{NBEQ}{r0}'
             ec2 = ' class="box"'
             root_sum = s
         rows[0] += f'<td{ec}{ec2}>{c}</td>'
@@ -2819,7 +2823,7 @@ def write_pi_index_example(metric_set: MetricSet) -> str:
         else:
             ec = ""
         if i + 1 == ppi:
-            v = f'<em>P<sub>π</sub></em>&nbsp;=&nbsp;{ppi}'
+            v = f'<em>P<sub>π</sub></em>{NBEQ}{ppi}'
         else:
             v = ""
         rows[0] += f'<td{ec}>{c}</td>'
@@ -3522,7 +3526,7 @@ def write_multidim_h_index_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 - skip == h:
-                    v = f'<em>h</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>h</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -3829,7 +3833,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
     h = two_sided_h[nsteps]
     for i, c in enumerate(citations):
         if i + 1 == h:
-            v = f'<em>h</em><sub>0</sub>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em><sub>0</sub>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -3859,7 +3863,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
                     rows[3] += '<td></td>'
                 else:
                     if i + 1 == hm:
-                        v = f'<em>h</em><sub>{-j}</sub>&nbsp;=&nbsp;{hm}'
+                        v = f'<em>h</em><sub>{-j}</sub>{NBEQ}{hm}'
                         ec = ' class="box"'
                     else:
                         v = ""
@@ -3873,7 +3877,7 @@ def write_two_sided_h_index_example(metric_set: MetricSet) -> str:
                 else:
                     ec2 = ""
                 if i + 1 - tail_skip == hp:
-                    v = f'<em>h</em><sub>{j}</sub>&nbsp;=&nbsp;{hp}'
+                    v = f'<em>h</em><sub>{j}</sub>{NBEQ}{hp}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -4030,7 +4034,7 @@ def write_em_index_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 == h:
-                    v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -4047,7 +4051,7 @@ def write_em_index_example(metric_set: MetricSet) -> str:
     outstr += '</table>'
     em = metric_set.metrics["EM-index"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The '
-               f'<em>EM-</em>index is the square-root of this sum, thus <em>EM</em>&nbsp;=&nbsp;{em:0.4f}.</p>')
+               f'<em>EM-</em>index is the square-root of this sum, thus <em>EM</em>{NBEQ}{em:0.4f}.</p>')
     return outstr
 
 
@@ -4143,7 +4147,7 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
             #     row3 += "<td></td>"
             # else:
             if i + 1 == h:
-                v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
             else:
                 v = ""
@@ -4162,7 +4166,7 @@ def write_emp_index_example(metric_set: MetricSet) -> str:
     emp = metric_set.metrics["EMp-index"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. '
                f'The <em>EM&prime;-</em>index is the square-root of this sum, thus '
-               f'<em>EM</em>&prime;&nbsp;=&nbsp;{emp:0.4f}.</p>')
+               f'<em>EM</em>&prime;{NBEQ}{emp:0.4f}.</p>')
     return outstr
 
 
@@ -4260,7 +4264,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 == h:
-                    v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -4375,7 +4379,7 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
             #     row3 += "<td></td>"
             # else:
             if i + 1 == h:
-                v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
             else:
                 v = ""
@@ -4810,7 +4814,7 @@ def write_hi_index_example(metric_set: MetricSet) -> str:
         c = d[0]
         a = d[1]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
         else:
             v = ""
         if i + 1 <= h:
@@ -4826,7 +4830,7 @@ def write_hi_index_example(metric_set: MetricSet) -> str:
         row += '</tr>\n'
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the authors for publications in the core is {s}, thus '
-               f'<em>h<sub>i</sub></em>&nbsp;=&nbsp;{hi:0.4f}.</p>')
+               f'<em>h<sub>i</sub></em>{NBEQ}{hi:0.4f}.</p>')
     return outstr
 
 
@@ -4888,7 +4892,7 @@ def write_pure_h_index_frac_example(metric_set: MetricSet) -> str:
         c = d[0]
         a = d[1]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
         else:
             v = ""
         if i + 1 <= h:
@@ -4905,7 +4909,7 @@ def write_pure_h_index_frac_example(metric_set: MetricSet) -> str:
         row += '</tr>\n'
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the authors for publications in the core is {s}, thus '
-               f'<em>h<sub>p</sub></em>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'<em>h<sub>p</sub></em>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -4976,7 +4980,7 @@ def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         e = Impact_Funcs.author_effort("proportional", a, ap)
         w = 1 / e
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
         else:
             v = ""
         if i + 1 <= h:
@@ -4996,7 +5000,7 @@ def write_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         row += '</tr>\n'
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the weights for the publications in the core is {s}, '
-               f'thus <em>h</em><sub><em>p</em>.prop</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'thus <em>h</em><sub><em>p</em>.prop</sub>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -5018,7 +5022,7 @@ def metric_pure_h_index_prop() -> Metric:
                      '<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author '
                      'list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). '
                      'Each publication can then be weighted by the inverse of the author effort, '
-                     '<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. '
+                     f'<em>w<sub>i</sub></em>{NBEQ}1/<em>E<sub>i</sub></em>. '
                      f'Given the credited effort for each publication, the metric is calculated as:</p>{equation}')
     m.references = ["Wan, J.-k., P.-h. Hua, and R. Rousseau (2007) The pure <em>h-</em>index: Calculating an "
                     "author\'s <em>h-</em>index by taking co-authors into account. <em>Collnet Journal of "
@@ -5069,7 +5073,7 @@ def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         e = Impact_Funcs.author_effort("geometric", a, ap)
         w = 1 / e
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
         else:
             v = ""
         if i + 1 <= h:
@@ -5089,7 +5093,7 @@ def write_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         row += '</tr>\n'
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h} and the sum of the weights for the publications in the core is {s}, '
-               f'thus <em>h</em><sub><em>p</em>.geom</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'thus <em>h</em><sub><em>p</em>.geom</sub>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -5111,7 +5115,7 @@ def metric_pure_h_index_geom() -> Metric:
                      '<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author '
                      'list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). '
                      'Each publication can then be weighted by the inverse of the author effort, '
-                     '<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. '
+                     f'<em>w<sub>i</sub></em>{NBEQ}1/<em>E<sub>i</sub></em>. '
                      f'Given the credited effort for each publication, the metric is calculated as:</p>{equation}')
     m.references = ["Wan, J.-k., P.-h. Hua, and R. Rousseau (2007) The pure <em>h-</em>index: Calculating an "
                     "author\'s <em>h-</em>index by taking co-authors into account. <em>Collnet Journal of "
@@ -5158,7 +5162,7 @@ def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
         c = d[1]
         a = d[2]
         if i + 1 == he:
-            v = f'<em>h<sub>e</sub></em>&nbsp;=&nbsp;{he}'
+            v = f'<em>h<sub>e</sub></em>{NBEQ}{he}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5174,7 +5178,7 @@ def write_adapt_pure_h_index_frac_example(metric_set: MetricSet) -> str:
     outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank '
-               f'yields <em>h</em><sub><em>ap</em>.frac</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'yields <em>h</em><sub><em>ap</em>.frac</sub>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -5255,7 +5259,7 @@ def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
         e = d[4]
         w = 1/e
         if i + 1 == he:
-            v = f'<em>h<sub>e</sub></em>&nbsp;=&nbsp;{he}'
+            v = f'<em>h<sub>e</sub></em>{NBEQ}{he}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5274,7 +5278,7 @@ def write_adapt_pure_h_index_prop_example(metric_set: MetricSet) -> str:
     outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank yields '
-               f'<em>h</em><sub><em>ap</em>.prop</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'<em>h</em><sub><em>ap</em>.prop</sub>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -5299,7 +5303,7 @@ def metric_adapt_pure_h_index_prop() -> Metric:
                      '<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author '
                      'list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). '
                      'Each publication can then be weighted by the inverse of the author effort, '
-                     '<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. '
+                     f'<em>w<sub>i</sub></em>{NBEQ}1/<em>E<sub>i</sub></em>. '
                      f'The effective number of citations for each publication is then calculated as</p>{cistr}'
                      '<p>Publications are ranked according to these new citation '
                      'counts and the <em>h-</em>equivalent value, <em>h<sub>e</sub>,</em> is found as the largest '
@@ -5361,7 +5365,7 @@ def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
         e = d[4]
         w = 1/e
         if i + 1 == he:
-            v = f'<em>h<sub>e</sub></em>&nbsp;=&nbsp;{he}'
+            v = f'<em>h<sub>e</sub></em>{NBEQ}{he}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5380,7 +5384,7 @@ def write_adapt_pure_h_index_geom_example(metric_set: MetricSet) -> str:
     outstr += "".join(rows) + '</table>\n'
     eq = r"\(i \leq C^*_i\)"
     outstr += (f'<p>The largest rank where {eq} is {he}. Interpolating between this and the next largest rank yields '
-               f'<em>h</em><sub><em>ap</em>.geom</sub>&nbsp;=&nbsp;{hp:0.4f}.</p>')
+               f'<em>h</em><sub><em>ap</em>.geom</sub>{NBEQ}{hp:0.4f}.</p>')
     return outstr
 
 
@@ -5405,7 +5409,7 @@ def metric_adapt_pure_h_index_geom() -> Metric:
                      '<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author '
                      'list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). '
                      'Each publication can then be weighted by the inverse of the author effort, '
-                     '<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>. '
+                     f'<em>w<sub>i</sub></em>{NBEQ}1/<em>E<sub>i</sub></em>. '
                      f'The effective number of citations for each publication is then calculated as</p>{cistr}'
                      '<p>Publications are ranked according to these new citation '
                      'counts and the <em>h-</em>equivalent value, <em>h<sub>e</sub>,</em> is found as the largest '
@@ -5538,7 +5542,7 @@ def write_profit_adj_h_index_example(metric_set: MetricSet) -> str:
         ap = d[3]
         e = d[4]
         if i + 1 == ha:
-            v = f'<em>h<sub>a</sub></em>&nbsp;=&nbsp;{ha}'
+            v = f'<em>h<sub>a</sub></em>{NBEQ}{ha}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5653,7 +5657,7 @@ def write_normal_hi_index_example(metric_set: MetricSet) -> str:
         c = d[1]
         a = d[2]
         if i + 1 == hi:
-            v = f'<em>h</em><sub><em>i-</em>norm</sub>&nbsp;=&nbsp;{hi}'
+            v = f'<em>h</em><sub><em>i-</em>norm</sub>{NBEQ}{hi}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5748,7 +5752,7 @@ def write_gf_cite_index_example(metric_set: MetricSet) -> str:
         a = d[2]
         s += cs
         if i + 1 == gf:
-            v = f'<em>g<sub>f</sub></em>&nbsp;=&nbsp;{gf}'
+            v = f'<em>g<sub>f</sub></em>{NBEQ}{gf}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5813,9 +5817,9 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
     rows = ["" for _ in range(6)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
     rows[1] = '<tr><th>Authors (<em>A<sub>i</sub></em>)</th>'
-    rows[2] = '<tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th>'
+    rows[2] = f'<tr><th>Author Effort (<em>E<sub>i</sub></em>{NBEQ}1/<em>A<sub>i</sub></em>)</th>'
     rows[3] = '<tr><th>Rank (<em>i</em>)</th>'
-    rows[4] = '<tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>)&nbsp;=&nbsp;Σ<em>E<sub>i</sub></em>)</th>'
+    rows[4] = f'<tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>){NBEQ}Σ<em>E<sub>i</sub></em>)</th>'
     rows[5] = '<tr><th></th>'
     hm = metric_set.metrics["hm-index"].value
     s = 0
@@ -5824,7 +5828,7 @@ def write_hm_index_example(metric_set: MetricSet) -> str:
         a = d[1]
         s += 1/a
         if s == hm:
-            v = f'<em>h<sub>m</sub></em>&nbsp;=&nbsp;{hm:0.2f}'
+            v = f'<em>h<sub>m</sub></em>{NBEQ}{hm:0.2f}'
             ec = ' class="box"'
         else:
             v = ""
@@ -5907,9 +5911,9 @@ def write_gf_paper_index_example(metric_set: MetricSet) -> str:
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
     rows[1] = '<tr><th>Cumulative Citations (Σ<em>C<sub>i</sub></em>)</th>'
     rows[2] = '<tr><th>Authors (<em>A<sub>i</sub></em>)</th>'
-    rows[3] = '<tr><th>Author Effort (<em>E<sub>i</sub></em>&nbsp;=&nbsp;1/<em>A<sub>i</sub></em>)</th>'
+    rows[3] = f'<tr><th>Author Effort (<em>E<sub>i</sub></em>{NBEQ}1/<em>A<sub>i</sub></em>)</th>'
     rows[4] = '<tr><th>Rank (<em>i</em>)</th>'
-    rows[5] = '<tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>)&nbsp;=&nbsp;Σ<em>E<sub>i</sub></em>)</th>'
+    rows[5] = f'<tr><th>Adjusted Rank (<em>r<sub>eff</sub></em>(<em>i</em>){NBEQ}Σ<em>E<sub>i</sub></em>)</th>'
     rows[6] = '<tr><th>Adjusted Rank Squared (<em>r<sub>eff</sub></em>(<em>i</em>)<sup>2</sup></th>'
     rows[7] = '<tr><th></th>'
     gf = metric_set.metrics["gf-paper"].value
@@ -5921,7 +5925,7 @@ def write_gf_paper_index_example(metric_set: MetricSet) -> str:
         s += 1/a
         sc += c
         if s == gf:
-            v = f'<em>g<sub>F</sub></em>&nbsp;=&nbsp;{gf:0.2f}'
+            v = f'<em>g<sub>F</sub></em>{NBEQ}{gf:0.2f}'
             ec = ' class="box"'
         else:
             v = ""
@@ -6010,7 +6014,7 @@ def write_pos_weight_h_index_example(metric_set: MetricSet) -> str:
         e = d[4]
         w = 1/e
         if i + 1 == hp:
-            v = f'<em>h<sub>p</sub></em>&nbsp;=&nbsp;{hp}'
+            v = f'<em>h<sub>p</sub></em>{NBEQ}{hp}'
             ec = ' class="box"'
         else:
             v = ""
@@ -6050,7 +6054,7 @@ def metric_pos_weight_h_index() -> Metric:
                      'weight citation counts prior to ranking, but differs by dividing the raw citation count '
                      'directly by the inverse of the effort rather than the square-root of the effort. The effort is '
                      f'calculated as</p>{eistr}<p>with weight '
-                     '<em>w<sub>i</sub></em>&nbsp;=&nbsp;1/<em>E<sub>i</sub></em>, and the adjusted citation '
+                     f'<em>w<sub>i</sub></em>{NBEQ}1/<em>E<sub>i</sub></em>, and the adjusted citation '
                      f'count as</p>{cistr}'
                      '<p>where <em>a<sub>i</sub></em> is the position of the target author within the full author '
                      'list of publication <em>i</em> (<em>i.e.</em>, an integer from 1 to <em>A<sub>i</sub></em>). '
@@ -6139,7 +6143,7 @@ def write_prop_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
         e = d[4]
         w = 1/e
         if i + 1 == hp:
-            v = f'<em>h<sub>p</sub></em>&nbsp;=&nbsp;{hp}'
+            v = f'<em>h<sub>p</sub></em>{NBEQ}{hp}'
         else:
             v = ""
         if i + 1 <= hp:
@@ -6250,7 +6254,7 @@ def write_frac_weight_cite_h_cut_example(metric_set: MetricSet) -> str:
         c = d[1]
         a = d[2]
         if i + 1 == hi:
-            v = f'<em>h</em><sub><em>i-</em>norm</sub>&nbsp;=&nbsp;{hi}'
+            v = f'<em>h</em><sub><em>i-</em>norm</sub>{NBEQ}{hi}'
         else:
             v = ""
         if i + 1 <= hi:
@@ -6705,7 +6709,7 @@ def write_hpd_index_example(metric_set: MetricSet) -> str:
     data.sort(reverse=True)
     rows = ["" for _ in range(5)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
-    rows[1] = '<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>&nbsp;+&nbsp;1)</th>'
+    rows[1] = f'<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>{NBPLUS}1)</th>'
     rows[2] = '<tr class="top_row"><th>Adjusted Citations (<em>cpd<sub>i</sub></em>)</th>'
     rows[3] = '<tr><th>Rank (<em>i</em>)</th>'
     rows[4] = '<tr><th></th>'
@@ -6715,7 +6719,7 @@ def write_hpd_index_example(metric_set: MetricSet) -> str:
         c = d[1]
         y = d[2]
         if i + 1 == hpd:
-            v = f'<em>hpd</em>&nbsp;=&nbsp;{hpd}'
+            v = f'<em>hpd</em>{NBEQ}{hpd}'
             ec = ' class="box"'
         else:
             v = ""
@@ -6783,7 +6787,7 @@ def write_contemporary_h_index_example(metric_set: MetricSet) -> str:
     data.sort(reverse=True)
     rows = ["" for _ in range(5)]
     rows[0] = '<tr><th>Citations (<em>C<sub>i</sub></em>)</th>'
-    rows[1] = '<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>&nbsp;+&nbsp;1)</th>'
+    rows[1] = f'<tr><th>Age (<em>Y</em>&nbsp;&minus;&nbsp;<em>Y<sub>i</sub></em>{NBPLUS}1)</th>'
     scstr = r"\(S^{C}_i\)"
     rows[2] = f'<tr class="top_row"><th>Adjusted Citations ({scstr})</th>'
     rows[3] = '<tr><th>Rank (<em>i</em>)</th>'
@@ -6794,7 +6798,7 @@ def write_contemporary_h_index_example(metric_set: MetricSet) -> str:
         c = d[1]
         y = d[2]
         if i + 1 == hc:
-            v = f'<em>h<sup>C</sup></em>&nbsp;=&nbsp;{hc}'
+            v = f'<em>h<sup>C</sup></em>{NBEQ}{hc}'
             ec = ' class="box"'
         else:
             v = ""
@@ -6913,7 +6917,7 @@ def write_trend_h_index_example(metric_set: MetricSet) -> str:
         sc = d[0]
         c = d[1]
         if i + 1 == ht:
-            v = f'<em>h<sup>C</sup></em>&nbsp;=&nbsp;{ht}'
+            v = f'<em>h<sup>C</sup></em>{NBEQ}{ht}'
             ec = ' class="box"'
         else:
             v = ""
@@ -7165,7 +7169,7 @@ def write_cds_index_example(metric_set: MetricSet) -> str:
         outstr += f'<tr><td>{i+1}</td><td>{low}&ndash;{high}</td><td>{x}</td><td>{(i+1)*x}</td></tr>'
     outstr += '</table>'
     cds = metric_set.metrics["CDS-index"].value
-    outstr += f'<p>The index is the sum of <em>kP<sup>k</sub></em>, thus CDS&nbsp;=&nbsp;{cds}.</p>'
+    outstr += f'<p>The index is the sum of <em>kP<sup>k</sub></em>, thus CDS{NBEQ}{cds}.</p>'
     return outstr
 
 
@@ -7552,7 +7556,7 @@ def write_th_index_example(metric_set: MetricSet) -> str:
         if (ty == -1) and (s >= cp/2):
             ty = y
             ec = ' class="box"'
-            v = f'½<em>C<sup>P</sup></em>&nbsp;=&nbsp;{cp/2}'
+            v = f'½<em>C<sup>P</sup></em>{NBEQ}{cp/2}'
         else:
             ec = ""
             v = ""
@@ -7566,7 +7570,7 @@ def write_th_index_example(metric_set: MetricSet) -> str:
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The first year where Σ<em>C<sub>i</sub></em> ≥ ½<em>C<sup>P</sup></em> is {ty}, thus the '
                'characteristic time scale of scientific activity is '
-               f'{fy}&nbsp;&minus;&nbsp;{ty}&nbsp;+&nbsp;1&nbsp;=&nbsp;{th}</p>')
+               f'{fy}&nbsp;&minus;&nbsp;{ty}{NBPLUS}1{NBEQ}{th}</p>')
     return outstr
 
 
@@ -7961,7 +7965,7 @@ def write_history_h_index_example(metric_set: MetricSet) -> str:
         vlist = []
         for k, hk in enumerate(hklist):
             if hk == i+1:
-                vlist.append(f'<em>H</em><sup>{k}</sup>&nbsp;=&nbsp;{i+1}')
+                vlist.append(f'<em>H</em><sup>{k}</sup>{NBEQ}{i+1}')
         if len(vlist) > 0:
             v = ',&nbsp;'.join(vlist)
         else:
@@ -8011,7 +8015,7 @@ def metric_history_h_index() -> Metric:
                      'element of the vector is the largest rank (<em>i</em>), for which the number of citations '
                      'for that publication is equal or larger than the rank times 2<sup><em>k</em></sup>, or</p>'
                      f'{hkeq}<p>By definition, the first (zeroth) entry is <em>h</em> '
-                     '(since 2<sup>0</sup>&nbsp;=&nbsp;1). Graphically, this is looking at the intersection '
+                     f'(since 2<sup>0</sup>{NBEQ}1). Graphically, this is looking at the intersection '
                      '(rounding the rank down to the nearest integer) of the citation curve with a series of lines '
                      'with ever increasing slopes of 2<sup><em>k</em></sup>: '
                      '1 (=<em>h</em>), 2, 4, 8, etc., with the largest <em>k</em> equal to the line with the largest '
@@ -8050,10 +8054,10 @@ def metric_quality_quotient() -> Metric:
                      f'__h-index__,</p>{equation}<p>This metric can only really be used to compare '
                      'individuals with identical <em>h-</em>indices, as the minimum possible value varies with '
                      '<em>h</em> in a non-monotonic manner, <em>e.g.,</em> '
-                     'when <em>h</em>&nbsp;=&nbsp;1, min(<em>Q</em>)&nbsp;=&nbsp;1; '
-                     'when <em>h</em>&nbsp;=&nbsp;2, min(<em>Q</em>)&nbsp;=&nbsp;1.5; '
-                     'when <em>h</em>&nbsp;=&nbsp;3, min(<em>Q</em>)&nbsp;=&nbsp;1.33; '
-                     'when <em>h</em>&nbsp;=&nbsp;4, min(<em>Q</em>)&nbsp;=&nbsp;1.75, etc.</p>')
+                     f'when <em>h</em>{NBEQ}1, min(<em>Q</em>){NBEQ}1; '
+                     f'when <em>h</em>{NBEQ}2, min(<em>Q</em>){NBEQ}1.5; '
+                     f'when <em>h</em>{NBEQ}3, min(<em>Q</em>){NBEQ}1.33; '
+                     f'when <em>h</em>{NBEQ}4, min(<em>Q</em>){NBEQ}1.75, etc.</p>')
     m.references = ["Randić, M. (2009) Citations versus limitations of citations: Beyond Hirsch index. "
                     "<em>Scientometrics</em> 80(3):809&ndash;818."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
@@ -8089,11 +8093,11 @@ def metric_scientist_level() -> Metric:
                      'represent the overall level and <em>L</em> the progress within <em>v</em>. Functionally, '
                      'these values are logarithmic decompositions of the sum of citations and publications, such '
                      'that <em>v</em> represents the integer value of the (base 10) logarithm of the sum '
-                     '(<em>i.e.,</em> <em>v</em>&nbsp;=&nbsp;0 when the sum is less than 10, <em>v</em>&nbsp;=&nbsp;1 '
-                     'when the sum is between 10 and 99, <em>v</em>&nbsp;=&nbsp;2 when the sum is between 100 and '
+                     f'(<em>i.e.,</em> <em>v</em>{NBEQ}0 when the sum is less than 10, <em>v</em>{NBEQ}1 '
+                     f'when the sum is between 10 and 99, <em>v</em>{NBEQ}2 when the sum is between 100 and '
                      '999, etc.), and <em>L</em> is the integer value of the sum divided by '
-                     '10<sup><em>v</em></sup> (<em>i.e.,</em> if <em>v</em>&nbsp;=&nbsp;2, <em>L</em>&nbsp;=&nbsp;1 '
-                     'if the sum is between 100 and 199, <em>L</em>&nbsp;=&nbsp;2 if the sum is between 200 and 299, '
+                     f'10<sup><em>v</em></sup> (<em>i.e.,</em> if <em>v</em>{NBEQ}2, <em>L</em>{NBEQ}1 '
+                     f'if the sum is between 100 and 199, <em>L</em>{NBEQ}2 if the sum is between 200 and 299, '
                      f'etc.).</p>{eq1}{eq2}'
                      '<p><em>L</em> can be any integer from 1 to 9, while <em>v</em> will generally be an integer '
                      'between 0 and 5 (a <em>v</em> of 6 would require > 1 million combined citations and '
@@ -8195,7 +8199,7 @@ def write_q_index_example(metric_set: MetricSet) -> str:
         a = d[2]
         q = d[3]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -8289,7 +8293,7 @@ def write_career_years_h_index_pub_example(metric_set: MetricSet) -> str:
         c = d[0]
         y = d[1]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -8369,7 +8373,7 @@ def write_career_years_h_index_cite_example(metric_set: MetricSet) -> str:
         c = d[0]
         y = d[1]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -8457,7 +8461,7 @@ def write_career_years_h_index_avgcite_example(metric_set: MetricSet) -> str:
         p = d[2]
         c = d[3]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -8550,7 +8554,7 @@ def write_career_years_h_index_diffspeed_example(metric_set: MetricSet) -> str:
         a = d[2]
         c = d[3]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -9036,7 +9040,7 @@ def write_apparent_h_index_example(metric_set: MetricSet) -> str:
         if c > 0:
             non_zero_cnt += 1
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -9416,7 +9420,7 @@ def write_reci_recp_example(metric_set: MetricSet) -> str:
         rows[0] += f'<td>{c}</td>'
         rows[1] += f'<td>{i+1}</td>'
         if i + 1 == h:
-            rows[2] += f'<td><em>h</em>&nbsp;=&nbsp;{h}</td>'
+            rows[2] += f'<td><em>h</em>{NBEQ}{h}</td>'
         else:
             rows[2] += '<td></td>'
         if i+1 <= h:
@@ -9491,7 +9495,7 @@ def write_academic_trace_example(metric_set: MetricSet) -> str:
         if c == 0:
             pz += 1
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -9870,7 +9874,7 @@ def write_mikhailov_j_index_example(metric_set: MetricSet) -> str:
     j = metric_set.metrics["Mikhailov j-index"].value
     for i, c in enumerate(citations):
         if i + 1 == j:
-            v = f'<em>j</em>&nbsp;=&nbsp;{j}'
+            v = f'<em>j</em>{NBEQ}{j}'
             ec = ' class="box"'
         else:
             v = ""
@@ -9987,7 +9991,7 @@ def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 == h:
-                    v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -10006,7 +10010,7 @@ def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
     yp_em = metric_set.metrics["Year-based EM-index by publications"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The Year-based '
                f'<em>EM</em>-index by publications is the square-root of this sum, thus '
-               f'<em>Yp_EM</em>&nbsp;=&nbsp;{yp_em:0.4f}.</p>')
+               f'<em>Yp_EM</em>{NBEQ}{yp_em:0.4f}.</p>')
     return outstr
 
 
@@ -10112,7 +10116,7 @@ def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 == h:
-                    v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -10131,7 +10135,7 @@ def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
     yp_em = metric_set.metrics["Year-based EM-index by publication year citations"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. Year-based '
                f'<em>EM</em>-index by publication year citations is the square-root of this sum, thus '
-               f'<em>Ypc_EM</em>&nbsp;=&nbsp;{yp_em:0.4f}.</p>')
+               f'<em>Ypc_EM</em>{NBEQ}{yp_em:0.4f}.</p>')
     return outstr
 
 
@@ -10237,7 +10241,7 @@ def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
                 rows[2] += '<td></td>'
             else:
                 if i + 1 == h:
-                    v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                    v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                     ec = ' class="box"'
                 else:
                     v = ""
@@ -10256,7 +10260,7 @@ def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
     yp_em = metric_set.metrics["Year-based EM-index by citations"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The Year-based '
                f'<em>EM-</em>index by citations is the square-root of this sum, thus '
-               f'<em>Yc_EM</em>&nbsp;=&nbsp;{yp_em:0.4f}.</p>')
+               f'<em>Yc_EM</em>{NBEQ}{yp_em:0.4f}.</p>')
     return outstr
 
 
@@ -10353,7 +10357,7 @@ def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(data):
             if i + 1 == h:
-                v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
             else:
                 v = ""
@@ -10372,7 +10376,7 @@ def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
     yp_emp = metric_set.metrics["Year-based EMp-index by publications"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The Year-based '
                f'<em>EM</em>&prime;-index by publications is the square-root of this sum, thus '
-               f'<em>Yp_EM</em>&prime;&nbsp;=&nbsp;{yp_emp:0.4f}.</p>')
+               f'<em>Yp_EM</em>&prime;{NBEQ}{yp_emp:0.4f}.</p>')
     return outstr
 
 
@@ -10471,7 +10475,7 @@ def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
         rows[2] = "<tr><th></th>"
         for i, c in enumerate(data):
             if i + 1 == h:
-                v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
             else:
                 v = ""
@@ -10492,7 +10496,7 @@ def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
     yp_em = metric_set.metrics["Year-based EMp-index by publication year citations"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The year-based '
                f'<em>EM</em>&prime;-index by publication year citations is the square-root of this sum, thus '
-               f'<em>Ypc_EM</em>&prime;&nbsp;=&nbsp;{yp_em:0.4f}.</p>')
+               f'<em>Ypc_EM</em>&prime;{NBEQ}{yp_em:0.4f}.</p>')
     return outstr
 
 
@@ -10594,7 +10598,7 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(data):
             if i + 1 == h:
-                v = f'<em>E</em><sub>{j+1}</sub>&nbsp;=&nbsp;{h}'
+                v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
             else:
                 v = ""
@@ -10614,7 +10618,7 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
     yp_em = metric_set.metrics["Year-based EMp-index by citations"].value
     outstr += (f'<p>The sum of the {len(em_components)} <em>E</em> values is {sum(em_components)}. The Year-based '
                f'<em>EM</em>&prime;-index by citations is the square-root of this sum, thus '
-               f'<em>Yc_EM</em>&prime;&nbsp;=&nbsp;{yp_em:0.4f}.</p>')
+               f'<em>Yc_EM</em>&prime;{NBEQ}{yp_em:0.4f}.</p>')
     return outstr
 
 
@@ -10921,7 +10925,7 @@ def write_h_norm_example(metric_set: MetricSet) -> str:
         c = d[1]
         a = d[2]
         if i + 1 == hn:
-            v = f'<em>h-norm</em>&nbsp;=&nbsp;{hn}'
+            v = f'<em>h-norm</em>{NBEQ}{hn}'
             ec = ' class="box"'
         else:
             v = ""
@@ -11943,7 +11947,7 @@ def write_lambda_index_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s += c
         if i + 1 == lam:
-            v = f'<em></em>λ&nbsp;=&nbsp;{lam}'
+            v = f'<em></em>λ{NBEQ}{lam}'
             ec = ' class="box"'
         else:
             v = ""
@@ -12013,7 +12017,7 @@ def write_pareto_rule_example(metric_set: MetricSet) -> str:
     for i, c in enumerate(citations):
         s += c
         if i + 1 == lam:
-            v = f'<em></em>λ&nbsp;=&nbsp;{lam}'
+            v = f'<em></em>λ{NBEQ}{lam}'
             ec = ' class="box"'
         else:
             v = ""
@@ -12031,7 +12035,7 @@ def write_pareto_rule_example(metric_set: MetricSet) -> str:
     pv = metric_set.metrics["Pareto value"].value
     outstr += (f'<p>The largest rank where <em>C<sup>i</sup>/C<sup>P</sup></em> ≤ 1 - <em>i/P</em> is {lam}. With {p} '
                f'total publications, that makes the '
-               f'λ/P&nbsp;%&nbsp;=&nbsp;100&times;{lam}/{p}&nbsp;=&nbsp;{round(pv)}%, representing a '
+               f'λ/P&nbsp;%{NBEQ}100&times;{lam}/{p}{NBEQ}{round(pv)}%, representing a '
                f'{100-round(pv)}:{round(pv)} rule.</p>')
     return outstr
 
@@ -12193,7 +12197,7 @@ def write_revised_h_example(metric_set: MetricSet) -> str:
         a = d[1]
         ap = d[2]
         if i + 1 == h:
-            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            v = f'<em>h</em>{NBEQ}{h}'
             ec = ' class="box"'
         else:
             v = ""
@@ -12213,7 +12217,7 @@ def write_revised_h_example(metric_set: MetricSet) -> str:
     outstr += "".join(rows) + '</table>\n'
     outstr += (f'<p>The <em>h-</em>index is {h}. Of the {h} publications in the core, {acnt} represent first or last '
                f'author publications, so '
-               f'<em>r</em>&nbsp;=1.2&times;{acnt}&nbsp;+&nbsp;0.4&times;{h}&nbsp;=&nbsp;{r:0.4}.</p>')
+               f'<em>r</em>&nbsp;=1.2&times;{acnt}{NBPLUS}0.4&times;{h}{NBEQ}{r:0.4}.</p>')
     return outstr
 
 
