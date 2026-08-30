@@ -2177,6 +2177,40 @@ def create_real_h_index_desc_graph_data(metric_set: MetricSet) -> list:
     return output
 
 
+def write_real_h_index_example(metric_set: MetricSet) -> str:
+    outstr = '<p>Publications are ordered by number of citations, from highest to lowest.</p>'
+    outstr += '<table class="example_table">\n'
+    citations = sorted(metric_set.citations, reverse=True)
+    rows = ["" for _ in range(3)]
+    rows[0] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+    rows[1] = '<tr><th>Rank (<em>i</em>)</th>'
+    rows[2] = '<tr><th></th>'
+    h = metric_set.metrics["h-index"].value
+    realh = metric_set.metrics["real h-index"].value
+    for i, c in enumerate(citations):
+        if i + 1 == h:
+            v = f'<em>h</em>&nbsp;=&nbsp;{h}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        rows[0] += f'<td{ec}>{c}</td>'
+        rows[1] += f'<td{ec}>{i+1}</td>'
+        rows[2] += f'<td>{v}</td>'
+
+    for row in rows:  # add table row endings
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
+    ch = citations[h-1]
+    ch1 = citations[h]
+    outstr += (f'<p>The <em>h-</em>index is {h}. The {h}<sup>th</sup> publication has '
+               f'<em>C<sub>h</sub></em>&nbsp;=&nbsp;{ch} citations, '
+               f'while the {h+1}<sup>th</sup> publication has <em>C<sub>h+1</sub></em>&nbsp;=&nbsp;{ch1} '
+               f'citations. <em>h<sub>r</sub>&nbsp;=&nbsp;({h+1}&times;{ch}&nbsp;-&nbsp;{h}&times;{ch1})/'
+               f'(1&nbsp;-&nbsp;{ch1}&nbsp;+&nbsp;{ch})&nbsp;=&nbsp;{realh:0.4f}</em>')
+    return outstr
+
+
 def metric_real_h_index() -> Metric:
     m = Metric()
     m.name = "real h-index"
@@ -2201,6 +2235,7 @@ def metric_real_h_index() -> Metric:
                     "<em>g-</em>index. <em>Journal of Informetrics</em> 3:64&ndash;71."]
     m.symbol = "<em>h<sub>r</sub></em>"
     m.axis_name = r"$h_r$"
+    m.example = write_real_h_index_example
     m.synonyms = ["<em>h<sub>r</sub></em>", "interpolated <em>h-</em>index"]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_real_h_index
