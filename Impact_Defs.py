@@ -4203,24 +4203,7 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> publications. '
               'All publications beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>')
     citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    # calculate vector
-    em_components = []
-    n_cited = count_cited(citations)
-    while n_cited > 1:
-        if max(citations) == 1:
-            em_components.append(1)
-            n_cited = 0
-        else:
-            h = 0
-            for i, c in enumerate(citations):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            citations = [max(0, c-h) for c in citations]
-            n_cited = count_cited(citations)
-    citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    em_components = Impact_Funcs.calculate_em_components(citations)
     outstr += '<table class="example_table">\n'
     oldh = len(citations)
     for j, h in enumerate(em_components):
@@ -4231,10 +4214,6 @@ def write_iterative_weighted_em_index_example(metric_set: MetricSet) -> str:
             rows[0] = '<tr class="top_row"><th>Adjusted Citations (<em>C<sub>i</sub></em>)</th>'
         if j + 1 != len(em_components):
             rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>')
-        # if j + 1 == len(em_components):
-        #     row4 = ""
-        # else:
-        #     row4 = '<tr class="spacer_row"><th></th>' + len(citations) * "<td></td>" + "</tr>"
         rows[1] = '<tr><th>Rank (<em>i</em>)</th>'
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(citations):
@@ -4314,29 +4293,8 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'publications and all publications are re-ranked by this adjusted citation count for the next step.</p>')
     citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
-    # calculate vector
-    em_components = []
-    n_cited = count_cited(citations)
-    while n_cited > 1:
-        if max(citations) == 1:
-            em_components.append(1)
-            n_cited = 0
-        else:
-            h = 0
-            for i, c in enumerate(citations):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            for i in range(h):
-                citations[i] -= h
-            citations.sort(reverse=True)
-            n_cited = count_cited(citations)
-    # print(em_components)
-    citations = sorted(metric_set.citations, reverse=True)
-    # citations = [30, 30, 25, 22, 22, 21, 15, 15, 14, 10, 10, 10, 9, 8, 1]  # test vector
+    em_components = Impact_Funcs.calculate_emp_components(citations)
     outstr += '<table class="example_table">\n'
-    # oldh = len(em_components)
     for j, h in enumerate(em_components):
         rows = ["" for _ in range(3)]
         if j == 0:
@@ -4347,17 +4305,8 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
             rows[1] = '<tr><th>New Rank (<em>i</em>)</th>'
         if j + 1 != len(em_components):
             rows.append('<tr class="spacer_row"><th></th>' + len(citations)*'<td></td>')
-        # if j + 1 == len(em_components):
-        #     row4 = ""
-        # else:
-        #     row4 = '<tr class="spacer_row"><th></th>' + len(citations) * "<td></td>" + "</tr>"
         rows[2] = '<tr><th></th>'
         for i, c in enumerate(citations):
-            # if i >= oldh:
-            #     row1 += "<td class=\"light_box\"></td>"
-            #     row2 += "<td class=\"light_box\"></td>"
-            #     row3 += "<td></td>"
-            # else:
             if i + 1 == h:
                 v = f'<em>E</em><sub>{j+1}</sub>{NBEQ}{h}'
                 ec = ' class="box"'
@@ -4370,7 +4319,6 @@ def write_iterative_weighted_emp_index_example(metric_set: MetricSet) -> str:
         for i in range(h):
             citations[i] -= h
         citations.sort(reverse=True)
-        # oldh = h
         for row in rows:  # add table row endings
             row += '</tr>\n'
         outstr += "".join(rows)
