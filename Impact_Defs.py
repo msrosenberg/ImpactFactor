@@ -10892,7 +10892,7 @@ def write_yearly_h_index_example(metric_set: MetricSet) -> str:
                 citations.append(c)
         citations.sort(reverse=True)
         tmp_h = Impact_Funcs.get_rank_value(citations)
- 
+
         rows = ["" for _ in range(4)]
         rows[0] = f'<tr class="top_row"><th>{y}</th>'
         rows[1] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
@@ -11284,6 +11284,51 @@ def calculate_partnership_ability(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_partnership_ability(metric_set.coauthors())
 
 
+def write_partnership_example(metric_set: MetricSet) -> str:
+    coauthor_list = metric_set.coauthors()
+    # create counts of publications per coauthor
+    coauthor_cnts = {}
+    for coauthors in coauthor_list:
+        if coauthors != ".":
+            if ";" in coauthors:
+                coa_list = coauthors.split(";")
+            else:
+                coa_list = [coauthors]
+            for a in coa_list:
+                if a in coauthor_cnts:
+                    coauthor_cnts[a] += 1
+                else:
+                    coauthor_cnts[a] = 1
+    data = [[coauthor_cnts[c], c] for c in coauthor_cnts]
+    data.sort(reverse=True)
+
+    outstr = '<p>Coauthors are ordered by number of coauthored publications, from highest to lowest.</p>'
+    outstr += '<table class="example_table">\n'
+    rows = ["" for _ in range(4)]
+    rows[0] = '<tr class="top_row"><th>Coauthor</th>'
+    rows[1] = '<tr class="top_row"><th>Coauthored Publications</th>'
+    rows[2] = '<tr><th>Rank (<em>i</em>)</th>'
+    rows[3] = '<tr><th></th>'
+    phi = metric_set.metrics["partnership ability"].value
+    for i, d in enumerate(data):
+        if i + 1 == phi:
+            v = f'<em>φ</em>{NBEQ}{phi}'
+            ec = ' class="box"'
+        else:
+            v = ""
+            ec = ""
+        rows[0] += f'<td>Coauthor&nbsp;{i+1}</td>'
+        rows[1] += f'<td{ec}>{d[0]}</td>'
+        rows[2] += f'<td{ec}>{i+1}</td>'
+        rows[3] += f'<td>{v}</td>'
+    for row in rows:  # add table row endings
+        row += '</tr>\n'
+    outstr += "".join(rows) + '</table>\n'
+    outstr += (f'<p>The largest rank which is greater than or equal to the corresponding number of coauthored '
+               f'publications is {phi}.</p>')
+    return outstr
+
+
 def metric_partnership_ability() -> Metric:
     m = Metric()
     m.name = "partnership ability"
@@ -11292,6 +11337,7 @@ def metric_partnership_ability() -> Metric:
     m.axis_name = r"$\phi$"
     m.synonyms = ["<em>φ</em>"]
     m.metric_type = INT
+    m.example = write_partnership_example
     m.description = ('<p>The partnership ability index (Schubert 2012) is the collaborator equivalent of '
                      'the __h-index__. It is the '
                      'largest value for which <em>φ</em> coauthors of the target author have produced at least '
