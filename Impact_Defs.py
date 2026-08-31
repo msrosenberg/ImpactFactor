@@ -9877,23 +9877,7 @@ def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
     ydata.sort(reverse=True)
 
     # calculate vector
-    em_components = []
-    n_pubs = count_pubs(data)
-    while n_pubs > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_pubs = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            data = [max(0, c-h) for c in data]
-            n_pubs = count_pubs(data)
-
-    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
-    data.sort(reverse=True)
+    em_components = Impact_Funcs.calculate_em_components(data)
     outstr += '<table class="example_table">\n'
 
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
@@ -10001,24 +9985,8 @@ def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
     ydata = [[year_cnts[y], y] for y in range(miny, maxy + 1)]
     ydata.sort(reverse=True)
 
-    # calculate vector
-    em_components = []
-    n_cites = count_cites(data)
-    while n_cites > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_cites = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            data = [max(0, c-h) for c in data]
-            n_cites = count_cites(data)
-
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
+    # # calculate vector
+    em_components = Impact_Funcs.calculate_em_components(data)
 
     outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
@@ -10128,23 +10096,7 @@ def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
     ydata.sort(reverse=True)
 
     # calculate vector
-    em_components = []
-    n_cites = count_cites(data)
-    while n_cites > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_cites = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i + 1 <= c:
-                    h += 1
-            em_components.append(h)
-            data = [max(0, c - h) for c in data]
-            n_cites = count_cites(data)
-
-    data = [d for d in total_cites_per_year]
-    data.sort(reverse=True)
+    em_components = Impact_Funcs.calculate_em_components(data)
     outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
@@ -10246,25 +10198,7 @@ def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
     ydata.sort(reverse=True)
 
     # calculate vector
-    em_components = []
-    n_pubs = count_pubs(data)
-    while n_pubs > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_pubs = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            for i in range(h):
-                data[i] = max(0, data[i]-h)
-            data.sort(reverse=True)
-            n_pubs = count_pubs(data)
-
-    data = [pub_years.count(y) for y in range(miny, maxy + 1)]
-    data.sort(reverse=True)
+    em_components = Impact_Funcs.calculate_emp_components(data)
     outstr += '<table class="example_table">\n'
 
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
@@ -10364,25 +10298,7 @@ def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
     ydata.sort(reverse=True)
 
     # calculate vector
-    em_components = []
-    n_cites = count_cites(data)
-    while n_cites > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_cites = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i+1 <= c:
-                    h += 1
-            em_components.append(h)
-            for i in range(h):
-                data[i] = max(0, data[i]-h)
-            data.sort(reverse=True)
-            n_cites = count_cites(data)
-
-    data = [year_cnts[y] for y in year_cnts]
-    data.sort(reverse=True)
+    em_components = Impact_Funcs.calculate_emp_components(data)
 
     outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
@@ -10488,25 +10404,8 @@ def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
     ydata.sort(reverse=True)
 
     # calculate vector
-    em_components = []
-    n_cites = count_cites(data)
-    while n_cites > 1:
-        if max(data) == 1:
-            em_components.append(1)
-            n_cites = 0
-        else:
-            h = 0
-            for i, c in enumerate(data):
-                if i + 1 <= c:
-                    h += 1
-            em_components.append(h)
-            for i in range(h):
-                data[i] = max(0, data[i] - h)
-            data.sort(reverse=True)
-            n_cites = count_cites(data)
+    em_components = Impact_Funcs.calculate_emp_components(data)
 
-    data = [d for d in total_cites_per_year]
-    data.sort(reverse=True)
     outstr += '<table class="example_table">\n'
     outstr += '<tr><th>Year (<em>y<sub>i</sub></em>)</th>'
     for x in ydata:
@@ -10991,7 +10890,7 @@ def metric_yearly_h_index() -> Metric:
                      'individual year of their career, rather than a single <em>h</em> determined for the entire '
                      f'career. It is calculated as:</p>{equation}<p>where <em>h<sub>i</sub></em> is simply an '
                      '<em>h-</em>index calculated only for papers from year <em>i</em>. Regardless of citation '
-                     'counts, the yearly <em>h-</em> index will always be limited by the total number of papers '
+                     'counts, the yearly <em>h-</em>index will always be limited by the total number of papers '
                      'published per year, thus highly cited papers and poorly cited papers will frequently '
                      'contribute about equal weight in any given year. It serves more as a general measure of '
                      'consistency and&mdash;assuming most papers get at least a few citations&mdash;is little '
