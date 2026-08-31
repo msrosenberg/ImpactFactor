@@ -10875,6 +10875,49 @@ def calculate_yearly_h_index(metric_set: MetricSet) -> float:
     return Impact_Funcs.calculate_yearly_h_index(citations, pub_years)
 
 
+def write_yearly_h_index_example(metric_set: MetricSet) -> str:
+    outstr = ('<p>Publications are ordered by number of citations, from highest to lowest, for each year '
+              'independently.</p>')
+    outstr += '<table class="example_table">\n'
+
+    pub_years = metric_set.publication_years()
+    min_year = min(pub_years)
+    max_year = max(pub_years)
+    nyears = max_year - min_year + 1
+    for y in range(min_year, max_year + 1):
+        # create citation list for pubs in one year only
+        citations = []
+        for i, c in enumerate(metric_set.citations):
+            if pub_years[i] == y:
+                citations.append(c)
+        citations.sort(reverse=True)
+        tmp_h = Impact_Funcs.get_rank_value(citations)
+ 
+        rows = ["" for _ in range(4)]
+        rows[0] = f'<tr class="top_row"><th>{y}</th>'
+        rows[1] = '<tr class="top_row"><th>Citations (<em>C<sub>i</sub></em>)</th>'
+        rows[2] = '<tr><th>Rank (<em>i</em>)</th>'
+        rows[3] = '<tr><th></th>'
+        for i, c in enumerate(citations):
+            if i + 1 == tmp_h:
+                v = f'<em>h</em><sub>{y}</sub>{NBEQ}{tmp_h}'
+                ec = ' class="box"'
+            else:
+                v = ""
+                ec = ""
+            rows[1] += f'<td{ec}>{c}</td>'
+            rows[2] += f'<td{ec}>{i+1}</td>'
+            rows[3] += f'<td>{v}</td>'
+        for row in rows:  # add table row endings
+            row += '</tr>\n'
+        outstr += "".join(rows)
+    outstr += '</table>\n'
+    yh = metric_set.metrics["yearly h-index"].value
+    outstr += (f'<p>The yearly <em>h-</em>index is the average of the {nyears} <em>h-</em>indices calculated '
+               f'independently for publications released each year, or {yh:0.4f}.</p>')
+    return outstr
+
+
 def metric_yearly_h_index() -> Metric:
     m = Metric()
     m.name = "yearly h-index"
@@ -10900,6 +10943,7 @@ def metric_yearly_h_index() -> Metric:
                     "using average <em>h-index</em>. <em>Scientometrics</em> 127:637&ndash;660."]
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_yearly_h_index
+    m.example = write_yearly_h_index_example
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
     m.properties["Core Citations"] = True
