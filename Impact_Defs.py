@@ -6861,14 +6861,6 @@ def write_trend_h_index_example(metric_set: MetricSet) -> str:
     for row in all_rows:  # add table row endings
         row += '</tr>\n'
     outstr += "".join(all_rows) + '</table>\n'
-    # row1 += '</tr>\n'
-    # row2 += '</tr>\n'
-    # row3 += '</tr>\n'
-    # row4 += '</tr>\n'
-    # outstr += row1
-    # for row in middle_rows:
-    #     outstr += row
-    # outstr += row2 + row3 + row4 + '</table>\n'
     steq = r"\(i \leq S^{t}_i\)"
     outstr += f'<p>The largest rank where {steq} is {ht}.</p>'
     return outstr
@@ -9856,13 +9848,6 @@ def calculate_year_based_em_pub(metric_set: MetricSet) -> float:
 
 
 def write_year_based_em_pub_example(metric_set: MetricSet) -> str:
-    def count_pubs(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of publications, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> '
               'years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>')
@@ -9961,13 +9946,6 @@ def calculate_year_based_em_pycites(metric_set: MetricSet) -> float:
 
 
 def write_year_based_em_pycites_example(metric_set: MetricSet) -> str:
-    def count_cites(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of citations, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>')
@@ -10071,13 +10049,6 @@ def calculate_year_based_em_cites(metric_set: MetricSet) -> float:
 
 
 def write_year_based_em_cites_example(metric_set: MetricSet) -> str:
-    def count_cites(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of citations received that year, from highest to lowest. After each '
               'step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'years. All years beyond the top <em>E<sub>i</sub></em> are ignored at subsequent steps.</p>')
@@ -10177,13 +10148,6 @@ def calculate_year_based_emp_pub(metric_set: MetricSet) -> float:
 
 
 def write_year_based_emp_pub_example(metric_set: MetricSet) -> str:
-    def count_pubs(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of publications, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the publications of the top <em>E<sub>i</sub></em> '
               'years. The yearly data is then resorted from high to low for each subsequent step.</p>')
@@ -10274,13 +10238,6 @@ def calculate_year_based_emp_pycites(metric_set: MetricSet) -> float:
 
 
 def write_year_based_emp_pycites_example(metric_set: MetricSet) -> str:
-    def count_cites(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of citations, from highest to lowest. After each step, '
               '<em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'years. The yearly data is then resorted from high to low for each subsequent step.</p>')
@@ -10379,13 +10336,6 @@ def calculate_year_based_emp_cites(metric_set: MetricSet) -> float:
 
 
 def write_year_based_emp_cites_example(metric_set: MetricSet) -> str:
-    def count_cites(tmpc: list) -> int:
-        cnt = 0
-        for cc in tmpc:
-            if cc > 0:
-                cnt += 1
-        return cnt
-
     outstr = ('<p>Years are ordered by number of citations received that year, from highest to lowest. After each '
               'step, <em>E<sub>i</sub></em> is subtracted from the citations of the top <em>E<sub>i</sub></em> '
               'years. The yearly data is then resorted from high to low for each subsequent step.</p>')
@@ -11712,6 +11662,53 @@ def calculate_l_sequence(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_l_sequence(pub_data)
 
 
+def write_l_sequence_example(metric_set: MetricSet) -> str:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    pub_cites = Impact_Funcs.citations_per_pub_per_year(pub_data)
+    year_list = [m.year() for m in metric_list[:metric_pos+1]]
+    npubs = [metric_list[i].metrics["total pubs"].value for i in range(metric_pos+1)]
+
+    outstr = ('<p>Publications are ordered within each year by number of citations obtained within that year, '
+              'from highest to lowest.</p>')
+    outstr += '<table class="example_table">\n'
+    lvalues = []
+    for j, y in enumerate(year_list):
+        cur_year_cites = [x[j] for x in pub_cites]
+        sorted_citations = sorted(cur_year_cites, reverse=True)
+        sorted_citations = sorted_citations[:npubs[j]]     # remove zero counts for pubs not yet published that year
+        lv = Impact_Funcs.get_rank_value(sorted_citations)
+        lvalues.append(lv)
+
+        rows = ["" for _ in range(4)]
+        rows[0] = f'<tr><th>{y}</th>'
+        rows[1] = f'<tr class="top_row"><th>Citations</th>'
+        rows[2] = '<tr><th>Rank (<em>i</em>)</th>'
+        rows[3] = '<tr><th></th>'
+
+        for i, c in enumerate(sorted_citations):
+            if i + 1 == lv:
+                v = f'<em>L</em><sub>{y}</sub>{NBEQ}{lv}'
+                ec = ' class="box"'
+            else:
+                v = ""
+                ec = ""
+            rows[1] += f'<td{ec}>{c}</td>'
+            rows[2] += f'<td{ec}>{i+1}</td>'
+            rows[3] += f'<td>{v}</td>'
+        for row in rows:  # add table row endings
+            row += '</tr>\n'
+        outstr += "".join(rows)
+    outstr += '</table>\n'
+
+    lvalues = [str(lv) for lv in lvalues]
+    outstr += (f'<p>The index is calculated following the standard <em>h-</em>index approach but based only on '
+               f'citations obtained within a particular year. The <em>L-</em>Sequence is the full series of '
+               f'values for all years, thus {", ".join(lvalues)}.</p>')
+    return outstr
+
+
 def metric_l_sequence() -> Metric:
     m = Metric()
     m.name = "l seq"
@@ -11728,6 +11725,7 @@ def metric_l_sequence() -> Metric:
                      'particular year ended up being.</p>')
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
     m.calculate = calculate_l_sequence
+    m.example = write_l_sequence_example
     m.properties["Multidimensional Metric"] = True
     m.properties["Core Metric"] = True
     m.properties["Core Publications"] = True
@@ -11747,6 +11745,53 @@ def calculate_l_prop(metric_set: MetricSet) -> int:
     return Impact_Funcs.calculate_l_prop(pub_data)
 
 
+def write_l_prop_example(metric_set: MetricSet) -> str:
+    metric_list = metric_set.parent_list
+    metric_pos = metric_list.index(metric_set)
+    pub_data = [p.citations[:metric_pos+1] for p in metric_set.publications]
+    pub_cites = Impact_Funcs.citations_per_pub_per_year(pub_data)
+    year_list = [m.year() for m in metric_list[:metric_pos+1]]
+    npubs = [metric_list[i].metrics["total pubs"].value for i in range(metric_pos+1)]
+
+    outstr = ('<p>Publications are ordered within each year by number of citations obtained within that year, '
+              'from highest to lowest.</p>')
+    outstr += '<table class="example_table">\n'
+    lvalues = []
+    for j, y in enumerate(year_list):
+        cur_year_cites = [x[j] for x in pub_cites]
+        sorted_citations = sorted(cur_year_cites, reverse=True)
+        sorted_citations = sorted_citations[:npubs[j]]     # remove zero counts for pubs not yet published that year
+        lv = Impact_Funcs.get_rank_value(sorted_citations)
+        lvalues.append(lv)
+
+        rows = ["" for _ in range(4)]
+        rows[0] = f'<tr><th>{y}</th>'
+        rows[1] = f'<tr class="top_row"><th>Citations</th>'
+        rows[2] = '<tr><th>Rank (<em>i</em>)</th>'
+        rows[3] = '<tr><th></th>'
+
+        for i, c in enumerate(sorted_citations):
+            if i + 1 == lv:
+                v = f'<em>L</em><sub>{y}</sub>{NBEQ}{lv}'
+                ec = ' class="box"'
+            else:
+                v = ""
+                ec = ""
+            rows[1] += f'<td{ec}>{c}</td>'
+            rows[2] += f'<td{ec}>{i+1}</td>'
+            rows[3] += f'<td>{v}</td>'
+        for row in rows:  # add table row endings
+            row += '</tr>\n'
+        outstr += "".join(rows)
+    outstr += '</table>\n'
+
+    lvalues = [str(lv) for lv in lvalues]
+    lp = metric_set.metrics["l prop"].value
+    outstr += (f'<p>The index is the sum of the values in the <em>L-</em>Sequence, thus '
+               f'<em>L<sub>∝</sub></em>{NBEQ}{NBPLUS.join(lvalues)}{NBEQ}{lp}.</p>')
+    return outstr
+
+
 def metric_l_prop() -> Metric:
     m = Metric()
     m.name = "l prop"
@@ -11754,6 +11799,7 @@ def metric_l_prop() -> Metric:
     m.html_name = "<em>L<sub>∝</sub></em>"
     m.axis_name = r"$L_\propto$"
     m.metric_type = INT
+    m.example = write_l_prop_example
     m.description = ('<p><em>L<sub>∝</sub></em> is simply the sum of the values in the __l seq__, '
                      'meant to be viewed as an alternative to the __h-index__.</p>')
     m.draw_graph = Impact_Graphs.draw_graph_line_chart
@@ -12028,9 +12074,6 @@ def metric_hstar_index() -> Metric:
     m.properties["All Publications"] = True
     m.properties["All Citations"] = True
     return m
-
-
-
 
 
 # APR (Rull 2026)

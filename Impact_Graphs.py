@@ -3,8 +3,7 @@ create graphs for output, rather than relying on Google Charts
 """
 
 import matplotlib.pyplot as plt
-# the following needs to be imported even though it is not directly referenced in the code
-import mpltern
+import mpltern   # this needs to be imported even though it is not directly referenced in the code
 import numpy
 from Impact_Common import encode_name
 

@@ -75,10 +75,8 @@ def read_data_file(filename: str) -> Tuple[list, list]:
             a += 1
             # header
             if a == 0:
-                # skip 1st 6 columns
-                for i in range(6):
-                    line = line[line.find("\t")+1:]
                 tmp_list = line.split("\t")
+                tmp_list = tmp_list[6:]    # skip 1st 6 columns
                 for d in tmp_list:
                     date_list.append(string_to_date(d))
             # read data
