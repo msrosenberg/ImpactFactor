@@ -225,9 +225,14 @@ def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = 
                   '<a href="https://github.com/msrosenberg/ImpactFactor"><span role="presentation" class="fa-brands '
                   'fa-github" aria-hidden="true"></span> Github</a>.</p>\n')
 
-    now = datetime.datetime.now()
+    # now = datetime.datetime.now()
+    # outfile.write(f'   <p>Citation data used for calculating all examples extracted from Google Scholar '
+    #               f'on {now.strftime("%Y-%m-%d")}.</p>\n')
+    with open("scholar_import_date.txt", "r") as dfile:
+        dstr = dfile.readline().strip()
     outfile.write(f'   <p>Citation data used for calculating all examples extracted from Google Scholar '
-                  f'on {now.strftime("%Y-%m-%d")}.</p>\n')
+                  f'on {dstr}.</p>\n')
+
 
     outfile.write(f'   <p>Below the Index is a table summarizing major properties of the various indices.</p>\n')
 

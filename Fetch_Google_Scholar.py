@@ -181,7 +181,9 @@ def main_offline():
     for pub in tqdm.tqdm(pub_list):
         citation_cnts[pub] = fetch_pub_data_offline(pub_data[pub])
     write_output(pub_list, pub_data, citation_cnts)
-
+    now = datetime.datetime.now()
+    with open("scholar_import_date.txt", "w") as outfile:
+        outfile.write(now.strftime("%Y-%m-%d"))
 
 
 if __name__ == "__main__":
