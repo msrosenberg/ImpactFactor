@@ -233,7 +233,6 @@ def html_output_introduction(outfile, inc_self: bool = True, inc_coauth: bool = 
     outfile.write(f'   <p>Citation data used for calculating all examples extracted from Google Scholar '
                   f'on {dstr}.</p>\n')
 
-
     outfile.write(f'   <p>Below the Index is a table summarizing major properties of the various indices.</p>\n')
 
     if not inc_self:
@@ -1001,8 +1000,9 @@ def main():
         # create_single_html_output(yearly_metrics_list, inc_self, inc_coauth)
         # create_set_html_output(yearly_metrics_list, inc_self, inc_coauth)
         shutil.copy2("Citations.txt", "webout/")
-        with open("webout/citeupdate.txt", "w") as outfile:
-            outfile.write(datetime.datetime.now().strftime("%Y-%m-%d"))
+        shutil.copy2("scholar_import_date.txt", "webout/citeupdate.txt")
+        # with open("webout/citeupdate.txt", "w") as outfile:
+        #     outfile.write(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     print("Finished")
 
