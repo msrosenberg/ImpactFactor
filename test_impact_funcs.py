@@ -1476,9 +1476,10 @@ def test_hstar_index():
 def test_apr():
     a_per, c_per, m_per, apr_str = Impact_Funcs.calculate_apr(TEST_AUTHOR_CNT, TEST_AUTHOR_ORDER)
     assert round(a_per, 1) == 62.5  # 10/16 are first authors
-    assert round(c_per, 1) == 25.0  # 4/16 are mid authors
+    assert round(c_per, 1) == 25.0  # 4/16 are middle authors
     assert round(m_per, 1) == 12.5  # 2/16 are last authors
     assert apr_str == "A62"
+
 
 def test_revised_h():
     rank_order, _ = Impact_Funcs.calculate_ranks(TEST_CITATION_DATA)
